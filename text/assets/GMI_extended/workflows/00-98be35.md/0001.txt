@@ -1,0 +1,1425 @@
+# 01.Programs/00-Master.do
+
+Session settings, directories, preflight and optional orchestration
+
+Status: PARTIAL_STATIC. Every lexically active statement is indexed; complete runtime schema and macro expansion are not established.
+
+Source snapshot: numbered source (deployment lookup: lookup/sources/GMI_extended/source_maps/00-98be35.md.md)
+
+## Execution-order blocks
+
+### block:4f98306467a109dd
+
+Evidence: `01.Programs/00-Master.do:L19-L19`. Next: `block:78c989f92d9bad7e`.
+
+```stata
+clear all
+```
+
+### block:78c989f92d9bad7e
+
+Evidence: `01.Programs/00-Master.do:L20-L20`. Next: `block:c5a4d7f248074708`.
+
+```stata
+set varabbrev off
+```
+
+### block:c5a4d7f248074708
+
+Evidence: `01.Programs/00-Master.do:L21-L21`. Next: `block:dec4285f733cddbb`.
+
+```stata
+set max_memory ., permanently
+```
+
+### block:dec4285f733cddbb
+
+Evidence: `01.Programs/00-Master.do:L32-L32`. Next: `block:0fe25d85dfaa73ba`.
+
+```stata
+global rnd      SM26
+```
+
+### block:0fe25d85dfaa73ba
+
+Evidence: `01.Programs/00-Master.do:L33-L33`. Next: `block:d57b00bc90a45618`.
+
+```stata
+global gmiroot  "C:\Users\wb570371\Documents\PEA\GMI_extended"
+```
+
+### block:d57b00bc90a45618
+
+Evidence: `01.Programs/00-Master.do:L34-L34`. Next: `block:5dec50c8da3f04e4`.
+
+```stata
+global cpiver   v15
+```
+
+### block:5dec50c8da3f04e4
+
+Evidence: `01.Programs/00-Master.do:L78-L78`. Next: `block:3f3088ace7f77536`.
+
+```stata
+local pfx = substr("$rnd", 1, 2)
+```
+
+### block:3f3088ace7f77536
+
+Evidence: `01.Programs/00-Master.do:L79-L79`. Next: `block:26477dc275f52387`.
+
+```stata
+local yy  = real(substr("$rnd", 3, .))
+```
+
+### block:26477dc275f52387
+
+Evidence: `01.Programs/00-Master.do:L81-L81`. Next: `block:b626e2e19368ecd5`.
+
+```stata
+if "`pfx'" == "SM" {
+```
+
+### block:b626e2e19368ecd5
+
+Evidence: `01.Programs/00-Master.do:L82-L82`. Next: `block:da9b661cab0c348c`.
+
+```stata
+local rndprev = "AM" + string(`yy' - 1)
+```
+Enclosing controls: `if "`pfx'" == "SM" {`
+
+### block:da9b661cab0c348c
+
+Evidence: `01.Programs/00-Master.do:L83-L83`. Next: `block:c873a34ca2bebe62`.
+
+```stata
+}
+```
+
+### block:c873a34ca2bebe62
+
+Evidence: `01.Programs/00-Master.do:L84-L84`. Next: `block:1ca4b31c51cf0b17`.
+
+```stata
+else {
+```
+
+### block:1ca4b31c51cf0b17
+
+Evidence: `01.Programs/00-Master.do:L85-L85`. Next: `block:06c703bc61dbf22a`.
+
+```stata
+local rndprev = "SM" + string(`yy')
+```
+Enclosing controls: `else {`
+
+### block:06c703bc61dbf22a
+
+Evidence: `01.Programs/00-Master.do:L86-L86`. Next: `block:ce31644b8809fbaa`.
+
+```stata
+}
+```
+
+### block:ce31644b8809fbaa
+
+Evidence: `01.Programs/00-Master.do:L87-L87`. Next: `block:cb7fbe716d1896ac`.
+
+```stata
+global rndprev `rndprev'
+```
+
+### block:cb7fbe716d1896ac
+
+Evidence: `01.Programs/00-Master.do:L90-L90`. Next: `block:9f2f6f0fbdf36f79`.
+
+```stata
+local yyyy = 2000 + `yy'
+```
+
+### block:9f2f6f0fbdf36f79
+
+Evidence: `01.Programs/00-Master.do:L91-L91`. Next: `block:b8d4906095182053`.
+
+```stata
+global rnd1 = "`pfx'" + string(`yyyy')
+```
+
+### block:b8d4906095182053
+
+Evidence: `01.Programs/00-Master.do:L105-L105`. Next: `block:19f2a8b733e8cb64`.
+
+```stata
+global prog        "$gmiroot\01.Programs"
+```
+
+### block:19f2a8b733e8cb64
+
+Evidence: `01.Programs/00-Master.do:L106-L106`. Next: `block:b7ddbd720104e6cd`.
+
+```stata
+global input       "$gmiroot\02.Input"
+```
+
+### block:b7ddbd720104e6cd
+
+Evidence: `01.Programs/00-Master.do:L107-L107`. Next: `block:8cef46ee25172240`.
+
+```stata
+global inputapi    "$input\api"
+```
+
+### block:8cef46ee25172240
+
+Evidence: `01.Programs/00-Master.do:L108-L108`. Next: `block:3ce4b7cc37c760a6`.
+
+```stata
+global fromservers "$input\FromServers"
+```
+
+### block:3ce4b7cc37c760a6
+
+Evidence: `01.Programs/00-Master.do:L109-L109`. Next: `block:8b1cad75b0504229`.
+
+```stata
+global outroot     "$gmiroot\03.Output"
+```
+
+### block:8b1cad75b0504229
+
+Evidence: `01.Programs/00-Master.do:L110-L110`. Next: `block:aa2fa049563712ee`.
+
+```stata
+global interm      "$outroot\01.intermediate"
+```
+
+### block:aa2fa049563712ee
+
+Evidence: `01.Programs/00-Master.do:L111-L111`. Next: `block:53cedf7e3afe810d`.
+
+```stata
+global pea         "$outroot\02.PEA_dashboard"
+```
+
+### block:53cedf7e3afe810d
+
+Evidence: `01.Programs/00-Master.do:L112-L112`. Next: `block:272bb282ef139fc0`.
+
+```stata
+global other       "$outroot\03.Other"
+```
+
+### block:272bb282ef139fc0
+
+Evidence: `01.Programs/00-Master.do:L113-L113`. Next: `block:2032a1bce594dac9`.
+
+```stata
+global checks      "$gmiroot\04.Checks_Add_reharmonization_results"
+```
+
+### block:2032a1bce594dac9
+
+Evidence: `01.Programs/00-Master.do:L121-L121`. Next: `block:815bd5753b57a735`.
+
+```stata
+cap mkdir "$prog"
+```
+
+### block:815bd5753b57a735
+
+Evidence: `01.Programs/00-Master.do:L122-L122`. Next: `block:fddb1c418ac74557`.
+
+```stata
+cap mkdir "$input"
+```
+
+### block:fddb1c418ac74557
+
+Evidence: `01.Programs/00-Master.do:L123-L123`. Next: `block:11f89d30172f1551`.
+
+```stata
+cap mkdir "$inputapi"
+```
+
+### block:11f89d30172f1551
+
+Evidence: `01.Programs/00-Master.do:L124-L124`. Next: `block:d2d674735d173da3`.
+
+```stata
+cap mkdir "$fromservers"
+```
+
+### block:d2d674735d173da3
+
+Evidence: `01.Programs/00-Master.do:L125-L125`. Next: `block:ecb183bf03d979b7`.
+
+```stata
+cap mkdir "$outroot"
+```
+
+### block:ecb183bf03d979b7
+
+Evidence: `01.Programs/00-Master.do:L126-L126`. Next: `block:213bf89ecf117204`.
+
+```stata
+cap mkdir "$interm"
+```
+
+### block:213bf89ecf117204
+
+Evidence: `01.Programs/00-Master.do:L127-L127`. Next: `block:d343f81aca776176`.
+
+```stata
+cap mkdir "$pea"
+```
+
+### block:d343f81aca776176
+
+Evidence: `01.Programs/00-Master.do:L128-L128`. Next: `block:27a68cc973b559eb`.
+
+```stata
+cap mkdir "$other"
+```
+
+### block:27a68cc973b559eb
+
+Evidence: `01.Programs/00-Master.do:L129-L129`. Next: `block:868b135ae0aa86e0`.
+
+```stata
+cap mkdir "$checks"
+```
+
+### block:868b135ae0aa86e0
+
+Evidence: `01.Programs/00-Master.do:L142-L142`. Next: `block:676aa98d5ae70d63`.
+
+```stata
+local manualmissing 0
+```
+
+### block:676aa98d5ae70d63
+
+Evidence: `01.Programs/00-Master.do:L144-L144`. Next: `block:e5af7060a02cc400`.
+
+```stata
+cap confirm file "$input\world_1000bin.dta"
+```
+
+### block:e5af7060a02cc400
+
+Evidence: `01.Programs/00-Master.do:L145-L145`. Next: `block:86ec132705afe17e`.
+
+```stata
+if _rc {
+```
+
+### block:86ec132705afe17e
+
+Evidence: `01.Programs/00-Master.do:L146-L146`. Next: `block:bdbd5a676e2f6461`.
+
+```stata
+dis as error "  [ MISSING ]  02.Input\world_1000bin.dta -- request this round's copy from DEC (Nishant, or whoever is running GMI) before running the pipeline."
+```
+Enclosing controls: `if _rc {`
+
+### block:bdbd5a676e2f6461
+
+Evidence: `01.Programs/00-Master.do:L147-L147`. Next: `block:0585fcaf045e74ea`.
+
+```stata
+local ++manualmissing
+```
+Enclosing controls: `if _rc {`
+
+### block:0585fcaf045e74ea
+
+Evidence: `01.Programs/00-Master.do:L148-L148`. Next: `block:291ef30f327c3a4a`.
+
+```stata
+}
+```
+
+### block:291ef30f327c3a4a
+
+Evidence: `01.Programs/00-Master.do:L149-L149`. Next: `block:e819f2d4df7444bc`.
+
+```stata
+else {
+```
+
+### block:e819f2d4df7444bc
+
+Evidence: `01.Programs/00-Master.do:L150-L150`. Next: `block:8ad3beb34cc1de6a`.
+
+```stata
+dis as result "  [ OK      ]  02.Input\world_1000bin.dta found."
+```
+Enclosing controls: `else {`
+
+### block:8ad3beb34cc1de6a
+
+Evidence: `01.Programs/00-Master.do:L151-L151`. Next: `block:dd565bcfdbd12361`.
+
+```stata
+}
+```
+
+### block:dd565bcfdbd12361
+
+Evidence: `01.Programs/00-Master.do:L153-L153`. Next: `block:7b76d36b5b165e07`.
+
+```stata
+cap confirm file "$input\new.txt"
+```
+
+### block:7b76d36b5b165e07
+
+Evidence: `01.Programs/00-Master.do:L154-L154`. Next: `block:16fb0b703a0c3b23`.
+
+```stata
+if _rc {
+```
+
+### block:16fb0b703a0c3b23
+
+Evidence: `01.Programs/00-Master.do:L155-L155`. Next: `block:7e59d7536d7230f6`.
+
+```stata
+dis as text "  [ ????    ]  02.Input\new.txt not found -- purpose still unconfirmed (see MANUAL INPUTS note above), not currently referenced by any of the 9 do-files, so this is a notice, not an error."
+```
+Enclosing controls: `if _rc {`
+
+### block:7e59d7536d7230f6
+
+Evidence: `01.Programs/00-Master.do:L156-L156`. Next: `block:f97c828437a8baf6`.
+
+```stata
+}
+```
+
+### block:f97c828437a8baf6
+
+Evidence: `01.Programs/00-Master.do:L157-L157`. Next: `block:e3d834547891bc64`.
+
+```stata
+else {
+```
+
+### block:e3d834547891bc64
+
+Evidence: `01.Programs/00-Master.do:L158-L158`. Next: `block:4acde3c1f50405f9`.
+
+```stata
+dis as text "  [ OK      ]  02.Input\new.txt found."
+```
+Enclosing controls: `else {`
+
+### block:4acde3c1f50405f9
+
+Evidence: `01.Programs/00-Master.do:L159-L159`. Next: `block:9fc923fb11738c27`.
+
+```stata
+}
+```
+
+### block:9fc923fb11738c27
+
+Evidence: `01.Programs/00-Master.do:L161-L161`. Next: `block:270af94619590fe8`.
+
+```stata
+if `manualmissing' > 0 {
+```
+
+### block:270af94619590fe8
+
+Evidence: `01.Programs/00-Master.do:L162-L162`. Next: `block:b5ec4041f434b532`.
+
+```stata
+dis as error _n "  RESULT: `manualmissing' required manual input(s) missing -- see [MISSING] lines above. Fix before running the pipeline for real."
+```
+Enclosing controls: `if `manualmissing' > 0 {`
+
+### block:b5ec4041f434b532
+
+Evidence: `01.Programs/00-Master.do:L163-L163`. Next: `block:aa8fa912deb03aac`.
+
+```stata
+}
+```
+
+### block:aa8fa912deb03aac
+
+Evidence: `01.Programs/00-Master.do:L168-L168`. Next: `block:308a00ae8ec2c069`.
+
+```stata
+global path        "\\wbgfscifs01\GTSD\03.projects_corp\04.GPWG\04.GPWG_${rnd}\04.GPWG_${rnd}_QA"
+```
+
+### block:308a00ae8ec2c069
+
+Evidence: `01.Programs/00-Master.do:L169-L169`. Next: `block:22d9e1734d1596ee`.
+
+```stata
+global reposource  "${path}\01.programs\02.dofile\repo\"
+```
+
+### block:22d9e1734d1596ee
+
+Evidence: `01.Programs/00-Master.do:L170-L170`. Next: `block:48ef6edbcb3bc22a`.
+
+```stata
+global repotxt     "repo(use ${rnd}all) reporoot(${reposource})"
+```
+
+### block:48ef6edbcb3bc22a
+
+Evidence: `01.Programs/00-Master.do:L172-L172`. Next: `block:bc9fb6668aa16c4e`.
+
+```stata
+global gmispell    "\\wbgfscifs01\GTSD\03.projects_corp\06.GMI\06.GMI_${rnd}\06.GMI_${rnd}_QA\03.output\01.data\GMI_SPspell_all.dta"
+```
+
+### block:bc9fb6668aa16c4e
+
+Evidence: `01.Programs/00-Master.do:L174-L174`. Next: `block:7476b64621509d7f`.
+
+```stata
+global mpopath_cur  "\\wbgfscifs01\GTSD\03.projects_corp\02.MPO\02.MPO_${rnd}\02.MPO_${rnd}_QA"
+```
+
+### block:7476b64621509d7f
+
+Evidence: `01.Programs/00-Master.do:L175-L175`. Next: `block:b3e01029e053bf4b`.
+
+```stata
+global mpopath_prev "\\wbgfscifs01\GTSD\03.projects_corp\02.MPO\02.MPO_${rndprev}\02.MPO_${rndprev}_QA"
+```
+
+### block:b3e01029e053bf4b
+
+Evidence: `01.Programs/00-Master.do:L184-L184`. Next: `block:e42d6867ca94ccf5`.
+
+```stata
+global cpiversion "Support_2005_CPI_${cpiver}_M"
+```
+
+### block:e42d6867ca94ccf5
+
+Evidence: `01.Programs/00-Master.do:L185-L185`. Next: `block:46c9402b8d521903`.
+
+```stata
+global pfw "$input\Survey_price_framework.dta"
+```
+
+### block:46c9402b8d521903
+
+Evidence: `01.Programs/00-Master.do:L190-L190`. Next: `block:8ad8de3d993b0231`.
+
+```stata
+global piptxt "server(prod) version(20260324_2021_01_02_PROD)"
+```
+
+### block:8ad8de3d993b0231
+
+Evidence: `01.Programs/00-Master.do:L196-L196`. Next: `block:d69e20431005616c`.
+
+```stata
+global ppplist 2017 2021
+```
+
+### block:d69e20431005616c
+
+Evidence: `01.Programs/00-Master.do:L197-L197`. Next: `block:322fe1b2e7131ce4`.
+
+```stata
+global pppmax  2021
+```
+
+### block:322fe1b2e7131ce4
+
+Evidence: `01.Programs/00-Master.do:L199-L199`. Next: `block:6a1ce0a6fa786672`.
+
+```stata
+global floor2021 0.28
+```
+
+### block:6a1ce0a6fa786672
+
+Evidence: `01.Programs/00-Master.do:L200-L200`. Next: `block:0f452fcb4214e9ac`.
+
+```stata
+global gap2021   28
+```
+
+### block:0f452fcb4214e9ac
+
+Evidence: `01.Programs/00-Master.do:L201-L201`. Next: `block:8c812e9de04dd720`.
+
+```stata
+global floor2017 0.25
+```
+
+### block:8c812e9de04dd720
+
+Evidence: `01.Programs/00-Master.do:L202-L202`. Next: `block:80cf9cc0fff80181`.
+
+```stata
+global gap2017   25
+```
+
+### block:80cf9cc0fff80181
+
+Evidence: `01.Programs/00-Master.do:L203-L203`. Next: `block:8ce871b4c99ea08c`.
+
+```stata
+global floor2011 0.22
+```
+
+### block:8ce871b4c99ea08c
+
+Evidence: `01.Programs/00-Master.do:L204-L204`. Next: `block:72b8f8b4cd89e3fd`.
+
+```stata
+global gap2011   22
+```
+
+### block:72b8f8b4cd89e3fd
+
+Evidence: `01.Programs/00-Master.do:L206-L206`. Next: `block:0365c4fa0d6d3fc1`.
+
+```stata
+global plines2021 300 420 830 450 630 1245 600 840 1660
+```
+
+### block:0365c4fa0d6d3fc1
+
+Evidence: `01.Programs/00-Master.do:L207-L207`. Next: `block:e891fc8813198cbf`.
+
+```stata
+global plines2017 215 365 685 322 547 1027 430 730 1370
+```
+
+### block:e891fc8813198cbf
+
+Evidence: `01.Programs/00-Master.do:L208-L208`. Next: `block:6f67aa3ad8ab4114`.
+
+```stata
+global plines2011 190 320 550
+```
+
+### block:6f67aa3ad8ab4114
+
+Evidence: `01.Programs/00-Master.do:L216-L216`. Next: `block:c54df0798bc46070`.
+
+```stata
+global line2021 300
+```
+
+### block:c54df0798bc46070
+
+Evidence: `01.Programs/00-Master.do:L217-L217`. Next: `block:618a05ad63bc795e`.
+
+```stata
+global line2017 215
+```
+
+### block:618a05ad63bc795e
+
+Evidence: `01.Programs/00-Master.do:L218-L218`. Next: `block:f900bdce5adeabbe`.
+
+```stata
+global pipextra2021 420 830 450 630 1245 600 840 1660
+```
+
+### block:f900bdce5adeabbe
+
+Evidence: `01.Programs/00-Master.do:L219-L219`. Next: `block:9c92c573175d44c5`.
+
+```stata
+global pipextra2017 365 685 322 547 1027 430 730 1370
+```
+
+### block:9c92c573175d44c5
+
+Evidence: `01.Programs/00-Master.do:L231-L231`. Next: `block:8281720da9229c89`.
+
+```stata
+global gmd_req  welfare weight weight_p hhid pid code year age
+```
+
+### block:8281720da9229c89
+
+Evidence: `01.Programs/00-Master.do:L233-L233`. Next: `block:6f5f14d30e6a9d67`.
+
+```stata
+global gmd_ppp  cpi2017 icp2017 cpi2021 icp2021
+```
+
+### block:6f5f14d30e6a9d67
+
+Evidence: `01.Programs/00-Master.do:L235-L239`. Next: `block:a801506e35b4463f`.
+
+```stata
+global gmd_opt  urban male educat4 school relationharm marital lstatus industrycat4 industrycat10 empstat lstatus_year industrycat4_year industrycat10_year empstat_year imp_wat_rec imp_san_rec electricity tv car cellphone computer fridge
+```
+
+### block:a801506e35b4463f
+
+Evidence: `01.Programs/00-Master.do:L241-L241`. Next: `block:08058af589586021`.
+
+```stata
+global gmd_all  $gmd_req $gmd_ppp $gmd_opt
+```
+
+### block:08058af589586021
+
+Evidence: `01.Programs/00-Master.do:L243-L243`. Next: `block:f82478ce3a1854a1`.
+
+```stata
+dis as result "00-Master.do loaded.  Round: $rnd   Previous: $rndprev   CPI version: $cpiversion"
+```
+
+### block:f82478ce3a1854a1
+
+Evidence: `01.Programs/00-Master.do:L265-L265`. Next: `block:cdd8e59f055275a3`.
+
+```stata
+global runall 0
+```
+
+### block:cdd8e59f055275a3
+
+Evidence: `01.Programs/00-Master.do:L267-L267`. Next: `block:6ce618143ac7f06f`.
+
+```stata
+if $runall == 1 {
+```
+
+### block:6ce618143ac7f06f
+
+Evidence: `01.Programs/00-Master.do:L269-L269`. Next: `block:7a34fc513a9f49c3`.
+
+```stata
+dis as text _n "Running full GMI_extended pipeline (round $rnd) ..."
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:7a34fc513a9f49c3
+
+Evidence: `01.Programs/00-Master.do:L271-L271`. Next: `block:b2ae8f125621db28`.
+
+```stata
+local fileA "00b-Pull_API_data"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:b2ae8f125621db28
+
+Evidence: `01.Programs/00-Master.do:L272-L272`. Next: `block:463d6bbe3e42b204`.
+
+```stata
+local fileB "00c-Fetch_server_data"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:463d6bbe3e42b204
+
+Evidence: `01.Programs/00-Master.do:L273-L273`. Next: `block:d992be16b54fcbb1`.
+
+```stata
+local fileC "01aa-GMI_extended_indicators"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:d992be16b54fcbb1
+
+Evidence: `01.Programs/00-Master.do:L274-L274`. Next: `block:f00a7e0e13b98caa`.
+
+```stata
+local fileD "01ab-GMI_extended_indicators_labor_ind"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:f00a7e0e13b98caa
+
+Evidence: `01.Programs/00-Master.do:L275-L275`. Next: `block:512e11ae2b1925de`.
+
+```stata
+local fileE "01b-GMI_extended_indicators_spells"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:512e11ae2b1925de
+
+Evidence: `01.Programs/00-Master.do:L276-L276`. Next: `block:b38e8bc5c4275195`.
+
+```stata
+local fileF "01c-GMI_extended_spells_pov_elasticity"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:b38e8bc5c4275195
+
+Evidence: `01.Programs/00-Master.do:L277-L277`. Next: `block:b5782003a4d2eafd`.
+
+```stata
+local fileG "02-GMI_format"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:b5782003a4d2eafd
+
+Evidence: `01.Programs/00-Master.do:L278-L278`. Next: `block:3a7fb804dfffd57f`.
+
+```stata
+local fileH "03-MPO_to_PEA"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:3a7fb804dfffd57f
+
+Evidence: `01.Programs/00-Master.do:L280-L280`. Next: `block:29bfb11a0e45c928`.
+
+```stata
+local statusA "NOT RUN"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:29bfb11a0e45c928
+
+Evidence: `01.Programs/00-Master.do:L281-L281`. Next: `block:a6b37e8f4158ba45`.
+
+```stata
+local statusB "NOT RUN"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:a6b37e8f4158ba45
+
+Evidence: `01.Programs/00-Master.do:L282-L282`. Next: `block:59109c76756a9def`.
+
+```stata
+local statusC "NOT RUN"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:59109c76756a9def
+
+Evidence: `01.Programs/00-Master.do:L283-L283`. Next: `block:837410a10bfe5dff`.
+
+```stata
+local statusD "NOT RUN"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:837410a10bfe5dff
+
+Evidence: `01.Programs/00-Master.do:L284-L284`. Next: `block:9299256e94464c01`.
+
+```stata
+local statusE "NOT RUN"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:9299256e94464c01
+
+Evidence: `01.Programs/00-Master.do:L285-L285`. Next: `block:072ded5d3d58971d`.
+
+```stata
+local statusF "NOT RUN"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:072ded5d3d58971d
+
+Evidence: `01.Programs/00-Master.do:L286-L286`. Next: `block:cfc94a992e79f654`.
+
+```stata
+local statusG "NOT RUN"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:cfc94a992e79f654
+
+Evidence: `01.Programs/00-Master.do:L287-L287`. Next: `block:9c0cb73de65529ee`.
+
+```stata
+local statusH "NOT RUN"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:9c0cb73de65529ee
+
+Evidence: `01.Programs/00-Master.do:L289-L289`. Next: `block:8e32b42fb283c93e`.
+
+```stata
+local rcA .
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:8e32b42fb283c93e
+
+Evidence: `01.Programs/00-Master.do:L290-L290`. Next: `block:e0929647534c4874`.
+
+```stata
+local rcB .
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:e0929647534c4874
+
+Evidence: `01.Programs/00-Master.do:L291-L291`. Next: `block:1403147db27edfeb`.
+
+```stata
+local rcC .
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:1403147db27edfeb
+
+Evidence: `01.Programs/00-Master.do:L292-L292`. Next: `block:e1328a3760b5642a`.
+
+```stata
+local rcD .
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:e1328a3760b5642a
+
+Evidence: `01.Programs/00-Master.do:L293-L293`. Next: `block:1d641e76d4d22712`.
+
+```stata
+local rcE .
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:1d641e76d4d22712
+
+Evidence: `01.Programs/00-Master.do:L294-L294`. Next: `block:277a74a1c4c3816b`.
+
+```stata
+local rcF .
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:277a74a1c4c3816b
+
+Evidence: `01.Programs/00-Master.do:L295-L295`. Next: `block:78e22f77a857ad79`.
+
+```stata
+local rcG .
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:78e22f77a857ad79
+
+Evidence: `01.Programs/00-Master.do:L296-L296`. Next: `block:486c24f991ec5e6f`.
+
+```stata
+local rcH .
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:486c24f991ec5e6f
+
+Evidence: `01.Programs/00-Master.do:L298-L298`. Next: `block:8fd31a3d80a9172e`.
+
+```stata
+foreach s in A B C D E F G H {
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:8fd31a3d80a9172e
+
+Evidence: `01.Programs/00-Master.do:L299-L299`. Next: `block:f0ef4bd4af7ab21d`.
+
+```stata
+local f    "`file`s''"
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:f0ef4bd4af7ab21d
+
+Evidence: `01.Programs/00-Master.do:L300-L300`. Next: `block:109b3df3035a884a`.
+
+```stata
+local path "$prog\`f'.do"
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:109b3df3035a884a
+
+Evidence: `01.Programs/00-Master.do:L302-L302`. Next: `block:86786c8e1a19ebf1`.
+
+```stata
+dis as result _n "=============================================================="
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:86786c8e1a19ebf1
+
+Evidence: `01.Programs/00-Master.do:L303-L303`. Next: `block:7f47a0873fe43a97`.
+
+```stata
+dis as result "  RUNNING: `f'.do"
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:7f47a0873fe43a97
+
+Evidence: `01.Programs/00-Master.do:L304-L304`. Next: `block:a2ddb876c20d38f4`.
+
+```stata
+dis as result "=============================================================="
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:a2ddb876c20d38f4
+
+Evidence: `01.Programs/00-Master.do:L306-L306`. Next: `block:06d4e876cd935ed2`.
+
+```stata
+cap confirm file "`path'"
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:06d4e876cd935ed2
+
+Evidence: `01.Programs/00-Master.do:L307-L307`. Next: `block:49b404cbff9e395b`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:49b404cbff9e395b
+
+Evidence: `01.Programs/00-Master.do:L308-L308`. Next: `block:1a280b27f4ec7887`.
+
+```stata
+dis as error "  [ MISSING ]  `path' not found -- skipping."
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {` → `if _rc {`
+
+### block:1a280b27f4ec7887
+
+Evidence: `01.Programs/00-Master.do:L309-L309`. Next: `block:22d7c637eef13155`.
+
+```stata
+local status`s' "MISSING"
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {` → `if _rc {`
+
+### block:22d7c637eef13155
+
+Evidence: `01.Programs/00-Master.do:L310-L310`. Next: `block:5da0de9dd10155a6`.
+
+```stata
+continue
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {` → `if _rc {`
+
+### block:5da0de9dd10155a6
+
+Evidence: `01.Programs/00-Master.do:L311-L311`. Next: `block:d210ae5ab036be00`.
+
+```stata
+}
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:d210ae5ab036be00
+
+Evidence: `01.Programs/00-Master.do:L313-L313`. Next: `block:6f76a239dfc2d8e7`.
+
+```stata
+cap noisily do "`path'"
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:6f76a239dfc2d8e7
+
+Evidence: `01.Programs/00-Master.do:L314-L314`. Next: `block:19b6234d109aea21`.
+
+```stata
+if _rc == 0 {
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:19b6234d109aea21
+
+Evidence: `01.Programs/00-Master.do:L315-L315`. Next: `block:6bd2f42d946ac941`.
+
+```stata
+local status`s' "OK"
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {` → `if _rc == 0 {`
+
+### block:6bd2f42d946ac941
+
+Evidence: `01.Programs/00-Master.do:L316-L316`. Next: `block:a3d659754a9f1915`.
+
+```stata
+}
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:a3d659754a9f1915
+
+Evidence: `01.Programs/00-Master.do:L317-L317`. Next: `block:7346c2011d526f65`.
+
+```stata
+else {
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:7346c2011d526f65
+
+Evidence: `01.Programs/00-Master.do:L318-L318`. Next: `block:ba1f784b82e526a0`.
+
+```stata
+local rc`s' = _rc
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {` → `else {`
+
+### block:ba1f784b82e526a0
+
+Evidence: `01.Programs/00-Master.do:L319-L319`. Next: `block:21c20156128c3f51`.
+
+```stata
+dis as error "  [ FAILED ]  `f'.do  (rc=`rc`s'')"
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {` → `else {`
+
+### block:21c20156128c3f51
+
+Evidence: `01.Programs/00-Master.do:L320-L320`. Next: `block:f4b5a282bf896d2b`.
+
+```stata
+local status`s' "FAILED"
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {` → `else {`
+
+### block:f4b5a282bf896d2b
+
+Evidence: `01.Programs/00-Master.do:L321-L321`. Next: `block:86a71bea7f539b30`.
+
+```stata
+}
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:86a71bea7f539b30
+
+Evidence: `01.Programs/00-Master.do:L322-L322`. Next: `block:d476e18059d747c5`.
+
+```stata
+}
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:d476e18059d747c5
+
+Evidence: `01.Programs/00-Master.do:L327-L327`. Next: `block:f71ed13c71a589a7`.
+
+```stata
+local w 66
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:f71ed13c71a589a7
+
+Evidence: `01.Programs/00-Master.do:L328-L328`. Next: `block:c79613671c550ecf`.
+
+```stata
+dis as text _n _dup(`w') "-"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:c79613671c550ecf
+
+Evidence: `01.Programs/00-Master.do:L329-L329`. Next: `block:8248534d3ba857e9`.
+
+```stata
+dis as text "  GMI EXTENDED PIPELINE -- FULL RUN SUMMARY"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:8248534d3ba857e9
+
+Evidence: `01.Programs/00-Master.do:L330-L330`. Next: `block:72f9e2ff2eb08ea3`.
+
+```stata
+dis as text "  Round: $rnd" _col(30) "Run: `c(current_date)' `c(current_time)'"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:72f9e2ff2eb08ea3
+
+Evidence: `01.Programs/00-Master.do:L331-L331`. Next: `block:8248adbe6ee9f4d5`.
+
+```stata
+dis as text _dup(`w') "-"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:8248adbe6ee9f4d5
+
+Evidence: `01.Programs/00-Master.do:L333-L333`. Next: `block:514140244e58f243`.
+
+```stata
+local nfail 0
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:514140244e58f243
+
+Evidence: `01.Programs/00-Master.do:L334-L334`. Next: `block:efd926f618e15f79`.
+
+```stata
+foreach s in A B C D E F G H {
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:efd926f618e15f79
+
+Evidence: `01.Programs/00-Master.do:L335-L335`. Next: `block:67ec682bea6e0d59`.
+
+```stata
+local f    "`file`s''"
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:67ec682bea6e0d59
+
+Evidence: `01.Programs/00-Master.do:L336-L336`. Next: `block:cce2ef272b634567`.
+
+```stata
+local stat "`status`s''"
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:cce2ef272b634567
+
+Evidence: `01.Programs/00-Master.do:L337-L337`. Next: `block:92612ded99372ce7`.
+
+```stata
+if "`stat'" == "OK" {
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:92612ded99372ce7
+
+Evidence: `01.Programs/00-Master.do:L338-L338`. Next: `block:fe809e863e015455`.
+
+```stata
+dis as result "  [ OK      ]  `f'.do"
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {` → `if "`stat'" == "OK" {`
+
+### block:fe809e863e015455
+
+Evidence: `01.Programs/00-Master.do:L339-L339`. Next: `block:f1d807dba5980f50`.
+
+```stata
+}
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:f1d807dba5980f50
+
+Evidence: `01.Programs/00-Master.do:L340-L340`. Next: `block:7d841ad3c3c53165`.
+
+```stata
+else if "`stat'" == "FAILED" {
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:7d841ad3c3c53165
+
+Evidence: `01.Programs/00-Master.do:L341-L341`. Next: `block:ccce4ebd057d6989`.
+
+```stata
+dis as error "  [ FAILED  ]  `f'.do  (rc=`rc`s'')"
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {` → `else if "`stat'" == "FAILED" {`
+
+### block:ccce4ebd057d6989
+
+Evidence: `01.Programs/00-Master.do:L342-L342`. Next: `block:1b1be1353909872c`.
+
+```stata
+local ++nfail
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {` → `else if "`stat'" == "FAILED" {`
+
+### block:1b1be1353909872c
+
+Evidence: `01.Programs/00-Master.do:L343-L343`. Next: `block:90ebabb86e0a4e8f`.
+
+```stata
+}
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:90ebabb86e0a4e8f
+
+Evidence: `01.Programs/00-Master.do:L344-L344`. Next: `block:b336b26e43480a4f`.
+
+```stata
+else if "`stat'" == "MISSING" {
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:b336b26e43480a4f
+
+Evidence: `01.Programs/00-Master.do:L345-L345`. Next: `block:85c1c76c32809e15`.
+
+```stata
+dis as error "  [ MISSING ]  `f'.do"
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {` → `else if "`stat'" == "MISSING" {`
+
+### block:85c1c76c32809e15
+
+Evidence: `01.Programs/00-Master.do:L346-L346`. Next: `block:960c3a45f8ca16df`.
+
+```stata
+local ++nfail
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {` → `else if "`stat'" == "MISSING" {`
+
+### block:960c3a45f8ca16df
+
+Evidence: `01.Programs/00-Master.do:L347-L347`. Next: `block:eb2e034f6f3ecde0`.
+
+```stata
+}
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:eb2e034f6f3ecde0
+
+Evidence: `01.Programs/00-Master.do:L348-L348`. Next: `block:d8fcc259ae153456`.
+
+```stata
+else {
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:d8fcc259ae153456
+
+Evidence: `01.Programs/00-Master.do:L349-L349`. Next: `block:6eaef8a72c83a3bc`.
+
+```stata
+dis as text "  [ ????    ]  `f'.do"
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {` → `else {`
+
+### block:6eaef8a72c83a3bc
+
+Evidence: `01.Programs/00-Master.do:L350-L350`. Next: `block:148ed5b5252b1b93`.
+
+```stata
+local ++nfail
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {` → `else {`
+
+### block:148ed5b5252b1b93
+
+Evidence: `01.Programs/00-Master.do:L351-L351`. Next: `block:08cde0136987703c`.
+
+```stata
+}
+```
+Enclosing controls: `if $runall == 1 {` → `foreach s in A B C D E F G H {`
+
+### block:08cde0136987703c
+
+Evidence: `01.Programs/00-Master.do:L352-L352`. Next: `block:270131e244c077f9`.
+
+```stata
+}
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:270131e244c077f9
+
+Evidence: `01.Programs/00-Master.do:L354-L354`. Next: `block:094c433febd9498a`.
+
+```stata
+dis as text _dup(`w') "-"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:094c433febd9498a
+
+Evidence: `01.Programs/00-Master.do:L355-L355`. Next: `block:10b052f2ed579bd3`.
+
+```stata
+if `nfail' == 0 {
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:10b052f2ed579bd3
+
+Evidence: `01.Programs/00-Master.do:L356-L356`. Next: `block:9ad518180d7fc128`.
+
+```stata
+dis as result "  RESULT: all 8 do-files ran successfully."
+```
+Enclosing controls: `if $runall == 1 {` → `if `nfail' == 0 {`
+
+### block:9ad518180d7fc128
+
+Evidence: `01.Programs/00-Master.do:L357-L357`. Next: `block:a1d4e5ef2c0659b0`.
+
+```stata
+}
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:a1d4e5ef2c0659b0
+
+Evidence: `01.Programs/00-Master.do:L358-L358`. Next: `block:3a2d96d487c80b26`.
+
+```stata
+else {
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:3a2d96d487c80b26
+
+Evidence: `01.Programs/00-Master.do:L359-L359`. Next: `block:108d697e678b128c`.
+
+```stata
+dis as error "  RESULT: `nfail' of 8 do-file(s) FAILED or MISSING -- see [FAILED]/[MISSING] lines above."
+```
+Enclosing controls: `if $runall == 1 {` → `else {`
+
+### block:108d697e678b128c
+
+Evidence: `01.Programs/00-Master.do:L360-L360`. Next: `block:ed5a1089563ddf87`.
+
+```stata
+}
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:ed5a1089563ddf87
+
+Evidence: `01.Programs/00-Master.do:L361-L361`. Next: `block:d08f76118b8dac32`.
+
+```stata
+dis as text _dup(`w') "-"
+```
+Enclosing controls: `if $runall == 1 {`
+
+### block:d08f76118b8dac32
+
+Evidence: `01.Programs/00-Master.do:L362-L362`. Next: `end`.
+
+```stata
+}
+```

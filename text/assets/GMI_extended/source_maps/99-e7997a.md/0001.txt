@@ -1,0 +1,600 @@
+# 04.Checks_Add_reharmonization_results/code/99-build_eap_local.do
+
+Sanitized source projection; applicability placeholders are not executable values. Original SHA256: a7355bce0b555e569e7ba69602bd0d30ec289ac0eb73a70c0259538e955c4ca1
+
+```stata
+0001 | *===============================================================
+0002 | * 99-build_eap_local.do
+0003 | *
+0004 | * WHAT IT DOES
+0005 | *   For each EAP country folder, merges the module files into ONE
+0006 | *   person-level file holding only hhid, pid and the GMD variables
+0007 | *   the GMI pipeline uses, renamed to GMD names.
+0008 | *
+0009 | *   module _2  person     hhid + pid   demographics, education, labour   SPINE
+0010 | *   module _5  household  hhid         assets, utilities, water, sanitation
+0011 | *   module _1  household  hhid         urban, year, hhsize, geography
+0012 | *   module _9  person     hhid + pid   derived HOI file, LAST RESORT only
+0013 | *
+0014 | *   Module _9 is a clone of _1 + _2 + _5 per the ECAPOV guidelines, so it
+0015 | *   is read last and can never overwrite anything already built.
+0016 | *
+0017 | * READ ONLY against the EAP folders.  Writes one .dta per country-year
+0018 | * plus one summary workbook, into the output folder below.
+0019 | *
+0020 | * RUN 00-Master.do FIRST (for $gmd_opt and $checks).
+0021 | *===============================================================
+0022 | 
+0023 | clear all
+0024 | set more off
+0025 | set varabbrev off
+0026 | 
+0027 | *===============================================================
+0028 | *  EDIT THIS SECTION
+0029 | *===============================================================
+0030 | 
+0031 | *--- 1. Root folder that holds one subfolder per country-year
+0032 | local eaproot "\\wurepliprdfs06\eapfile\eappp\EAP Harmonization"
+0033 | 
+0034 | *--- 2. Subpath inside each country folder that holds the .dta files
+0035 | local subpath "Data/Harmonized"
+0036 | 
+0037 | *--- 3. Which country folders to build.
+0038 | *       Leave EMPTY to auto-detect every folder that has `subpath'.
+0039 | local ctyfolders ""
+0040 | 
+0041 | *--- 4. Folder names to always skip when auto-detecting
+0042 | local skipfolders "workflow archive old temp backup"
+0043 | 
+0044 | *--- 5. Where the built files go.  One .dta per country-year.
+0045 | local outdir "$checks/EAP_data"
+0046 | 
+0047 | *--- 6. Also keep these diagnostic variables alongside the GMD ones?
+0048 | *       lstatus_tr is the ECAPOV flag for which labour reference period
+0049 | *       the country actually collected: 1=7-day only, 2=12-month only,
+0050 | *       3=both, 4=other.  Keep it.
+0051 | local keepdiag 1
+0052 | local diagvars "lstatus_tr lstatus_ref lb_mod_age hhsize age weight year"
+0053 | 
+0054 | *--- 7. Use module _1 to fill urban / year / hhsize when _2 and _5 do not
+0055 | *       carry them?  1 = yes.
+0056 | local usemod1 1
+0057 | 
+0058 | *--- 8. Use module _9 as a last resort for what _1, _2 and _5 do not
+0059 | *       carry (improved_sanitation, and ho13 as cellphone)?  1 = yes.
+0060 | local usemod9 1
+0061 | 
+0062 | *--- 9. Drop spine rows that carry NO GMD content at all?
+0063 | *       Module _2 sometimes has roster rows with nothing filled in
+0064 | *       (ISO3 has about [ESTIMATE] of these).  0 = keep them and just report.
+0065 | local droprowsempty 0
+0066 | 
+0067 | *--- 10. Suffix for the output file names
+0068 | local outsuffix "EAPLOCAL"
+0069 | 
+0070 | *===============================================================
+0071 | *  END OF EDIT SECTION
+0072 | *===============================================================
+0073 | 
+0074 | 
+0075 | *---------------------------------------------------------------
+0076 | * Fallbacks if 00-Master.do was not run
+0077 | *---------------------------------------------------------------
+0078 | if "$gmd_opt" == "" {
+0079 |     global gmd_opt  urban male educat4 school relationharm marital ///
+0080 |                     lstatus industrycat4 industrycat10 empstat ///
+0081 |                     lstatus_year industrycat4_year industrycat10_year empstat_year ///
+0082 |                     imp_wat_rec imp_san_rec electricity ///
+0083 |                     tv car cellphone computer fridge
+0084 | }
+0085 | if "`outdir'" == "" {
+0086 |     di as error "  outdir is empty.  Run 00-Master.do, or hard-code a path in section 5."
+0087 |     exit 198
+0088 | }
+0089 | 
+0090 | *---------------------------------------------------------------
+0091 | * EAP name  ->  GMD name
+0092 | *   Confirmed against ECAPOV 3.0 Harmonization Guidelines, Module 2.
+0093 | *   male is NOT here: it is built from female, which has to be flipped.
+0094 | *---------------------------------------------------------------
+0095 | local map ""
+0096 | local map "`map' marstat:marital"
+0097 | local map "`map' reltohead:relationharm"
+0098 | local map "`map' empstat_1:empstat"
+0099 | local map "`map' industrycat4_1:industrycat4"
+0100 | local map "`map' industrycat10_1:industrycat10"
+0101 | local map "`map' television:tv"
+0102 | local map "`map' improved_water:imp_wat_rec"
+0103 | local map "`map' improved_sanitation:imp_san_rec"
+0104 | 
+0105 | *--- second-chance aliases, applied ONLY if the GMD name is still absent.
+0106 | *    ho13 is the module _9 clone of cellphone.  ISO3 does not deliver
+0107 | *    cellphone in module _5, only landphone, so ho13 is the only route.
+0108 | local map2 ""
+0109 | local map2 "`map2' ho13:cellphone"
+0110 | 
+0111 | *--- these already arrive with GMD names:
+0112 | *      urban educat4 school lstatus lstatus_year
+0113 | *      empstat_year industrycat4_year industrycat10_year
+0114 | *      electricity car cellphone computer fridge
+0115 | *--- deliberately NOT used:
+0116 | *      industry4 industry10   "Duplicate of above variable. ECAPOV old version."
+0117 | *      head relationcs        inputs to reltohead, not substitutes
+0118 | *      sex sexh sexch         module _9 derivations, sign is inconsistent
+0119 | 
+0120 | local keepvars hhid pid $gmd_opt
+0121 | if `keepdiag' local keepvars `keepvars' `diagvars'
+0122 | 
+0123 | *--- what we may need from each household module
+0124 | local want5 "electricity car cellphone computer fridge television improved_water improved_sanitation urban"
+0125 | local want1 "urban year hhsize"
+0126 | local want9 "improved_sanitation improved_water ho13"
+0127 | 
+0128 | di as result _n(2) "{hline 78}"
+0129 | di as result "  BUILD ONE GMD-NAMED FILE PER EAP COUNTRY-YEAR"
+0130 | di as result "{hline 78}"
+0131 | di as text "  root      : `eaproot'"
+0132 | di as text "  output    : `outdir'"
+0133 | di as text "  use mod 1 : `usemod1'      use mod 9 : `usemod9'"
+0134 | 
+0135 | 
+0136 | *---------------------------------------------------------------
+0137 | * Which country folders?
+0138 | *---------------------------------------------------------------
+0139 | if "`ctyfolders'" == "" {
+0140 |     local alldirs : dir "`eaproot'" dirs "*"
+0141 |     local ctyfolders
+0142 |     foreach d of local alldirs {
+0143 |         local dn `d'
+0144 |         local lowdn = lower("`dn'")
+0145 |         local skip = 0
+0146 |         foreach s of local skipfolders {
+0147 |             if "`lowdn'" == lower("`s'") local skip = 1
+0148 |         }
+0149 |         if `skip' continue
+0150 |         local probe : dir "`eaproot'/`dn'/`subpath'" files "*.dta"
+0151 |         if `"`probe'"' != "" local ctyfolders `"`ctyfolders' "`dn'""'
+0152 |     }
+0153 | }
+0154 | 
+0155 | local ncty : word count `ctyfolders'
+0156 | if `ncty' == 0 {
+0157 |     di as error _n "  No country folders found."
+0158 |     exit 601
+0159 | }
+0160 | di as text "  countries : `ncty'"
+0161 | 
+0162 | capture mkdir "$checks"
+0163 | capture mkdir "`outdir'"
+0164 | 
+0165 | 
+0166 | *---------------------------------------------------------------
+0167 | * Collector for the summary
+0168 | *---------------------------------------------------------------
+0169 | tempfile res
+0170 | capture postclose bld
+0171 | postfile bld str48 country str16 ccode str8 cyear str24 csurv ///
+0172 |     str90 outfile double nobs double nhh ///
+0173 |     double m5_matched double m1_matched double m9_matched ///
+0174 |     double nvars_kept double nrows_blank str12 lstatus_tr ///
+0175 |     str244 droppedempty str244 notdelivered ///
+0176 |     using `res', replace
+0177 | 
+0178 | 
+0179 | *---------------------------------------------------------------
+0180 | * MAIN LOOP
+0181 | *---------------------------------------------------------------
+0182 | local nbuilt = 0
+0183 | local nskip  = 0
+0184 | 
+0185 | foreach c of local ctyfolders {
+0186 |     local cty `c'
+0187 |     local dpath "`eaproot'/`cty'/`subpath'"
+0188 | 
+0189 |     di as result _n "{hline 78}"
+0190 |     di as result "  `cty'"
+0191 |     di as result "{hline 78}"
+0192 | 
+0193 |     *--- parse CODE / YEAR / SURVEY out of the folder name
+0194 |     local p1    = upper(substr("`cty'", 1, strpos("`cty'","_")-1))
+0195 |     local rest  = substr("`cty'", strpos("`cty'","_")+1, .)
+0196 |     local p2    = substr("`rest'", 1, strpos("`rest'","_")-1)
+0197 |     local rest2 = substr("`rest'", strpos("`rest'","_")+1, .)
+0198 |     if strpos("`rest2'","_") > 0 local p3 = upper(substr("`rest2'", 1, strpos("`rest2'","_")-1))
+0199 |     else                         local p3 = upper("`rest2'")
+0200 | 
+0201 |     local ccode "`p1'"
+0202 |     local cyear "`p2'"
+0203 |     local csurv "`p3'"
+0204 |     di as text "    code `ccode'  year `cyear'  survey `csurv'"
+0205 | 
+0206 |     *--- find the module files by the number after the LAST underscore
+0207 |     local f1 ""
+0208 |     local f2 ""
+0209 |     local f5 ""
+0210 |     local f9 ""
+0211 |     local fl : dir "`dpath'" files "*.dta"
+0212 |     foreach f of local fl {
+0213 |         local fn `f'
+0214 |         local stem = substr("`fn'", 1, strlen("`fn'")-4)
+0215 |         local tail = substr("`stem'", strrpos("`stem'","_")+1, .)
+0216 |         if "`tail'" == "1" local f1 "`fn'"
+0217 |         if "`tail'" == "2" local f2 "`fn'"
+0218 |         if "`tail'" == "5" local f5 "`fn'"
+0219 |         if "`tail'" == "9" local f9 "`fn'"
+0220 |     }
+0221 | 
+0222 |     if "`f2'" == "" {
+0223 |         di as error "    no module _2 file, cannot build a person-level spine.  SKIPPED."
+0224 |         local nskip = `nskip' + 1
+0225 |         post bld ("`cty'") ("`ccode'") ("`cyear'") ("`csurv'") ("") (.) (.) ///
+0226 |                  (.) (.) (.) (.) (.) ("") ("") ("NO MODULE 2")
+0227 |         continue
+0228 |     }
+0229 | 
+0230 |     *===========================================================
+0231 |     * 1. person spine = module _2
+0232 |     *===========================================================
+0233 |     qui use "`dpath'/`f2'", clear
+0234 |     di as text "    _2  " %11.0fc _N " rows"
+0235 | 
+0236 |     capture confirm variable hhid
+0237 |     local ok1 = (_rc == 0)
+0238 |     capture confirm variable pid
+0239 |     local ok2 = (_rc == 0)
+0240 |     if !`ok1' | !`ok2' {
+0241 |         di as error "    module _2 has no hhid and/or pid.  SKIPPED."
+0242 |         local nskip = `nskip' + 1
+0243 |         post bld ("`cty'") ("`ccode'") ("`cyear'") ("`csurv'") ("") (.) (.) ///
+0244 |                  (.) (.) (.) (.) (.) ("") ("") ("NO hhid/pid IN MODULE 2")
+0245 |         continue
+0246 |     }
+0247 | 
+0248 |     capture isid hhid pid
+0249 |     if _rc {
+0250 |         di as error "    hhid + pid not unique in _2, dropping exact duplicates"
+0251 |         qui duplicates drop hhid pid, force
+0252 |         capture isid hhid pid
+0253 |         if _rc {
+0254 |             di as error "    still not unique.  SKIPPED."
+0255 |             local nskip = `nskip' + 1
+0256 |             post bld ("`cty'") ("`ccode'") ("`cyear'") ("`csurv'") ("") (.) (.) ///
+0257 |                      (.) (.) (.) (.) (.) ("") ("") ("hhid+pid NOT UNIQUE")
+0258 |             continue
+0259 |         }
+0260 |     }
+0261 | 
+0262 |     *===========================================================
+0263 |     * 2. household module _5, merged m:1 on hhid
+0264 |     *===========================================================
+0265 |     local m5match = .
+0266 |     if "`f5'" != "" {
+0267 |         local pulled ""
+0268 |         preserve
+0269 |             qui use "`dpath'/`f5'", clear
+0270 |             capture confirm variable hhid
+0271 |             if _rc  local pulled "NOHHID"
+0272 |             else {
+0273 |                 qui duplicates drop hhid, force
+0274 |                 local h5
+0275 |                 foreach v of local want5 {
+0276 |                     capture confirm variable `v'
+0277 |                     if !_rc local h5 `h5' `v'
+0278 |                 }
+0279 |                 keep hhid `h5'
+0280 |                 tempfile hh5
+0281 |                 qui save `hh5'
+0282 |                 local pulled "`h5'"
+0283 |             }
+0284 |         restore
+0285 |         if "`pulled'" == "NOHHID" {
+0286 |             di as error "    _5  has no hhid, not merged"
+0287 |         }
+0288 |         else if "`pulled'" != "" {
+0289 |             local n5 : word count `pulled'
+0290 |             di as text "    _5  merging `n5' household variables on hhid"
+0291 |             capture merge m:1 hhid using `hh5', gen(_m5) keep(master match)
+0292 |             if _rc {
+0293 |                 di as error "        merge failed (rc=" _rc "), likely an hhid type mismatch"
+0294 |                 capture drop _m5
+0295 |             }
+0296 |             else {
+0297 |                 qui count if _m5 == 3
+0298 |                 local m5match = r(N)
+0299 |                 di as text "        matched " %11.0fc `m5match' " of " %11.0fc _N
+0300 |                 drop _m5
+0301 |             }
+0302 |         }
+0303 |     }
+0304 | 
+0305 |     *===========================================================
+0306 |     * 3. household module _1, ONLY for what is still missing
+0307 |     *===========================================================
+0308 |     local m1match = .
+0309 |     if `usemod1' & "`f1'" != "" {
+0310 |         local need1
+0311 |         foreach v of local want1 {
+0312 |             capture confirm variable `v'
+0313 |             if _rc local need1 `need1' `v'
+0314 |         }
+0315 |         if "`need1'" != "" {
+0316 |             local pulled ""
+0317 |             preserve
+0318 |                 qui use "`dpath'/`f1'", clear
+0319 |                 capture confirm variable hhid
+0320 |                 if _rc  local pulled "NOHHID"
+0321 |                 else {
+0322 |                     qui duplicates drop hhid, force
+0323 |                     local h1
+0324 |                     foreach v of local need1 {
+0325 |                         capture confirm variable `v'
+0326 |                         if !_rc local h1 `h1' `v'
+0327 |                     }
+0328 |                     if "`h1'" != "" {
+0329 |                         keep hhid `h1'
+0330 |                         tempfile hh1
+0331 |                         qui save `hh1'
+0332 |                     }
+0333 |                     local pulled "`h1'"
+0334 |                 }
+0335 |             restore
+0336 |             if "`pulled'" != "" & "`pulled'" != "NOHHID" {
+0337 |                 di as text "    _1  filling `pulled' on hhid"
+0338 |                 capture merge m:1 hhid using `hh1', gen(_m1) keep(master match)
+0339 |                 if _rc {
+0340 |                     di as error "        merge failed (rc=" _rc ")"
+0341 |                     capture drop _m1
+0342 |                 }
+0343 |                 else {
+0344 |                     qui count if _m1 == 3
+0345 |                     local m1match = r(N)
+0346 |                     di as text "        matched " %11.0fc `m1match' " of " %11.0fc _N
+0347 |                     drop _m1
+0348 |                 }
+0349 |             }
+0350 |         }
+0351 |         else di as text "    _1  not needed"
+0352 |     }
+0353 | 
+0354 |     *===========================================================
+0355 |     * 4. module _9, last resort only
+0356 |     *===========================================================
+0357 |     local m9match = .
+0358 |     if `usemod9' & "`f9'" != "" {
+0359 |         local need9
+0360 |         foreach v of local want9 {
+0361 |             capture confirm variable `v'
+0362 |             if _rc local need9 `need9' `v'
+0363 |         }
+0364 |         * ho13 is only wanted if cellphone is still absent.
+0365 |         * NOTE: ": list A - B" takes MACRO NAMES on both sides, never a
+0366 |         * quoted string, so the thing to remove has to live in its own local.
+0367 |         capture confirm variable cellphone
+0368 |         if !_rc {
+0369 |             local drop9 "ho13"
+0370 |             local need9 : list need9 - drop9
+0371 |         }
+0372 |         if "`need9'" != "" {
+0373 |             local pulled ""
+0374 |             preserve
+0375 |                 qui use "`dpath'/`f9'", clear
+0376 |                 local h9
+0377 |                 foreach v of local need9 {
+0378 |                     capture confirm variable `v'
+0379 |                     if !_rc local h9 `h9' `v'
+0380 |                 }
+0381 |                 if "`h9'" != "" {
+0382 |                     keep hhid pid `h9'
+0383 |                     qui duplicates drop hhid pid, force
+0384 |                     tempfile m9f
+0385 |                     qui save `m9f'
+0386 |                 }
+0387 |                 local pulled "`h9'"
+0388 |             restore
+0389 |             if "`pulled'" != "" {
+0390 |                 di as text "    _9  last resort, taking `pulled'"
+0391 |                 capture merge 1:1 hhid pid using `m9f', gen(_m9) keep(master match)
+0392 |                 if _rc {
+0393 |                     di as error "        merge failed (rc=" _rc ")"
+0394 |                     capture drop _m9
+0395 |                 }
+0396 |                 else {
+0397 |                     qui count if _m9 == 3
+0398 |                     local m9match = r(N)
+0399 |                     di as text "        matched " %11.0fc `m9match' " of " %11.0fc _N
+0400 |                     if `m9match' < _N {
+0401 |                         di as error "        _9 is smaller than _2: " ///
+0402 |                             %11.0fc `=_N-`m9match'' " spine rows get missing values from _9"
+0403 |                     }
+0404 |                     drop _m9
+0405 |                 }
+0406 |             }
+0407 |         }
+0408 |         else di as text "    _9  not needed"
+0409 |     }
+0410 | 
+0411 |     *===========================================================
+0412 |     * 5. rename EAP names to GMD names
+0413 |     *===========================================================
+0414 |     foreach pair of local map {
+0415 |         local col = strpos("`pair'", ":")
+0416 |         local src = substr("`pair'", 1, `col'-1)
+0417 |         local dst = substr("`pair'", `col'+1, .)
+0418 |         capture confirm variable `src'
+0419 |         if _rc continue
+0420 |         capture confirm variable `dst'
+0421 |         if !_rc {
+0422 |             di as text "        `dst' already present, dropping `src'"
+0423 |             drop `src'
+0424 |             continue
+0425 |         }
+0426 |         rename `src' `dst'
+0427 |         di as text "        `src' -> `dst'"
+0428 |     }
+0429 | 
+0430 |     *--- second-chance aliases
+0431 |     foreach pair of local map2 {
+0432 |         local col = strpos("`pair'", ":")
+0433 |         local src = substr("`pair'", 1, `col'-1)
+0434 |         local dst = substr("`pair'", `col'+1, .)
+0435 |         capture confirm variable `dst'
+0436 |         if !_rc continue
+0437 |         capture confirm variable `src'
+0438 |         if _rc continue
+0439 |         rename `src' `dst'
+0440 |         note `dst' : taken from ECAPOV `src' (module _9), the GMD name was not delivered
+0441 |         di as text "        `src' -> `dst'   (fallback)"
+0442 |     }
+0443 | 
+0444 |     *--- male has to be flipped: ECAPOV female is 1 = Female, 0 = Male
+0445 |     capture confirm variable male
+0446 |     if _rc {
+0447 |         capture confirm variable female
+0448 |         if !_rc {
+0449 |             qui gen byte male = 1 - female
+0450 |             la var male "Sex: 1 = Male, 0 = Female (built as 1 - ECAPOV female)"
+0451 |             la def _male 0 "Female" 1 "Male", replace
+0452 |             la val male _male
+0453 |             drop female
+0454 |             di as text "        female -> male (flipped)"
+0455 |         }
+0456 |     }
+0457 | 
+0458 |     *--- year from the folder name if nothing delivered it
+0459 |     capture confirm variable year
+0460 |     if _rc {
+0461 |         qui gen int year = `cyear'
+0462 |         la var year "Survey year (from the EAP folder name)"
+0463 |         di as text "        year generated from the folder name (`cyear')"
+0464 |     }
+0465 | 
+0466 |     *===========================================================
+0467 |     * 6. keep ids + GMD variables
+0468 |     *===========================================================
+0469 |     local have
+0470 |     local notdel
+0471 |     foreach v of local keepvars {
+0472 |         capture confirm variable `v'
+0473 |         if _rc  local notdel `notdel' `v'
+0474 |         else    local have `have' `v'
+0475 |     }
+0476 | 
+0477 |     keep `have'
+0478 |     order hhid pid
+0479 | 
+0480 |     * drop variables that arrived 100 percent empty: they are not a
+0481 |     * delivery, and keeping them would silently blank DLW values later
+0482 |     local allempty
+0483 |     foreach v of local have {
+0484 |         if inlist("`v'","hhid","pid") continue
+0485 |         qui count if !missing(`v')
+0486 |         if r(N) == 0 {
+0487 |             local allempty `allempty' `v'
+0488 |             drop `v'
+0489 |         }
+0490 |     }
+0491 |     if "`allempty'" != "" di as error "        all-missing, dropped: `allempty'"
+0492 | 
+0493 |     *--- how many spine rows carry no GMD content at all?
+0494 |     local gmdhere
+0495 |     foreach v in $gmd_opt {
+0496 |         capture confirm variable `v'
+0497 |         if !_rc local gmdhere `gmdhere' `v'
+0498 |     }
+0499 |     qui gen byte _anyinfo = 0
+0500 |     foreach v of local gmdhere {
+0501 |         qui replace _anyinfo = 1 if !missing(`v')
+0502 |     }
+0503 |     qui count if _anyinfo == 0
+0504 |     local nblank = r(N)
+0505 |     if `nblank' > 0 {
+0506 |         di as error "        " %11.0fc `nblank' " rows have NO GMD content at all"
+0507 |         if `droprowsempty' {
+0508 |             qui drop if _anyinfo == 0
+0509 |             di as error "        dropped them (section 9 is on)"
+0510 |         }
+0511 |     }
+0512 |     drop _anyinfo
+0513 | 
+0514 |     *--- what reference period did this country collect?
+0515 |     local trval ""
+0516 |     capture confirm numeric variable lstatus_tr
+0517 |     if !_rc {
+0518 |         capture qui su lstatus_tr, meanonly
+0519 |         if !_rc & !missing(r(mean)) {
+0520 |             if r(min) == r(max) local trval = string(r(min), "%2.0f")
+0521 |             else                local trval = string(r(min), "%2.0f") + "-" + string(r(max), "%2.0f")
+0522 |         }
+0523 |     }
+0524 | 
+0525 |     qui describe, short
+0526 |     local nkept = r(k)
+0527 |     local nobs  = _N
+0528 | 
+0529 |     * distinct households.  Do NOT use levelsof: with hundreds of thousands
+0530 |     * of households the macro overflows and Stata returns r(198).
+0531 |     qui duplicates report hhid
+0532 |     local nhh = r(unique_value)
+0533 | 
+0534 |     *===========================================================
+0535 |     * 7. save
+0536 |     *===========================================================
+0537 |     local ofile "`ccode'_`cyear'_`csurv'_`outsuffix'.dta"
+0538 |     la data "EAP local harmonization, GMD-named: `ccode' `cyear' `csurv'"
+0539 |     sort hhid pid
+0540 |     qui compress
+0541 |     qui save "`outdir'/`ofile'", replace
+0542 | 
+0543 |     local nbuilt = `nbuilt' + 1
+0544 |     di as result "    saved: `ofile'"
+0545 |     di as text   "           " %11.0fc `nobs' " persons, " %11.0fc `nhh' ///
+0546 |                  " households, `nkept' variables"
+0547 |     if "`notdel'" != "" di as error "           not delivered: `notdel'"
+0548 | 
+0549 |     post bld ("`cty'") ("`ccode'") ("`cyear'") ("`csurv'") ("`ofile'") (`nobs') (`nhh') ///
+0550 |              (`m5match') (`m1match') (`m9match') (`nkept') (`nblank') ("`trval'") ///
+0551 |              ("`=substr("`allempty'",[ESTIMATE])'") ("`=substr("`notdel'",[ESTIMATE])'")
+0552 | }
+0553 | 
+0554 | postclose bld
+0555 | 
+0556 | 
+0557 | *===============================================================
+0558 | *  SUMMARY WORKBOOK
+0559 | *===============================================================
+0560 | use `res', clear
+0561 | sort country
+0562 | 
+0563 | label var country      "country-year folder"
+0564 | label var ccode        "country code"
+0565 | label var cyear        "year"
+0566 | label var csurv        "survey"
+0567 | label var outfile      "file written"
+0568 | label var nobs         "persons"
+0569 | label var nhh          "households"
+0570 | label var m5_matched   "rows matched from module 5"
+0571 | label var m1_matched   "rows matched from module 1"
+0572 | label var m9_matched   "rows matched from module 9"
+0573 | label var nvars_kept   "variables kept"
+0574 | label var nrows_blank  "spine rows with no GMD content"
+0575 | label var lstatus_tr   "labour reference flag (1=7day 2=12mo 3=both 4=other)"
+0576 | label var droppedempty "delivered but 100 pct empty, so dropped"
+0577 | label var notdelivered "GMD vars not delivered at all"
+0578 | 
+0579 | export excel using "`outdir'/eap_build_summary.xlsx", ///
+0580 |     sheet("BUILD", replace) firstrow(varlabels)
+0581 | 
+0582 | di as result _n(2) "{hline 78}"
+0583 | di as result "  DONE"
+0584 | di as result "{hline 78}"
+0585 | di as text "  built   : `nbuilt'"
+0586 | di as text "  skipped : `nskip'"
+0587 | di as text "  folder  : `outdir'"
+0588 | di as text "  summary : eap_build_summary.xlsx"
+0589 | di as result "{hline 78}"
+0590 | list ccode cyear csurv nobs nvars_kept nrows_blank lstatus_tr, noobs sep(0) abbrev(12)
+0591 | di as result "{hline 78}" _n
+0592 | di as text "  lstatus_tr: 1 = 7-day only, 2 = 12-month only, 3 = both, 4 = other."
+0593 | di as text "  A country coded 2 is SUPPOSED to have an empty 7-day block, and a"
+0594 | di as text "  country coded 1 is SUPPOSED to have an empty 12-month block." _n
+```

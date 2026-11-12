@@ -1,0 +1,32 @@
+{
+  "$schema": "EVIDENCE_REF_206ae48f6cae3f8701b1",
+  "title": "indicators",
+  "allOf": [
+    {
+      "$ref": "record.schema.json"
+    },
+    {
+      "properties": {
+        "record_type": {
+          "const": "indicator"
+        },
+        "reference_period_classification": {
+          "enum": [
+            "AGNOSTIC",
+            "DEPENDENT",
+            "MIXED",
+            "CONDITIONAL",
+            "UNKNOWN"
+          ]
+        }
+      },
+      "required": [
+        "formula",
+        "reference_period_classification",
+        "responsible_program",
+        "final_output_ids",
+        "construction_completeness"
+      ]
+    }
+  ]
+}

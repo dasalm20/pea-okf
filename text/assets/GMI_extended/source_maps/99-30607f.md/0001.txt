@@ -1,0 +1,964 @@
+# 04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do
+
+Sanitized source projection; applicability placeholders are not executable values. Original SHA256: 91948b3606bd7f9375af902e7d572194ecab1600888d2f1fd8ec98cd59b1c84b
+
+```stata
+0001 | *===============================================================
+0002 | * 99-gmdpatch_diagnostics.do
+0003 | *
+0004 | * Checks the locally re-harmonized survey files BEFORE they are used
+0005 | * in the GMI extended pipeline (01aa / 01ab / 01b).
+0006 | *
+0007 | * Reads the region folders only. The ONLY thing it writes is one
+0008 | * Excel workbook, to the folder set in the edit section below.
+0009 | *   Sheet "README"  -- what every code and column means
+0010 | *   Sheet per region (SSA, EAP, ...) -- the results
+0011 | *
+0012 | * Each region sheet has:
+0013 | *   1. MERGE CHECK   -- does each file line up with DLW on hhid+pid
+0014 | *   2. SUMMARY       -- one row per country-year, one column per
+0015 | *                       variable, showing what changed
+0016 | *   3. DETAIL        -- the underlying counts, one row per
+0017 | *                       country-year-variable
+0018 | *
+0019 | * HOW TO RUN
+0020 | *   do "$prog\00-Master.do"
+0021 | *   do "$prog\99-gmdpatch_diagnostics.do"
+0022 | *
+0023 | * WHAT IT TOUCHES
+0024 | *   Only the variables listed in $gmd_opt are ever replaced from the
+0025 | *   local files. welfare, weight, weight_p, cpi*, icp*, hhid, pid
+0026 | *   and age always come from DLW.
+0027 | *===============================================================
+0028 | 
+0029 | 
+0030 | *###############################################################
+0031 | *##                                                            ##
+0032 | *##                    EDIT THIS SECTION                       ##
+0033 | *##        Everything below it runs on its own.                ##
+0034 | *##                                                            ##
+0035 | *###############################################################
+0036 | 
+0037 | *----------------------------------------------------------------
+0038 | * 1. WHICH REGIONS TO CHECK
+0039 | *    Add EAP here when its files arrive, and fill in its folder
+0040 | *    in section 2. Each region gets its own sheet in the workbook.
+0041 | *----------------------------------------------------------------
+0042 | local regions   SSA EAP
+0043 | 
+0044 | *----------------------------------------------------------------
+0045 | * 2. WHERE EACH REGION'S FILES ARE
+0046 | *    One line per region. Leave blank until a region sends files.
+0047 | *
+0048 | *    SSA sends one ready-made .dta per survey.
+0049 | *    EAP sends numbered module files, so 99-build_eap_local.do
+0050 | *    assembles them first and writes one .dta per survey into
+0051 | *    $checks\EAP_data. That folder is what we point at here.
+0052 | *----------------------------------------------------------------
+0053 | local SSA_dir   "C:\Users\wb570371\OneDrive - WBG\Shortcuts\Haoyu Wu's files - toshare"
+0054 | local EAP_dir   "$checks\EAP_data"
+0055 | local MNA_dir   ""
+0056 | local LAC_dir   ""
+0057 | 
+0058 | *----------------------------------------------------------------
+0059 | * 3. HOW MANY FILES TO EXPECT PER REGION
+0060 | *    A mismatch prints a warning. Use . to skip the check.
+0061 | *----------------------------------------------------------------
+0062 | local SSA_n     18
+0063 | local EAP_n     6
+0064 | local MNA_n     .
+0065 | local LAC_n     .
+0066 | 
+0067 | *----------------------------------------------------------------
+0068 | * 4. WHERE TO SAVE THE WORKBOOK
+0069 | *    $checks is set in 00-Master.do and points at
+0070 | *    <repo>\04.Checks_Add_reharmonization_results
+0071 | *----------------------------------------------------------------
+0072 | local outdir    "$checks"
+0073 | local outfile   "`outdir'\gmdpatch_diagnostics_${rnd}.xlsx"
+0074 | 
+0075 | *    Hard fallback, used when $checks is empty because 00-Master.do
+0076 | *    has not run in this Stata session.
+0077 | local outdir_fallback "C:\Users\wb570371\Documents\PEA\GMI_extended\04.Checks_Add_reharmonization_results"
+0078 | 
+0079 | *----------------------------------------------------------------
+0080 | * 4b. WHERE THESE CHECK SCRIPTS LIVE
+0081 | *    gmdpatch_fixid.do is loaded from here. These scripts sit in a
+0082 | *    code folder next to the output, not in 01.Programs, so they
+0083 | *    travel with the checks they produce.
+0084 | *----------------------------------------------------------------
+0085 | local codedir   "`outdir_fallback'\code"
+0086 | 
+0087 | *----------------------------------------------------------------
+0088 | * 4c. START THE RAW RESULTS FROM SCRATCH?
+0089 | *    1 = wipe _qa_data first. Use this for a full run covering every
+0090 | *        region in section 1.
+0091 | *    0 = keep what is already there and add to it. Use this when you
+0092 | *        run one region at a time, e.g. EAP today and SSA tomorrow,
+0093 | *        so the first region's results are not thrown away.
+0094 | *----------------------------------------------------------------
+0095 | local wipeqa    1
+0096 | 
+0097 | *----------------------------------------------------------------
+0098 | * 5. WHEN TO FLAG A SURVEY AS "DOES NOT MERGE"
+0099 | *    Share of DLW rows that must match on hhid + pid. 0.95 = 95%.
+0100 | *----------------------------------------------------------------
+0101 | local minmatch  0.95
+0102 | 
+0103 | *----------------------------------------------------------------
+0104 | * 6. SCREEN OUTPUT WHILE IT RUNS   (1 = show, 0 = quiet)
+0105 | *    The workbook is written either way.
+0106 | *----------------------------------------------------------------
+0107 | local show_detail   1
+0108 | 
+0109 | *----------------------------------------------------------------
+0110 | * 7. LIMIT TO CERTAIN COUNTRIES   (for a quick test)
+0111 | *    Leave blank to check everything. Example: local onlycodes ISO3 ISO3
+0112 | *----------------------------------------------------------------
+0113 | local onlycodes
+0114 | 
+0115 | *----------------------------------------------------------------
+0116 | * 7b. COUNTRIES NOT IN DATALIBWEB YET
+0117 | *    There is nothing to compare these against, so they are reported
+0118 | *    as PENDING rather than counted as a failure. Their local files
+0119 | *    are still built and waiting for the day the survey lands.
+0120 | *    Remove a code from this list once DLW carries it.
+0121 | *----------------------------------------------------------------
+0122 | local pendingcodes "ISO3"
+0123 | 
+0124 | *----------------------------------------------------------------
+0125 | * 8. VALUE-CODE CROSS-TAB   (the <REG>_CODES sheet)
+0126 | *    For every variable, counts each DLW value against the local
+0127 | *    value on the SAME person. This is what catches a variable that
+0128 | *    merges perfectly but is coded on a different scale.
+0129 | *    A variable with more distinct values than catmax is skipped
+0130 | *    (it is continuous, not a code).  0 turns the sheet off.
+0131 | *----------------------------------------------------------------
+0132 | local docodes   1
+0133 | local catmax    25
+0134 | 
+0135 | *###############################################################
+0136 | *##                  END OF EDITABLE SECTION                   ##
+0137 | *###############################################################
+0138 | 
+0139 | 
+0140 | *================================================================
+0141 | * DO NOT EDIT BELOW THIS LINE
+0142 | *================================================================
+0143 | 
+0144 | clear
+0145 | capture postclose dsurv
+0146 | capture postclose dvar
+0147 | 
+0148 | *--- fall back if 00-Master.do was not run (so $checks is empty)
+0149 | if "`outdir'" == "" | "`outdir'" == "\gmdpatch_diagnostics_${rnd}.xlsx" {
+0150 |     local outdir  "`outdir_fallback'"
+0151 |     local outfile "`outdir'\gmdpatch_diagnostics_${rnd}.xlsx"
+0152 |     dis as error "  NOTE: \$checks was empty -- output path set inside this script."
+0153 | }
+0154 | cap mkdir "`outdir'"
+0155 | 
+0156 | *--- raw results go beside the workbook, so 99-qa_summary.do can
+0157 | *    rebuild the management view without pulling DLW again.
+0158 | *    Set AFTER the fallback, so it never lands at the drive root.
+0159 | local qadir "`outdir'\_qa_data"
+0160 | capture mkdir "`qadir'"
+0161 | if `wipeqa' {
+0162 |     foreach z in qa_surv qa_var qa_code {
+0163 |         capture erase "`qadir'/`z'.dta"
+0164 |     }
+0165 |     dis as text "  raw results folder: `qadir'  (started fresh)"
+0166 | }
+0167 | else {
+0168 |     dis as text "  raw results folder: `qadir'  (adding to what is there)"
+0169 |     dis as error "  wipeqa is 0: if you re-run a region already in there, it will be"
+0170 |     dis as error "  counted twice. Set wipeqa to 1 for a clean full run."
+0171 | }
+0172 | 
+0173 | *----------------------------------------------------------------
+0174 | * The variable list. $gmd_opt comes from 00-Master.do; set here too
+0175 | * so this script also runs on its own.
+0176 | *----------------------------------------------------------------
+0177 | if "$gmd_opt" == "" {
+0178 |     global gmd_opt  urban male educat4 school relationharm marital ///
+0179 |                     lstatus industrycat4 industrycat10 empstat ///
+0180 |                     lstatus_year industrycat4_year industrycat10_year empstat_year ///
+0181 |                     imp_wat_rec imp_san_rec electricity ///
+0182 |                     tv car cellphone computer fridge
+0183 |     dis as error "  NOTE: \$gmd_opt was empty -- set inside this script instead."
+0184 | }
+0185 | local ngmdopt : word count $gmd_opt
+0186 | 
+0187 | *----------------------------------------------------------------
+0188 | * Known id corrections, applied to the LOCAL file before merging.
+0189 | * A survey with a known fix is corrected here and is therefore NOT
+0190 | * flagged in the merge check. A new, unknown id problem still is.
+0191 | *
+0192 | * Each fix is guarded by an assert on the expected id shape, so a
+0193 | * corrected re-export from the region is NOT silently recoded.
+0194 | *----------------------------------------------------------------
+0195 | *================================================================
+0196 | * _idfinger -- a single number that changes if hhid or pid changes
+0197 | *   Used only to report id_fixed. It has to cope with ids that are
+0198 | *   strings in one survey and numbers in the next, so it never calls
+0199 | *   string() on something that may already be a string.
+0200 | *================================================================
+0201 | capture program drop _idfinger
+0202 | program define _idfinger, rclass
+0203 |     tempvar a b f
+0204 |     capture confirm string variable hhid
+0205 |     if _rc == 0  qui gen double `a' = length(hhid) + cond(missing(real(hhid)), 0, real(hhid))
+0206 |     else         qui gen double `a' = hhid
+0207 |     capture confirm string variable pid
+0208 |     if _rc == 0  qui gen double `b' = length(pid)  + cond(missing(real(pid)),  0, real(pid))
+0209 |     else         qui gen double `b' = pid
+0210 |     qui gen double `f' = sum(`a' + `b')
+0211 |     return scalar fp = `f'[_N]
+0212 | end
+0213 | 
+0214 | *================================================================
+0215 | * THE ID-FIX PROGRAM
+0216 | *   _gmdpatch_fixid lives in gmdpatch_fixid.do and should be loaded
+0217 | *   by 00-Master.do.  If it is not loaded, load it from $prog here.
+0218 | *
+0219 | *   It takes FIVE arguments now: reg code year survname side.
+0220 | *   An older four-argument copy left over in memory would silently
+0221 | *   ignore the side and break ISO3, so the version is checked and the
+0222 | *   script stops rather than guessing.
+0223 | *================================================================
+0224 | capture program list _gmdpatch_fixid
+0225 | if _rc {
+0226 |     *--- try the code folder beside the checks first, then 01.Programs
+0227 |     local fixidfound 0
+0228 |     capture run "`codedir'/gmdpatch_fixid.do"
+0229 |     if _rc == 0 {
+0230 |         local fixidfound 1
+0231 |         dis as text "  _gmdpatch_fixid loaded from `codedir'"
+0232 |     }
+0233 |     if `fixidfound' == 0 {
+0234 |         capture run "$prog/gmdpatch_fixid.do"
+0235 |         if _rc == 0 {
+0236 |             local fixidfound 1
+0237 |             dis as text "  _gmdpatch_fixid loaded from $prog"
+0238 |         }
+0239 |     }
+0240 |     if `fixidfound' == 0 {
+0241 |         dis as error "  gmdpatch_fixid.do was not found. Looked in:"
+0242 |         dis as error "    `codedir'"
+0243 |         dis as error "    $prog"
+0244 |         dis as error "  Save it in one of those, as a .do file, then run this again."
+0245 |         exit 601
+0246 |     }
+0247 | }
+0248 | 
+0249 | *--- is the loaded copy the one that takes the side argument?
+0250 | *    An older four-argument copy would ACCEPT the 5th argument and
+0251 | *    silently ignore it, so testing the call proves nothing. The
+0252 | *    program stamps a version global instead.
+0253 | if "$gmdpatch_fixid_version" != "2" {
+0254 |     capture run "$prog/gmdpatch_fixid.do"
+0255 |     if "$gmdpatch_fixid_version" != "2" {
+0256 |         dis as error "  The _gmdpatch_fixid in memory is an old copy: it does not use the side argument."
+0257 |         dis as error "  ISO3 0000 would be joined on the wrong key. Run gmdpatch_fixid.do, then try again."
+0258 |         exit 198
+0259 |     }
+0260 | }
+0261 | 
+0262 | dis as text _n(2) _dup(92) "="
+0263 | dis as text "  LOCAL HARMONIZATION DIAGNOSTICS"
+0264 | dis as text "  Round: $rnd" _col(42) "Run: `c(current_date)' `c(current_time)'"
+0265 | dis as text _dup(92) "="
+0266 | dis as text "  Regions:   `regions'"
+0267 | dis as text "  Variables: `ngmdopt'"
+0268 | dis as text "  Workbook:  `outfile'"
+0269 | if "`onlycodes'" != "" ///
+0270 |     dis as error "  LIMITED RUN -- only these countries: `onlycodes'"
+0271 | 
+0272 | 
+0273 | *================================================================
+0274 | * README SHEET
+0275 | *   Written first, with `replace`, so it creates the workbook and
+0276 | *   is the first tab people see. Every region sheet after it uses
+0277 | *   `modify`.
+0278 | *================================================================
+0279 | putexcel set "`outfile'", sheet("README") replace
+0280 | 
+0281 | putexcel A1 = "HOW TO READ THIS WORKBOOK", bold
+0282 | putexcel A2 = "Local harmonization diagnostics -- round $rnd -- run `c(current_date)' `c(current_time)'"
+0283 | 
+0284 | putexcel A4 = "WHAT THIS IS", bold
+0285 | putexcel A5 = "Some regions re-harmonize survey files and send them to us before the files reach DataLibWeb (DLW)."
+0286 | putexcel A6 = "Before using them, this check compares each local file against the same survey pulled from DLW,"
+0287 | putexcel A7 = "person by person, and reports every difference. One sheet per region (SSA, EAP, ...)."
+0288 | 
+0289 | putexcel A9 = "WHAT GETS REPLACED", bold
+0290 | putexcel A10 = "ONLY these variables are taken from the local files:"
+0291 | putexcel A11 = "$gmd_opt"
+0292 | putexcel A12 = "Everything else -- welfare, weight, weight_p, cpi, icp, hhid, pid, age -- always comes from DLW."
+0293 | 
+0294 | putexcel A14 = "HOW THE TWO FILES ARE JOINED", bold
+0295 | putexcel A15 = "Each person is matched on hhid + pid. Three things can happen to a row:"
+0296 | putexcel A16 = "  matched            the person is in both files. The local file's values win."
+0297 | putexcel A17 = "  DLW only           the person is in DLW but not in the local file. The variables above come back BLANK."
+0298 | putexcel A18 = "  local file only    the person is in the local file but not in DLW. The row is DROPPED."
+0299 | 
+0300 | putexcel A20 = "SECTION 2 -- THE SUMMARY GRID: WHAT EACH CODE MEANS", bold
+0301 | putexcel A21 = "One row per country-year, one column per variable. Each cell summarises that variable"
+0302 | putexcel A22 = "in that survey, counted over the matched people only."
+0303 | 
+0304 | putexcel A24 = "Code"              , bold
+0305 | putexcel B24 = "Meaning"           , bold
+0306 | putexcel C24 = "Example"           , bold
+0307 | 
+0308 | putexcel A25 = "no change"
+0309 | putexcel B25 = "The local file carries this variable and every matched person has exactly the same value as in DLW."
+0310 | putexcel C25 = "no change"
+0311 | 
+0312 | putexcel A26 = "BLANKED"
+0313 | putexcel B26 = "The variable had values in DLW and is now blank for EVERY one of those people. The whole series is gone."
+0314 | putexcel C26 = "BLANKED"
+0315 | 
+0316 | putexcel A27 = "-n"
+0317 | putexcel B27 = "n people LOST a value: they had one in DLW, they have none in the local file. (Some, not all -- all of them would read BLANKED.)"
+0318 | putexcel C27 = "-[ESTIMATE]  means [ESTIMATE] people lost their value"
+0319 | 
+0320 | putexcel A28 = "+n"
+0321 | putexcel B28 = "n people GAINED a value: blank in DLW, filled in the local file."
+0322 | putexcel C28 = "+[ESTIMATE]  means [ESTIMATE] people gained a value"
+0323 | 
+0324 | putexcel A29 = "NEW +n"
+0325 | putexcel B29 = "The variable was COMPLETELY empty in DLW for this survey and the local file fills it for n people. A brand new series."
+0326 | putexcel C29 = "NEW +45060"
+0327 | 
+0328 | putexcel A30 = "~n"
+0329 | putexcel B30 = "n people have a value in BOTH files, but the value is DIFFERENT. The category was re-coded."
+0330 | putexcel C30 = "~[ESTIMATE]  means [ESTIMATE] people were re-coded"
+0331 | 
+0332 | putexcel A31 = "not in local file"
+0333 | putexcel B31 = "The local file does not contain this variable at all, so DLW's values are kept unchanged."
+0334 | putexcel C31 = "not in local file"
+0335 | 
+0336 | putexcel A33 = "Codes COMBINE in one cell when more than one thing happened to the same variable."
+0337 | putexcel A34 = "Example:  -878  +913  ~1257"
+0338 | putexcel A35 = "          [ESTIMATE] people lost a value, [ESTIMATE] gained one, and [ESTIMATE] kept a value that changed."
+0339 | 
+0340 | putexcel A37 = "SECTION 1 -- MERGE CHECK: WHAT EACH COLUMN MEANS", bold
+0341 | putexcel A38 = "Column"  , bold
+0342 | putexcel B38 = "Meaning" , bold
+0343 | 
+0344 | putexcel A39 = "country, year, survey"
+0345 | putexcel B39 = "The survey, read from the local file's name."
+0346 | putexcel A40 = "dlw_obs"
+0347 | putexcel B40 = "Number of people in the DLW file."
+0348 | putexcel A41 = "local_obs"
+0349 | putexcel B41 = "Number of people in the local file."
+0350 | putexcel A42 = "matched"
+0351 | putexcel B42 = "People found in both files, on hhid + pid."
+0352 | putexcel A43 = "dlw_only"
+0353 | putexcel B43 = "People in DLW that the local file does not cover. Their replaced variables come back blank."
+0354 | putexcel A44 = "local_only"
+0355 | putexcel B44 = "People in the local file that are not in DLW. These rows are dropped."
+0356 | putexcel A45 = "match_rate"
+0357 | putexcel B45 = "matched / (matched + dlw_only). 1.000 is a perfect join. Anything under 0.95 is flagged."
+0358 | putexcel A46 = "id_fixed"
+0359 | putexcel B46 = "1 = a KNOWN id correction was applied to the local file before joining (see the list at the bottom of this sheet)."
+0360 | putexcel A47 = "vars_carried"
+0361 | putexcel B47 = "How many of the replaceable variables the local file actually contains."
+0362 | putexcel A48 = "vars_missing_from_local"
+0363 | putexcel B48 = "Variables that exist in DLW but not in the local file. These keep their DLW values, so an intended correction would NOT land. Should be 0."
+0364 | putexcel A49 = "flag"
+0365 | putexcel B49 = "OK / PENDING / CHECK IDS / BAD IDS / DLW FAILED."
+0366 | putexcel B50 = "PENDING means DataLibWeb does not carry that survey for this round yet (ISO3 0000 and 0000 CSES). That is not a failure: the local file is built and waiting. Anything else other than OK means do not patch that survey yet."
+0367 | 
+0368 | putexcel A51 = "SECTION 3 -- DETAIL: WHAT EACH COLUMN MEANS", bold
+0369 | putexcel A52 = "Column"  , bold
+0370 | putexcel B52 = "Meaning" , bold
+0371 | 
+0372 | putexcel A53 = "dlw_filled"
+0373 | putexcel B53 = "How many matched people had a value for this variable in DLW."
+0374 | putexcel A54 = "new_filled"
+0375 | putexcel B54 = "How many matched people have a value for it in the local file."
+0376 | putexcel A55 = "lost"
+0377 | putexcel B55 = "Had a value in DLW, blank in the local file."
+0378 | putexcel A56 = "gained"
+0379 | putexcel B56 = "Blank in DLW, has a value in the local file."
+0380 | putexcel A57 = "changed"
+0381 | putexcel B57 = "Has a value in both, but the two values differ."
+0382 | putexcel A58 = "lost_pct"
+0383 | putexcel B58 = "lost as a share of dlw_filled. 100 means the whole series was blanked."
+0384 | putexcel A59 = "status"
+0385 | putexcel B59 = "One-word version of the summary code: no change / changed only / gained / lost / lost+gained / BLANKED / NEW SERIES."
+0386 | 
+0387 | putexcel A61 = "WHAT TO LOOK AT FIRST", bold
+0388 | putexcel A62 = "1.  Section 1, the flag column. Any survey not marked OK should not be patched until the ids are sorted out."
+0389 | putexcel A63 = "2.  Section 1, vars_missing_from_local. Should be 0. If not, those variables keep their old DLW values."
+0390 | putexcel A64 = "3.  Section 2, any BLANKED cell. The whole series disappears for that country-year -- confirm it was meant to."
+0391 | putexcel A65 = "4.  Section 2, any large ~n. Re-coded categories move published numbers just as much as blanked ones do."
+0392 | 
+0393 | putexcel A67 = "THE <REGION>_CODES SHEETS", bold
+0394 | putexcel A68 = "One extra sheet per region, e.g. EAP_CODES. Each row is one (DLW value, local value) pair,"
+0395 | putexcel A69 = "counted on the SAME people. It answers a question the summary grid cannot: are the two files"
+0396 | putexcel A70 = "using the same code scale? A variable can merge perfectly and still be wrong if the local file"
+0397 | putexcel A71 = "numbers its categories differently."
+0398 | putexcel A72 = "same value    the person has the same code in both. This is what most rows should say."
+0399 | putexcel A73 = "both missing  missing in both."
+0400 | putexcel A74 = "BLANKED       had a value in DLW, missing in the local file. Expected where the re-harmonization"
+0401 | putexcel A75 = "              found the question was never asked."
+0402 | putexcel A76 = "newly filled  missing in DLW, now has a value."
+0403 | putexcel A77 = "RECODED       has a value in both and they disagree. A handful is a data revision. A solid block,"
+0404 | putexcel A78 = "              where DLW 1 maps to local 2 for everyone, means the SCALES DIFFER -- do not patch"
+0405 | putexcel A79 = "              that variable until it is mapped."
+0406 | 
+0407 | putexcel A81 = "WHERE EACH REGION'S FILES COME FROM", bold
+0408 | putexcel A82 = "SSA: one ready-made .dta per survey, read straight from the region's shared folder."
+0409 | putexcel A83 = "EAP: the region ships numbered ECAPOV module files (_1 household, _2 person, _5 household assets,"
+0410 | putexcel A84 = "     _9 derived). 99-build_eap_local.do merges them into one person-level file per survey, renames"
+0411 | putexcel A85 = "     the ECAPOV names to GMD names and writes them to 04.Checks...\EAP_data, which is what this"
+0412 | putexcel A86 = "     script then reads. Run that build script first whenever EAP sends new files."
+0413 | 
+0414 | putexcel A88 = "KNOWN ID CORRECTIONS APPLIED", bold
+0415 | putexcel A89 = "SSA / ISO3 0000: the file was exported with hhid built as hh*1000 + region, while GMD builds it as"
+0416 | putexcel A90 = "region*10000 + hh -- the same two parts in reverse order. The id is rebuilt before joining, which takes"
+0417 | putexcel A91 = "the match from [ESTIMATE] of [ESTIMATE] rows to all [ESTIMATE]. Remove the fix once SSA re-exports with the standard id."
+0418 | putexcel A92 = "The fix checks the id's shape first, so a corrected file will NOT be recoded by mistake."
+0419 | putexcel A93 = "EAP: no id corrections needed. All six surveys joined their own modules at 100 percent."
+0420 | 
+0421 | dis as result _n "  README sheet written."
+0422 | 
+0423 | 
+0424 | *================================================================
+0425 | * ONE PASS PER REGION
+0426 | *================================================================
+0427 | foreach reg of local regions {
+0428 | 
+0429 |     local dir "``reg'_dir'"
+0430 |     if "`dir'" == "" {
+0431 |         dis as error _n "  [ `reg' ] no folder set in the edit section -- skipped."
+0432 |         continue
+0433 |     }
+0434 | 
+0435 |     local pf : dir "`dir'" files "*.dta"
+0436 |     local nf : word count `pf'
+0437 |     local nexp = ``reg'_n'
+0438 | 
+0439 |     dis as result _n(2) "##############################################################"
+0440 |     dis as result "  REGION `reg' -- `nf' file(s)"
+0441 |     dis as result "  `dir'"
+0442 |     dis as result "##############################################################"
+0443 | 
+0444 |     if `nexp' != . {
+0445 |         if `nf' == `nexp' dis as result "  file count as expected (`nexp')."
+0446 |         else              dis as error  "  [ COUNT ] expected `nexp' file(s), found `nf' -- check with the region."
+0447 |     }
+0448 | 
+0449 |     *--- collectors, one set per region
+0450 |     tempfile survres varres coderes
+0451 |     capture postclose dcode
+0452 |     postfile dcode str3 country int year str24 variable ///
+0453 |         double d_value double p_value long nrows str80 d_label ///
+0454 |         using `coderes', replace
+0455 |     postfile dsurv str3 country int year str20 survey str72 filename ///
+0456 |         byte dlw_ok byte id_ok long dlw_obs long local_obs ///
+0457 |         long matched long dlw_only long local_only double match_rate ///
+0458 |         byte id_fixed int vars_carried int vars_missing_from_local ///
+0459 |         using `survres', replace
+0460 | 
+0461 |     postfile dvar str3 country int year str24 variable byte carried ///
+0462 |         long dlw_filled long new_filled long lost long gained long changed ///
+0463 |         double lost_pct ///
+0464 |         using `varres', replace
+0465 | 
+0466 |     foreach f of local pf {
+0467 | 
+0468 |         *--- CODE_YEAR_SURVNAME from the filename (files are lowercase)
+0469 |         local base  = subinstr("`f'", ".dta", "", .)
+0470 |         local parts = subinstr("`base'", "_", " ", .)
+0471 |         local code     = upper("`: word 1 of `parts''")
+0472 |         local yeartxt :        word 2 of `parts'
+0473 |         local survname = upper("`: word 3 of `parts''")
+0474 | 
+0475 |         cap confirm integer number `yeartxt'
+0476 |         if _rc {
+0477 |             dis as error "  [ NAME ] `f' -- year field reads |`yeartxt'|, skipped."
+0478 |             continue
+0479 |         }
+0480 |         local year = `yeartxt'
+0481 | 
+0482 |         if "`onlycodes'" != "" {
+0483 |             local keepit : list posof "`code'" in onlycodes
+0484 |             if `keepit'==0 continue
+0485 |         }
+0486 | 
+0487 |         *--- known not to be in DLW yet: report and move on, do not
+0488 |         *    waste a pull or count it as a failure
+0489 |         local ispending : list posof "`code'" in pendingcodes
+0490 |         if `ispending' {
+0491 |             dis as text _n "--------------------------------------------------------------"
+0492 |             dis as result "  `reg'  `code' `year' `survname'"
+0493 |             dis as text "  PENDING -- `code' is not in DataLibWeb for $rnd yet, nothing to compare."
+0494 |             dis as text "  The local file is built and waiting. Remove `code' from pendingcodes"
+0495 |             dis as text "  in section 7b once the survey lands in the repo."
+0496 |             post dsurv ("`code'") (`year') ("`survname'") ("`f'") ///
+0497 |                 (9) (1) (.) (.) (.) (.) (.) (.) (0) (.) (.)
+0498 |             continue
+0499 |         }
+0500 | 
+0501 |         dis as text _n "--------------------------------------------------------------"
+0502 |         dis as result "  `reg'  `code' `year' `survname'"
+0503 | 
+0504 |         *--- load the local file
+0505 |         use "`dir'/`f'", clear
+0506 | 
+0507 |         *--- known id correction, LOCAL side. Deliberately not wrapped in
+0508 |         *    cap: if the fix program fails, stop rather than join on raw ids.
+0509 |         *    hhid can be string or numeric, so fingerprint it as text.
+0510 |         *    The fingerprint covers hhid ISO3 pid, because some fixes
+0511 |         *    (ISO3 0000) only touch pid. _idfinger handles string and
+0512 |         *    numeric ids: string(x) on a variable that is ALREADY a
+0513 |         *    string is a type mismatch, r(109).
+0514 |         _idfinger
+0515 |         local idbefore = r(fp)
+0516 | 
+0517 |         _gmdpatch_fixid "`reg'" "`code'" "`year'" "`survname'" "local"
+0518 | 
+0519 |         _idfinger
+0520 |         local idfixed = (r(fp) != `idbefore')
+0521 | 
+0522 |         local pn = _N
+0523 |         local have
+0524 |         foreach v of global gmd_opt {
+0525 |             cap confirm variable `v'
+0526 |             if _rc==0 local have "`have' `v'"
+0527 |         }
+0528 |         local nvars : word count `have'
+0529 |         dis as text "  local obs: `pn'   variables carried: `nvars' of `ngmdopt'"
+0530 | 
+0531 |         *--- ids present and unique?
+0532 |         local idok = 1
+0533 |         foreach idv in hhid pid {
+0534 |             cap confirm variable `idv'
+0535 |             if _rc {
+0536 |                 dis as error "  [ ID ] local file has no `idv'"
+0537 |                 local idok = 0
+0538 |             }
+0539 |         }
+0540 |         if `idok'==1 {
+0541 |             cap isid hhid pid
+0542 |             if _rc {
+0543 |                 dis as error "  [ ID ] hhid pid do not uniquely identify rows in the local file"
+0544 |                 local idok = 0
+0545 |             }
+0546 |         }
+0547 |         if `idok'==0 {
+0548 |             post dsurv ("`code'") (`year') ("`survname'") ("`f'") ///
+0549 |                 (0) (0) (.) (`pn') (.) (.) (.) (.) (`idfixed') (`nvars') (.)
+0550 |             continue
+0551 |         }
+0552 | 
+0553 |         keep hhid pid `have'
+0554 |         foreach v of local have {
+0555 |             rename `v' _p_`v'
+0556 |         }
+0557 |         tempfile pdata
+0558 |         save `pdata', replace
+0559 | 
+0560 |         *--- the DLW pull
+0561 |         cap dlw, country(`code') year(`year') type(gmd) surveyid(`survname') mod(ALL) files $repotxt
+0562 |         if _rc {
+0563 |             local rc = _rc
+0564 |             dis as error "  [ DLW ] pull failed (rc=`rc') -- not in the $rnd repo?"
+0565 |             post dsurv ("`code'") (`year') ("`survname'") ("`f'") ///
+0566 |                 (0) (1) (.) (`pn') (.) (.) (.) (.) (`idfixed') (`nvars') (.)
+0567 |             continue
+0568 |         }
+0569 |         local dn = _N
+0570 |         dis as text "  DLW obs:   `dn'"
+0571 | 
+0572 |         *--- known id correction, DLW side.  Only ISO3 0000 needs this:
+0573 |         *    its local file is missing the province and district prefix
+0574 |         *    that DLW carries, and that prefix cannot be rebuilt, so the
+0575 |         *    DLW key is reduced to the part both sides share.
+0576 |         _gmdpatch_fixid "`reg'" "`code'" "`year'" "`survname'" "dlw"
+0577 | 
+0578 |         local dlwidok = 1
+0579 |         foreach idv in hhid pid {
+0580 |             cap confirm variable `idv'
+0581 |             if _rc {
+0582 |                 dis as error "  [ ID ] DLW file has no `idv'"
+0583 |                 local dlwidok = 0
+0584 |             }
+0585 |         }
+0586 |         if `dlwidok'==0 {
+0587 |             post dsurv ("`code'") (`year') ("`survname'") ("`f'") ///
+0588 |                 (1) (0) (`dn') (`pn') (.) (.) (.) (.) (`idfixed') (`nvars') (.)
+0589 |             continue
+0590 |         }
+0591 | 
+0592 |         *--- variables DLW has that the local file omits: these keep
+0593 |         *    their DLW values, so an intended correction would not land
+0594 |         local stale
+0595 |         foreach v of global gmd_opt {
+0596 |             local inp : list posof "`v'" in have
+0597 |             if `inp'==0 {
+0598 |                 cap confirm variable `v'
+0599 |                 if _rc==0 local stale "`stale' `v'"
+0600 |             }
+0601 |         }
+0602 |         local nstale : word count `stale'
+0603 |         if `nstale'>0 {
+0604 |             dis as error "  [ STALE ] in DLW but not in the local file: `stale'"
+0605 |         }
+0606 | 
+0607 |         *--- join keeping all three groups
+0608 |         cap drop _m
+0609 |         merge 1:1 hhid pid using `pdata', gen(_m)
+0610 |         qui count if _m==3
+0611 |         local matched = r(N)
+0612 |         qui count if _m==1
+0613 |         local dlwonly = r(N)
+0614 |         qui count if _m==2
+0615 |         local loconly = r(N)
+0616 |         local rate = `matched'/(`matched'+`dlwonly')
+0617 | 
+0618 |         dis as text "  matched: `matched'   DLW-only: `dlwonly'   local-only: `loconly'   rate: " %5.3f `rate'
+0619 |         if `rate' < `minmatch' ///
+0620 |             dis as error "  [ MATCH ] only `=string(100*`rate',"%4.1f")'% of DLW rows matched."
+0621 | 
+0622 |         *--- per-variable comparison, matched rows only.
+0623 |         *    Every variable is posted, carried or not, so the summary
+0624 |         *    grid has a complete row.
+0625 |         if `show_detail' {
+0626 |             dis as text _n "    variable               DLW n/m    new n/m        lost      gained     changed"
+0627 |         }
+0628 |         foreach v of global gmd_opt {
+0629 | 
+0630 |             local iscarried : list posof "`v'" in have
+0631 |             if `iscarried'==0 {
+0632 |                 post dvar ("`code'") (`year') ("`v'") (0) (.) (.) (.) (.) (.) (.)
+0633 |                 continue
+0634 |             }
+0635 | 
+0636 |             cap confirm variable `v'
+0637 |             if _rc {
+0638 |                 *--- in the local file, absent from DLW entirely
+0639 |                 qui count if _m==3 & !missing(_p_`v')
+0640 |                 local gn = r(N)
+0641 |                 if `show_detail' ///
+0642 |                     dis as text "    " %-20s "`v'" "   NEW -- not in DLW at all"
+0643 |                 post dvar ("`code'") (`year') ("`v'") (1) (0) (`gn') (0) (`gn') (0) (0)
+0644 |                 continue
+0645 |             }
+0646 | 
+0647 |             qui count if _m==3 & !missing(`v')
+0648 |             local dnm = r(N)
+0649 |             qui count if _m==3 & !missing(_p_`v')
+0650 |             local pnm = r(N)
+0651 |             qui count if _m==3 & !missing(`v') & missing(_p_`v')
+0652 |             local lost = r(N)
+0653 |             qui count if _m==3 & missing(`v') & !missing(_p_`v')
+0654 |             local gain = r(N)
+0655 |             qui count if _m==3 & !missing(`v') & !missing(_p_`v') & `v'!=_p_`v'
+0656 |             local chg = r(N)
+0657 |             local lostpct = cond(`dnm'>0, 100*`lost'/`dnm', 0)
+0658 | 
+0659 |             if `show_detail' ///
+0660 |                 dis as text "    " %-20s "`v'" %10.0f `dnm' %10.0f `pnm' %12.0f `lost' %12.0f `gain' %12.0f `chg'
+0661 | 
+0662 |             post dvar ("`code'") (`year') ("`v'") (1) ///
+0663 |                 (`dnm') (`pnm') (`lost') (`gain') (`chg') (`lostpct')
+0664 |         }
+0665 | 
+0666 |         *--- VALUE-CODE CROSS-TAB
+0667 |         *    Counts every (DLW value, local value) pair on matched rows.
+0668 |         *    A perfect merge with a shifted code scale looks fine in the
+0669 |         *    summary grid but shows up here as a solid off-diagonal block.
+0670 |         *    Missing is carried through as -99 because collapse drops
+0671 |         *    groups whose by() variables are missing.
+0672 |         if `docodes' {
+0673 |             foreach v of global gmd_opt {
+0674 | 
+0675 |                 local iscarried : list posof "`v'" in have
+0676 |                 if `iscarried'==0 continue
+0677 |                 cap confirm numeric variable `v'
+0678 |                 if _rc continue
+0679 |                 cap confirm numeric variable _p_`v'
+0680 |                 if _rc continue
+0681 | 
+0682 |                 qui levelsof `v'     if _m==3, local(lv) missing
+0683 |                 qui levelsof _p_`v'  if _m==3, local(lp) missing
+0684 |                 local nl : word count `lv'
+0685 |                 local np : word count `lp'
+0686 |                 if `nl' > `catmax' | `np' > `catmax' continue
+0687 | 
+0688 |                 *--- the value label name, so the summary can print
+0689 |                 *    "No education" rather than "1"
+0690 |                 local vlname : value label `v'
+0691 | 
+0692 |                 preserve
+0693 |                     qui keep if _m==3
+0694 |                     qui gen double _dv = cond(missing(`v'),     -99, `v')
+0695 |                     qui gen double _pv = cond(missing(_p_`v'),  -99, _p_`v')
+0696 |                     keep _dv _pv
+0697 |                     qui gen long nrows = 1
+0698 |                     qui collapse (sum) nrows, by(_dv _pv)
+0699 |                     forvalues i = 1/`=_N' {
+0700 |                         local dv = _dv[`i']
+0701 |                         local dlab ""
+0702 |                         if `dv' == -99 local dlab "missing"
+0703 |                         else if "`vlname'" != "" {
+0704 |                             local dlab : label `vlname' `dv', strict
+0705 |                         }
+0706 |                         if "`dlab'" == "" local dlab = "`dv'"
+0707 |                         post dcode ("`code'") (`year') ("`v'") ///
+0708 |                             (_dv[`i']) (_pv[`i']) (nrows[`i']) ("`dlab'")
+0709 |                     }
+0710 |                 restore
+0711 |             }
+0712 |         }
+0713 | 
+0714 |         post dsurv ("`code'") (`year') ("`survname'") ("`f'") ///
+0715 |             (1) (1) (`dn') (`pn') (`matched') (`dlwonly') (`loconly') (`rate') ///
+0716 |             (`idfixed') (`nvars') (`nstale')
+0717 |     }
+0718 | 
+0719 |     postclose dsurv
+0720 |     postclose dvar
+0721 |     postclose dcode
+0722 | 
+0723 |     *============================================================
+0724 |     * SAVE THE RAW RESULTS for 99-qa_summary.do
+0725 |     *   Appended across regions, so one run of this script leaves a
+0726 |     *   complete set covering every region in `regions'.
+0727 |     *============================================================
+0728 |     *    Wrapped in capture: this is a convenience for 99-qa_summary.do,
+0729 |     *    and it must never throw away a DLW run that took an hour.
+0730 |     capture noisily {
+0731 |         foreach pair in "survres qa_surv" "varres qa_var" "coderes qa_code" {
+0732 |             local src : word 1 of `pair'
+0733 |             local dst : word 2 of `pair'
+0734 |             use ``src'', clear
+0735 |             if _N > 0 {
+0736 |                 gen str8 region = "`reg'"
+0737 |                 capture confirm file "`qadir'/`dst'.dta"
+0738 |                 if _rc == 0 append using "`qadir'/`dst'.dta"
+0739 |                 qui save "`qadir'/`dst'.dta", replace
+0740 |             }
+0741 |         }
+0742 |     }
+0743 |     if _rc  dis as error "  [ `reg' ] could not save the raw results (rc=" _rc "). Sheets still written."
+0744 |     else    dis as text  "  [ `reg' ] raw results saved to `qadir'"
+0745 | 
+0746 | 
+0747 |     *============================================================
+0748 |     * BUILD THE SHEET FOR THIS REGION
+0749 |     *============================================================
+0750 | 
+0751 |     *--- BLOCK 1: merge check
+0752 |     use `survres', clear
+0753 |     if _N==0 {
+0754 |         dis as error "  [ `reg' ] nothing processed -- no sheet written."
+0755 |         continue
+0756 |     }
+0757 |     format match_rate %6.3f
+0758 |     gen str12 flag = "OK"
+0759 |     replace flag = "CHECK IDS"  if match_rate < `minmatch' & !missing(match_rate)
+0760 |     replace flag = "DLW FAILED" if dlw_ok==0
+0761 |     replace flag = "BAD IDS"    if id_ok==0
+0762 |     replace flag = "PENDING"    if dlw_ok==9
+0763 |     order country year survey dlw_obs local_obs matched dlw_only local_only ///
+0764 |           match_rate id_fixed vars_carried vars_missing_from_local flag filename
+0765 |     sort country year
+0766 |     local n_merge = _N
+0767 |     * PENDING is not a failure, it is a survey DLW does not carry yet
+0768 |     qui count if flag != "OK" & flag != "PENDING"
+0769 |     local nflag = r(N)
+0770 |     qui count if flag == "PENDING"
+0771 |     local npend = r(N)
+0772 |     tempfile blk_merge
+0773 |     save `blk_merge', replace
+0774 | 
+0775 |     *--- BLOCK 2: summary grid, country-year rows x variable columns
+0776 |     use `varres', clear
+0777 |     gen str40 cell = ""
+0778 |     replace cell = "not in local file" if carried==0
+0779 |     replace cell = "no change" if carried==1 & lost==0 & gained==0 & changed==0
+0780 | 
+0781 |     *    compact code: BLANKED / NEW +n / -n / +n / ~n
+0782 |     gen str40 _bit = ""
+0783 |     replace _bit = "BLANKED"                  if carried==1 & lost>0 & lost==dlw_filled & dlw_filled>0
+0784 |     replace _bit = "-" + string(lost)         if carried==1 & lost>0 & _bit==""
+0785 |     replace cell = _bit                       if carried==1 & _bit!=""
+0786 | 
+0787 |     replace _bit = ""
+0788 |     replace _bit = "NEW +" + string(gained)   if carried==1 & gained>0 & dlw_filled==0
+0789 |     replace _bit = "+" + string(gained)       if carried==1 & gained>0 & dlw_filled>0
+0790 |     replace cell = cond(inlist(cell,"","no change"), _bit, cell + "  " + _bit) ///
+0791 |                                               if carried==1 & _bit!=""
+0792 | 
+0793 |     replace _bit = ""
+0794 |     replace _bit = "~" + string(changed)      if carried==1 & changed>0
+0795 |     replace cell = cond(inlist(cell,"","no change"), _bit, cell + "  " + _bit) ///
+0796 |                                               if carried==1 & _bit!=""
+0797 |     drop _bit
+0798 | 
+0799 |     keep country year variable cell
+0800 |     reshape wide cell, i(country year) j(variable) string
+0801 |     foreach v of global gmd_opt {
+0802 |         cap rename cell`v' `v'
+0803 |     }
+0804 |     order country year $gmd_opt
+0805 |     sort country year
+0806 |     local n_summ = _N
+0807 |     tempfile blk_summ
+0808 |     save `blk_summ', replace
+0809 | 
+0810 |     *--- BLOCK 3: detail, one row per country-year-variable
+0811 |     use `varres', clear
+0812 |     keep if carried==1
+0813 |     gen str12 status = "no change"
+0814 |     replace status = "changed only"  if changed>0 & lost==0 & gained==0
+0815 |     replace status = "gained"        if gained>0 & lost==0
+0816 |     replace status = "lost"          if lost>0 & gained==0
+0817 |     replace status = "lost+gained"   if lost>0 & gained>0
+0818 |     replace status = "BLANKED"       if lost>0 & lost==dlw_filled & dlw_filled>0
+0819 |     replace status = "NEW SERIES"    if dlw_filled==0 & gained>0
+0820 |     format lost_pct %6.1f
+0821 |     order country year variable dlw_filled new_filled lost gained changed lost_pct status
+0822 |     gsort country year -lost -gained -changed
+0823 |     local n_det = _N
+0824 |     tempfile blk_det
+0825 |     save `blk_det', replace
+0826 | 
+0827 |     *============================================================
+0828 |     * WRITE THE SHEET
+0829 |     *   row map (1-based):
+0830 |     *     1-4   titles
+0831 |     *     5     "1. MERGE CHECK"
+0832 |     *     6     merge header, data 7 .. 6+n_merge
+0833 |     *     +2    "2. SUMMARY", header, data
+0834 |     *     +2    "3. DETAIL",  header, data
+0835 |     *============================================================
+0836 |     local r_merge_h  = 5
+0837 |     local r_merge_t  = 6
+0838 |     local r_summ_h   = `r_merge_t' + `n_merge' + 2
+0839 |     local r_summ_t   = `r_summ_h' + 1
+0840 |     local r_det_h    = `r_summ_t' + `n_summ' + 2
+0841 |     local r_det_t    = `r_det_h' + 1
+0842 | 
+0843 |     use `blk_merge', clear
+0844 |     export excel using "`outfile'", sheet("`reg'", modify) cell(A`r_merge_t') firstrow(variables)
+0845 | 
+0846 |     use `blk_summ', clear
+0847 |     export excel using "`outfile'", sheet("`reg'", modify) cell(A`r_summ_t') firstrow(variables)
+0848 | 
+0849 |     use `blk_det', clear
+0850 |     export excel using "`outfile'", sheet("`reg'", modify) cell(A`r_det_t') firstrow(variables)
+0851 | 
+0852 |     *--- titles and section headers
+0853 |     putexcel set "`outfile'", sheet("`reg'") modify
+0854 |     putexcel A1 = "LOCAL HARMONIZATION DIAGNOSTICS -- `reg'", bold
+0855 |     putexcel A2 = "Round $rnd    Run `c(current_date)' `c(current_time)'"
+0856 |     putexcel A3 = "See the README sheet for what every code and column means."
+0857 |     putexcel A4 = "Variables replaced from the local files: $gmd_opt"
+0858 | 
+0859 |     putexcel A`r_merge_h' = "1. MERGE CHECK -- does each local file line up with DLW on hhid + pid", bold
+0860 |     local r_note = `r_merge_t' + `n_merge' + 1
+0861 |     local pendtxt ""
+0862 |     if `npend' > 0 local pendtxt " `npend' marked PENDING are not in DataLibWeb yet and are not a problem."
+0863 |     if `nflag'==0 ///
+0864 |         putexcel A`r_note' = "All `n_merge' survey(s) join cleanly. id_fixed=1 means a known id correction was applied first (see README).`pendtxt'"
+0865 |     else ///
+0866 |         putexcel A`r_note' = "`nflag' of `n_merge' survey(s) flagged -- see the flag column. Do not patch those until resolved.`pendtxt'"
+0867 | 
+0868 |     putexcel A`r_summ_h' = "2. SUMMARY -- one row per country-year, one column per variable", bold
+0869 |     local r_key = `r_summ_t' + `n_summ' + 1
+0870 |     putexcel A`r_key' = "Key:  no change  |  BLANKED = had values in DLW, now blank for everyone  |  NEW +n = was empty in DLW, now filled for n people  |  -n = n people lost a value  |  +n = n people gained one  |  ~n = n people re-coded  |  codes combine, e.g. -878  +913  ~1257"
+0871 | 
+0872 |     putexcel A`r_det_h' = "3. DETAIL -- the counts behind the summary, matched people only", bold
+0873 |     local r_det_note = `r_det_t' + `n_det' + 1
+0874 |     putexcel A`r_det_note' = "dlw_filled = had a value in DLW.  new_filled = has one in the local file.  lost_pct = lost as a share of dlw_filled."
+0875 | 
+0876 |     *============================================================
+0877 |     * SHEET <REG>_CODES -- value coding, DLW vs local
+0878 |     *============================================================
+0879 |     *    The whole block is wrapped in capture noisily.  A DLW run takes
+0880 |     *    hours, so a problem writing one extra sheet must never throw away
+0881 |     *    the work: the error is reported and the script carries on.
+0882 |     if `docodes' {
+0883 |         local coderc = 0
+0884 |         capture noisily {
+0885 | 
+0886 |             use `coderes', clear
+0887 |             local npairs0 = _N
+0888 |         }
+0889 |         local coderc = _rc
+0890 |         if `coderc'==0 & `npairs0'==0 {
+0891 |             dis as text "  [ `reg' ] no value pairs collected, CODES sheet skipped."
+0892 |         }
+0893 |         if `coderc'==0 & `npairs0'>0 {
+0894 |         capture noisily {
+0895 | 
+0896 |             gen str12 dlw_value   = cond(d_value==-99, "missing", string(d_value, "%6.0f"))
+0897 |             gen str12 local_value = cond(p_value==-99, "missing", string(p_value, "%6.0f"))
+0898 | 
+0899 |             gen str14 verdict = "same value"
+0900 |             qui replace verdict = "both missing" if d_value==-99 & p_value==-99
+0901 |             qui replace verdict = "BLANKED"      if d_value!=-99 & p_value==-99
+0902 |             qui replace verdict = "newly filled" if d_value==-99 & p_value!=-99
+0903 |             qui replace verdict = "RECODED"      if d_value!=-99 & p_value!=-99 & d_value!=p_value
+0904 | 
+0905 |             qui count if verdict=="RECODED"
+0906 |             local nrec = r(N)
+0907 | 
+0908 |             keep  country year variable dlw_value local_value nrows verdict
+0909 |             order country year variable dlw_value local_value nrows verdict
+0910 | 
+0911 |             * biggest pair first within each variable.  Plain sort on a
+0912 |             * negated copy, so gsort is not in the way.
+0913 |             qui gen double _neg = -nrows
+0914 |             sort country year variable _neg
+0915 |             drop _neg
+0916 | 
+0917 |             label var country     "country"
+0918 |             label var year        "year"
+0919 |             label var variable    "GMD variable"
+0920 |             label var dlw_value   "value in DLW"
+0921 |             label var local_value "value in the local file"
+0922 |             label var nrows       "people with that pair"
+0923 |             label var verdict     "what happened"
+0924 | 
+0925 |             local npairs = _N
+0926 | 
+0927 |             export excel using "`outfile'", sheet("`reg'_CODES", modify) firstrow(variables)
+0928 | 
+0929 |             *--- the legend goes in column I, clear of the seven data columns
+0930 |             putexcel set "`outfile'", sheet("`reg'_CODES") modify
+0931 |             putexcel I1 = "HOW TO READ THIS SHEET", bold
+0932 |             putexcel I2 = "Each row is one pair of values, the DLW value and the local value, counted on the SAME people."
+0933 |             putexcel I3 = "A clean rename shows only same value, both missing and BLANKED rows."
+0934 |             putexcel I4 = "RECODED means the two files disagree on a person who has a value in both."
+0935 |             putexcel I5 = "A few RECODED rows is a real data revision."
+0936 |             putexcel I6 = "A solid block of them, where DLW 1 became local 2 for everyone, means the CODE SCALES DIFFER."
+0937 |             putexcel I7 = "Do not patch a variable in that state until the scales are mapped."
+0938 |             putexcel I8 = "The word missing covers . and every extended missing value."
+0939 | 
+0940 |             dis as result "  [ `reg' ] CODES sheet written: `npairs' value pairs, `nrec' RECODED."
+0941 |         }
+0942 |         local coderc = _rc
+0943 |         }
+0944 |         if `coderc' {
+0945 |             dis as error "  [ `reg' ] CODES sheet FAILED (rc=`coderc')."
+0946 |             dis as error "  [ `reg' ] The failing command is printed just above. Everything else was written."
+0947 |         }
+0948 |     }
+0949 | 
+0950 |     dis as result _n "  [ `reg' ] sheet written: `n_merge' survey(s), `n_det' variable rows."
+0951 |     if `nflag'>0 ///
+0952 |         dis as error "  [ `reg' ] `nflag' survey(s) flagged in the merge check."
+0953 | }
+0954 | 
+0955 | dis as text _n(2) _dup(92) "="
+0956 | dis as result "  Workbook saved: `outfile'"
+0957 | dis as text "  Start with the README sheet."
+0958 | dis as text _dup(92) "="
+```

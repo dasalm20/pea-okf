@@ -1,0 +1,121 @@
+# 01.Programs/00c-fetch server data.do
+
+Sanitized source projection; applicability placeholders are not executable values. Original SHA256: 11d35af90bb0cefd223f224f363a3af9a6178422f7a6d847e9dbb78db12bcced
+
+```stata
+0001 | *===============================================================
+0002 | * 00c-Fetch_server_data.do
+0003 | * Copies raw network-server files into 02.Input\FromServers\ (byte-for-
+0004 | * byte copy -- originals are never opened, modified, or resaved).
+0005 | *
+0006 | * Run 00-Master.do first.
+0007 | *
+0008 | * Set forcefetch = 1 below to re-copy even if a local copy already
+0009 | * exists (e.g. if the server file has since been updated).
+0010 | *===============================================================
+0011 | global forcefetch 0   // 1 = ignore local copy, re-fetch everything
+0012 | 
+0013 | *--- helper: retry a file copy up to 4x with backoff, error out on failure
+0014 | cap program drop _fetchcopy
+0015 | program define _fetchcopy
+0016 |     args label src dst
+0017 |     local try 1
+0018 |     local ok  0
+0019 |     while `try' <= 4 & `ok' == 0 {
+0020 |         cap copy "`src'" "`dst'", replace
+0021 |         if _rc == 0 local ok 1
+0022 |         else {
+0023 |             local rc = _rc
+0024 |             if `try' < 4 sleep `=3000*`try''
+0025 |             local try = `try' + 1
+0026 |         }
+0027 |     }
+0028 |     if `ok' == 0 {
+0029 |         dis as error "FAILED: `label' (rc=`rc') after 4 tries. Check the server path/permissions."
+0030 |         exit `rc'
+0031 |     }
+0032 | end
+0033 | 
+0034 | *--- helper: check-cache-then-copy for one file, sets `status_<tag>' in caller
+0035 | cap program drop _fetchone
+0036 | program define _fetchone
+0037 |     args tag label src dst
+0038 |     local needfetch 1
+0039 |     if $forcefetch == 0 {
+0040 |         cap confirm file "`dst'"
+0041 |         if _rc == 0 local needfetch 0
+0042 |     }
+0043 |     if `needfetch' == 0 {
+0044 |         dis as text "[`tag'] `label' already in FromServers -- skipping."
+0045 |         c_local status`tag' "CACHED"
+0046 |     }
+0047 |     else {
+0048 |         dis as result "[`tag'] Copying `label' ..."
+0049 |         _fetchcopy "`tag': `label'" "`src'" "`dst'"
+0050 |         dis as result "[`tag'] `label' copied."
+0051 |         c_local status`tag' "COPIED"
+0052 |     }
+0053 | end
+0054 | 
+0055 | 
+0056 | *================================================================
+0057 | * SECTION A -- repo_${rnd}all.dta        (survey list: 01aa/01ab/01b/01c)
+0058 | * SECTION B -- GMI_SPspell_all.dta       (spell pairs: 01b/01c)
+0059 | * SECTION C -- global_ex.dta, current    (03-MPO_to_PEA.do)
+0060 | * SECTION D -- Observed poverty 2021PPP.dta, current   (03-MPO_to_PEA.do)
+0061 | * SECTION E -- global_ex.dta, previous   (03-MPO_to_PEA.do)
+0062 | * SECTION F -- Observed poverty 2021PPP.dta, previous  (03-MPO_to_PEA.do)
+0063 | *================================================================
+0064 | _fetchone A "repo_${rnd}all.dta" ///
+0065 |     "$reposource\repo_${rnd}all.dta" "$fromservers\repo_${rnd}all.dta"
+0066 | 
+0067 | _fetchone B "GMI_SPspell_all.dta" ///
+0068 |     "$gmispell" "$fromservers\GMI_SPspell_all.dta"
+0069 | 
+0070 | _fetchone C "global_ex.dta ($rnd)" ///
+0071 |     "$mpopath_cur\03.output\MPO\01.data\To MFM\global_ex.dta" "$fromservers\global_ex_${rnd}.dta"
+0072 | 
+0073 | _fetchone D "Observed poverty 2021PPP.dta ($rnd)" ///
+0074 |     "$mpopath_cur\03.output\Observed poverty 2021PPP.dta" "$fromservers\ObservedPoverty2021PPP_${rnd}.dta"
+0075 | 
+0076 | _fetchone E "global_ex.dta ($rndprev)" ///
+0077 |     "$mpopath_prev\03.output\MPO\01.data\To MFM\global_ex.dta" "$fromservers\global_ex_${rndprev}.dta"
+0078 | 
+0079 | _fetchone F "Observed poverty 2021PPP.dta ($rndprev)" ///
+0080 |     "$mpopath_prev\03.output\Observed poverty 2021PPP.dta" "$fromservers\ObservedPoverty2021PPP_${rndprev}.dta"
+0081 | 
+0082 | 
+0083 | *================================================================
+0084 | * SUMMARY
+0085 | *================================================================
+0086 | local w 66
+0087 | dis as text _dup(`w') "-"
+0088 | dis as text "  GMI EXTENDED PIPELINE -- SERVER FETCH SUMMARY"
+0089 | dis as text "  Round: $rnd (prev: $rndprev)" _col(40) "Run: `c(current_date)' `c(current_time)'"
+0090 | dis as text _dup(`w') "-"
+0091 | 
+0092 | local labA "Section A  repo_${rnd}all.dta"
+0093 | local labB "Section B  GMI_SPspell_all.dta"
+0094 | local labC "Section C  global_ex.dta ($rnd)"
+0095 | local labD "Section D  Observed poverty 2021PPP.dta ($rnd)"
+0096 | local labE "Section E  global_ex.dta ($rndprev)"
+0097 | local labF "Section F  Observed poverty 2021PPP.dta ($rndprev)"
+0098 | 
+0099 | foreach s in A B C D E F {
+0100 |     local lab  "`lab`s''"
+0101 |     local stat "`status`s''"
+0102 |     if "`stat'"      == "FAILED" dis as error "  [ FAIL   ]  `lab'"
+0103 |     else if "`stat'" == "COPIED" dis as result "  [ COPIED ]  `lab'"
+0104 |     else if "`stat'" == "CACHED" dis as text   "  [ CACHED ]  `lab'"
+0105 |     else                         dis as text   "  [ ????   ]  `lab'"
+0106 | }
+0107 | 
+0108 | dis as text _dup(`w') "-"
+0109 | if "`statusA'"=="FAILED" | "`statusB'"=="FAILED" | "`statusC'"=="FAILED" | "`statusD'"=="FAILED" | "`statusE'"=="FAILED" | "`statusF'"=="FAILED" {
+0110 |     dis as error "  RESULT: one or more copies FAILED -- see [FAIL] messages above."
+0111 | }
+0112 | else {
+0113 |     dis as result "  RESULT: all server files ready in 02.Input\FromServers."
+0114 | }
+0115 | dis as text _dup(`w') "-"
+```

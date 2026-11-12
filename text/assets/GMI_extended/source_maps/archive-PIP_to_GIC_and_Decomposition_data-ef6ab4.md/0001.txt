@@ -1,0 +1,124 @@
+# 01.Programs/archive/PIP to GIC and Decomposition data.do
+
+Sanitized source projection; applicability placeholders are not executable values. Original SHA256: 496b985763c318bc6ca46296a561f6118f51f19970c04831b21eb7ad05e22ca8
+
+```stata
+0001 | //Getting BIN data for some countries at national 
+0002 | //ISO3 ISO3 ISO3
+0003 | clear
+0004 | global rnd SM26
+0005 | global rnd1 SM2026
+0006 | global path \\wbgfscifs01\GTSD\03.projects_corp\04.GPWG\04.GPWG_${rnd}\04.GPWG_${rnd}_QA
+0007 | global reposource "${path}\01.programs\02.dofile\repo\"
+0008 | *global out \\wbgfscifs01\GPWG-GMD\Datalib\Minh\GMI\\${rnd}\
+0009 | global out  D:\daylan\test\GMI\out\
+0010 | global pwf "D:\daylan\test\GMI\Survey_price_framework.dta"
+0011 | global pea "${out}\04.output\PEA_Dashboard\"
+0012 | 
+0013 | tempfile data1 data2 data3 data4 bindata
+0014 | save `data1', replace emptyok
+0015 | 
+0016 | global vintage Spring 2026
+0017 | global rnd SM26
+0018 | 
+0019 | global datain D:\daylan\test\GMI
+0020 | global piptxt server(prod) version(20260324_2021_01_02_PROD)
+0021 | 
+0022 | //Getting data year 
+0023 | //depending on when you run this: either QA server before the release or after production (after the release).
+0024 | //pip print versions
+0025 | pip tables, table(framework) clear ${piptxt}
+0026 | drop year
+0027 | ren reporting_year year
+0028 | ren survey_coverage reporting_level
+0029 | 
+0030 | //only keep periods with more than 1 comparable data points
+0031 | bys country_code  welfare_type survey_comparability (year): egen nobs = count( year)
+0032 | drop if nobs==1
+0033 | drop nobs
+0034 | save `data2', replace
+0035 | 
+0036 | //pop
+0037 | pip tables, table(pop) clear ${piptxt}
+0038 | keep if country_code=="ISO3"|country_code=="ISO3"
+0039 | drop if data_level=="national"
+0040 | bys country_code year: egen double tot = sum(value)
+0041 | gen double popshare = value/tot
+0042 | save `data3', replace
+0043 | 
+0044 | //loop 
+0045 | use "$datain\world_1000bin.dta"  ,clear
+0046 | *keep if country_code=="ISO3"|country_code=="ISO3"|country_code=="ISO3"
+0047 | keep if country_code=="ISO3"|country_code=="ISO3"
+0048 | decode reporting_level, gen(data_level)
+0049 | merge m:1 country_code year data_level using `data3'
+0050 | drop if _merge==2
+0051 | drop _merge
+0052 | sort country_code year reporting_level percentile
+0053 | collapse (mean) avg_welfare pop_share welfare_share quantile [aw=popshare], by(country_code year welfare_type percentile)
+0054 | gen reporting_level = 1
+0055 | save `data4', replace
+0056 | 
+0057 | use "$datain\world_1000bin.dta"  ,clear
+0058 | *drop if country_code=="ISO3"|country_code=="ISO3"|country_code=="ISO3"
+0059 | drop if country_code=="ISO3"|country_code=="ISO3"
+0060 | append using `data4'
+0061 | 
+0062 | sort country_code year reporting_level welfare_type percentile
+0063 | bys country_code year reporting_level welfare_type (percentile): gen double headcount = sum(pop_share)
+0064 | 
+0065 | gen double t1 = avg_welfare*pop_share
+0066 | bys country_code year reporting_level welfare_type (percentile): gen double t1s = sum(t1)
+0067 | gen double cumm_welfare = t1s/headcount
+0068 | drop t1 t1s
+0069 | 
+0070 | //bring in metadata
+0071 | decode reporting_level, gen(tmp)
+0072 | ren reporting_level lvl
+0073 | ren tmp reporting_level
+0074 | merge m:1 country_code year reporting_level welfare_type using `data2', keepus(survey_acronym survey_comparability welfare_time) 
+0075 | 
+0076 | keep if _merge==3
+0077 | drop _merge lvl
+0078 | 
+0079 | bys country_code year reporting_level welfare_type survey_acronym survey_comparability (percentile): gen last = _n==_N
+0080 | gen ds = cumm_welfare if last==1
+0081 | bys country_code year reporting_level welfare_type survey_acronym survey_comparability (percentile): egen mean = total(ds)
+0082 | drop ds last
+0083 | 
+0084 | compress
+0085 | saveold "$out\03.intermediate\PIP_povdecomp_${rnd}", replace
+0086 | *export delimit _all using "$out\03.intermediate\PIP_povdecomp_${rnd}.csv" , delim(",") replace datafmt 
+0087 | 
+0088 | //convert to 100 bins
+0089 | use "$out\03.intermediate\PIP_povdecomp_${rnd}", clear
+0090 | gen bin = .
+0091 | qui forv i=1(1)100 {
+0092 | 	replace bin = `i' if percentile >=`=`i'-1'*10 + 1 & percentile <=`i'*10
+0093 | }
+0094 | 
+0095 | clonevar pop1 = pop_share
+0096 | collapse (mean) avg_welfare (rawsum) pop1 [aw=pop_share], by(country_code year reporting_level welfare_type survey_acronym survey_comparability welfare_time bin)
+0097 | ren pop1 pop_share
+0098 | 
+0099 | bys country_code year reporting_level welfare_type (bin): gen double headcount = sum(pop_share)
+0100 | 
+0101 | gen double t1 = avg_welfare*pop_share
+0102 | bys country_code year reporting_level welfare_type (bin): gen double t1s = sum(t1)
+0103 | gen double cumm_welfare = t1s/headcount
+0104 | drop t1 t1s
+0105 | bys country_code year reporting_level welfare_type survey_acronym survey_comparability (bin): gen last = _n==_N
+0106 | gen ds = cumm_welfare if last==1
+0107 | bys country_code year reporting_level welfare_type survey_acronym survey_comparability (bin): egen mean = total(ds)
+0108 | drop ds last
+0109 | 
+0110 | bys country_code year reporting_level welfare_type survey_acronym survey_comparability (bin): egen totalincome = total(avg_welfare*pop_share)
+0111 | gen welfare_share 	 = (avg_welfare*pop_share)/totalincome
+0112 | drop totalincome
+0113 | bys country_code year reporting_level welfare_type survey_acronym survey_comparability (bin): gen cum_popshare = sum( pop_share)
+0114 | bys country_code year reporting_level welfare_type survey_acronym survey_comparability (bin): gen cum_welfshare = sum( welfare_share)
+0115 | 
+0116 | saveold "$out\03.intermediate\PIP_GICs_${rnd}", replace
+0117 | export delimit _all using "$out\04.output\PEA_Dashboard\PIP_GICs.csv" , delim(",") replace datafmt 
+0118 | 
+```

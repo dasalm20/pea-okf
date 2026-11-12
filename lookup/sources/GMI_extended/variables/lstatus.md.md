@@ -1,0 +1,15 @@
+---
+{"generated":{"by":"process:build-wbg-okf"},"help_center_commit":"sanitized:3922b3bfe000a87b8aae5305d8d9417ff53718922349db932f5eb85ceef1342d","type":"Guide"}
+---
+
+# GMI_extended/variables/lstatus.md
+
+Original `GMI_extended/variables/lstatus.md` at `sanitized:3922b3bfe000a87b8aae5305d8d9417ff53718922349db932f5eb85ceef1342d`. Product source: `dasalm20/gmi_extended@6f5231790ca118f2bf8c7967f12f1c0f3656ea47`. Select the relevant section/range; adjacent rows continue the source. Raw fragments concatenate byte-for-byte; retain context across boundaries. Recorded workflow/source-map statements are static; they do not establish execution. Source-relative paths and old query.py commands inside verbatim text are historical; use these lookup pages. Original provenance: urn:okf:sanitized:332a6b86d2129ef3e079.
+
+| Key / source range | Retrieve |
+|---|---|
+| L000001–L000004 lstatus and lstatus_year | [text/docs/gmi_lineage/0016.md#L311-L326](../../../../text/docs/gmi_lineage/0016.md#L311-L326) |
+| L000005–L000019 lstatus and lstatus_year / Production contexts | [text/docs/gmi_lineage/0016.md#L329-L364](../../../../text/docs/gmi_lineage/0016.md#L329-L364) |
+| L000020–L000024 lstatus and lstatus_year | [text/docs/gmi_lineage/0016.md#L367-L393](../../../../text/docs/gmi_lineage/0016.md#L367-L393) |
+| L000025–L000041 lstatus and lstatus_year | [text/docs/gmi_lineage/0016.md#L396-L434](../../../../text/docs/gmi_lineage/0016.md#L396-L434) |
+| L000042–L000048 lstatus and lstatus_year / EAP local context | [text/docs/gmi_lineage/0016.md#L437-L465](../../../../text/docs/gmi_lineage/0016.md#L437-L465) |

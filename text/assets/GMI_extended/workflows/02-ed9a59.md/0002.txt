@@ -1,0 +1,1800 @@
+Read candidates: `variable:a9ce9a7b0cd68b69`
+
+### block:1921ca84046dd4fc
+
+Evidence: `01.Programs/02-GMI format.do:L381-L381`. Next: `block:77bad749851e0f61`.
+
+```stata
+ren year surv_year
+```
+New: `variable:6afc0471b1e13f4b`
+Read candidates: `variable:104a670257a9fef3`
+
+### block:77bad749851e0f61
+
+Evidence: `01.Programs/02-GMI format.do:L382-L382`. Next: `block:2e1baf5bc26804eb`.
+
+```stata
+ren rep_year year
+```
+New: `variable:104a670257a9fef3`
+Read candidates: `variable:70166490c295b1d2`
+
+### block:2e1baf5bc26804eb
+
+Evidence: `01.Programs/02-GMI format.do:L383-L383`. Next: `block:cf0bd4531c0c1ee7`.
+
+```stata
+drop if code=="ISO3" & survname=="EU-SILC"
+```
+Read candidates: `variable:0a13e6f5a284d7c3`, `variable:67feaa075d01195f`
+
+### block:cf0bd4531c0c1ee7
+
+Evidence: `01.Programs/02-GMI format.do:L384-L384`. Next: `block:48f9933da9f901d7`.
+
+```stata
+order code year surv_year welftype survname    link survey_coverage datatype comparability ppp
+```
+
+### block:48f9933da9f901d7
+
+Evidence: `01.Programs/02-GMI format.do:L385-L385`. Next: `block:5313d2cb96d1c605`.
+
+```stata
+sort code year survname ppp data_group q100
+```
+
+### block:5313d2cb96d1c605
+
+Evidence: `01.Programs/02-GMI format.do:L387-L387`. Next: `block:f548fe338942924d`.
+
+```stata
+save "$interm\GMI_extended_${rnd}_GIC_fmt.dta", replace
+```
+Write datasets: `dataset:bb1315005d393f59`
+
+### block:f548fe338942924d
+
+Evidence: `01.Programs/02-GMI format.do:L388-L388`. Next: `block:f7d573ac2dfb28a3`.
+
+```stata
+save "$pea\GMI_extended_GIC_fmt.dta", replace
+```
+Write datasets: `dataset:dc7c3223c9a9d3fe`
+
+### block:f7d573ac2dfb28a3
+
+Evidence: `01.Programs/02-GMI format.do:L394-L394`. Next: `block:fb80624039ee8e2e`.
+
+```stata
+use "$interm\GMI_extended_${rnd}_decomp1.dta", clear
+```
+Read datasets: `dataset:d937273fa2c7b13e`
+
+### block:fb80624039ee8e2e
+
+Evidence: `01.Programs/02-GMI format.do:L395-L395`. Next: `block:ed65c8402d0d1856`.
+
+```stata
+append using "$interm\GMI_extended_${rnd}_decomp2.dta"
+```
+Read datasets: `dataset:b78a7dc9998b5853`
+
+### block:ed65c8402d0d1856
+
+Evidence: `01.Programs/02-GMI format.do:L397-L397`. Next: `block:01e15da807751e41`.
+
+```stata
+drop if decomp=="Shorrocks-Kolenikov"
+```
+Read candidates: `variable:b2d9052c9f1021a4`
+
+### block:01e15da807751e41
+
+Evidence: `01.Programs/02-GMI format.do:L398-L398`. Next: `block:eac1bc9e9603c4f4`.
+
+```stata
+replace value4 = . if value4==-9999
+```
+Modified: `variable:d0155d492d60991c`
+Read candidates: `variable:d0155d492d60991c`
+
+### block:eac1bc9e9603c4f4
+
+Evidence: `01.Programs/02-GMI format.do:L399-L399`. Next: `block:0459ea33786f6259`.
+
+```stata
+drop if value3==.
+```
+Read candidates: `variable:c709958715d96a83`
+
+### block:0459ea33786f6259
+
+Evidence: `01.Programs/02-GMI format.do:L400-L400`. Next: `block:2915700314f6c861`.
+
+```stata
+la var value1 "Total change in p.p."
+```
+
+### block:2915700314f6c861
+
+Evidence: `01.Programs/02-GMI format.do:L401-L401`. Next: `block:cf49a8324fdaffe0`.
+
+```stata
+la var value2 "Growth"
+```
+
+### block:cf49a8324fdaffe0
+
+Evidence: `01.Programs/02-GMI format.do:L402-L402`. Next: `block:8e29cfd0f78026f9`.
+
+```stata
+la var value3 "Redistribution"
+```
+
+### block:8e29cfd0f78026f9
+
+Evidence: `01.Programs/02-GMI format.do:L403-L403`. Next: `block:a9dee2e230d4b920`.
+
+```stata
+la var value4 "Population shift"
+```
+
+### block:a9dee2e230d4b920
+
+Evidence: `01.Programs/02-GMI format.do:L404-L404`. Next: `block:729763df4231d369`.
+
+```stata
+la var value5 "Interaction"
+```
+
+### block:729763df4231d369
+
+Evidence: `01.Programs/02-GMI format.do:L406-L406`. Next: `block:cd5b82f22441f7c1`.
+
+```stata
+la var spell "Survey spells"
+```
+
+### block:cd5b82f22441f7c1
+
+Evidence: `01.Programs/02-GMI format.do:L407-L407`. Next: `block:26062cbd5a5e09fa`.
+
+```stata
+la var decomp "Decomposition type"
+```
+
+### block:26062cbd5a5e09fa
+
+Evidence: `01.Programs/02-GMI format.do:L408-L408`. Next: `block:fbefedfec09813e8`.
+
+```stata
+la var welftype "Welfare type"
+```
+
+### block:fbefedfec09813e8
+
+Evidence: `01.Programs/02-GMI format.do:L409-L409`. Next: `block:93a8c7a7c47ec9f3`.
+
+```stata
+ren povline line
+```
+New: `variable:d439cfaf7038b309`
+Read candidates: `variable:26f9671e84936d2e`
+
+### block:93a8c7a7c47ec9f3
+
+Evidence: `01.Programs/02-GMI format.do:L410-L410`. Next: `block:f9e953cdc809711b`.
+
+```stata
+la var line "Poverty line"
+```
+
+### block:f9e953cdc809711b
+
+Evidence: `01.Programs/02-GMI format.do:L411-L411`. Next: `block:13fb0bf4ec2ef892`.
+
+```stata
+la var ppp "PPP year"
+```
+
+### block:13fb0bf4ec2ef892
+
+Evidence: `01.Programs/02-GMI format.do:L413-L413`. Next: `block:16d06919645fb32d`.
+
+```stata
+save "$interm\GMI_extended_${rnd}_decomp_fmt.dta", replace
+```
+Write datasets: `dataset:fed4d1bbbd0fb98c`
+
+### block:16d06919645fb32d
+
+Evidence: `01.Programs/02-GMI format.do:L414-L414`. Next: `block:f5af2e6a3ad1cb57`.
+
+```stata
+save "$pea\GMI_extended_decomp_fmt.dta", replace
+```
+Write datasets: `dataset:966404605e9c5e00`
+
+### block:f5af2e6a3ad1cb57
+
+Evidence: `01.Programs/02-GMI format.do:L422-L422`. Next: `block:9d92546a6a5b30e7`.
+
+```stata
+use "$interm\GMI_extended_${rnd}_ind_labor_sub.dta" , clear
+```
+Read datasets: `dataset:b086c252d707da34`
+
+### block:9d92546a6a5b30e7
+
+Evidence: `01.Programs/02-GMI format.do:L423-L423`. Next: `block:784c0514376fdb5d`.
+
+```stata
+keep if byvar=="_agegr1_"|byvar=="_all_"|byvar=="_educat"|byvar=="_male_"|byvar=="_urban_"|byvar=="quintiles"
+```
+Read candidates: `variable:ab5257cca27c5370`
+
+### block:784c0514376fdb5d
+
+Evidence: `01.Programs/02-GMI format.do:L424-L424`. Next: `block:d3364ac8c5703643`.
+
+```stata
+compress
+```
+
+### block:d3364ac8c5703643
+
+Evidence: `01.Programs/02-GMI format.do:L425-L425`. Next: `block:b13104fd8b256d21`.
+
+```stata
+save "$interm\GMI_extended_${rnd}_ind_labor.dta", replace
+```
+Write datasets: `dataset:a7b47a6e5bb6d3c3`
+
+### block:b13104fd8b256d21
+
+Evidence: `01.Programs/02-GMI format.do:L429-L429`. Next: `block:aae6305a3527fc0d`.
+
+```stata
+replace level = trim(level)
+```
+Modified: `variable:6e051d5bd648b433`
+Read candidates: `variable:6e051d5bd648b433`
+
+### block:aae6305a3527fc0d
+
+Evidence: `01.Programs/02-GMI format.do:L430-L430`. Next: `block:8d509f1acfe4aa0e`.
+
+```stata
+replace level = proper(level)
+```
+Modified: `variable:6e051d5bd648b433`
+Read candidates: `variable:6e051d5bd648b433`
+
+### block:8d509f1acfe4aa0e
+
+Evidence: `01.Programs/02-GMI format.do:L432-L432`. Next: `block:6372ab44e16c98b7`.
+
+```stata
+gen data = ""
+```
+New: `variable:28bdd68ac9bc70fb`
+
+### block:6372ab44e16c98b7
+
+Evidence: `01.Programs/02-GMI format.do:L433-L433`. Next: `block:676c5c65bd3de672`.
+
+```stata
+replace data = "All sample" if byvar=="_all_"
+```
+Modified: `variable:28bdd68ac9bc70fb`
+Read candidates: `variable:ab5257cca27c5370`
+
+### block:676c5c65bd3de672
+
+Evidence: `01.Programs/02-GMI format.do:L434-L434`. Next: `block:6b12540f94af8081`.
+
+```stata
+replace data = "Urban or rural" if byvar=="_urban_"
+```
+Modified: `variable:28bdd68ac9bc70fb`
+Read candidates: `variable:ab5257cca27c5370`
+
+### block:6b12540f94af8081
+
+Evidence: `01.Programs/02-GMI format.do:L435-L435`. Next: `block:8bb366d6331706aa`.
+
+```stata
+replace data = "Gender" if byvar=="_male_"
+```
+Modified: `variable:28bdd68ac9bc70fb`
+Read candidates: `variable:ab5257cca27c5370`
+
+### block:8bb366d6331706aa
+
+Evidence: `01.Programs/02-GMI format.do:L436-L436`. Next: `block:bead4614e890f832`.
+
+```stata
+replace data = "Education" if byvar=="_educat"
+```
+Modified: `variable:28bdd68ac9bc70fb`
+Read candidates: `variable:ab5257cca27c5370`
+
+### block:bead4614e890f832
+
+Evidence: `01.Programs/02-GMI format.do:L437-L437`. Next: `block:3a1fd3e299328759`.
+
+```stata
+replace data = "Age groups" if byvar=="_agegr1_"
+```
+Modified: `variable:28bdd68ac9bc70fb`
+Read candidates: `variable:ab5257cca27c5370`
+
+### block:3a1fd3e299328759
+
+Evidence: `01.Programs/02-GMI format.do:L438-L438`. Next: `block:ef1e022a33e13948`.
+
+```stata
+replace data = "Quintiles" if byvar=="quintiles"
+```
+Modified: `variable:28bdd68ac9bc70fb`
+Read candidates: `variable:ab5257cca27c5370`
+
+### block:ef1e022a33e13948
+
+Evidence: `01.Programs/02-GMI format.do:L439-L439`. Next: `block:8157bf4fe6990392`.
+
+```stata
+drop if level=="."
+```
+Read candidates: `variable:6e051d5bd648b433`
+
+### block:8157bf4fe6990392
+
+Evidence: `01.Programs/02-GMI format.do:L440-L440`. Next: `block:8b2906f9a6d8f600`.
+
+```stata
+gen data_group = ""
+```
+New: `variable:a6e0f34ead0110a3`
+
+### block:8b2906f9a6d8f600
+
+Evidence: `01.Programs/02-GMI format.do:L442-L442`. Next: `block:a1902a33fbaaac32`.
+
+```stata
+local byvarlist _all_ _urban_ _male_ _educat _agegr1_  quintiles
+```
+
+### block:a1902a33fbaaac32
+
+Evidence: `01.Programs/02-GMI format.do:L443-L443`. Next: `block:2b078ae13f9a5c5e`.
+
+```stata
+foreach byvar1 of local byvarlist {
+```
+
+### block:2b078ae13f9a5c5e
+
+Evidence: `01.Programs/02-GMI format.do:L444-L444`. Next: `block:7be9570f997b6218`.
+
+```stata
+replace data_group = level if byvar=="`byvar1'"
+```
+Enclosing controls: `foreach byvar1 of local byvarlist {`
+Modified: `variable:a6e0f34ead0110a3`
+Read candidates: `variable:6e051d5bd648b433`, `variable:ab5257cca27c5370`
+
+### block:7be9570f997b6218
+
+Evidence: `01.Programs/02-GMI format.do:L445-L445`. Next: `block:543277c3ed827644`.
+
+```stata
+}
+```
+
+### block:543277c3ed827644
+
+Evidence: `01.Programs/02-GMI format.do:L447-L447`. Next: `block:2669966263bd1c3e`.
+
+```stata
+replace data_group = "Urban" if byvar=="_urban_" & level=="1"| level=="1.Urban"
+```
+Modified: `variable:a6e0f34ead0110a3`
+Read candidates: `variable:ab5257cca27c5370`, `variable:6e051d5bd648b433`
+
+### block:2669966263bd1c3e
+
+Evidence: `01.Programs/02-GMI format.do:L448-L448`. Next: `block:38eef1bbe3a5f17e`.
+
+```stata
+replace data_group = "Rural" if byvar=="_urban_" & level=="0"| level=="0.Rural"
+```
+Modified: `variable:a6e0f34ead0110a3`
+Read candidates: `variable:ab5257cca27c5370`, `variable:6e051d5bd648b433`
+
+### block:38eef1bbe3a5f17e
+
+Evidence: `01.Programs/02-GMI format.do:L450-L450`. Next: `block:d4797eb1274547e3`.
+
+```stata
+replace data_group = "Male" if byvar=="_male_" & level=="1"| level=="1. Male"|level=="1.Male"
+```
+Modified: `variable:a6e0f34ead0110a3`
+Read candidates: `variable:ab5257cca27c5370`, `variable:6e051d5bd648b433`
+
+### block:d4797eb1274547e3
+
+Evidence: `01.Programs/02-GMI format.do:L451-L451`. Next: `block:efee9b4a513fb7cc`.
+
+```stata
+replace data_group = "Female" if byvar=="_male_" & level=="0"| level=="0.Female"
+```
+Modified: `variable:a6e0f34ead0110a3`
+Read candidates: `variable:ab5257cca27c5370`, `variable:6e051d5bd648b433`
+
+### block:efee9b4a513fb7cc
+
+Evidence: `01.Programs/02-GMI format.do:L452-L452`. Next: `block:8fa49d75a4a84458`.
+
+```stata
+replace data_group = "Missing" if byvar=="_male_" & level=="."
+```
+Modified: `variable:a6e0f34ead0110a3`
+Read candidates: `variable:ab5257cca27c5370`, `variable:6e051d5bd648b433`
+
+### block:8fa49d75a4a84458
+
+Evidence: `01.Programs/02-GMI format.do:L454-L454`. Next: `block:22f10d3be4f6de0a`.
+
+```stata
+drop if (data=="Gender"|data=="HH head gender") & data_group=="9"
+```
+Read candidates: `variable:28bdd68ac9bc70fb`, `variable:a6e0f34ead0110a3`
+
+### block:22f10d3be4f6de0a
+
+Evidence: `01.Programs/02-GMI format.do:L456-L456`. Next: `block:a1c9600e52a96891`.
+
+```stata
+gen sample = "Individual 15-64"
+```
+New: `variable:31ce36de7cf5778a`
+
+### block:a1c9600e52a96891
+
+Evidence: `01.Programs/02-GMI format.do:L458-L458`. Next: `block:756b4e8d3b748f4a`.
+
+```stata
+order sample code year surveyid mod byvar level data data_group nohh count noind totalhh totalind sh_hh sh_pop
+```
+
+### block:756b4e8d3b748f4a
+
+Evidence: `01.Programs/02-GMI format.do:L460-L460`. Next: `block:624a0722c7849bf2`.
+
+```stata
+la var sample "Population sample"
+```
+
+### block:624a0722c7849bf2
+
+Evidence: `01.Programs/02-GMI format.do:L461-L461`. Next: `block:4034f285a90f5e77`.
+
+```stata
+la var code "Country code"
+```
+
+### block:4034f285a90f5e77
+
+Evidence: `01.Programs/02-GMI format.do:L462-L462`. Next: `block:a33c07e88a74dc34`.
+
+```stata
+la var year "Survey year"
+```
+
+### block:a33c07e88a74dc34
+
+Evidence: `01.Programs/02-GMI format.do:L463-L463`. Next: `block:b7857933b63bc9f8`.
+
+```stata
+la var surveyid "Survey ID"
+```
+
+### block:b7857933b63bc9f8
+
+Evidence: `01.Programs/02-GMI format.do:L464-L464`. Next: `block:8730c8ac6858ef9f`.
+
+```stata
+la var mod "Module"
+```
+
+### block:8730c8ac6858ef9f
+
+Evidence: `01.Programs/02-GMI format.do:L465-L465`. Next: `block:3eff30d4f55f0258`.
+
+```stata
+la var byvar "Subgroup variable"
+```
+
+### block:3eff30d4f55f0258
+
+Evidence: `01.Programs/02-GMI format.do:L466-L466`. Next: `block:80a6b2ae3fe7f2ec`.
+
+```stata
+la var level "Subgroup categories"
+```
+
+### block:80a6b2ae3fe7f2ec
+
+Evidence: `01.Programs/02-GMI format.do:L467-L467`. Next: `block:c28c776a8e0a346d`.
+
+```stata
+la var data "Group level"
+```
+
+### block:c28c776a8e0a346d
+
+Evidence: `01.Programs/02-GMI format.do:L468-L468`. Next: `block:7de4a51ca244bb47`.
+
+```stata
+la var data_group "Group categories"
+```
+
+### block:7de4a51ca244bb47
+
+Evidence: `01.Programs/02-GMI format.do:L469-L469`. Next: `block:6c33252bdca2d3ce`.
+
+```stata
+la var nohh "number of households"
+```
+
+### block:6c33252bdca2d3ce
+
+Evidence: `01.Programs/02-GMI format.do:L470-L470`. Next: `block:717af2a5af1ea34d`.
+
+```stata
+la var count "count"
+```
+
+### block:717af2a5af1ea34d
+
+Evidence: `01.Programs/02-GMI format.do:L471-L471`. Next: `block:a02872691f37e727`.
+
+```stata
+la var noind "Number of individuals"
+```
+
+### block:a02872691f37e727
+
+Evidence: `01.Programs/02-GMI format.do:L472-L472`. Next: `block:b03989748465ff71`.
+
+```stata
+la var sh_hh "Share of household"
+```
+
+### block:b03989748465ff71
+
+Evidence: `01.Programs/02-GMI format.do:L473-L473`. Next: `block:f20e47f6d4d6d841`.
+
+```stata
+la var sh_pop "Share of population"
+```
+
+### block:f20e47f6d4d6d841
+
+Evidence: `01.Programs/02-GMI format.do:L474-L474`. Next: `block:393901b9e3b97dff`.
+
+```stata
+la var totalhh "Number of total households"
+```
+
+### block:393901b9e3b97dff
+
+Evidence: `01.Programs/02-GMI format.do:L475-L475`. Next: `block:46fbf58125136e02`.
+
+```stata
+la var totalind "Number of total individuals"
+```
+
+### block:46fbf58125136e02
+
+Evidence: `01.Programs/02-GMI format.do:L477-L477`. Next: `block:1a5a358fe70466b5`.
+
+```stata
+la var _working_ind "Share of population (15-64) working (%)"
+```
+
+### block:1a5a358fe70466b5
+
+Evidence: `01.Programs/02-GMI format.do:L478-L478`. Next: `block:2c61f89edf4d4098`.
+
+```stata
+la var _notworking_ind "Share of population (15-64) not working (%)"
+```
+
+### block:2c61f89edf4d4098
+
+Evidence: `01.Programs/02-GMI format.do:L479-L479`. Next: `block:24020595fe3be34f`.
+
+```stata
+la var _misslfs_ind "Share of population (15-64) missing lstatus (%)"
+```
+
+### block:24020595fe3be34f
+
+Evidence: `01.Programs/02-GMI format.do:L480-L480`. Next: `block:dc60897daf246829`.
+
+```stata
+la var _empstat_ind1 "Share of population (15-64) working as paid employee (%)"
+```
+
+### block:dc60897daf246829
+
+Evidence: `01.Programs/02-GMI format.do:L481-L481`. Next: `block:b077aca9923c7043`.
+
+```stata
+la var _empstat_ind2 "Share of population (15-64) working as Non-paid employee/family worker (%)"
+```
+
+### block:b077aca9923c7043
+
+Evidence: `01.Programs/02-GMI format.do:L482-L482`. Next: `block:77b62dfcd8b00e41`.
+
+```stata
+la var _empstat_ind3 "Share of population (15-64) working as employer (%)"
+```
+
+### block:77b62dfcd8b00e41
+
+Evidence: `01.Programs/02-GMI format.do:L483-L483`. Next: `block:2034088187b0da57`.
+
+```stata
+la var _empstat_ind4 "Share of population (15-64) working as self-employed (%)"
+```
+
+### block:2034088187b0da57
+
+Evidence: `01.Programs/02-GMI format.do:L484-L484`. Next: `block:74b6dc0684d79ff5`.
+
+```stata
+la var _empstat_ind5 "Share of population (15-64) working as other not classifiable (%)"
+```
+
+### block:74b6dc0684d79ff5
+
+Evidence: `01.Programs/02-GMI format.do:L485-L485`. Next: `block:cf1e12305bd4424b`.
+
+```stata
+la var _empstat_ind_m "Share of population (15-64) working with missing employment status (%)"
+```
+
+### block:cf1e12305bd4424b
+
+Evidence: `01.Programs/02-GMI format.do:L486-L486`. Next: `block:7f5aaab4915e6164`.
+
+```stata
+la var _industry_ind1 "Share of population (15-64) working in agriculture (%)"
+```
+
+### block:7f5aaab4915e6164
+
+Evidence: `01.Programs/02-GMI format.do:L487-L487`. Next: `block:6a2b3a1903ab99ff`.
+
+```stata
+la var _industry_ind2 "Share of population (15-64) working in industry (%)"
+```
+
+### block:6a2b3a1903ab99ff
+
+Evidence: `01.Programs/02-GMI format.do:L488-L488`. Next: `block:52bb535db39aedb2`.
+
+```stata
+la var _industry_ind3 "Share of population (15-64) working in services (%)"
+```
+
+### block:52bb535db39aedb2
+
+Evidence: `01.Programs/02-GMI format.do:L489-L489`. Next: `block:6b9e7c82660cf0f3`.
+
+```stata
+la var _industry_ind4 "Share of population (15-64) working in others (%)"
+```
+
+### block:6b9e7c82660cf0f3
+
+Evidence: `01.Programs/02-GMI format.do:L490-L490`. Next: `block:6d74699cecca4749`.
+
+```stata
+la var _industry_nonagr_ind "Share of population (15-64) working in non-agriculture (%)"
+```
+
+### block:6d74699cecca4749
+
+Evidence: `01.Programs/02-GMI format.do:L491-L491`. Next: `block:c91a4b20350d96b8`.
+
+```stata
+la var _industry_ind_m "Share of population (15-64) working with missing industry (%)"
+```
+
+### block:c91a4b20350d96b8
+
+Evidence: `01.Programs/02-GMI format.do:L493-L493`. Next: `block:6587bb3fcf2abd94`.
+
+```stata
+la var _industry10_ind1 "Share of population (15-64) working in Agriculture (%)"
+```
+
+### block:6587bb3fcf2abd94
+
+Evidence: `01.Programs/02-GMI format.do:L494-L494`. Next: `block:217c0a981ac6d3f2`.
+
+```stata
+la var _industry10_ind2 "Share of population (15-64) working in Mining (%)"
+```
+
+### block:217c0a981ac6d3f2
+
+Evidence: `01.Programs/02-GMI format.do:L495-L495`. Next: `block:722133a62fef3a11`.
+
+```stata
+la var _industry10_ind3 "Share of population (15-64) working in Manufacturing (%)"
+```
+
+### block:722133a62fef3a11
+
+Evidence: `01.Programs/02-GMI format.do:L496-L496`. Next: `block:a11df3882ec9a3c8`.
+
+```stata
+la var _industry10_ind4 "Share of population (15-64) working in Public Utility Services (%)"
+```
+
+### block:a11df3882ec9a3c8
+
+Evidence: `01.Programs/02-GMI format.do:L497-L497`. Next: `block:6a28947876d83dc3`.
+
+```stata
+la var _industry10_ind5 "Share of population (15-64) working in Construction (%)"
+```
+
+### block:6a28947876d83dc3
+
+Evidence: `01.Programs/02-GMI format.do:L498-L498`. Next: `block:b38e8ea50cda64a3`.
+
+```stata
+la var _industry10_ind6 "Share of population (15-64) working in Commerce (%)"
+```
+
+### block:b38e8ea50cda64a3
+
+Evidence: `01.Programs/02-GMI format.do:L499-L499`. Next: `block:1aa9d26a291f4d37`.
+
+```stata
+la var _industry10_ind7 "Share of population (15-64) working in Transport and Communications (%)"
+```
+
+### block:1aa9d26a291f4d37
+
+Evidence: `01.Programs/02-GMI format.do:L500-L500`. Next: `block:67c77135260d3b23`.
+
+```stata
+la var _industry10_ind8 "Share of population (15-64) working in Financial and Business Services (%)"
+```
+
+### block:67c77135260d3b23
+
+Evidence: `01.Programs/02-GMI format.do:L501-L501`. Next: `block:635e0269fe782487`.
+
+```stata
+la var _industry10_ind9 "Share of population (15-64) working in Public Administration (%)"
+```
+
+### block:635e0269fe782487
+
+Evidence: `01.Programs/02-GMI format.do:L502-L502`. Next: `block:287e8ff0fa27d135`.
+
+```stata
+la var _industry10_ind10 "Share of population (15-64) working in Other services, unspecified (%)"
+```
+
+### block:287e8ff0fa27d135
+
+Evidence: `01.Programs/02-GMI format.do:L503-L503`. Next: `block:8cfb3983beb64dd8`.
+
+```stata
+la var _industry10_ind_m "Share of population (15-64) working with missing industry (%)"
+```
+
+### block:8cfb3983beb64dd8
+
+Evidence: `01.Programs/02-GMI format.do:L505-L505`. Next: `block:67b7a043e3144312`.
+
+```stata
+foreach ppp of global ppplist {
+```
+
+### block:67b7a043e3144312
+
+Evidence: `01.Programs/02-GMI format.do:L506-L506`. Next: `block:5376db61626a3efc`.
+
+```stata
+foreach line of global plines`ppp' {
+```
+Enclosing controls: `foreach ppp of global ppplist {`
+
+### block:5376db61626a3efc
+
+Evidence: `01.Programs/02-GMI format.do:L507-L507`. Next: `block:760e378921a42d24`.
+
+```stata
+local ln `=round(`line'/100,0.01)'
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:760e378921a42d24
+
+Evidence: `01.Programs/02-GMI format.do:L508-L508`. Next: `block:d21c307019bbccf6`.
+
+```stata
+local ln: display %4.2f `ln'
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:d21c307019bbccf6
+
+Evidence: `01.Programs/02-GMI format.do:L509-L509`. Next: `block:d71cf3b2122f0097`.
+
+```stata
+local ln `=trim("`ln'")'
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:d71cf3b2122f0097
+
+Evidence: `01.Programs/02-GMI format.do:L510-L510`. Next: `block:347343220e8b9266`.
+
+```stata
+la var poor`line' "Poverty rate, $`ln'/day (%), `ppp' PPP, population 15-64"
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:347343220e8b9266
+
+Evidence: `01.Programs/02-GMI format.do:L511-L511`. Next: `block:11059280cbdefa4e`.
+
+```stata
+la var poor`line'_wrk "Share of poor ($`ln'/day) working (%), `ppp' PPP, population 15-64"
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:11059280cbdefa4e
+
+Evidence: `01.Programs/02-GMI format.do:L512-L512`. Next: `block:0e36489c0b795611`.
+
+```stata
+la var nonpoor`line'_wrk "Share of non-poor ($`ln'/day) working (%), `ppp' PPP, population 15-64"
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:0e36489c0b795611
+
+Evidence: `01.Programs/02-GMI format.do:L514-L514`. Next: `block:8571fe458c98e318`.
+
+```stata
+la var poor`line'_wrkemp_1 "Share of poor ($`ln'/day) working as paid employee (%), `ppp' PPP, population 15-64"
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:8571fe458c98e318
+
+Evidence: `01.Programs/02-GMI format.do:L515-L515`. Next: `block:c0874ab7084f8b57`.
+
+```stata
+la var nonpoor`line'_wrkemp_1 "Share of non-poor ($`ln'/day) working as paid employee (%), `ppp' PPP, population 15-64"
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:c0874ab7084f8b57
+
+Evidence: `01.Programs/02-GMI format.do:L516-L516`. Next: `block:e345c37b665da81c`.
+
+```stata
+la var poor`line'_wrkemp_2 "Share of poor ($`ln'/day) working as non-paid employee/family worker (%), `ppp' PPP, population 15-64"
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:e345c37b665da81c
+
+Evidence: `01.Programs/02-GMI format.do:L517-L517`. Next: `block:72abef5d3d13a29f`.
+
+```stata
+la var nonpoor`line'_wrkemp_2 "Share of non-poor ($`ln'/day) working as non-paid employee/family worker (%), `ppp' PPP, population 15-64"
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:72abef5d3d13a29f
+
+Evidence: `01.Programs/02-GMI format.do:L518-L518`. Next: `block:08388c27f99844c2`.
+
+```stata
+la var poor`line'_wrkemp_3 "Share of poor ($`ln'/day) working as employer (%), `ppp' PPP, population 15-64"
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:08388c27f99844c2
+
+Evidence: `01.Programs/02-GMI format.do:L519-L519`. Next: `block:9e84ea24a6a951ca`.
+
+```stata
+la var nonpoor`line'_wrkemp_3 "Share of non-poor ($`ln'/day) working as employer (%), `ppp' PPP, population 15-64"
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:9e84ea24a6a951ca
+
+Evidence: `01.Programs/02-GMI format.do:L520-L520`. Next: `block:de72ce36be1ee831`.
+
+```stata
+la var poor`line'_wrkemp_4 "Share of poor ($`ln'/day) working as self-employed (%), `ppp' PPP, population 15-64"
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:de72ce36be1ee831
+
+Evidence: `01.Programs/02-GMI format.do:L521-L521`. Next: `block:afb29c8b75be894d`.
+
+```stata
+la var nonpoor`line'_wrkemp_4 "Share of non-poor ($`ln'/day) working as self-employed (%), `ppp' PPP, population 15-64"
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:afb29c8b75be894d
+
+Evidence: `01.Programs/02-GMI format.do:L522-L522`. Next: `block:68a97aca52065e2a`.
+
+```stata
+la var poor`line'_wrkemp_5 "Share of poor ($`ln'/day) working as other not classifiable (%), `ppp' PPP, population 15-64"
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:68a97aca52065e2a
+
+Evidence: `01.Programs/02-GMI format.do:L523-L523`. Next: `block:91b43aa1338d8100`.
+
+```stata
+la var nonpoor`line'_wrkemp_5 "Share of non-poor ($`ln'/day) working as other not classifiable (%), `ppp' PPP, population 15-64"
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:91b43aa1338d8100
+
+Evidence: `01.Programs/02-GMI format.do:L525-L525`. Next: `block:94f0f123fb3f6bd2`.
+
+```stata
+la var poor`line'_wrki4_1 "Share of poor ($`ln'/day) working in agriculture (%), `ppp' PPP, population 15-64"
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:94f0f123fb3f6bd2
+
+Evidence: `01.Programs/02-GMI format.do:L526-L526`. Next: `block:2bcf74e51e6d61a4`.
+
+```stata
+la var nonpoor`line'_wrki4_1 "Share of non-poor ($`ln'/day) working in agriculture (%), `ppp' PPP, population 15-64"
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:2bcf74e51e6d61a4
+
+Evidence: `01.Programs/02-GMI format.do:L527-L527`. Next: `block:571774fe21e8d65f`.
+
+```stata
+la var poor`line'_wrki4_2 "Share of poor ($`ln'/day) working in industry (%), `ppp' PPP, population 15-64"
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:571774fe21e8d65f
+
+Evidence: `01.Programs/02-GMI format.do:L528-L528`. Next: `block:26e16a5a35c55072`.
+
+```stata
+la var nonpoor`line'_wrki4_2 "Share of non-poor ($`ln'/day) working in industry (%), `ppp' PPP, population 15-64"
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:26e16a5a35c55072
+
+Evidence: `01.Programs/02-GMI format.do:L529-L529`. Next: `block:73e0ce9c7d07e922`.
+
+```stata
+la var poor`line'_wrki4_3 "Share of poor ($`ln'/day) working in Services (%), `ppp' PPP, population 15-64"
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:73e0ce9c7d07e922
+
+Evidence: `01.Programs/02-GMI format.do:L530-L530`. Next: `block:d53a84fc4b41c471`.
+
+```stata
+la var nonpoor`line'_wrki4_3 "Share of non-poor ($`ln'/day) working in Services (%), `ppp' PPP, population 15-64"
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:d53a84fc4b41c471
+
+Evidence: `01.Programs/02-GMI format.do:L531-L531`. Next: `block:ac6aa6950e0395c1`.
+
+```stata
+la var poor`line'_wrki4_4 "Share of poor ($`ln'/day) working in Others (%), `ppp' PPP, population 15-64"
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:ac6aa6950e0395c1
+
+Evidence: `01.Programs/02-GMI format.do:L532-L532`. Next: `block:b2aac54e35bbeed5`.
+
+```stata
+la var nonpoor`line'_wrki4_4 "Share of non-poor ($`ln'/day) working in Others (%), `ppp' PPP, population 15-64"
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+
+### block:b2aac54e35bbeed5
+
+Evidence: `01.Programs/02-GMI format.do:L533-L533`. Next: `block:211a7b80b47c1952`.
+
+```stata
+}
+```
+Enclosing controls: `foreach ppp of global ppplist {`
+
+### block:211a7b80b47c1952
+
+Evidence: `01.Programs/02-GMI format.do:L534-L534`. Next: `block:20dd87d5c0f1e166`.
+
+```stata
+}
+```
+
+### block:20dd87d5c0f1e166
+
+Evidence: `01.Programs/02-GMI format.do:L535-L535`. Next: `block:4081f02820bb7a48`.
+
+```stata
+drop if count<30
+```
+Read candidates: `variable:b7386b423d9be3ea`
+
+### block:4081f02820bb7a48
+
+Evidence: `01.Programs/02-GMI format.do:L536-L536`. Next: `block:2bc81b72d84cbd79`.
+
+```stata
+drop lvlvar
+```
+Read candidates: `variable:52e24828bbca28da`
+
+### block:2bc81b72d84cbd79
+
+Evidence: `01.Programs/02-GMI format.do:L538-L538`. Next: `block:6a0ce57d0ed27602`.
+
+```stata
+split surveyid, parse("_")
+```
+Read candidates: `variable:077d71ad5abb5aa5`
+
+### block:6a0ce57d0ed27602
+
+Evidence: `01.Programs/02-GMI format.do:L539-L539`. Next: `block:1b5b250f1f31a462`.
+
+```stata
+ren surveyid3 survname
+```
+New: `variable:aa2e204d11c3e033`
+Read candidates: `variable:f90876cb77c78ec7`
+
+### block:1b5b250f1f31a462
+
+Evidence: `01.Programs/02-GMI format.do:L540-L540`. Next: `block:960cfd15c134f53c`.
+
+```stata
+drop surveyid1 surveyid2 surveyid4-surveyid8
+```
+Read candidates: `variable:7b293b94a0ff120f`, `variable:4188aab02d8366f6`, `variable:598cc674605a765a`, `variable:2265119bb3ee75f1`
+
+### block:960cfd15c134f53c
+
+Evidence: `01.Programs/02-GMI format.do:L541-L541`. Next: `block:ca8c011239e3d022`.
+
+```stata
+drop if code=="ISO3" & survname=="EU-SILC"
+```
+Read candidates: `variable:f9847ee71b5ef6d3`, `variable:aa2e204d11c3e033`
+
+### block:ca8c011239e3d022
+
+Evidence: `01.Programs/02-GMI format.do:L543-L543`. Next: `block:314e18d95bba50f5`.
+
+```stata
+merge m:1 code year survname using $pfw , keepus(rep_year ref_year survey_coverage datatype comparability link)
+```
+Read datasets: `dataset:0fa1cc3d12b9e4be`
+
+### block:314e18d95bba50f5
+
+Evidence: `01.Programs/02-GMI format.do:L546-L546`. Next: `block:cf0a23027d564386`.
+
+```stata
+drop if code =="ISO3" & _merge==1
+```
+Read candidates: `variable:f9847ee71b5ef6d3`, `variable:4bf2de65e98d3074`
+
+### block:cf0a23027d564386
+
+Evidence: `01.Programs/02-GMI format.do:L549-L549`. Next: `block:a00d4668667e97c6`.
+
+```stata
+drop if _merge==2
+```
+Read candidates: `variable:4bf2de65e98d3074`
+
+### block:a00d4668667e97c6
+
+Evidence: `01.Programs/02-GMI format.do:L550-L550`. Next: `block:6de2d83890fa5e0b`.
+
+```stata
+drop _merge
+```
+Read candidates: `variable:4bf2de65e98d3074`
+
+### block:6de2d83890fa5e0b
+
+Evidence: `01.Programs/02-GMI format.do:L552-L552`. Next: `block:46bf288633aa1898`.
+
+```stata
+ren year surv_year
+```
+New: `variable:2c8a92536c5f8ebd`
+Read candidates: `variable:e6218f6fe69df3b2`
+
+### block:46bf288633aa1898
+
+Evidence: `01.Programs/02-GMI format.do:L553-L553`. Next: `block:d4ab7927560596f5`.
+
+```stata
+ren rep_year year
+```
+New: `variable:e6218f6fe69df3b2`
+Read candidates: `variable:74d75ba817da08f8`
+
+### block:d4ab7927560596f5
+
+Evidence: `01.Programs/02-GMI format.do:L555-L555`. Next: `block:3592eca0acd7e335`.
+
+```stata
+order sample code year surv_year surveyid survname mod byvar level data data_group  link survey_coverage datatype comparability
+```
+
+### block:3592eca0acd7e335
+
+Evidence: `01.Programs/02-GMI format.do:L556-L556`. Next: `block:4d2f18ecb4c2ccf0`.
+
+```stata
+sort code year survname data data_group
+```
+
+### block:4d2f18ecb4c2ccf0
+
+Evidence: `01.Programs/02-GMI format.do:L557-L557`. Next: `block:82dd13ac735ec6fb`.
+
+```stata
+isid code year survname data data_group
+```
+Read candidates: `variable:f9847ee71b5ef6d3`, `variable:e6218f6fe69df3b2`, `variable:aa2e204d11c3e033`, `variable:28bdd68ac9bc70fb`, `variable:a6e0f34ead0110a3`
+
+### block:82dd13ac735ec6fb
+
+Evidence: `01.Programs/02-GMI format.do:L562-L562`. Next: `block:43f825ca1a4ec297`.
+
+```stata
+unab allnonagr : *nonagr*
+```
+
+### block:43f825ca1a4ec297
+
+Evidence: `01.Programs/02-GMI format.do:L563-L563`. Next: `block:e6ad32ad9c2ce577`.
+
+```stata
+local dropvars ""
+```
+
+### block:e6ad32ad9c2ce577
+
+Evidence: `01.Programs/02-GMI format.do:L564-L564`. Next: `block:7082530ef76c1388`.
+
+```stata
+foreach v of local allnonagr {
+```
+
+### block:7082530ef76c1388
+
+Evidence: `01.Programs/02-GMI format.do:L565-L565`. Next: `block:750bc59cbcd88cb0`.
+
+```stata
+if "`v'" != "_industry_nonagr_ind" {
+```
+Enclosing controls: `foreach v of local allnonagr {`
+
+### block:750bc59cbcd88cb0
+
+Evidence: `01.Programs/02-GMI format.do:L566-L566`. Next: `block:aa472bdd71fdb965`.
+
+```stata
+local dropvars `dropvars' `v'
+```
+Enclosing controls: `foreach v of local allnonagr {` → `if "`v'" != "_industry_nonagr_ind" {`
+
+### block:aa472bdd71fdb965
+
+Evidence: `01.Programs/02-GMI format.do:L567-L567`. Next: `block:23304270670f86b9`.
+
+```stata
+}
+```
+Enclosing controls: `foreach v of local allnonagr {`
+
+### block:23304270670f86b9
+
+Evidence: `01.Programs/02-GMI format.do:L568-L568`. Next: `block:ef7530fec94300ab`.
+
+```stata
+}
+```
+
+### block:ef7530fec94300ab
+
+Evidence: `01.Programs/02-GMI format.do:L569-L569`. Next: `block:a2e1d29da11be202`.
+
+```stata
+di "`dropvars'"
+```
+
+### block:a2e1d29da11be202
+
+Evidence: `01.Programs/02-GMI format.do:L570-L570`. Next: `block:7c2fcd1f1afaccb2`.
+
+```stata
+drop `dropvars'
+```
+
+### block:7c2fcd1f1afaccb2
+
+Evidence: `01.Programs/02-GMI format.do:L572-L572`. Next: `block:89d8c709b91bfa6e`.
+
+```stata
+compress
+```
+
+### block:89d8c709b91bfa6e
+
+Evidence: `01.Programs/02-GMI format.do:L573-L573`. Next: `block:138f7a19196849d1`.
+
+```stata
+save "$interm\GMI_extended_${rnd}_ind_labor_fmt.dta", replace
+```
+Write datasets: `dataset:5ef2c925e2e8feb7`
+
+### block:138f7a19196849d1
+
+Evidence: `01.Programs/02-GMI format.do:L574-L574`. Next: `block:3d4c2279b14f3fc3`.
+
+```stata
+save "$pea\GMI_extended_ind_labor_fmt.dta", replace
+```
+Write datasets: `dataset:90017e490ed978d7`
+
+### block:3d4c2279b14f3fc3
+
+Evidence: `01.Programs/02-GMI format.do:L579-L579`. Next: `block:f752cb56568f1047`.
+
+```stata
+use "$interm\GMI_extended_${rnd}_ind_labor_fmt.dta", clear
+```
+Read datasets: `dataset:5ef2c925e2e8feb7`
+
+### block:f752cb56568f1047
+
+Evidence: `01.Programs/02-GMI format.do:L581-L581`. Next: `block:499b2c29f0a1c97f`.
+
+```stata
+drop _industry_ind1- _industry10_ind_m
+```
+Read candidates: `variable:b7d450e9ca91c13c`, `variable:4821ebd60b3a9223`
+
+### block:499b2c29f0a1c97f
+
+Evidence: `01.Programs/02-GMI format.do:L582-L582`. Next: `block:7488e1143ed674f9`.
+
+```stata
+drop _working_ind- _empstat_ind_m
+```
+Read candidates: `variable:587b6515d06106ae`, `variable:6bad9c7716692dee`
+
+### block:7488e1143ed674f9
+
+Evidence: `01.Programs/02-GMI format.do:L583-L583`. Next: `block:aa8f7761e28c57f3`.
+
+```stata
+foreach ppp of global ppplist {
+```
+
+### block:aa8f7761e28c57f3
+
+Evidence: `01.Programs/02-GMI format.do:L584-L584`. Next: `block:004116c576d9b987`.
+
+```stata
+foreach line of global plines`ppp' {
+```
+Enclosing controls: `foreach ppp of global ppplist {`
+
+### block:004116c576d9b987
+
+Evidence: `01.Programs/02-GMI format.do:L585-L585`. Next: `block:3789e516b3c2c79e`.
+
+```stata
+ren *`line'* **_`line'
+```
+Enclosing controls: `foreach ppp of global ppplist {` → `foreach line of global plines`ppp' {`
+New: `variable:1fe86498516e0b1a`
+Read candidates: `variable:ffd3e24359740bfe`
+
+### block:3789e516b3c2c79e
+
+Evidence: `01.Programs/02-GMI format.do:L586-L586`. Next: `block:26efb64bb8806c51`.
+
+```stata
+}
+```
+Enclosing controls: `foreach ppp of global ppplist {`
+
+### block:26efb64bb8806c51
+
+Evidence: `01.Programs/02-GMI format.do:L587-L587`. Next: `block:9ed6addfb863003d`.
+
+```stata
+}
+```
+
+### block:9ed6addfb863003d
+
+Evidence: `01.Programs/02-GMI format.do:L589-L589`. Next: `block:e78a9584feb80245`.
+
+```stata
+reshape long poor poor_wrk nonpoor_wrk poor_wrkemp_1 nonpoor_wrkemp_1 poor_wrkemp_2 nonpoor_wrkemp_2 poor_wrkemp_3 nonpoor_wrkemp_3 poor_wrkemp_4 nonpoor_wrkemp_4 poor_wrkemp_5 nonpoor_wrkemp_5 poor_wrki4_1 nonpoor_wrki4_1 poor_wrki4_2 nonpoor_wrki4_2 poor_wrki4_3 nonpoor_wrki4_3 poor_wrki4_4 nonpoor_wrki4_4, i(code year survname data data_group) j(line) string
+```
+Read candidates: `variable:3e41f9296de4ac4e`, `variable:9b54174b1c770e2e`, `variable:936b37422915a9d9`, `variable:9abadf2e8ecbb980`, `variable:43898f6cae654e5f`, `variable:dac1af8fadd0b4af`, `variable:0f63047d9fb0d35c`, `variable:ef3f2fe751e0f2e0`, `variable:6bf4c1381d9481a8`, `variable:71cc08b83ff67880`, `variable:68313e0653b8a9e4`, `variable:399649fe5ce05652`, `variable:c7adec787c098111`, `variable:76df6328a639f173`, `variable:f19feeae7dc948c8`, `variable:039d1d4abf15bbc4`, `variable:d72602510c751f71`, `variable:04ab13d2b6520daf`, `variable:fb765930ad3f5356`, `variable:10ee0e32e49a2f7c`, `variable:f95f279203687887`, `variable:7546aa19561305a1`, `variable:15632d42350bf6c3`, `variable:3f4a00eeda224155`, `variable:d7b179ad16097688`, `variable:9aee3ed73b582eab`, `variable:cb1e2ec082fb5579`, `variable:2bb091f584becab6`
+
+### block:e78a9584feb80245
+
+Evidence: `01.Programs/02-GMI format.do:L591-L591`. Next: `block:ed2edf71f3e83410`.
+
+```stata
+replace line = subinstr(line, "_","",.)
+```
+Modified: `variable:cb1e2ec082fb5579`
+Read candidates: `variable:cb1e2ec082fb5579`
+
+### block:ed2edf71f3e83410
+
+Evidence: `01.Programs/02-GMI format.do:L592-L592`. Next: `block:8ed00d108a24a44b`.
+
+```stata
+destring line, replace
+```
+Modified: `variable:cb1e2ec082fb5579`
+Read candidates: `variable:cb1e2ec082fb5579`
+
+### block:8ed00d108a24a44b
+
+Evidence: `01.Programs/02-GMI format.do:L594-L594`. Next: `block:0a3337f797c26b0f`.
+
+```stata
+gen ppp = .
+```
+New: `variable:cb5ef0aaa7d7abae`
+
+### block:0a3337f797c26b0f
+
+Evidence: `01.Programs/02-GMI format.do:L595-L595`. Next: `block:8d8c69aaae93f7c7`.
+
+```stata
+replace ppp = 2021 if inlist(line,300, 420, 830, 450, 630, 1245, 600, 840, 1660)
+```
+Modified: `variable:cb5ef0aaa7d7abae`
+Read candidates: `variable:cb1e2ec082fb5579`
+
+### block:8d8c69aaae93f7c7
+
+Evidence: `01.Programs/02-GMI format.do:L596-L596`. Next: `block:1d7795fa23b455dc`.
+
+```stata
+replace ppp = 2017 if inlist(line,215, 365, 685, 322, 547, 1027, 430, 730, 1370)
+```
+Modified: `variable:cb5ef0aaa7d7abae`
+Read candidates: `variable:cb1e2ec082fb5579`
+
+### block:1d7795fa23b455dc
+
+Evidence: `01.Programs/02-GMI format.do:L597-L597`. Next: `block:4be5be8f7815b356`.
+
+```stata
+sort code year survname ppp line data data_group
+```
+
+### block:4be5be8f7815b356
+
+Evidence: `01.Programs/02-GMI format.do:L598-L598`. Next: `block:62063aed0d9e3f3a`.
+
+```stata
+order sample code year surv_year ref_year surveyid survname mod byvar level data data_group  link survey_coverage datatype comparability ppp line
+```
+
+### block:62063aed0d9e3f3a
+
+Evidence: `01.Programs/02-GMI format.do:L600-L600`. Next: `block:0f2acb8e2cec81d1`.
+
+```stata
+la var poor "Poverty rate, line/day (%),  PPP, population 15-64"
+```
+
+### block:0f2acb8e2cec81d1
+
+Evidence: `01.Programs/02-GMI format.do:L601-L601`. Next: `block:5e3708c499b0a5bc`.
+
+```stata
+la var poor_wrk "Share of poor (line/day) working (%),  PPP, population 15-64"
+```
+
+### block:5e3708c499b0a5bc
+
+Evidence: `01.Programs/02-GMI format.do:L602-L602`. Next: `block:089b3ec2823cfb38`.
+
+```stata
+la var nonpoor_wrk "Share of non-poor (line/day) working (%),  PPP, population 15-64"
+```
+
+### block:089b3ec2823cfb38
+
+Evidence: `01.Programs/02-GMI format.do:L604-L604`. Next: `block:9012d866d9f74401`.
+
+```stata
+la var poor_wrkemp_1 "Share of poor (line/day) working as paid employee (%),  PPP, population 15-64"
+```
+
+### block:9012d866d9f74401
+
+Evidence: `01.Programs/02-GMI format.do:L605-L605`. Next: `block:0ed587e12fbab3a3`.
+
+```stata
+la var nonpoor_wrkemp_1 "Share of non-poor (line/day) working as paid employee (%),  PPP, population 15-64"
+```
+
+### block:0ed587e12fbab3a3
+
+Evidence: `01.Programs/02-GMI format.do:L606-L606`. Next: `block:0a2454cad53b2bb5`.
+
+```stata
+la var poor_wrkemp_2 "Share of poor (line/day) working as non-paid employee/family worker (%),  PPP, population 15-64"
+```
+
+### block:0a2454cad53b2bb5
+
+Evidence: `01.Programs/02-GMI format.do:L607-L607`. Next: `block:2faacc02e2d636b9`.
+
+```stata
+la var nonpoor_wrkemp_2 "Share of non-poor (line/day) working as non-paid employee/family worker (%),  PPP, population 15-64"
+```
+
+### block:2faacc02e2d636b9
+
+Evidence: `01.Programs/02-GMI format.do:L608-L608`. Next: `block:19d1c68b238b9b02`.
+
+```stata
+la var poor_wrkemp_3 "Share of poor (line/day) working as employer (%),  PPP, population 15-64"
+```
+
+### block:19d1c68b238b9b02
+
+Evidence: `01.Programs/02-GMI format.do:L609-L609`. Next: `block:c2dcbb7bca648041`.
+
+```stata
+la var nonpoor_wrkemp_3 "Share of non-poor (line/day) working as employer (%),  PPP, population 15-64"
+```
+
+### block:c2dcbb7bca648041
+
+Evidence: `01.Programs/02-GMI format.do:L610-L610`. Next: `block:912e38e393fac0dd`.
+
+```stata
+la var poor_wrkemp_4 "Share of poor (line/day) working as self-employed (%),  PPP, population 15-64"
+```
+
+### block:912e38e393fac0dd
+
+Evidence: `01.Programs/02-GMI format.do:L611-L611`. Next: `block:d54d5a267329febf`.
+
+```stata
+la var nonpoor_wrkemp_4 "Share of non-poor (line/day) working as self-employed (%),  PPP, population 15-64"
+```
+
+### block:d54d5a267329febf
+
+Evidence: `01.Programs/02-GMI format.do:L612-L612`. Next: `block:f990ae617a0483d1`.
+
+```stata
+la var poor_wrkemp_5 "Share of poor (line/day) working as other not classifiable (%),  PPP, population 15-64"
+```
+
+### block:f990ae617a0483d1
+
+Evidence: `01.Programs/02-GMI format.do:L613-L613`. Next: `block:be8dbf1ad48da29a`.
+
+```stata
+la var nonpoor_wrkemp_5 "Share of non-poor (line/day) working as other not classifiable (%),  PPP, population 15-64"
+```
+
+### block:be8dbf1ad48da29a
+
+Evidence: `01.Programs/02-GMI format.do:L615-L615`. Next: `block:93b0f6de4cffa04d`.
+
+```stata
+la var poor_wrki4_1 "Share of poor (line/day) working in agriculture (%),  PPP, population 15-64"
+```
+
+### block:93b0f6de4cffa04d
+
+Evidence: `01.Programs/02-GMI format.do:L616-L616`. Next: `block:3ad1d6ba39571096`.
+
+```stata
+la var nonpoor_wrki4_1 "Share of non-poor (line/day) working in agriculture (%),  PPP, population 15-64"
+```
+
+### block:3ad1d6ba39571096
+
+Evidence: `01.Programs/02-GMI format.do:L617-L617`. Next: `block:b052bf5417efdadc`.
+
+```stata
+la var poor_wrki4_2 "Share of poor (line/day) working in industry (%),  PPP, population 15-64"
+```
+
+### block:b052bf5417efdadc
+
+Evidence: `01.Programs/02-GMI format.do:L618-L618`. Next: `block:50e688130ef128a1`.
+
+```stata
+la var nonpoor_wrki4_2 "Share of non-poor (line/day) working in industry (%),  PPP, population 15-64"
+```
+
+### block:50e688130ef128a1
+
+Evidence: `01.Programs/02-GMI format.do:L619-L619`. Next: `block:74232ff3ad803132`.
+
+```stata
+la var poor_wrki4_3 "Share of poor (line/day) working in Services (%),  PPP, population 15-64"
+```
+
+### block:74232ff3ad803132
+
+Evidence: `01.Programs/02-GMI format.do:L620-L620`. Next: `block:ba8c37ca10dbff29`.
+
+```stata
+la var nonpoor_wrki4_3 "Share of non-poor (line/day) working in Services (%),  PPP, population 15-64"
+```
+
+### block:ba8c37ca10dbff29
+
+Evidence: `01.Programs/02-GMI format.do:L621-L621`. Next: `block:549ea5c5bab389fe`.
+
+```stata
+la var poor_wrki4_4 "Share of poor (line/day) working in Others (%),  PPP, population 15-64"
+```
+
+### block:549ea5c5bab389fe
+
+Evidence: `01.Programs/02-GMI format.do:L622-L622`. Next: `block:f10fd9a6ebe2e707`.
+
+```stata
+la var nonpoor_wrki4_4 "Share of non-poor (line/day) working in Others (%),  PPP, population 15-64"
+```
+
+### block:f10fd9a6ebe2e707
+
+Evidence: `01.Programs/02-GMI format.do:L624-L624`. Next: `block:f4ca55eb5f9701d5`.
+
+```stata
+la var line "Poverty line"
+```
+
+### block:f4ca55eb5f9701d5
+
+Evidence: `01.Programs/02-GMI format.do:L625-L625`. Next: `block:2722551f0eac6bf0`.
+
+```stata
+la var ppp "PPP year"
+```
+
+### block:2722551f0eac6bf0
+
+Evidence: `01.Programs/02-GMI format.do:L626-L626`. Next: `block:b120d7e843e4deef`.
+
+```stata
+sort code year survname ppp line data data_group
+```
+
+### block:b120d7e843e4deef
+
+Evidence: `01.Programs/02-GMI format.do:L627-L627`. Next: `block:007ee0c9248847b2`.
+
+```stata
+compress
+```
+
+### block:007ee0c9248847b2
+
+Evidence: `01.Programs/02-GMI format.do:L628-L628`. Next: `block:352cc819a275ab14`.
+
+```stata
+save "$interm\GMI_extended_${rnd}_ind_labor_long_fmt.dta", replace
+```
+Write datasets: `dataset:f8188c5b231df7db`
+
+### block:352cc819a275ab14
+
+Evidence: `01.Programs/02-GMI format.do:L629-L629`. Next: `block:e89d4cdca016e3cc`.
+
+```stata
+save "$pea\GMI_extended_ind_labor_long_fmt.dta", replace
+```
+Write datasets: `dataset:cdd28195c4b85619`
+
+### block:e89d4cdca016e3cc
+
+Evidence: `01.Programs/02-GMI format.do:L635-L635`. Next: `block:0b55d30c27918171`.
+
+```stata
+use "$interm\GMI_extended_${rnd}_prosg_decomp.dta", clear
+```
+Read datasets: `dataset:edc86bfd1e0c5ba1`
+
+### block:0b55d30c27918171
+
+Evidence: `01.Programs/02-GMI format.do:L636-L636`. Next: `block:e60fb5a5fb561c4f`.
+
+```stata
+drop if ch_lnprosg==.
+```
+Read candidates: `variable:846e21f79fad620b`
+
+### block:e60fb5a5fb561c4f
+
+Evidence: `01.Programs/02-GMI format.do:L637-L637`. Next: `block:ad221b13b9984dca`.
+
+```stata
+duplicates drop _all, force
+```
+
+### block:ad221b13b9984dca
+
+Evidence: `01.Programs/02-GMI format.do:L638-L638`. Next: `block:5e90c061d41dad3a`.
+
+```stata
+sort code spell welftype ppp
+```
+
+### block:5e90c061d41dad3a
+
+Evidence: `01.Programs/02-GMI format.do:L639-L639`. Next: `block:e691e3f286ab8ce6`.
+
+```stata
+keep code welftype spell ch_* ppp
+```
+Read candidates: `variable:058a5325ab03d3f8`, `variable:e4edda55a1147fcf`, `variable:fc8dbe919e230f57`, `variable:009b29069a73027f`, `variable:39dc86fa931e38e1`
+
+### block:e691e3f286ab8ce6
+
+Evidence: `01.Programs/02-GMI format.do:L640-L640`. Next: `block:b57748edf0f8f741`.
+
+```stata
+isid code spell ppp welftype
+```
+Read candidates: `variable:058a5325ab03d3f8`, `variable:fc8dbe919e230f57`, `variable:39dc86fa931e38e1`, `variable:e4edda55a1147fcf`
+
+### block:b57748edf0f8f741
+
+Evidence: `01.Programs/02-GMI format.do:L641-L641`. Next: `block:2e6698832c124ab2`.
+
+```stata
+order code spell ppp welftype
+```
+
+### block:2e6698832c124ab2
+
+Evidence: `01.Programs/02-GMI format.do:L642-L642`. Next: `block:1d8ed97f3438688f`.
+
+```stata
+la var ch_lnprosg "Growth in Prosperity gap"
+```
+
+### block:1d8ed97f3438688f
+
+Evidence: `01.Programs/02-GMI format.do:L643-L643`. Next: `block:c28a8fee0ac3a183`.
+
+```stata
+la var ch_lninq_y_ybar "Contribution of growth in inequality"
+```
+
+### block:c28a8fee0ac3a183
+
+Evidence: `01.Programs/02-GMI format.do:L644-L644`. Next: `block:0f1c9d3f66a45ce2`.
+
+```stata
+la var ch_lnmean "Contribution of growth in mean"
+```
+
+### block:0f1c9d3f66a45ce2
+
+Evidence: `01.Programs/02-GMI format.do:L645-L645`. Next: `block:9b5c410a23c287c3`.
+
+```stata
+la var code "Country code"
+```
+
+### block:9b5c410a23c287c3
+
+Evidence: `01.Programs/02-GMI format.do:L646-L646`. Next: `block:59ebac1b30ae0d6d`.
+
+```stata
+la var spell "Spell/period"
+```
+
+### block:59ebac1b30ae0d6d
+
+Evidence: `01.Programs/02-GMI format.do:L647-L647`. Next: `block:6f150ce874fc8af7`.
+
+```stata
+la var ppp "PPP"
+```
+
+### block:6f150ce874fc8af7
+
+Evidence: `01.Programs/02-GMI format.do:L648-L648`. Next: `block:d3fb2111b68ce275`.
+
+```stata
+la var welftype "Welfare type: income or consumption"
+```
+
+### block:d3fb2111b68ce275
+
+Evidence: `01.Programs/02-GMI format.do:L649-L649`. Next: `block:68a7e630655844bf`.
+
+```stata
+compress
+```
+
+### block:68a7e630655844bf
+
+Evidence: `01.Programs/02-GMI format.do:L650-L650`. Next: `block:f955e1c53bb5654e`.
+
+```stata
+saveold "$interm\GMI_extended_${rnd}_prosg_decomp_fmt.dta", replace
+```
+Write datasets: `dataset:e6546d823b2ba046`
+
+### block:f955e1c53bb5654e
+
+Evidence: `01.Programs/02-GMI format.do:L651-L651`. Next: `end`.
+
+```stata
+save "$pea\GMI_extended_prosg_decomp_fmt.dta", replace
+```
+Write datasets: `dataset:50ac8b2767de2ab8`

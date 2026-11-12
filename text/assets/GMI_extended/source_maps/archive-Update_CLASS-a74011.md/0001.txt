@@ -1,0 +1,35 @@
+# 01.Programs/archive/Update CLASS.do
+
+Sanitized source projection; applicability placeholders are not executable values. Original SHA256: e1963c1766b4536d5314f4226b8ea3eae7a0fa560ee60931b1a488bb1bf85651
+
+```stata
+0001 | tempfile inc_group
+0002 | use c:\ado\personal\pea\CLASS_pip.dta , clear
+0003 | 			
+0004 | clonevar region_pip = region
+0005 | *ren regionpcn_code region_pip
+0006 | ren regionssa_code region_SSA
+0007 | ren incgroup incgroup_historical
+0008 | bys code (year_data): gen incgroup_current = incgroup_historical[_N]
+0009 | bys code (year_data): gen ida_current = ida[_N]
+0010 | bys code (year_data): gen fcv_current = fcv[_N]
+0011 | 
+0012 | ren ida ida_historical
+0013 | ren fcv fcv_historical
+0014 | drop ida_code fcv_code incgroup_code
+0015 | rename (year_data economy) (year country_name)
+0016 | 
+0017 | keep code year incgroup_historical incgroup_current region_pip region region_SSA country_name
+0018 | foreach i in incgroup_current incgroup_historical {
+0019 | 	replace `i' = subinstr(`i', " ", "-", .)
+0020 | 	replace `i' = subinstr(`i', "income", "income countries", .)
+0021 | }
+0022 | save	`inc_group'
+0023 | * Add 2025 as year 
+0024 | keep if year == 0000
+0025 | replace year = 2025
+0026 | append using `inc_group'	
+0027 | char _dta[version] $S_DATE
+0028 | s
+0029 | save "c:\ado\personal\pea/CLASS_incg_region.dta", replace
+```

@@ -1,0 +1,589 @@
+# 01.Programs/archive/02-GMI format.do
+
+Sanitized source projection; applicability placeholders are not executable values. Original SHA256: 2dec353985ee30c07900f02e5d2568285575c7b99b0ded987fd5766c3bb0e7eb
+
+```stata
+0001 | //format GMI data
+0002 | 
+0003 | global rnd SM26
+0004 | global rnd1 SM2026
+0005 | global path \\wbgfscifs01\GTSD\03.projects_corp\04.GPWG\04.GPWG_${rnd}\04.GPWG_${rnd}_QA
+0006 | global reposource "${path}\01.programs\02.dofile\repo\"
+0007 | *global out \\wbgfscifs01\GPWG-GMD\Datalib\Minh\GMI\\${rnd}\
+0008 | global out D:\daylan\test\GMI\out\
+0009 | global pfw "D:\daylan\test\GMI\Survey_price_framework.dta"
+0010 | global pea "${out}\04.output\PEA_Dashboard\"
+0011 | 
+0012 | global ppplist 2017 2021
+0013 | global pppmax 2021
+0014 | 
+0015 | global plines2021 300 420 830 450 630 1245 600 840 1660
+0016 | global plines2017 215 365 685 322 547 1027 430 730 1370
+0017 | global plines2011 190 320 550
+0018 | 
+0019 | //pfw clean
+0020 | tempfile data1pfw
+0021 | use "$pfw" , clear
+0022 | gen welftype = "CONS" if datatype=="c"|datatype=="C"
+0023 | replace welftype = "INC" if datatype=="i"|datatype=="I"
+0024 | isid code year welftype
+0025 | save `data1pfw', replace
+0026 | 
+0027 | //poverty by groups
+0028 | tempfile data1
+0029 | use "${out}\\03.intermediate\\GMI_extended_${rnd}_allgroups1", clear
+0030 | 
+0031 | drop lvlvar
+0032 | replace level = trim(level)
+0033 | replace level = proper(level)
+0034 | drop poor
+0035 | gen data = ""
+0036 | replace data = "All sample" if byvar=="_all_"
+0037 | replace data = "Urban or rural" if byvar=="_urban_"
+0038 | replace data = "Gender" if byvar=="_male_"
+0039 | replace data = "Education" if byvar=="_educat"
+0040 | replace data = "Age groups" if byvar=="_agegr1_"
+0041 | replace data = "Gender-age 5-year groups" if byvar=="_agegender1"
+0042 | replace data = "Gender-age groups" if byvar=="_agegender2"
+0043 | replace data = "HH head age groups" if byvar=="_agegr2Xhh"
+0044 | replace data = "HH head education" if byvar=="_eduXhh"
+0045 | replace data = "HH head gender" if byvar=="_maleXhh"
+0046 | replace data = "Labor status" if byvar=="_lstatus"
+0047 | replace data = "Labor status 2" if byvar=="_lstatus2"
+0048 | 
+0049 | gen data_group = ""
+0050 | 
+0051 | local byvarlist _all_ _urban_ _male_ _educat _agegr1_ _agegender1 _agegender2 _agegr2Xhh _eduXhh _maleXhh _lstatus _lstatus2
+0052 | foreach byvar1 of local byvarlist {
+0053 | 	replace data_group = level if byvar=="`byvar1'"
+0054 | }
+0055 | 
+0056 | replace data_group = "Urban" if byvar=="_urban_" & level=="1"| level=="1.Urban"
+0057 | replace data_group = "Rural" if byvar=="_urban_" & level=="0"| level=="0.Rural"
+0058 |     
+0059 | replace data_group = "Male" if byvar=="_male_" & level=="1"| level=="1. Male"|level=="1.Male"
+0060 | replace data_group = "Female" if byvar=="_male_" & level=="0"| level=="0.Female"
+0061 | replace data_group = "Missing" if byvar=="_male_" & level=="."
+0062 |     
+0063 | replace data_group = "Male" if byvar=="_maleXhh" & level=="1"| level=="1. Male"|level=="1.Male"
+0064 | replace data_group = "Female" if byvar=="_maleXhh" & level=="0"| level=="0.Female"
+0065 | replace data_group = "Missing" if byvar=="_maleXhh" & level=="."
+0066 | 
+0067 | replace data_group = "Missing" if byvar=="_agegender2" & (level=="F_"|level=="M_")
+0068 | replace data_group = "Missing" if byvar=="_agegender1" & (level=="F_"|level=="M_")
+0069 | forv x=0(5)70 {
+0070 | 	replace data_group = "Missing" if byvar=="_agegender1" & level=="`x'-"
+0071 | }
+0072 | drop if data_group=="9" & (data=="Gender"|data=="HH head gender")
+0073 | 
+0074 | save `data1', replace
+0075 | 
+0076 | sort code year surveyid byvar level
+0077 | drop mean2017 mean2021 nohh count noind* gini theil totalhh totalind* sh_hh sh_pop* sh_b40 sh_t60 sh_d_1 sh_d_2 sh_d_3 sh_d_4 sh_d_5 prosgap2017 prosgap2021 poor_b40 poor_d1 poor_d2 poor_d3 poor_d4 poor_d5
+0078 | 
+0079 | reshape long poor gap1_ gap2_, i( code surveyid year mod byvar level data data_group) j(line)
+0080 | 
+0081 | gen ppp = .
+0082 | foreach ppp1 of global ppplist {
+0083 | 	foreach num of numlist ${plines`ppp1'} {
+0084 | 		replace ppp = `ppp1' if line==`num'
+0085 | 	}
+0086 | }
+0087 | 
+0088 | gen linegroup = .
+0089 | replace linegroup = 1 if inlist(line,300, 420, 830, 215, 365, 685)
+0090 | replace linegroup = 2 if inlist(line,450, 630, 1245, 322, 547, 1027)
+0091 | replace linegroup = 3 if inlist(line,600, 840, 1660, 430, 730, 1370)
+0092 | la def linegroup 1 "International PLs" 2 "1.5*International PLs" 3 "2*International PLs"
+0093 | la val linegroup linegroup
+0094 | 
+0095 | sort code surveyid year mod ppp line byvar level
+0096 | 
+0097 | merge m:1 code surveyid year mod byvar level using `data1', keepus(noind* sh_hh sh_pop*)
+0098 | 
+0099 | drop _merge
+0100 | sort code surveyid year mod ppp line byvar level
+0101 | 
+0102 | //update sh_pop based on each intended population such as education for 15+, labor 15-64
+0103 | replace sh_pop = sh_pop15p if byvar=="_educat"
+0104 | replace sh_pop = sh_pop1564 if byvar=="_lstatus"|byvar=="_lstatus2"
+0105 | 
+0106 | drop if data_group=="Missing"
+0107 | ren poor fgt0_headcount
+0108 | gen fgt0_npoor = fgt0_headcount*noind
+0109 | replace fgt0_npoor = fgt0_headcount*noind15p if byvar=="_educat"
+0110 | replace fgt0_npoor = fgt0_headcount*noind1564 if byvar=="_lstatus"|byvar=="_lstatus2"
+0111 | ren gap1_ fgt1
+0112 | ren gap2_ fgt2
+0113 | 
+0114 | bys code surveyid year ppp line data (data_group): egen totalpoor = total(fgt0_npoor) 
+0115 | sort code surveyid year ppp line data data_group
+0116 | gen fgt0_sharepoor = fgt0_npoor/totalpoor
+0117 | 
+0118 | la var code "Country code"
+0119 | la var year "Survey year"
+0120 | la var surveyid "Survey ID"
+0121 | la var ppp "PPP years"
+0122 | la var line "Poverty line"
+0123 | la var linegroup "Poverty line groups"
+0124 | la var data "Group level"
+0125 | la var data_group "Group categories"
+0126 | la var noind "Number of individuals"
+0127 | 
+0128 | la var fgt0_headcount "Poverty rate"
+0129 | la var fgt0_npoor "Number of poor"
+0130 | la var fgt1 "Poverty gap"
+0131 | la var fgt2 "Poverty severity"
+0132 | la var sh_hh "Share of household"
+0133 | la var sh_pop "Share of population"
+0134 | la var fgt0_sharepoor "Share of poor"
+0135 | 
+0136 | split surveyid, parse("_")
+0137 | ren surveyid3 survname
+0138 | drop surveyid1 surveyid2 surveyid4-surveyid8
+0139 | drop if code=="ISO3" & survname=="EU-SILC"
+0140 | 
+0141 | merge m:1 code year survname using $pfw , keepus(rep_year ref_year survey_coverage datatype comparability link)
+0142 | 
+0143 | //Daylan: Drop if missing ISO3 rep_year because not in pfw. Same format as AM25 file
+0144 | drop if code =="ISO3" & _merge ==1 //not in price framework
+0145 | 
+0146 | drop if _merge==2
+0147 | drop _merge
+0148 | 
+0149 | ren year surv_year
+0150 | ren rep_year year
+0151 | 
+0152 | drop if (data=="Gender"|data=="HH head gender") & data_group=="9"
+0153 | 
+0154 | order code year surv_year ref_year surveyid survname byvar level link survey_coverage datatype comparability ppp line data data_group
+0155 | 
+0156 | isid code surveyid year ppp line data data_group
+0157 | 
+0158 | compress
+0159 | 
+0160 | save "${out}\\03.intermediate\\GMI_extended_${rnd}_pov_groups_level", replace 
+0161 | save "${pea}\GMI_extended_pov_groups_level", replace 
+0162 | 
+0163 | use `data1', clear
+0164 | keep code surveyid year mean2017 mean2021 prosgap2017 prosgap2021 data data_group byvar level
+0165 | reshape long mean prosgap, i(code surveyid year data data_group byvar level)  j(ppp)
+0166 | merge m:1 code surveyid year data data_group byvar level using `data1', keepus(nohh count noind* gini theil totalhh totalind* sh_hh sh_pop*)
+0167 | drop _merge
+0168 | *drop if data_group=="Missing"
+0169 | sort code surveyid year ppp data data_group
+0170 | 
+0171 | //update sh_pop based on each intended population such as education for 15+, labor 15-64
+0172 | replace sh_pop = sh_pop15p if byvar=="_educat"
+0173 | replace sh_pop = sh_pop1564 if byvar=="_lstatus"|byvar=="_lstatus2"
+0174 | 
+0175 | la var code "Country code"
+0176 | la var year "Survey year"
+0177 | la var surveyid "Survey ID"
+0178 | la var ppp "PPP years"
+0179 | la var data "Group level"
+0180 | la var data_group "Group categories"
+0181 | la var noind "Number of individuals"
+0182 | la var sh_hh "Share of household"
+0183 | la var sh_pop "Share of population"
+0184 | la var mean "Mean of welfare"
+0185 | la var prosgap "Prosperity gap"
+0186 | la var totalhh "Number of total households"
+0187 | la var totalind "Number of total individuals"
+0188 | 
+0189 | split surveyid, parse("_")
+0190 | ren surveyid3 survname
+0191 | drop surveyid1 surveyid2 surveyid4-surveyid8
+0192 | drop if code=="ISO3" & survname=="EU-SILC"
+0193 | merge m:1 code year survname using $pfw , keepus(rep_year ref_year survey_coverage datatype comparability link)
+0194 | 
+0195 | drop if _merge==2
+0196 | drop _merge
+0197 | order code rep_year year surveyid survname byvar level link survey_coverage datatype comparability ppp  data data_group
+0198 | ren year surv_year
+0199 | ren rep_year year
+0200 | drop if (data=="Gender"|data=="HH head gender") & data_group=="9"
+0201 | compress
+0202 | save "${out}\\03.intermediate\\GMI_extended_${rnd}_inds_groups", replace 
+0203 | save "${pea}\GMI_extended_inds_groups", replace 
+0204 | 
+0205 | use `data1', clear
+0206 | ren poor* fgt0_*
+0207 | ren gap1* fgt1*
+0208 | ren gap2* fgt2*
+0209 | *drop fgt0_
+0210 | split surveyid, parse("_")
+0211 | ren surveyid3 survname
+0212 | drop surveyid1 surveyid2 surveyid4-surveyid8
+0213 | drop if code=="ISO3" & survname=="EU-SILC"
+0214 | merge m:1 code year survname using $pfw , keepus(rep_year ref_year survey_coverage datatype comparability link)
+0215 | 
+0216 | drop if _merge==2
+0217 | drop _merge
+0218 | order code rep_year year surveyid survname byvar level link survey_coverage datatype comparability   data data_group
+0219 | ren year surv_year
+0220 | ren rep_year year
+0221 | 
+0222 | la var code "Country code"
+0223 | la var year "Survey year"
+0224 | la var surveyid "Survey ID"
+0225 | la var data "Group level"
+0226 | la var data_group "Group categories"
+0227 | la var noind "Number of individuals"
+0228 | la var sh_hh "Share of household"
+0229 | la var sh_pop "Share of population"
+0230 | la var mean2017 "Mean of welfare 2017PPP"
+0231 | la var mean2021 "Mean of welfare 2021PPP"
+0232 | la var prosgap2017 "Prosperity gap 2017PPP"
+0233 | la var prosgap2021 "Prosperity gap 2021PPP"
+0234 | la var totalhh "Number of total households"
+0235 | la var totalind "Number of total individuals"
+0236 | drop if (data=="Gender"|data=="HH head gender") & data_group=="9"
+0237 | 
+0238 | sort code year surveyid survname   data data_group
+0239 | compress
+0240 | save "${out}\\03.intermediate\\GMI_extended_${rnd}_groups_wide", replace 
+0241 | 
+0242 | //Poor and non-poor
+0243 | use "${out}\\03.intermediate\\GMI_extended_${rnd}_PNP1", clear
+0244 | replace _bygroup = 2 if _bygroup==1 & _varname=="_total"
+0245 | la def _bygroup 1 "Poor" 0 "Nonpoor" 2 "Total"
+0246 | la val _bygroup _bygroup
+0247 | 
+0248 | gen line1 = subinstr( _varname,"poor","",.)
+0249 | gen line = line1 if line1~="_total"
+0250 | destring line, replace
+0251 | drop line1
+0252 | 
+0253 | gen ppp = .
+0254 | replace ppp = 2021 if inlist(line,300, 420, 830, 450, 630, 1245, 600, 840, 1660)
+0255 | replace ppp = 2017 if inlist(line,215, 365, 685, 322, 547, 1027, 430, 730, 1370)
+0256 | order code surveyid year mod _bygroup _varname line ppp
+0257 | sort code surveyid year mod ppp line _varname _bygroup  
+0258 |   
+0259 | la var _demo_age_hh "Age of household head (average)"
+0260 | la var _demo_edu_hh1 "Household head's highest level of education: No education (%)"
+0261 | la var _demo_edu_hh2 "Household head's highest level of education: Primary (%)"
+0262 | la var _demo_edu_hh3 "Household head's highest level of education: Secondary (%)"
+0263 | la var _demo_edu_hh4 "Household head's highest level of education: Tertiary (%)"
+0264 | la var _demo_edu_hh_m "Household head's highest level of education: Missing (%)"
+0265 | la var _demo_male_hh "Household head is male (%)"
+0266 | la var _married_head "Household head is married (%)"  
+0267 | la var _working_head "Labor force status of household head (%) - working"
+0268 | la var _notworking_head "Labor force status of household head (%) - Not working (unemployed or out of labor force)"
+0269 | la var _misslfs_head "Labor force status of household head (%) - missing"
+0270 | la var _industry_head1 "Economic sector of household head (%) - Agriculture"
+0271 | la var _industry_head2 "Economic sector of household head (%) - Industry"
+0272 | la var _industry_head3 "Economic sector of household head (%) - Services"
+0273 | la var _industry_head4 "Economic sector of household head (%) - Others"
+0274 | la var _industry_head_m "Economic sector of household head (%) - missing"
+0275 | la var _empstat_head1 "Employment status of household head (%) - Paid Employee"
+0276 | la var _empstat_head2 "Employment status of household head (%) - Non-Paid Employee"
+0277 | la var _empstat_head3 "Employment status of household head (%) - Employer"
+0278 | la var _empstat_head4 "Employment status of household head (%) - Self-employed"
+0279 | la var _empstat_head5 "Employment status of household head (%) - Other, workers not classifiable by status"
+0280 | la var _empstat_head_m "Employment status of household head (%) - missing"
+0281 | la var imp_wat_rec "Improved access to drinking water"
+0282 | la var imp_san_rec "Improved access to sanitation facilities"
+0283 | la var electricity "Access to electricity"
+0284 | la var cellphone "Own mobile phone (at least one)"
+0285 | la var computer "Own computer"
+0286 | la var dep_ratio "Household dependency ratio (average)"
+0287 | la var age6t18_sh "Share of children (age 6-18) in household (%)"
+0288 | la var age65p_sh "Share of elderly (age 65+) in household (%)"
+0289 | la var age6t18_sch_ratio "Share of children age 6-18 attending school (%)"
+0290 | la var tv "Have TV"
+0291 | la var car "Have car"
+0292 | la var fridge "Have fridge"
+0293 | 
+0294 | split surveyid, parse("_")
+0295 | ren surveyid3 survname
+0296 | drop surveyid1 surveyid2 surveyid4-surveyid8
+0297 | drop if code=="ISO3" & survname=="EU-SILC"
+0298 | merge m:1 code year survname using $pfw , keepus(rep_year ref_year survey_coverage datatype comparability link)
+0299 | 
+0300 | drop if _merge==2
+0301 | drop _merge
+0302 | order code rep_year year surveyid survname _bygroup _varname  link survey_coverage datatype comparability ppp line
+0303 | 
+0304 | la var code "Country code"
+0305 | la var year "Survey year"
+0306 | la var surveyid "Survey ID"
+0307 | la var ppp "PPP years"
+0308 | la var line "Poverty lines"
+0309 | la var _bygroup "Poor/nonpoor/total"
+0310 | ren year surv_year
+0311 | ren rep_year year
+0312 | compress
+0313 | 
+0314 | save "${out}\\03.intermediate\\GMI_extended_${rnd}_poornonpoor_groups", replace 
+0315 | save "${pea}\GMI_extended_poornonpoor_groups", replace 
+0316 | 
+0317 | 
+0318 | //Spell data statistics 
+0319 | use "${out}\\03.intermediate\\GMI_extended_${rnd}_GIC.dta", clear
+0320 | drop if data_group==.|data_group==.o
+0321 | replace data_group= 2 if data_group==1 & data=="All sample"
+0322 | la var data "Data sample"
+0323 | la var data_group "Data categories"
+0324 | la var ppp "PPP year"
+0325 | la var welftype "Welfare type"
+0326 | 
+0327 | merge m:1 code year welftype using `data1pfw', keepus(survname rep_year ref_year survey_coverage datatype comparability link)
+0328 | drop if _merge==2
+0329 | drop _merge
+0330 | 
+0331 | ren year surv_year
+0332 | ren rep_year year
+0333 | drop if code=="ISO3" & survname=="EU-SILC"
+0334 | order code year surv_year welftype survname    link survey_coverage datatype comparability ppp 
+0335 | sort code year survname ppp data_group q100
+0336 | 
+0337 | save "${out}\\03.intermediate\\GMI_extended_${rnd}_GIC_fmt.dta", replace
+0338 | save "${pea}\GMI_extended_GIC_fmt.dta", replace 
+0339 | 
+0340 | use "${out}\\03.intermediate\\GMI_extended_${rnd}_decomp1.dta", clear
+0341 | append using "${out}\\03.intermediate\\GMI_extended_${rnd}_decomp2.dta"
+0342 | 
+0343 | drop if decomp=="Shorrocks-Kolenikov"
+0344 | replace value4 = . if value4==-9999
+0345 | drop if value3==.
+0346 | la var value1 "Total change in p.p."
+0347 | la var value2 "Growth"
+0348 | la var value3 "Redistribution"
+0349 | la var value4 "Population shift" 
+0350 | la var value5 "Interaction"
+0351 | 
+0352 | la var spell "Survey spells"
+0353 | la var decomp "Decomposition type"
+0354 | la var welftype "Welfare type"
+0355 | ren povline line
+0356 | la var line "Poverty line"
+0357 | la var ppp "PPP year"
+0358 | 
+0359 | save "${out}\\03.intermediate\\GMI_extended_${rnd}_decomp_fmt.dta", replace
+0360 | save "${pea}\GMI_extended_decomp_fmt.dta", replace 
+0361 | 
+0362 | //Poverty and labor indicator (individual)
+0363 | use "${out}\\03.intermediate\\GMI_extended_${rnd}_ind_labor_sub.dta" , clear
+0364 | keep if byvar=="_agegr1_"|byvar=="_all_"|byvar=="_educat"|byvar=="_male_"|byvar=="_urban_"|byvar=="quintiles"
+0365 | compress
+0366 | save "${out}\\03.intermediate\\GMI_extended_${rnd}_ind_labor.dta", replace
+0367 | 
+0368 | *use "${out}\\03.intermediate\\GMI_extended_${rnd}_ind_labor.dta", clear
+0369 |  
+0370 | replace level = trim(level)
+0371 | replace level = proper(level)
+0372 | 
+0373 | gen data = ""
+0374 | replace data = "All sample" if byvar=="_all_"
+0375 | replace data = "Urban or rural" if byvar=="_urban_"
+0376 | replace data = "Gender" if byvar=="_male_"
+0377 | replace data = "Education" if byvar=="_educat"
+0378 | replace data = "Age groups" if byvar=="_agegr1_"
+0379 | replace data = "Quintiles" if byvar=="quintiles"
+0380 | drop if level=="."
+0381 | gen data_group = ""
+0382 | 
+0383 | local byvarlist _all_ _urban_ _male_ _educat _agegr1_  quintiles
+0384 | foreach byvar1 of local byvarlist {
+0385 | 	replace data_group = level if byvar=="`byvar1'"
+0386 | }
+0387 | 
+0388 | replace data_group = "Urban" if byvar=="_urban_" & level=="1"| level=="1.Urban"
+0389 | replace data_group = "Rural" if byvar=="_urban_" & level=="0"| level=="0.Rural"
+0390 |     
+0391 | replace data_group = "Male" if byvar=="_male_" & level=="1"| level=="1. Male"|level=="1.Male"
+0392 | replace data_group = "Female" if byvar=="_male_" & level=="0"| level=="0.Female"
+0393 | replace data_group = "Missing" if byvar=="_male_" & level=="."
+0394 | 
+0395 | drop if (data=="Gender"|data=="HH head gender") & data_group=="9"
+0396 | 
+0397 | gen sample = "Individual 15-64"
+0398 | 
+0399 | order sample code year surveyid mod byvar level data data_group nohh count noind totalhh totalind sh_hh sh_pop 
+0400 | 
+0401 | la var sample "Population sample"
+0402 | la var code "Country code"
+0403 | la var year "Survey year"
+0404 | la var surveyid "Survey ID"
+0405 | la var mod "Module"
+0406 | la var byvar "Subgroup variable"
+0407 | la var level "Subgroup categories"
+0408 | la var data "Group level"
+0409 | la var data_group "Group categories"
+0410 | la var nohh "number of households"
+0411 | la var count "count"
+0412 | la var noind "Number of individuals"
+0413 | la var sh_hh "Share of household"
+0414 | la var sh_pop "Share of population"
+0415 | la var totalhh "Number of total households"
+0416 | la var totalind "Number of total individuals"
+0417 |  
+0418 | la var _working_ind "Share of population (15-64) working (%)"
+0419 | la var _notworking_ind "Share of population (15-64) not working (%)"
+0420 | la var _misslfs_ind "Share of population (15-64) missing lstatus (%)"
+0421 | la var _empstat_ind1 "Share of population (15-64) working as paid employee (%)"
+0422 | la var _empstat_ind2 "Share of population (15-64) working as Non-paid employee/family worker (%)"
+0423 | la var _empstat_ind3 "Share of population (15-64) working as employer (%)"
+0424 | la var _empstat_ind4 "Share of population (15-64) working as self-employed (%)"
+0425 | la var _empstat_ind5 "Share of population (15-64) working as other not classifiable (%)"
+0426 | la var _empstat_ind_m "Share of population (15-64) working with missing employment status (%)"
+0427 | la var _industry_ind1 "Share of population (15-64) working in agriculture (%)"
+0428 | la var _industry_ind2 "Share of population (15-64) working in industry (%)"
+0429 | la var _industry_ind3 "Share of population (15-64) working in services (%)"
+0430 | la var _industry_ind4 "Share of population (15-64) working in others (%)"
+0431 | la var _industry_nonagr_ind "Share of population (15-64) working in non-agriculture (%)"
+0432 | la var _industry_ind_m "Share of population (15-64) working with missing industry (%)"
+0433 | 
+0434 | la var _industry10_ind1 "Share of population (15-64) working in Agriculture (%)"
+0435 | la var _industry10_ind2 "Share of population (15-64) working in Mining (%)"
+0436 | la var _industry10_ind3 "Share of population (15-64) working in Manufacturing (%)"
+0437 | la var _industry10_ind4 "Share of population (15-64) working in Public Utility Services (%)"
+0438 | la var _industry10_ind5 "Share of population (15-64) working in Construction (%)"
+0439 | la var _industry10_ind6 "Share of population (15-64) working in Commerce (%)"
+0440 | la var _industry10_ind7 "Share of population (15-64) working in Transport and Communications (%)"
+0441 | la var _industry10_ind8 "Share of population (15-64) working in Financial and Business Services (%)"
+0442 | la var _industry10_ind9 "Share of population (15-64) working in Public Administration (%)"
+0443 | la var _industry10_ind10 "Share of population (15-64) working in Other services, unspecified (%)"
+0444 | la var _industry10_ind_m "Share of population (15-64) working with missing industry (%)"
+0445 | 
+0446 | foreach ppp of global ppplist {
+0447 | 	foreach line of global plines`ppp' {
+0448 | 		local ln `=round(`line'/100,0.01)'
+0449 | 		local ln: display %4.2f `ln'
+0450 | 		local ln `=trim("`ln'")'
+0451 | 		la var poor`line' "Poverty rate, $`ln'/day (%), `ppp' PPP, population 15-64"
+0452 | 		la var poor`line'_wrk "Share of poor ($`ln'/day) working (%), `ppp' PPP, population 15-64"
+0453 | 		la var nonpoor`line'_wrk "Share of non-poor ($`ln'/day) working (%), `ppp' PPP, population 15-64"
+0454 | 		
+0455 | 		la var poor`line'_wrkemp_1 "Share of poor ($`ln'/day) working as paid employee (%), `ppp' PPP, population 15-64"
+0456 | 		la var nonpoor`line'_wrkemp_1 "Share of non-poor ($`ln'/day) working as paid employee (%), `ppp' PPP, population 15-64"
+0457 | 		la var poor`line'_wrkemp_2 "Share of poor ($`ln'/day) working as non-paid employee/family worker (%), `ppp' PPP, population 15-64"
+0458 | 		la var nonpoor`line'_wrkemp_2 "Share of non-poor ($`ln'/day) working as non-paid employee/family worker (%), `ppp' PPP, population 15-64"
+0459 | 		la var poor`line'_wrkemp_3 "Share of poor ($`ln'/day) working as employer (%), `ppp' PPP, population 15-64"
+0460 | 		la var nonpoor`line'_wrkemp_3 "Share of non-poor ($`ln'/day) working as employer (%), `ppp' PPP, population 15-64"
+0461 | 		la var poor`line'_wrkemp_4 "Share of poor ($`ln'/day) working as self-employed (%), `ppp' PPP, population 15-64"
+0462 | 		la var nonpoor`line'_wrkemp_4 "Share of non-poor ($`ln'/day) working as self-employed (%), `ppp' PPP, population 15-64"
+0463 | 		la var poor`line'_wrkemp_5 "Share of poor ($`ln'/day) working as other not classifiable (%), `ppp' PPP, population 15-64"
+0464 | 		la var nonpoor`line'_wrkemp_5 "Share of non-poor ($`ln'/day) working as other not classifiable (%), `ppp' PPP, population 15-64"
+0465 | 		
+0466 | 		la var poor`line'_wrki4_1 "Share of poor ($`ln'/day) working in agriculture (%), `ppp' PPP, population 15-64"
+0467 | 		la var nonpoor`line'_wrki4_1 "Share of non-poor ($`ln'/day) working in agriculture (%), `ppp' PPP, population 15-64"
+0468 | 		la var poor`line'_wrki4_2 "Share of poor ($`ln'/day) working in industry (%), `ppp' PPP, population 15-64"
+0469 | 		la var nonpoor`line'_wrki4_2 "Share of non-poor ($`ln'/day) working in industry (%), `ppp' PPP, population 15-64"
+0470 | 		la var poor`line'_wrki4_3 "Share of poor ($`ln'/day) working in Services (%), `ppp' PPP, population 15-64"
+0471 | 		la var nonpoor`line'_wrki4_3 "Share of non-poor ($`ln'/day) working in Services (%), `ppp' PPP, population 15-64"
+0472 | 		la var poor`line'_wrki4_4 "Share of poor ($`ln'/day) working in Others (%), `ppp' PPP, population 15-64"
+0473 | 		la var nonpoor`line'_wrki4_4 "Share of non-poor ($`ln'/day) working in Others (%), `ppp' PPP, population 15-64"
+0474 | 	}
+0475 | }
+0476 | drop if count<30
+0477 | drop lvlvar
+0478 | 
+0479 | split surveyid, parse("_")
+0480 | ren surveyid3 survname
+0481 | drop surveyid1 surveyid2 surveyid4-surveyid8
+0482 | drop if code=="ISO3" & survname=="EU-SILC"
+0483 | 
+0484 | merge m:1 code year survname using $pfw , keepus(rep_year ref_year survey_coverage datatype comparability link)
+0485 | 
+0486 | //Drop if not in price framework, that is the case of hun
+0487 | drop if code =="ISO3" & _merge==1
+0488 | 
+0489 | 
+0490 | drop if _merge==2
+0491 | drop _merge
+0492 | 
+0493 | ren year surv_year
+0494 | ren rep_year year
+0495 | 
+0496 | order sample code year surv_year surveyid survname mod byvar level data data_group  link survey_coverage datatype comparability  
+0497 | sort code year survname data data_group
+0498 | isid code year survname data data_group
+0499 | 
+0500 | unab allnonagr : *nonagr*
+0501 | local dropvars ""
+0502 | foreach v of local allnonagr {
+0503 |     if "`v'" != "_industry_nonagr_ind" {
+0504 |         local dropvars `dropvars' `v'
+0505 |     }
+0506 | }
+0507 | di "`dropvars'"
+0508 | drop `dropvars'
+0509 | 
+0510 | compress
+0511 | save "${out}\\03.intermediate\\GMI_extended_${rnd}_ind_labor_fmt.dta", replace
+0512 | save "${pea}\GMI_extended_ind_labor_fmt.dta", replace 
+0513 | 
+0514 | use "${out}\\03.intermediate\\GMI_extended_${rnd}_ind_labor_fmt.dta", clear
+0515 | 
+0516 | drop _industry_ind1- _industry10_ind_m
+0517 | drop _working_ind- _empstat_ind_m
+0518 | foreach ppp of global ppplist {
+0519 | 	foreach line of global plines`ppp' {
+0520 | 		ren *`line'* **_`line'
+0521 | 	}
+0522 | }
+0523 | 
+0524 | reshape long poor poor_wrk nonpoor_wrk poor_wrkemp_1 nonpoor_wrkemp_1 poor_wrkemp_2 nonpoor_wrkemp_2 poor_wrkemp_3 nonpoor_wrkemp_3 poor_wrkemp_4 nonpoor_wrkemp_4 poor_wrkemp_5 nonpoor_wrkemp_5 poor_wrki4_1 nonpoor_wrki4_1 poor_wrki4_2 nonpoor_wrki4_2 poor_wrki4_3 nonpoor_wrki4_3 poor_wrki4_4 nonpoor_wrki4_4, i(code year survname data data_group) j(line) string
+0525 | 
+0526 | replace line = subinstr(line, "_","",.)
+0527 | destring line, replace
+0528 | 
+0529 | gen ppp = .
+0530 | replace ppp = 2021 if inlist(line,300, 420, 830, 450, 630, 1245, 600, 840, 1660)
+0531 | replace ppp = 2017 if inlist(line,215, 365, 685, 322, 547, 1027, 430, 730, 1370)
+0532 | sort code year survname ppp line data data_group
+0533 | order sample code year surv_year ref_year surveyid survname mod byvar level data data_group  link survey_coverage datatype comparability ppp line 
+0534 | 
+0535 | la var poor "Poverty rate, line/day (%),  PPP, population 15-64"
+0536 | la var poor_wrk "Share of poor (line/day) working (%),  PPP, population 15-64"
+0537 | la var nonpoor_wrk "Share of non-poor (line/day) working (%),  PPP, population 15-64"
+0538 | 
+0539 | la var poor_wrkemp_1 "Share of poor (line/day) working as paid employee (%),  PPP, population 15-64"
+0540 | la var nonpoor_wrkemp_1 "Share of non-poor (line/day) working as paid employee (%),  PPP, population 15-64"
+0541 | la var poor_wrkemp_2 "Share of poor (line/day) working as non-paid employee/family worker (%),  PPP, population 15-64"
+0542 | la var nonpoor_wrkemp_2 "Share of non-poor (line/day) working as non-paid employee/family worker (%),  PPP, population 15-64"
+0543 | la var poor_wrkemp_3 "Share of poor (line/day) working as employer (%),  PPP, population 15-64"
+0544 | la var nonpoor_wrkemp_3 "Share of non-poor (line/day) working as employer (%),  PPP, population 15-64"
+0545 | la var poor_wrkemp_4 "Share of poor (line/day) working as self-employed (%),  PPP, population 15-64"
+0546 | la var nonpoor_wrkemp_4 "Share of non-poor (line/day) working as self-employed (%),  PPP, population 15-64"
+0547 | la var poor_wrkemp_5 "Share of poor (line/day) working as other not classifiable (%),  PPP, population 15-64"
+0548 | la var nonpoor_wrkemp_5 "Share of non-poor (line/day) working as other not classifiable (%),  PPP, population 15-64"
+0549 | 
+0550 | la var poor_wrki4_1 "Share of poor (line/day) working in agriculture (%),  PPP, population 15-64"
+0551 | la var nonpoor_wrki4_1 "Share of non-poor (line/day) working in agriculture (%),  PPP, population 15-64"
+0552 | la var poor_wrki4_2 "Share of poor (line/day) working in industry (%),  PPP, population 15-64"
+0553 | la var nonpoor_wrki4_2 "Share of non-poor (line/day) working in industry (%),  PPP, population 15-64"
+0554 | la var poor_wrki4_3 "Share of poor (line/day) working in Services (%),  PPP, population 15-64"
+0555 | la var nonpoor_wrki4_3 "Share of non-poor (line/day) working in Services (%),  PPP, population 15-64"
+0556 | la var poor_wrki4_4 "Share of poor (line/day) working in Others (%),  PPP, population 15-64"
+0557 | la var nonpoor_wrki4_4 "Share of non-poor (line/day) working in Others (%),  PPP, population 15-64"
+0558 | 
+0559 | la var line "Poverty line"
+0560 | la var ppp "PPP year"
+0561 | sort code year survname ppp line data data_group
+0562 | compress
+0563 | save "${out}\\03.intermediate\\GMI_extended_${rnd}_ind_labor_long_fmt.dta", replace
+0564 | save "${pea}\GMI_extended_ind_labor_long_fmt.dta", replace 
+0565 | 
+0566 | //Prosperity gap decomposition
+0567 | use "${out}\\03.intermediate\\GMI_extended_${rnd}_prosg_decomp.dta", clear
+0568 | drop if ch_lnprosg==.
+0569 | duplicates drop _all, force
+0570 | sort code spell welftype ppp
+0571 | keep code welftype spell ch_* ppp
+0572 | isid code spell ppp welftype
+0573 | order code spell ppp welftype
+0574 | la var ch_lnprosg "Growth in Prosperity gap"
+0575 | la var ch_lninq_y_ybar "Contribution of growth in inequality"
+0576 | la var ch_lnmean "Contribution of growth in mean"
+0577 | la var code "Country code"
+0578 | la var spell "Spell/period"
+0579 | la var ppp "PPP"
+0580 | la var welftype "Welfare type: income or consumption"
+0581 | compress
+0582 | saveold "${out}\\03.intermediate\\GMI_extended_${rnd}_prosg_decomp_fmt.dta", replace
+0583 | save "${pea}\GMI_extended_prosg_decomp_fmt.dta", replace 
+```

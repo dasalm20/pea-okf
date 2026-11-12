@@ -1,0 +1,1796 @@
+# 01.Programs/archive/01aa-GMI extended indicators.do
+
+Demographic subgroup poverty and poor/nonpoor profiles
+
+Status: PARTIAL_STATIC. Every lexically active statement is indexed; complete runtime schema and macro expansion are not established.
+
+Source snapshot: numbered source (deployment lookup: lookup/sources/GMI_extended/source_maps/archive-01aa-a16ea0.md.md)
+
+## Execution-order blocks
+
+### block:2d61ea2b98a04839
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L2-L2`. Next: `block:04222f540acf82aa`.
+
+```stata
+clear
+```
+
+### block:04222f540acf82aa
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L3-L3`. Next: `block:796493738ef1a38c`.
+
+```stata
+macro drop resume nobs
+```
+
+### block:796493738ef1a38c
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L4-L4`. Next: `block:cff576cc2cb220bc`.
+
+```stata
+set max_memory ., permanently
+```
+
+### block:cff576cc2cb220bc
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L19-L19`. Next: `block:1f171d552533fae4`.
+
+```stata
+local resume 1
+```
+
+### block:1f171d552533fae4
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L22-L22`. Next: `block:593bd39553e92406`.
+
+```stata
+cap confirm integer number `resume'
+```
+
+### block:593bd39553e92406
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L23-L23`. Next: `block:00de10e90da5a04a`.
+
+```stata
+if _rc {
+```
+
+### block:00de10e90da5a04a
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L24-L24`. Next: `block:c9c576c1062a2277`.
+
+```stata
+dis as error "local resume is not a valid number: |`resume'|"
+```
+Enclosing controls: `if _rc {`
+
+### block:c9c576c1062a2277
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L25-L25`. Next: `block:f121f26efd82965f`.
+
+```stata
+exit 198
+```
+Enclosing controls: `if _rc {`
+
+### block:f121f26efd82965f
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L26-L26`. Next: `block:ae235662c3c89f55`.
+
+```stata
+}
+```
+
+### block:ae235662c3c89f55
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L28-L28`. Next: `block:deef09a8f26a355f`.
+
+```stata
+local dataall  "D:\daylan\test\GMI\out\_tmp_dataall.dta"
+```
+
+### block:deef09a8f26a355f
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L29-L29`. Next: `block:22c1299c1f6697f3`.
+
+```stata
+local dataall2 "D:\daylan\test\GMI\out\_tmp_dataall2.dta"
+```
+
+### block:22c1299c1f6697f3
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L32-L32`. Next: `block:2d58a5667828ae03`.
+
+```stata
+if `resume'==1 {
+```
+
+### block:2d58a5667828ae03
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L33-L33`. Next: `block:5fb8c13476b0bd20`.
+
+```stata
+save `"`dataall'"',  replace emptyok
+```
+Enclosing controls: `if `resume'==1 {`
+Write datasets: `dataset:f69c1d7e2da6740d`
+
+### block:5fb8c13476b0bd20
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L34-L34`. Next: `block:2209a0980c0e9bd2`.
+
+```stata
+save `"`dataall2'"', replace emptyok
+```
+Enclosing controls: `if `resume'==1 {`
+Write datasets: `dataset:ac00872141ffb13c`
+
+### block:2209a0980c0e9bd2
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L35-L35`. Next: `block:174649a359d9e9fd`.
+
+```stata
+}
+```
+
+### block:174649a359d9e9fd
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L38-L38`. Next: `block:0b78f786fc963f23`.
+
+```stata
+set varabbrev off
+```
+
+### block:0b78f786fc963f23
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L39-L39`. Next: `block:67b0aa538d8bdb7d`.
+
+```stata
+global rnd SM26
+```
+
+### block:67b0aa538d8bdb7d
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L40-L40`. Next: `block:53aacc790860e612`.
+
+```stata
+global path \\wbgfscifs01\GTSD\03.projects_corp\04.GPWG\04.GPWG_${rnd}\04.GPWG_${rnd}_QA
+```
+
+### block:53aacc790860e612
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L41-L41`. Next: `block:abdaa47842a352a8`.
+
+```stata
+global reposource "${path}\01.programs\02.dofile\repo\"
+```
+
+### block:abdaa47842a352a8
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L42-L42`. Next: `block:3f8f5e3db9de05df`.
+
+```stata
+global out D:\daylan\test\GMI\out\
+```
+
+### block:3f8f5e3db9de05df
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L44-L44`. Next: `block:40564ef9ffa52171`.
+
+```stata
+global ppplist 2017 2021
+```
+
+### block:40564ef9ffa52171
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L45-L45`. Next: `block:d4cb7a494700581b`.
+
+```stata
+global pppmax 2021
+```
+
+### block:d4cb7a494700581b
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L47-L47`. Next: `block:1a9526623cf5b5ea`.
+
+```stata
+global floor2021 0.28
+```
+
+### block:1a9526623cf5b5ea
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L48-L48`. Next: `block:927509f38aa2fe00`.
+
+```stata
+global gap2021 28
+```
+
+### block:927509f38aa2fe00
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L49-L49`. Next: `block:5a2e291941b809f0`.
+
+```stata
+global floor2017 0.25
+```
+
+### block:5a2e291941b809f0
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L50-L50`. Next: `block:034a60bc1849ac63`.
+
+```stata
+global gap2017 25
+```
+
+### block:034a60bc1849ac63
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L51-L51`. Next: `block:58857314ec133fea`.
+
+```stata
+global floor2011 0.22
+```
+
+### block:58857314ec133fea
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L52-L52`. Next: `block:e06f28a7fffc9f10`.
+
+```stata
+global gap2011 22
+```
+
+### block:e06f28a7fffc9f10
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L54-L54`. Next: `block:4e987572f538fd6a`.
+
+```stata
+global plines2021 300 420 830 450 630 1245 600 840 1660
+```
+
+### block:4e987572f538fd6a
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L55-L55`. Next: `block:9ada333e56866c32`.
+
+```stata
+global plines2017 215 365 685 322 547 1027 430 730 1370
+```
+
+### block:9ada333e56866c32
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L56-L56`. Next: `block:5afcc7f145d74a79`.
+
+```stata
+global plines2011 190 320 550
+```
+
+### block:5afcc7f145d74a79
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L57-L57`. Next: `block:8c1265192d5dafb9`.
+
+```stata
+global cpiversion Support_2005_CPI_V15_M
+```
+
+### block:8c1265192d5dafb9
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L60-L60`. Next: `block:46f1abf3f7755d9d`.
+
+```stata
+global pfw "D:\daylan\test\GMI\Survey_price_framework.dta"
+```
+
+### block:46f1abf3f7755d9d
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L61-L61`. Next: `block:2419bb07674e57a8`.
+
+```stata
+global repotxt repo(use ${rnd}all) reporoot(${reposource})
+```
+
+### block:2419bb07674e57a8
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L64-L64`. Next: `block:0286ce0283652e24`.
+
+```stata
+tempfile data1
+```
+
+### block:0286ce0283652e24
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L65-L65`. Next: `block:34c178d655b61d39`.
+
+```stata
+use \\wbgfscifs01\GTSD\03.projects_corp\04.GPWG\04.GPWG_${rnd}\04.GPWG_${rnd}_QA\01.programs\02.dofile\repo\repo_${rnd}all.dta , clear
+```
+Read datasets: `dataset:96215c3f23c334b3`
+
+### block:34c178d655b61d39
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L66-L66`. Next: `block:5787198d731b5dae`.
+
+```stata
+gen year = years
+```
+New: `variable:5b3ce8bd315dff2e`
+Read candidates: `variable:dd270916b6693766`
+
+### block:5787198d731b5dae
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L67-L67`. Next: `block:26fba0144f790e4a`.
+
+```stata
+destring year, replace
+```
+Modified: `variable:5b3ce8bd315dff2e`
+Read candidates: `variable:5b3ce8bd315dff2e`
+
+### block:26fba0144f790e4a
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L69-L69`. Next: `block:3832e9cfde848dec`.
+
+```stata
+drop if module=="ASPIRE" | module=="L"|module=="GROUP"
+```
+Read candidates: `variable:10fdf9301f112046`
+
+### block:3832e9cfde848dec
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L71-L71`. Next: `block:65bde072be653caf`.
+
+```stata
+drop if survname=="EU-SILC" & module=="BIN"
+```
+Read candidates: `variable:b7ec9bffa32b097c`, `variable:10fdf9301f112046`
+
+### block:65bde072be653caf
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L72-L72`. Next: `block:0492a28537cf0dad`.
+
+```stata
+drop if country=="ISO3"
+```
+Read candidates: `variable:2c4bd8c881923a38`
+
+### block:0492a28537cf0dad
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L74-L74`. Next: `block:d26a06e2613559b3`.
+
+```stata
+drop if country=="ISO3" & survname=="EU-SILC"
+```
+Read candidates: `variable:2c4bd8c881923a38`, `variable:b7ec9bffa32b097c`
+
+### block:d26a06e2613559b3
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L75-L75`. Next: `block:9ee63338a8c7590c`.
+
+```stata
+drop if country=="ISO3" & survname=="EU-SILC"
+```
+Read candidates: `variable:2c4bd8c881923a38`, `variable:b7ec9bffa32b097c`
+
+### block:9ee63338a8c7590c
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L76-L76`. Next: `block:90c946d3cf6f2798`.
+
+```stata
+drop if country=="ISO3" & survname=="PNAD" & year>=0000 & year<=0000
+```
+Read candidates: `variable:2c4bd8c881923a38`, `variable:b7ec9bffa32b097c`, `variable:5b3ce8bd315dff2e`
+
+### block:90c946d3cf6f2798
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L78-L78`. Next: `block:2637fc5a592a2a8b`.
+
+```stata
+drop if country=="ISO3" & survname=="EPH" & year==0000
+```
+Read candidates: `variable:2c4bd8c881923a38`, `variable:b7ec9bffa32b097c`, `variable:5b3ce8bd315dff2e`
+
+### block:2637fc5a592a2a8b
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L79-L79`. Next: `block:cdbaf1e25d1b8281`.
+
+```stata
+drop if country=="ISO3" & survname=="NSS-SCH1" & year==0000
+```
+Read candidates: `variable:2c4bd8c881923a38`, `variable:b7ec9bffa32b097c`, `variable:5b3ce8bd315dff2e`
+
+### block:cdbaf1e25d1b8281
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L82-L82`. Next: `block:8a2aa3a80d411d15`.
+
+```stata
+drop if country=="ISO3" & survname=="HNAP" & year==0000
+```
+Read candidates: `variable:2c4bd8c881923a38`, `variable:b7ec9bffa32b097c`, `variable:5b3ce8bd315dff2e`
+
+### block:8a2aa3a80d411d15
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L87-L87`. Next: `block:1f27437c2aa64c4a`.
+
+```stata
+keep if module=="ALL"
+```
+Read candidates: `variable:10fdf9301f112046`
+
+### block:1f27437c2aa64c4a
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L89-L89`. Next: `block:201e442ea25e3ac3`.
+
+```stata
+local nobs = _N
+```
+
+### block:201e442ea25e3ac3
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L90-L90`. Next: `block:2fa54a925557269c`.
+
+```stata
+save `data1', replace
+```
+Write datasets: `dataset:8eecbaeb414f26a5`
+
+### block:2fa54a925557269c
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L102-L102`. Next: `block:15bf93205874508e`.
+
+```stata
+if `resume' > 1 {
+```
+
+### block:15bf93205874508e
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L103-L103`. Next: `block:791c496d0fc6a84f`.
+
+```stata
+tempfile purgekeys
+```
+Enclosing controls: `if `resume' > 1 {`
+
+### block:791c496d0fc6a84f
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L104-L104`. Next: `block:8896adf7db01f221`.
+
+```stata
+use `data1', clear
+```
+Enclosing controls: `if `resume' > 1 {`
+Read datasets: `dataset:8eecbaeb414f26a5`
+
+### block:8896adf7db01f221
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L105-L105`. Next: `block:f876c42d8f4c8fb4`.
+
+```stata
+keep in `resume'/`=_N'
+```
+Enclosing controls: `if `resume' > 1 {`
+
+### block:f876c42d8f4c8fb4
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L106-L106`. Next: `block:752de365e1e5299a`.
+
+```stata
+keep country year surveyid
+```
+Enclosing controls: `if `resume' > 1 {`
+Read candidates: `variable:f6b71f39061c4f65`, `variable:8b2ace3ef6d2aca5`, `variable:6890772f05b16b03`
+
+### block:752de365e1e5299a
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L107-L107`. Next: `block:d44a6e7f6b68a493`.
+
+```stata
+ren country code
+```
+Enclosing controls: `if `resume' > 1 {`
+New: `variable:f369011598fbe793`
+Read candidates: `variable:f6b71f39061c4f65`
+
+### block:d44a6e7f6b68a493
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L108-L108`. Next: `block:8c503650a6f0f884`.
+
+```stata
+duplicates drop
+```
+Enclosing controls: `if `resume' > 1 {`
+
+### block:8c503650a6f0f884
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L109-L109`. Next: `block:df61874b47b2d733`.
+
+```stata
+save `purgekeys', replace
+```
+Enclosing controls: `if `resume' > 1 {`
+Write datasets: `dataset:57b143bcd58e63cd`
+
+### block:df61874b47b2d733
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L110-L110`. Next: `block:01e2bdefd2be49df`.
+
+```stata
+noi dis in red "Resuming at index `resume': purging accumulator rows for `=_N' survey key(s)"
+```
+Enclosing controls: `if `resume' > 1 {`
+
+### block:01e2bdefd2be49df
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L112-L112`. Next: `block:57ee2b7eba89f830`.
+
+```stata
+foreach acc in `"`dataall'"' `"`dataall2'"' {
+```
+Enclosing controls: `if `resume' > 1 {`
+
+### block:57ee2b7eba89f830
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L113-L113`. Next: `block:ac63d4511f91d44c`.
+
+```stata
+use `acc', clear
+```
+Enclosing controls: `if `resume' > 1 {` → `foreach acc in `"`dataall'"' `"`dataall2'"' {`
+Read datasets: `dataset:98b585f76c18e7dd`
+
+### block:ac63d4511f91d44c
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L114-L114`. Next: `block:39fd11b574fa1a3f`.
+
+```stata
+cap confirm variable surveyid
+```
+Enclosing controls: `if `resume' > 1 {` → `foreach acc in `"`dataall'"' `"`dataall2'"' {`
+
+### block:39fd11b574fa1a3f
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L115-L115`. Next: `block:fae805d2cc8c56f5`.
+
+```stata
+if _rc==0 {
+```
+Enclosing controls: `if `resume' > 1 {` → `foreach acc in `"`dataall'"' `"`dataall2'"' {`
+
+### block:fae805d2cc8c56f5
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L116-L116`. Next: `block:9614fd22d979d266`.
+
+```stata
+merge m:1 code year surveyid using `purgekeys', keep(master) nogen
+```
+Enclosing controls: `if `resume' > 1 {` → `foreach acc in `"`dataall'"' `"`dataall2'"' {` → `if _rc==0 {`
+Read datasets: `dataset:57b143bcd58e63cd`
+
+### block:9614fd22d979d266
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L117-L117`. Next: `block:d32126e314f89819`.
+
+```stata
+}
+```
+Enclosing controls: `if `resume' > 1 {` → `foreach acc in `"`dataall'"' `"`dataall2'"' {`
+
+### block:d32126e314f89819
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L118-L118`. Next: `block:2d5b00988886183c`.
+
+```stata
+save `acc', replace
+```
+Enclosing controls: `if `resume' > 1 {` → `foreach acc in `"`dataall'"' `"`dataall2'"' {`
+Write datasets: `dataset:98b585f76c18e7dd`
+
+### block:2d5b00988886183c
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L119-L119`. Next: `block:c8e95305e671954d`.
+
+```stata
+}
+```
+Enclosing controls: `if `resume' > 1 {`
+
+### block:c8e95305e671954d
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L120-L120`. Next: `block:5f0493d5ba88c0bf`.
+
+```stata
+}
+```
+
+### block:5f0493d5ba88c0bf
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L123-L123`. Next: `block:0c4d2b454e5a11cd`.
+
+```stata
+forv i=`resume'(1)`nobs' {
+```
+
+### block:0c4d2b454e5a11cd
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L124-L124`. Next: `block:ba3531b462a44255`.
+
+```stata
+use `data1', clear
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {`
+Read datasets: `dataset:8eecbaeb414f26a5`
+
+### block:ba3531b462a44255
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L126-L126`. Next: `block:241bd954b444f487`.
+
+```stata
+use `data1', clear
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {`
+Read datasets: `dataset:8eecbaeb414f26a5`
+
+### block:241bd954b444f487
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L127-L127`. Next: `block:4352c26460c9612c`.
+
+```stata
+local code = country[`i']
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {`
+
+### block:4352c26460c9612c
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L128-L128`. Next: `block:6e8fab5ed5b42d83`.
+
+```stata
+local year = year[`i']
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {`
+
+### block:6e8fab5ed5b42d83
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L129-L129`. Next: `block:d27d2004d35a9b43`.
+
+```stata
+local surveyid = surveyid[`i']
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {`
+
+### block:d27d2004d35a9b43
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L130-L130`. Next: `block:4bda009d6282c05d`.
+
+```stata
+local survname = survname[`i']
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {`
+
+### block:4bda009d6282c05d
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L131-L131`. Next: `block:050f0bc4f24a914b`.
+
+```stata
+local mod = module[`i']
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {`
+
+### block:050f0bc4f24a914b
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L134-L134`. Next: `block:51f12c7d2eee4474`.
+
+```stata
+cap dlw, country(`code') year(`year') type(gmd) surveyid(`survname') mod(`mod') files $repotxt
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {`
+Read datasets: `dataset:af0ef1cfde119cfe`
+
+### block:51f12c7d2eee4474
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L135-L135`. Next: `block:2c9632e81e9caef1`.
+
+```stata
+qui if _rc==0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {`
+
+### block:2c9632e81e9caef1
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L136-L136`. Next: `block:1af381a1077892e2`.
+
+```stata
+noi dis in white "`i'-`code'-`year'-`surveyid'-`lvlvar'-`mod'"
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:1af381a1077892e2
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L139-L139`. Next: `block:224d4f73a12a7632`.
+
+```stata
+if "`mod'"=="GPWG" local wgt weight
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:224d4f73a12a7632
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L140-L140`. Next: `block:96372e3559854cf6`.
+
+```stata
+if "`mod'"=="ALL" {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:96372e3559854cf6
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L141-L141`. Next: `block:b147053a35dca130`.
+
+```stata
+cap des weight_p
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `if "`mod'"=="ALL" {`
+
+### block:b147053a35dca130
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L142-L142`. Next: `block:b320aee1c8c2c1ff`.
+
+```stata
+if _rc==0 local wgt weight_p
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `if "`mod'"=="ALL" {`
+
+### block:b320aee1c8c2c1ff
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L143-L143`. Next: `block:b4f0365dcc9d371c`.
+
+```stata
+else local wgt weight
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `if "`mod'"=="ALL" {`
+
+### block:b4f0365dcc9d371c
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L144-L144`. Next: `block:a0bb420840217e1c`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:a0bb420840217e1c
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L146-L146`. Next: `block:84f54f3f682351d8`.
+
+```stata
+qui {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:84f54f3f682351d8
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L147-L147`. Next: `block:ee12cd9af86c6316`.
+
+```stata
+drop if welfare==.
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+Read candidates: `variable:00cf972495fa42e5`
+
+### block:ee12cd9af86c6316
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L148-L148`. Next: `block:68978b6b8771ce73`.
+
+```stata
+drop if `wgt'==.
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:68978b6b8771ce73
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L151-L151`. Next: `block:09565f6df802aa6c`.
+
+```stata
+gen _all_ = "All sample"
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+New: `variable:93f73192acf50365`
+
+### block:09565f6df802aa6c
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L152-L152`. Next: `block:537b7655819fa35f`.
+
+```stata
+gen _total = 1
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+New: `variable:41763cea2461a7c1`
+
+### block:537b7655819fa35f
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L154-L154`. Next: `block:85ed56263b344ced`.
+
+```stata
+local urbvar
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:85ed56263b344ced
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L155-L155`. Next: `block:07d877d0caf97d94`.
+
+```stata
+cap des urban
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:07d877d0caf97d94
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L156-L156`. Next: `block:2be38e049273cbe2`.
+
+```stata
+qui if _rc==0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:2be38e049273cbe2
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L157-L157`. Next: `block:79557b2d3448957c`.
+
+```stata
+ta urban
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {`
+Read candidates: `variable:1f9a50078d35c94c`
+
+### block:79557b2d3448957c
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L158-L158`. Next: `block:e85b53d35052ad40`.
+
+```stata
+if r(N)>0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {`
+
+### block:e85b53d35052ad40
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L159-L159`. Next: `block:99af826d11cc1cfb`.
+
+```stata
+cap decode urban, gen(_urban_)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `if r(N)>0 {`
+New: `variable:08df6bc7203cc8ca`
+Read candidates: `variable:1f9a50078d35c94c`
+
+### block:99af826d11cc1cfb
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L160-L160`. Next: `block:ae0841bdfa4fd7a9`.
+
+```stata
+if _rc~=0 tostring urban, gen(_urban_)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `if r(N)>0 {`
+New: `variable:08df6bc7203cc8ca`
+Read candidates: `variable:1f9a50078d35c94c`
+
+### block:ae0841bdfa4fd7a9
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L161-L161`. Next: `block:55c295ede26710cd`.
+
+```stata
+replace _urban_ = trim(_urban_)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `if r(N)>0 {`
+Modified: `variable:08df6bc7203cc8ca`
+Read candidates: `variable:08df6bc7203cc8ca`
+
+### block:55c295ede26710cd
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L162-L162`. Next: `block:e7aa80636391019e`.
+
+```stata
+local urbvar _urban_
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `if r(N)>0 {`
+
+### block:e7aa80636391019e
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L163-L163`. Next: `block:7c9d07eb4cd718ff`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {`
+
+### block:7c9d07eb4cd718ff
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L164-L164`. Next: `block:31d8e244b24b78e8`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:31d8e244b24b78e8
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L167-L167`. Next: `block:2a9ab3a471f1f171`.
+
+```stata
+local gendervar
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:2a9ab3a471f1f171
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L168-L168`. Next: `block:82d1fe3c976e331b`.
+
+```stata
+cap des male
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:82d1fe3c976e331b
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L169-L169`. Next: `block:28f7b302292e3af5`.
+
+```stata
+qui if _rc==0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:28f7b302292e3af5
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L170-L170`. Next: `block:499a7032660aa9f4`.
+
+```stata
+ta male
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {`
+Read candidates: `variable:bf393f9db08069ce`
+
+### block:499a7032660aa9f4
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L171-L171`. Next: `block:3dd5f86917c8a3f4`.
+
+```stata
+if r(N)>0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {`
+
+### block:3dd5f86917c8a3f4
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L172-L172`. Next: `block:081e8602ead5f80a`.
+
+```stata
+cap decode male, gen(_male_)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `if r(N)>0 {`
+New: `variable:b1bef60ce0ff36bf`
+Read candidates: `variable:bf393f9db08069ce`
+
+### block:081e8602ead5f80a
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L173-L173`. Next: `block:74f414214eb86952`.
+
+```stata
+if _rc~=0 tostring male, gen(_male_)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `if r(N)>0 {`
+New: `variable:b1bef60ce0ff36bf`
+Read candidates: `variable:bf393f9db08069ce`
+
+### block:74f414214eb86952
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L174-L174`. Next: `block:fcf0041ae87326ad`.
+
+```stata
+replace _male_ = trim(_male_)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `if r(N)>0 {`
+Modified: `variable:b1bef60ce0ff36bf`
+Read candidates: `variable:b1bef60ce0ff36bf`
+
+### block:fcf0041ae87326ad
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L175-L175`. Next: `block:ac3d579fd1d84d98`.
+
+```stata
+local gendervar _male_
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `if r(N)>0 {`
+
+### block:ac3d579fd1d84d98
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L176-L176`. Next: `block:c52f53b73f46c57b`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {`
+
+### block:c52f53b73f46c57b
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L177-L177`. Next: `block:3da2328e73dd66ac`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:3da2328e73dd66ac
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L180-L180`. Next: `block:42922fbc7ad7a151`.
+
+```stata
+local demohead
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:42922fbc7ad7a151
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L181-L181`. Next: `block:1426879740207624`.
+
+```stata
+local agevar
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:1426879740207624
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L182-L182`. Next: `block:d83e18ba8e151207`.
+
+```stata
+cap des age
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:d83e18ba8e151207
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L183-L183`. Next: `block:a9e50045428adbce`.
+
+```stata
+qui if _rc==0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:a9e50045428adbce
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L185-L185`. Next: `block:0ff48dd9d87449c3`.
+
+```stata
+if "`=upper("`code'")'" == "ISO3" {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {`
+
+### block:0ff48dd9d87449c3
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L187-L187`. Next: `block:949fa1e6a2048c0c`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {`
+
+### block:949fa1e6a2048c0c
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L188-L188`. Next: `block:147649c7e69c7bd2`.
+
+```stata
+else {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {`
+
+### block:147649c7e69c7bd2
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L189-L189`. Next: `block:e768801dbc26bdca`.
+
+```stata
+su age
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {`
+Read candidates: `variable:5863b3da7602bb54`
+
+### block:e768801dbc26bdca
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L190-L190`. Next: `block:98a52b5238bf6850`.
+
+```stata
+if r(N)>0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {`
+
+### block:98a52b5238bf6850
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L191-L191`. Next: `block:5462df6fd1f58b36`.
+
+```stata
+gen _agegr1_ = "0-14" if age<=14
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+New: `variable:3bcec4240f93e47a`
+Read candidates: `variable:5863b3da7602bb54`
+
+### block:5462df6fd1f58b36
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L192-L192`. Next: `block:9f649ef1c0e3c342`.
+
+```stata
+replace _agegr1_ = "15-64" if age>=15 & age<=64
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+Modified: `variable:3bcec4240f93e47a`
+Read candidates: `variable:5863b3da7602bb54`
+
+### block:9f649ef1c0e3c342
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L193-L193`. Next: `block:e35930dde19b7761`.
+
+```stata
+replace _agegr1_ = "65+" if age>=65 & age<=.
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+Modified: `variable:3bcec4240f93e47a`
+Read candidates: `variable:5863b3da7602bb54`
+
+### block:e35930dde19b7761
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L195-L195`. Next: `block:3218a59e0aaf05a9`.
+
+```stata
+gen _agegr2_ = "18-34" if age>=18 & age<=34
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+New: `variable:79d7dc9de6a0e049`
+Read candidates: `variable:5863b3da7602bb54`
+
+### block:3218a59e0aaf05a9
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L196-L196`. Next: `block:80be0289491d3459`.
+
+```stata
+replace _agegr2_ = "35-49" if age>=35 & age<=49
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+Modified: `variable:79d7dc9de6a0e049`
+Read candidates: `variable:5863b3da7602bb54`
+
+### block:80be0289491d3459
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L197-L197`. Next: `block:379150b88154e008`.
+
+```stata
+replace _agegr2_ = "50-64" if age>=50 & age<=64
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+Modified: `variable:79d7dc9de6a0e049`
+Read candidates: `variable:5863b3da7602bb54`
+
+### block:379150b88154e008
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L199-L199`. Next: `block:57b0fafce9034b80`.
+
+```stata
+local agevar _agegr1_
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+
+### block:57b0fafce9034b80
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L202-L202`. Next: `block:825688963233ab94`.
+
+```stata
+gen age0t14 = 1 if age<=14
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+New: `variable:627db79481c0f921`
+Read candidates: `variable:5863b3da7602bb54`
+
+### block:825688963233ab94
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L203-L203`. Next: `block:8ee14b0e7d5401be`.
+
+```stata
+gen age65p  = 1 if age>=65 & !missing(age)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+New: `variable:ddd0c9b638c0a251`
+Read candidates: `variable:5863b3da7602bb54`
+
+### block:8ee14b0e7d5401be
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L204-L204`. Next: `block:45a2eccb918a0fa4`.
+
+```stata
+gen age15t64 = 1 if age>=15 & age<=64
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+New: `variable:91617240b24049de`
+Read candidates: `variable:5863b3da7602bb54`
+
+### block:45a2eccb918a0fa4
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L205-L205`. Next: `block:9a018fd072e6ed29`.
+
+```stata
+gen age6t18 = 1 if age>=6 & age<=18
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+New: `variable:6c33b83602c4cb81`
+Read candidates: `variable:5863b3da7602bb54`
+
+### block:9a018fd072e6ed29
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L207-L207`. Next: `block:4330111c5f5cd1a7`.
+
+```stata
+bys hhid (pid): egen age0t14sum = total(age0t14)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+New: `variable:290fa5178c39015f`
+Read candidates: `variable:627db79481c0f921`, `variable:2d34be2f5c7100d6`
+
+### block:4330111c5f5cd1a7
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L208-L208`. Next: `block:2fde41810a128b35`.
+
+```stata
+bys hhid (pid): egen age65psum = total(age65p)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+New: `variable:167899f3ec0ff6f4`
+Read candidates: `variable:ddd0c9b638c0a251`, `variable:2d34be2f5c7100d6`
+
+### block:2fde41810a128b35
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L209-L209`. Next: `block:4228b5148f7831f2`.
+
+```stata
+bys hhid (pid): egen age15t64sum = total(age15t64)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+New: `variable:f5600d0354c59228`
+Read candidates: `variable:91617240b24049de`, `variable:2d34be2f5c7100d6`
+
+### block:4228b5148f7831f2
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L210-L210`. Next: `block:8d216cd0db9f53e2`.
+
+```stata
+bys hhid (pid): egen age6t18sum = total(age6t18)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+New: `variable:921d06a36f75cd1c`
+Read candidates: `variable:6c33b83602c4cb81`, `variable:2d34be2f5c7100d6`
+
+### block:8d216cd0db9f53e2
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L211-L211`. Next: `block:35e44e02609b19a2`.
+
+```stata
+bys hhid (pid): gen _hhx = _N
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+New: `variable:c4bbf277b2c261b4`
+Read candidates: `variable:2d34be2f5c7100d6`
+
+### block:35e44e02609b19a2
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L213-L213`. Next: `block:bfd4a2bc572b5718`.
+
+```stata
+egen depnum = rowtotal(age0t14sum age65psum), missing
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+New: `variable:a8195cc77b065cf4`
+Read candidates: `variable:290fa5178c39015f`, `variable:167899f3ec0ff6f4`
+
+### block:bfd4a2bc572b5718
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L214-L214`. Next: `block:03dc030705b2febb`.
+
+```stata
+gen dep_ratio = (depnum/age15t64sum)*100
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+New: `variable:f19ba8148ec7e919`
+Read candidates: `variable:a8195cc77b065cf4`, `variable:f5600d0354c59228`
+
+### block:03dc030705b2febb
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L215-L215`. Next: `block:96323704bc0b3fd2`.
+
+```stata
+gen age6t18_sh = (age6t18sum/_hhx)*100
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+New: `variable:1c84866853168a24`
+Read candidates: `variable:921d06a36f75cd1c`, `variable:c4bbf277b2c261b4`
+
+### block:96323704bc0b3fd2
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L216-L216`. Next: `block:9a7adf607fb6eeb2`.
+
+```stata
+gen age65p_sh = (age65psum/_hhx)*100
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+New: `variable:4f279c1621230da9`
+Read candidates: `variable:167899f3ec0ff6f4`, `variable:c4bbf277b2c261b4`
+
+### block:9a7adf607fb6eeb2
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L217-L217`. Next: `block:2717e65c4ff3f2ea`.
+
+```stata
+la var dep_ratio "Household dependency ratio (average)"
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+
+### block:2717e65c4ff3f2ea
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L218-L218`. Next: `block:d32944a3243a3233`.
+
+```stata
+la var age6t18_sh "Share of children (age 6-18) in household (%)"
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+
+### block:d32944a3243a3233
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L219-L219`. Next: `block:f2e63d755a4e96d0`.
+
+```stata
+la var age65p_sh "Share of elderly (age 65+) in household (%)"
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+
+### block:f2e63d755a4e96d0
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L220-L220`. Next: `block:8319d535f033aa49`.
+
+```stata
+local demohead dep_ratio age6t18_sh age65p_sh
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+
+### block:8319d535f033aa49
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L221-L221`. Next: `block:80d1d9fdbff55625`.
+
+```stata
+local dep_ratio dep_ratio
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+
+### block:80d1d9fdbff55625
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L222-L222`. Next: `block:f1ddb68c5208218e`.
+
+```stata
+local age6t18_sh age6t18_sh
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+
+### block:f1ddb68c5208218e
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L223-L223`. Next: `block:6b8984bc52b90186`.
+
+```stata
+local age65p_sh age65p_sh
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+
+### block:6b8984bc52b90186
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L225-L225`. Next: `block:53e0cc03e61133a8`.
+
+```stata
+cap des school
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+
+### block:53e0cc03e61133a8
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L226-L226`. Next: `block:545f123ce59a40d0`.
+
+```stata
+qui if _rc==0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+
+### block:545f123ce59a40d0
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L227-L227`. Next: `block:829a16990710052d`.
+
+```stata
+su school,d
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {` → `qui if _rc==0 {`
+Read candidates: `variable:ac8d91b764d0c84a`, `variable:9e4d35708ac3d23c`
+
+### block:829a16990710052d
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L228-L228`. Next: `block:7febe21986118881`.
+
+```stata
+if r(N)>0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {` → `qui if _rc==0 {`
+
+### block:7febe21986118881
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L229-L229`. Next: `block:7b7316e0dcdc2312`.
+
+```stata
+gen age6t18_sch = age6t18==1 & school==1
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {` → `qui if _rc==0 {` → `if r(N)>0 {`
+New: `variable:2f4f2f0325d41317`
+Read candidates: `variable:6c33b83602c4cb81`, `variable:ac8d91b764d0c84a`
+
+### block:7b7316e0dcdc2312
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L230-L230`. Next: `block:65a370fbf97cdb1b`.
+
+```stata
+bys hhid (pid): egen age6t18schsum = total(age6t18_sch)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {` → `qui if _rc==0 {` → `if r(N)>0 {`
+New: `variable:5f7b9cf37dbc7c2a`
+Read candidates: `variable:2f4f2f0325d41317`, `variable:2d34be2f5c7100d6`
+
+### block:65a370fbf97cdb1b
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L231-L231`. Next: `block:04ebdbbbd2f04535`.
+
+```stata
+gen age6t18_sch_ratio = (age6t18schsum/age6t18sum)*100
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {` → `qui if _rc==0 {` → `if r(N)>0 {`
+New: `variable:d7809d3267a6e9a3`
+Read candidates: `variable:5f7b9cf37dbc7c2a`, `variable:921d06a36f75cd1c`
+
+### block:04ebdbbbd2f04535
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L232-L232`. Next: `block:23fd41da08b9f4cb`.
+
+```stata
+local demohead "`demohead' age6t18_sch_ratio"
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {` → `qui if _rc==0 {` → `if r(N)>0 {`
+
+### block:23fd41da08b9f4cb
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L233-L233`. Next: `block:dd62addc8250c0a5`.
+
+```stata
+la var age6t18_sch_ratio "Share of children age 6-18 attending school (%)"
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {` → `qui if _rc==0 {` → `if r(N)>0 {`
+
+### block:dd62addc8250c0a5
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L234-L234`. Next: `block:2cfc68d97eaff74b`.
+
+```stata
+local age6t18_sch_ratio age6t18_sch_ratio
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {` → `qui if _rc==0 {` → `if r(N)>0 {`
+
+### block:2cfc68d97eaff74b
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L235-L235`. Next: `block:5ecd412adf4695c9`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {` → `qui if _rc==0 {`
+
+### block:5ecd412adf4695c9
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L236-L236`. Next: `block:0d60c9485daed654`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+
+### block:0d60c9485daed654
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L237-L237`. Next: `block:c7f08a61907e4c36`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `else {`
+
+### block:c7f08a61907e4c36
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L238-L238`. Next: `block:8d8968b64d00bfcb`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {`
+
+### block:8d8968b64d00bfcb
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L239-L239`. Next: `block:76591aecb372c33d`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:76591aecb372c33d
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L242-L242`. Next: `block:4fbc176bfe53ad23`.
+
+```stata
+cap replace lstatus = lstatus_year if missing(lstatus) & !missing(lstatus_year)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+Modified: `variable:069c57dd3c07cf9e`
+Read candidates: `variable:b9d592c43e199e1f`, `variable:069c57dd3c07cf9e`, `variable:1dd87e08e21357e9`
+
+### block:4fbc176bfe53ad23
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L243-L243`. Next: `block:c47b1a587953a366`.
+
+```stata
+cap replace industrycat4 = industrycat4_year if missing(industrycat4) & !missing(industrycat4_year)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+Modified: `variable:a06654e911372c06`
+Read candidates: `variable:debab6b1f4865729`, `variable:a06654e911372c06`, `variable:1dd87e08e21357e9`
+
+### block:c47b1a587953a366
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L244-L244`. Next: `block:1da51a0d0dbed01b`.
+
+```stata
+cap replace industrycat10 = industrycat10_year if missing(industrycat10) & !missing(industrycat10_year)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+Modified: `variable:0dd2943841de0dd9`
+Read candidates: `variable:986ae026beee852e`, `variable:0dd2943841de0dd9`, `variable:1dd87e08e21357e9`
+
+### block:1da51a0d0dbed01b
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L245-L245`. Next: `block:b1bc89e1e7149a76`.
+
+```stata
+cap replace empstat = empstat_year if missing(empstat) & !missing(empstat_year)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+Modified: `variable:f1f4133891883bca`
+Read candidates: `variable:7ef4425498219b4c`, `variable:f1f4133891883bca`, `variable:1dd87e08e21357e9`
+
+### block:b1bc89e1e7149a76
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L248-L248`. Next: `block:80707c44843a8a02`.
+
+```stata
+local agegender
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:80707c44843a8a02
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L249-L249`. Next: `block:5ebf9a4ebd60f898`.
+
+```stata
+if "`agevar'"~="" & "`gendervar'"~="" {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:5ebf9a4ebd60f898
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L250-L250`. Next: `block:b9b2fcde2d36bc33`.
+
+```stata
+clonevar _age = age
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if "`agevar'"~="" & "`gendervar'"~="" {`
+New: `variable:f86b74ead0017541`
+Read candidates: `variable:5863b3da7602bb54`
+
+### block:b9b2fcde2d36bc33
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L251-L251`. Next: `block:2cbcc541e2d9500b`.
+
+```stata
+replace _age = . if _age>80 & !missing(_age)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if "`agevar'"~="" & "`gendervar'"~="" {`
+Modified: `variable:f86b74ead0017541`
+Read candidates: `variable:f86b74ead0017541`
+
+### block:2cbcc541e2d9500b
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L253-L253`. Next: `block:1227abacf2f312c4`.
+
+```stata
+egen _tmp1 = cut(_age), at(0(5)79) label
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if "`agevar'"~="" & "`gendervar'"~="" {`
+New: `variable:25b9e97f01dab12b`
+Read candidates: `variable:f86b74ead0017541`, `variable:3bb9c3fb94401be5`
+
+### block:1227abacf2f312c4
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L254-L254`. Next: `block:c857753359ab1afa`.
+
+```stata
+decode _tmp1, gen(_agegender1)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if "`agevar'"~="" & "`gendervar'"~="" {`
+New: `variable:36263258d80e5c83`
+Read candidates: `variable:25b9e97f01dab12b`
+
+### block:c857753359ab1afa
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L255-L255`. Next: `block:9372a7d372365404`.
+
+```stata
+replace _agegender1 = "m_" + _agegender1 if male==1
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if "`agevar'"~="" & "`gendervar'"~="" {`
+Modified: `variable:36263258d80e5c83`
+Read candidates: `variable:36263258d80e5c83`, `variable:bf393f9db08069ce`
+
+### block:9372a7d372365404
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L256-L256`. Next: `block:9633be726b72cecd`.
+
+```stata
+replace _agegender1 = "f_" + _agegender1 if male==0
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if "`agevar'"~="" & "`gendervar'"~="" {`
+Modified: `variable:36263258d80e5c83`
+Read candidates: `variable:36263258d80e5c83`, `variable:bf393f9db08069ce`
+
+### block:9633be726b72cecd
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L258-L258`. Next: `block:b7e1c0d7652c2fc2`.
+
+```stata
+gen _agegender2 = ""
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if "`agevar'"~="" & "`gendervar'"~="" {`
+New: `variable:4d2532f58999801f`
+
+### block:b7e1c0d7652c2fc2
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L259-L259`. Next: `block:fb48474765e2c2bd`.
+
+```stata
+replace _agegender2 = "m_" + _agegr1_ if male==1
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if "`agevar'"~="" & "`gendervar'"~="" {`
+Modified: `variable:4d2532f58999801f`
+Read candidates: `variable:3bcec4240f93e47a`, `variable:bf393f9db08069ce`
+
+### block:fb48474765e2c2bd
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L260-L260`. Next: `block:8e6d3045ed5a2bf1`.
+
+```stata
+replace _agegender2 = "f_" + _agegr1_ if male==0
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if "`agevar'"~="" & "`gendervar'"~="" {`
+Modified: `variable:4d2532f58999801f`
+Read candidates: `variable:3bcec4240f93e47a`, `variable:bf393f9db08069ce`
+
+### block:8e6d3045ed5a2bf1
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L261-L261`. Next: `block:75c0c65c06a68df7`.
+
+```stata
+local agegender _agegender1 _agegender2
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if "`agevar'"~="" & "`gendervar'"~="" {`
+
+### block:75c0c65c06a68df7
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L262-L262`. Next: `block:9b6ad7fd601a091e`.
+
+```stata
+drop _tmp1 _age
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if "`agevar'"~="" & "`gendervar'"~="" {`
+Read candidates: `variable:25b9e97f01dab12b`, `variable:f86b74ead0017541`
+
+### block:9b6ad7fd601a091e
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L263-L263`. Next: `block:b5b702e469902c0b`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:b5b702e469902c0b
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L266-L266`. Next: `block:7cb191717ff70e79`.
+
+```stata
+local eduvar
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:7cb191717ff70e79
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L267-L267`. Next: `block:3439bea55634794e`.
+
+```stata
+cap des educat4
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:3439bea55634794e
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L268-L268`. Next: `block:be48a32e6d9c13dc`.
+
+```stata
+qui if _rc==0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:be48a32e6d9c13dc
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L269-L269`. Next: `block:1e574863efee227c`.
+
+```stata
+ta educat4
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {`
+Read candidates: `variable:6cc5cc02f6e16631`
+
+### block:1e574863efee227c
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L270-L270`. Next: `block:7579c1ac95b31f1a`.
+
+```stata
+if r(N)>0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {`
+
+### block:7579c1ac95b31f1a
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L271-L271`. Next: `block:e9da337560fc1c83`.
+
+```stata
+gen _educat = "No education" if educat4==1 & age>=15 & !missing(age)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `if r(N)>0 {`
+New: `variable:23c060ac8025d975`
+Read candidates: `variable:6cc5cc02f6e16631`, `variable:5863b3da7602bb54`
+
+### block:e9da337560fc1c83
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L272-L272`. Next: `block:428d5585e9516b8d`.
+
+```stata
+replace _educat = "Primary" if educat4==2 & age>=15 & !missing(age)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `if r(N)>0 {`
+Modified: `variable:23c060ac8025d975`
+Read candidates: `variable:6cc5cc02f6e16631`, `variable:5863b3da7602bb54`
+
+### block:428d5585e9516b8d
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L273-L273`. Next: `block:3ca9572c14646e91`.
+
+```stata
+replace _educat = "Secondary" if educat4==3 & age>=15 & !missing(age)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `if r(N)>0 {`
+Modified: `variable:23c060ac8025d975`
+Read candidates: `variable:6cc5cc02f6e16631`, `variable:5863b3da7602bb54`
+
+### block:3ca9572c14646e91
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L274-L274`. Next: `block:d65b3420b0288ed1`.
+
+```stata
+replace _educat = "Tertiary" if educat4==4 & age>=15 & !missing(age)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `qui if _rc==0 {` → `if r(N)>0 {`
+Modified: `variable:23c060ac8025d975`

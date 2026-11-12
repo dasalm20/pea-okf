@@ -1,0 +1,523 @@
+# 04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do
+
+Sanitized source projection; applicability placeholders are not executable values. Original SHA256: 251b05c7b4fca9ba88e3877250bcca124cc75498cea86f29c54125e816898ea3
+
+```stata
+0001 | *===============================================================
+0002 | * 99-delivery_matrix.do
+0003 | *
+0004 | * WHAT IT ANSWERS
+0005 | *   Of the variables the GMI extended pipeline needs, which ones did
+0006 | *   each region actually deliver, under the CORRECT GMD name?
+0007 | *
+0008 | *   One table: GMI variables down the side, country-years across the
+0009 | *   top, 1 or 0 in each cell.
+0010 | *
+0011 | * THE RULE
+0012 | *   The name has to match the GMD name exactly. A variable delivered
+0013 | *   under a different name is a 0, because the pipeline will not find
+0014 | *   it. marstat is not marital. reltohead is not relationharm.
+0015 | *   empstat_1 is not empstat.
+0016 | *
+0017 | *   So for EAP this reads the ORIGINAL ECAPOV module files, not the
+0018 | *   files 99-build_eap_local.do assembles. That build renames things
+0019 | *   on our side, which is exactly what this table is meant to show.
+0020 | *
+0021 | * READ ONLY against the region folders. Writes ONE Excel workbook.
+0022 | *===============================================================
+0023 | 
+0024 | clear all
+0025 | set more off
+0026 | set varabbrev off
+0027 | 
+0028 | *===============================================================
+0029 | *  EDIT THIS SECTION
+0030 | *===============================================================
+0031 | 
+0032 | *--- 1. Where the workbook goes
+0033 | local checksdir "$checks"
+0034 | if "`checksdir'" == "" {
+0035 |     local checksdir "C:\Users\wb570371\Documents\PEA\GMI_extended\04.Checks_Add_reharmonization_results"
+0036 |     di as error "  NOTE: $checks was empty -- path set inside this script."
+0037 | }
+0038 | local outfile "`checksdir'\delivery_matrix_${rnd}.xlsx"
+0039 | 
+0040 | *--- 2. The regions, and how each one ships its files.
+0041 | *       layout "flat"    = one .dta per survey, straight in the folder
+0042 | *       layout "modules" = one FOLDER per survey, .dta files inside a
+0043 | *                          subfolder. The union of all of them counts.
+0044 | local regions "SSA EAP"
+0045 | 
+0046 | local SSA_dir    "C:\Users\wb570371\OneDrive - WBG\Shortcuts\Haoyu Wu's files - toshare"
+0047 | local SSA_layout "flat"
+0048 | local SSA_sub    ""
+0049 | 
+0050 | local EAP_dir    "\\wurepliprdfs06\eapfile\eappp\EAP Harmonization"
+0051 | local EAP_layout "modules"
+0052 | local EAP_sub    "Data/Harmonized"
+0053 | 
+0054 | *--- 3. Folder names to skip when scanning a "modules" region
+0055 | local skipfolders "workflow archive old temp backup"
+0056 | 
+0057 | *--- 4. Does a variable have to hold at least one NON-MISSING value
+0058 | *       to count as delivered?
+0059 | *         1 = yes. A variable that exists but is entirely empty is a 0.
+0060 | *             Slower, because every file has to be opened.
+0061 | *         0 = the name existing is enough. Much faster.
+0062 | *       Both are written: sheet DELIVERED uses this setting, sheet
+0063 | *       NAME ONLY always reports on the name alone.
+0064 | local requiredata 1
+0065 | 
+0066 | *--- 5. The variables, their module grouping and the order they
+0067 | *       appear in. One line per variable: "<module>:<variable>".
+0068 | local vlist ""
+0069 | local vlist "`vlist' Demographic:age"
+0070 | local vlist "`vlist' Demographic:male"
+0071 | local vlist "`vlist' Demographic:educat4"
+0072 | local vlist "`vlist' Demographic:school"
+0073 | local vlist "`vlist' Demographic:relationharm"
+0074 | local vlist "`vlist' Demographic:marital"
+0075 | local vlist "`vlist' Labor:lstatus"
+0076 | local vlist "`vlist' Labor:industrycat4"
+0077 | local vlist "`vlist' Labor:industrycat10"
+0078 | local vlist "`vlist' Labor:empstat"
+0079 | local vlist "`vlist' Labor:lstatus_year"
+0080 | local vlist "`vlist' Labor:industrycat4_year"
+0081 | local vlist "`vlist' Labor:industrycat10_year"
+0082 | local vlist "`vlist' Labor:empstat_year"
+0083 | local vlist "`vlist' Access_and_assets:imp_wat_rec"
+0084 | local vlist "`vlist' Access_and_assets:imp_san_rec"
+0085 | local vlist "`vlist' Access_and_assets:electricity"
+0086 | local vlist "`vlist' Access_and_assets:tv"
+0087 | local vlist "`vlist' Access_and_assets:car"
+0088 | local vlist "`vlist' Access_and_assets:cellphone"
+0089 | local vlist "`vlist' Access_and_assets:computer"
+0090 | local vlist "`vlist' Access_and_assets:fridge"
+0091 | 
+0092 | *===============================================================
+0093 | *  END OF EDIT SECTION
+0094 | *===============================================================
+0095 | 
+0096 | di as result _n(2) "{hline 78}"
+0097 | di as result "  DELIVERY MATRIX -- what each region actually sent"
+0098 | di as result "{hline 78}"
+0099 | di as text "  The GMD name has to match exactly. A different name counts as 0."
+0100 | di as text "  require non-missing data: `requiredata'"
+0101 | di as text "  output: `outfile'"
+0102 | 
+0103 | tempfile RES
+0104 | capture postclose dm
+0105 | postfile dm str8 region str16 cyid str8 ccode int cyear str24 survey ///
+0106 |     str24 module str32 variable byte has_name byte has_data ///
+0107 |     double n_obs double n_nonmiss double pct_cover ///
+0108 |     using `RES', replace
+0109 | 
+0110 | 
+0111 | *===============================================================
+0112 | * SCAN
+0113 | *===============================================================
+0114 | foreach reg of local regions {
+0115 | 
+0116 |     local dir    "``reg'_dir'"
+0117 |     local layout "``reg'_layout'"
+0118 |     local sub    "``reg'_sub'"
+0119 | 
+0120 |     if "`dir'" == "" {
+0121 |         di as error _n "  [ `reg' ] no folder set, skipped."
+0122 |         continue
+0123 |     }
+0124 | 
+0125 |     di as result _n "{hline 78}"
+0126 |     di as result "  REGION `reg'   (`layout')"
+0127 |     di as text   "  `dir'"
+0128 |     di as result "{hline 78}"
+0129 | 
+0130 |     *--- build a list of survey units: each one is a label plus the
+0131 |     *    .dta file(s) that belong to it
+0132 |     local units ""
+0133 | 
+0134 |     if "`layout'" == "flat" {
+0135 |         local fl : dir "`dir'" files "*.dta"
+0136 |         foreach f of local fl {
+0137 |             local units `"`units' "`f'""'
+0138 |         }
+0139 |     }
+0140 |     else {
+0141 |         local dl : dir "`dir'" dirs "*"
+0142 |         foreach d of local dl {
+0143 |             local dn `d'
+0144 |             local lowdn = lower("`dn'")
+0145 |             local skip = 0
+0146 |             foreach sk of local skipfolders {
+0147 |                 if "`lowdn'" == lower("`sk'") local skip = 1
+0148 |             }
+0149 |             if `skip' continue
+0150 |             local probe : dir "`dir'/`dn'/`sub'" files "*.dta"
+0151 |             if `"`probe'"' != "" local units `"`units' "`dn'""'
+0152 |         }
+0153 |     }
+0154 | 
+0155 |     local nu : word count `units'
+0156 |     di as text "  survey units: `nu'"
+0157 | 
+0158 |     foreach u of local units {
+0159 |         local un `u'
+0160 | 
+0161 |         *--- CODE, YEAR, SURVEY from the name
+0162 |         local base  = subinstr("`un'", ".dta", "", .)
+0163 |         local parts = subinstr("`base'", "_", " ", .)
+0164 |         local ccode = upper("`: word 1 of `parts''")
+0165 |         local ytxt  :        word 2 of `parts'
+0166 |         local srv   = upper("`: word 3 of `parts''")
+0167 | 
+0168 |         capture confirm integer number `ytxt'
+0169 |         if _rc {
+0170 |             di as error "    [ NAME ] `un' -- year field reads |`ytxt'|, skipped."
+0171 |             continue
+0172 |         }
+0173 |         local cyear = `ytxt'
+0174 |         local cyid  = "`ccode'`cyear'"
+0175 | 
+0176 |         *--- the files that make up this survey unit
+0177 |         if "`layout'" == "flat" {
+0178 |             local files `"  "`dir'/`un'" "'
+0179 |         }
+0180 |         else {
+0181 |             local dpath "`dir'/`un'/`sub'"
+0182 |             local ml : dir "`dpath'" files "*.dta"
+0183 |             local files ""
+0184 |             foreach m of local ml {
+0185 |                 local mn `m'
+0186 |                 local files `"`files' "`dpath'/`mn'" "'
+0187 |             }
+0188 |         }
+0189 |         local nf : word count `files'
+0190 | 
+0191 |         *--- the union of every variable name across those files
+0192 |         local allnames ""
+0193 |         foreach fp of local files {
+0194 |             capture describe using "`fp'", varlist
+0195 |             if _rc continue
+0196 |             local allnames "`allnames' `r(varlist)'"
+0197 |         }
+0198 |         local allnames = lower("`allnames'")
+0199 | 
+0200 |         *--- now test each GMI variable
+0201 |         local nname = 0
+0202 |         local ndata = 0
+0203 |         foreach pair of local vlist {
+0204 |             local col = strpos("`pair'", ":")
+0205 |             local mod = substr("`pair'", 1, `col'-1)
+0206 |             local v   = substr("`pair'", `col'+1, .)
+0207 |             local mod = subinstr("`mod'", "_", " ", .)
+0208 | 
+0209 |             local hit : list posof "`v'" in allnames
+0210 |             local hasname = (`hit' > 0)
+0211 |             local hasdata = 0
+0212 |             local bestnm  = .
+0213 |             local bestn   = .
+0214 |             local bestpct = .
+0215 | 
+0216 |             if `hasname' {
+0217 |                 local nname = `nname' + 1
+0218 | 
+0219 |                 if `requiredata' {
+0220 |                     *--- open every file that carries it and keep the one
+0221 |                     *    with the most non-missing values. In a module
+0222 |                     *    delivery the same name can sit in more than one
+0223 |                     *    file, filled in one and empty in another.
+0224 |                     foreach fp of local files {
+0225 |                         capture describe using "`fp'", varlist
+0226 |                         if _rc continue
+0227 |                         local here = lower("`r(varlist)'")
+0228 |                         local there : list posof "`v'" in here
+0229 |                         if `there' == 0 continue
+0230 |                         capture use `v' using "`fp'", clear
+0231 |                         if _rc continue
+0232 |                         local thisn = _N
+0233 |                         qui count if !missing(`v')
+0234 |                         local thisnm = r(N)
+0235 |                         if missing(`bestnm') | `thisnm' > `bestnm' {
+0236 |                             local bestnm  = `thisnm'
+0237 |                             local bestn   = `thisn'
+0238 |                             local bestpct = cond(`thisn'>0, 100*`thisnm'/`thisn', .)
+0239 |                         }
+0240 |                     }
+0241 |                     if !missing(`bestnm') & `bestnm' > 0 local hasdata = 1
+0242 |                 }
+0243 |                 else local hasdata = 1
+0244 | 
+0245 |                 if `hasdata' local ndata = `ndata' + 1
+0246 |             }
+0247 | 
+0248 |             post dm ("`reg'") ("`cyid'") ("`ccode'") (`cyear') ("`srv'") ///
+0249 |                 ("`mod'") ("`v'") (`hasname') (`hasdata') ///
+0250 |                 (`bestn') (`bestnm') (`bestpct')
+0251 |         }
+0252 | 
+0253 |         local nv : word count `vlist'
+0254 |         di as text "    " %-26s "`cyid' `srv'" "  files " %2.0f `nf' ///
+0255 |             "   names " %3.0f `nname' " of `nv'" ///
+0256 |             "   with data " %3.0f `ndata'
+0257 |     }
+0258 | }
+0259 | 
+0260 | postclose dm
+0261 | 
+0262 | 
+0263 | *===============================================================
+0264 | * BUILD THE TABLE
+0265 | *===============================================================
+0266 | use `RES', clear
+0267 | if _N == 0 {
+0268 |     di as error "  Nothing scanned. Check the folders in section 2."
+0269 |     exit 601
+0270 | }
+0271 | 
+0272 | *--- keep the row order from the edit section
+0273 | gen int ord = .
+0274 | local i = 0
+0275 | foreach pair of local vlist {
+0276 |     local ++i
+0277 |     local col = strpos("`pair'", ":")
+0278 |     local v   = substr("`pair'", `col'+1, .)
+0279 |     qui replace ord = `i' if variable == "`v'"
+0280 | }
+0281 | 
+0282 | *--- the column header list, in region then country order
+0283 | preserve
+0284 |     keep region cyid ccode cyear survey
+0285 |     duplicates drop
+0286 |     sort region ccode cyear
+0287 |     local ncols = _N
+0288 |     local collist ""
+0289 |     local reglist ""
+0290 |     forvalues r = 1/`ncols' {
+0291 |         local collist "`collist' `=cyid[`r']'"
+0292 |         local reglist "`reglist' `=region[`r']'"
+0293 |     }
+0294 | restore
+0295 | di as text _n "  country-years: `ncols'"
+0296 | 
+0297 | *--- which measure goes in the main sheet
+0298 | gen byte cell = cond(`requiredata', has_data, has_name)
+0299 | 
+0300 | *===============================================================
+0301 | * SHEET 0: READ ME
+0302 | *
+0303 | *   Written FIRST and with putexcel ... replace, so it lands as the
+0304 | *   left-most tab and any workbook from a previous run is wiped.
+0305 | *   Every export excel below uses sheet(..., replace) or modify,
+0306 | *   which keeps this sheet in place.
+0307 | *===============================================================
+0308 | putexcel set "`outfile'", sheet("READ ME") replace
+0309 | 
+0310 | putexcel A1 = "Delivery matrix -- what each region actually sent", bold
+0311 | putexcel A2 = "round ${rnd}"
+0312 | putexcel A3 = "built from the delivered files only. Nothing here is compared against DataLibWeb."
+0313 | 
+0314 | putexcel A5 = "WHAT THE CELLS MEAN", bold
+0315 | putexcel A6 = "Code"
+0316 | putexcel B6 = "Meaning"
+0317 | putexcel A6:B6, overwritefmt bold
+0318 | 
+0319 | putexcel A7 = "1"
+0320 | putexcel B7 = "Variable found"
+0321 | putexcel A8 = "0"
+0322 | putexcel B8 = "Variable found but every value is missing"
+0323 | putexcel A9 = "NA"
+0324 | putexcel B9 = "Variable not found in files"
+0325 | 
+0326 | putexcel A11 = "On the COVERAGE sheet the 1 is replaced by the percentage of rows that hold a value."
+0327 | putexcel A12 = "0.0 and NA mean the same thing there as on DELIVERED."
+0328 | 
+0329 | putexcel A14 = "THE NAME RULE", bold
+0330 | putexcel A15 = "A variable counts as found only if the GMD name matches exactly."
+0331 | putexcel A16 = "A variable delivered under a different name is NA, because the pipeline will not find it."
+0332 | putexcel A17 = "So marstat is not marital, reltohead is not relationharm, empstat_1 is not empstat."
+0333 | putexcel A18 = "For EAP this reads the original ECAPOV module files, not the files we reassemble on our side."
+0334 | 
+0335 | putexcel A20 = "0 ISO3 NA ARE DIFFERENT PROBLEMS", bold
+0336 | putexcel A21 = "0 means the harmonization created the variable and left it empty. That can be legitimate:"
+0337 | putexcel A22 = "a 7-day-only labour survey will have an empty 12-month block, and the lstatus_tr flag says so."
+0338 | putexcel A23 = "NA means the variable never arrived. That one always needs a conversation with the region."
+0339 | 
+0340 | putexcel A25 = "SHEETS", bold
+0341 | putexcel A26 = "DELIVERED"
+0342 | putexcel B26 = "one row per GMI variable, one column per country-year, 1 / 0 / NA"
+0343 | putexcel A27 = "COVERAGE"
+0344 | putexcel B27 = "same grid, percentage of non-missing instead of the 1"
+0345 | putexcel A28 = "LONG"
+0346 | putexcel B28 = "one row per variable per country-year, with row counts. For pivoting."
+0347 | 
+0348 | putexcel A30 = "Row 1 of DELIVERED and COVERAGE carries the region. Row 2 carries the country-year."
+0349 | putexcel A31 = "n_delivered counts the country-years that sent the variable WITH data, so 0 and NA both"
+0350 | putexcel A32 = "count as not delivered there."
+0351 | 
+0352 | 
+0353 | *===============================================================
+0354 | * SHEET 1: DELIVERED
+0355 | *===============================================================
+0356 | preserve
+0357 |     keep ord module variable cyid cell has_name
+0358 |     qui reshape wide cell has_name, i(ord module variable) j(cyid) string
+0359 |     foreach c of local collist {
+0360 |         capture rename cell`c' `c'
+0361 |         capture rename has_name`c' hn`c'
+0362 |         capture replace `c'   = 0 if missing(`c')
+0363 |         capture replace hn`c' = 0 if missing(hn`c')
+0364 |     }
+0365 |     sort ord
+0366 | 
+0367 |     *    count the 1s before anything becomes text
+0368 |     egen int n_delivered = rowtotal(`collist')
+0369 | 
+0370 |     *    THREE states, not two:
+0371 |     *      1   correct name delivered ISO3 it holds values
+0372 |     *      0   correct name delivered but EVERY value is missing
+0373 |     *      NA  the name was never delivered, so there is nothing to
+0374 |     *          measure. Different problem, different conversation.
+0375 |     foreach c of local collist {
+0376 |         gen str4 s`c' = "NA"
+0377 |         replace s`c' = "0" if hn`c' == 1 & `c' == 0
+0378 |         replace s`c' = "1" if `c' == 1
+0379 |         drop `c' hn`c'
+0380 |         rename s`c' `c'
+0381 |     }
+0382 | 
+0383 |     order ord module variable `collist' n_delivered
+0384 |     drop ord
+0385 | 
+0386 |     label var module      "Module"
+0387 |     label var variable    "GMI_ext_Variable"
+0388 |     label var n_delivered "delivered with data, N country-years"
+0389 | 
+0390 |     *    cell(A2) leaves row 1 free for the region band. Writing the
+0391 |     *    band on row 1 directly would overwrite the country-year headers.
+0392 |     export excel using "`outfile'", sheet("DELIVERED", replace) ///
+0393 |         cell(A2) firstrow(varlabels)
+0394 |     local nrows = _N
+0395 | restore
+0396 | 
+0397 | *===============================================================
+0398 | * SHEET 2: COVERAGE
+0399 | *   Not 1 or 0 but the share of observations that actually hold a
+0400 | *   value. A variable can be delivered under the right name and still
+0401 | *   be 2 pct filled.
+0402 | *   NA means the name was never delivered, which is a different
+0403 | *   problem from 0, which means delivered and entirely empty.
+0404 | *===============================================================
+0405 | preserve
+0406 |     keep ord module variable cyid pct_cover has_name
+0407 |     qui reshape wide pct_cover has_name, i(ord module variable) j(cyid) string
+0408 |     foreach c of local collist {
+0409 |         capture rename pct_cover`c' `c'
+0410 |         capture rename has_name`c' hn`c'
+0411 |         capture replace hn`c' = 0 if missing(hn`c')
+0412 |     }
+0413 |     sort ord
+0414 | 
+0415 |     *    the average is over the country-years that DID deliver it,
+0416 |     *    so a region that never sent it does not drag the mean down
+0417 |     egen double avg_cover = rowmean(`collist')
+0418 |     format avg_cover %5.1f
+0419 | 
+0420 |     *    same three states as the DELIVERED sheet
+0421 |     foreach c of local collist {
+0422 |         gen str8 s`c' = "NA"
+0423 |         replace s`c' = string(`c', "%5.1f") if hn`c' == 1 & !missing(`c')
+0424 |         replace s`c' = "0.0"                if hn`c' == 1 & `c' == 0
+0425 |         drop `c' hn`c'
+0426 |         rename s`c' `c'
+0427 |     }
+0428 | 
+0429 |     order ord module variable `collist' avg_cover
+0430 |     drop ord
+0431 | 
+0432 |     label var module    "Module"
+0433 |     label var variable  "GMI_ext_Variable"
+0434 |     label var avg_cover "average coverage pct, delivered only"
+0435 | 
+0436 |     export excel using "`outfile'", sheet("COVERAGE", modify) ///
+0437 |         cell(A2) firstrow(varlabels)
+0438 | restore
+0439 | 
+0440 | *===============================================================
+0441 | * SHEET 3: LONG, for pivoting
+0442 | *===============================================================
+0443 | preserve
+0444 |     keep region ccode cyear survey module variable has_name has_data ///
+0445 |          n_obs n_nonmiss pct_cover
+0446 |     order region ccode cyear survey module variable has_name has_data ///
+0447 |          n_obs n_nonmiss pct_cover
+0448 |     format pct_cover %5.1f
+0449 |     sort region ccode cyear variable
+0450 |     label var region   "region"
+0451 |     label var ccode    "country"
+0452 |     label var cyear    "year"
+0453 |     label var survey   "survey"
+0454 |     label var module   "module"
+0455 |     label var variable "GMI_ext_Variable"
+0456 |     label var has_name "name delivered"
+0457 |     label var has_data  "name delivered and populated"
+0458 |     label var n_obs     "rows in the file that carries it"
+0459 |     label var n_nonmiss "rows with a value"
+0460 |     label var pct_cover "coverage pct"
+0461 |     export excel using "`outfile'", sheet("LONG", modify) firstrow(varlabels)
+0462 | restore
+0463 | 
+0464 | 
+0465 | *===============================================================
+0466 | * THE REGION BAND ABOVE THE COUNTRY HEADERS
+0467 | *===============================================================
+0468 | *   export excel wrote the country-years on row 1. Push a region
+0469 | *   label above them, then shade the header.
+0470 | foreach sh in "DELIVERED" "COVERAGE" {
+0471 |     putexcel set "`outfile'", sheet("`sh'") modify
+0472 |     local j = 0
+0473 |     foreach rg of local reglist {
+0474 |         local ++j
+0475 |         local cnum = `j' + 2
+0476 |         local cl = ""
+0477 |         if `cnum' <= 26 local cl = char(64 + `cnum')
+0478 |         else {
+0479 |             local c1 = int((`cnum'-1)/26)
+0480 |             local c2 = mod(`cnum'-1, 26) + 1
+0481 |             local cl = char(64 + `c1') + char(64 + `c2')
+0482 |         }
+0483 |         putexcel `cl'1 = "`rg'", bold
+0484 |     }
+0485 |     putexcel A1 = "Region", bold
+0486 |     putexcel A2:B2, overwritefmt bold
+0487 | }
+0488 | 
+0489 | di as result _n(2) "{hline 78}"
+0490 | di as result "  DONE"
+0491 | di as result "{hline 78}"
+0492 | di as text "  workbook: `outfile'"
+0493 | di as text "  sheets  : READ ME | DELIVERED | COVERAGE | LONG"
+0494 | di as text _n "  Both grids use THREE states, not two:"
+0495 | di as text "    1 or a pct   Variable found, and it holds values"
+0496 | di as text "    0            Variable found but every value is missing"
+0497 | di as text "    NA           Variable not found in files"
+0498 | di as text _n "  The legend is on the READ ME sheet, left-most tab."
+0499 | di as result "{hline 78}" _n
+0500 | 
+0501 | *--- screen version
+0502 | use `RES', clear
+0503 | gen int ord = .
+0504 | local i = 0
+0505 | foreach pair of local vlist {
+0506 |     local ++i
+0507 |     local col = strpos("`pair'", ":")
+0508 |     local v   = substr("`pair'", `col'+1, .)
+0509 |     qui replace ord = `i' if variable == "`v'"
+0510 | }
+0511 | gen byte cell = cond(`requiredata', has_data, has_name)
+0512 | collapse (sum) delivered = cell (sum) named = has_name, by(ord module variable)
+0513 | sort ord
+0514 | drop ord
+0515 | di as result "  How many country-years delivered each variable"
+0516 | di as result "{hline 78}"
+0517 | list module variable named delivered, noobs sep(0) abbrev(20)
+```

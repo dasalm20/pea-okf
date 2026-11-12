@@ -1,0 +1,748 @@
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L470-L470`. Next: `block:f44b4887013306c1`.
+
+```stata
+drop if `lvl'=="Out of sample"
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+
+### block:f44b4887013306c1
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L472-L472`. Next: `block:3193f2164009f53d`.
+
+```stata
+ren _count count
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:18530aea3640e05f`
+Read candidates: `variable:8c08e2d7fcf2567c`
+
+### block:3193f2164009f53d
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L473-L473`. Next: `block:030f2fff6b293b31`.
+
+```stata
+ren year nohh
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:3d99b4001097d8d4`
+Read candidates: `variable:ef77a98ea4904213`
+
+### block:030f2fff6b293b31
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L474-L474`. Next: `block:d855f67db9b7ae4d`.
+
+```stata
+ren h noind
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:5c55b3ddd52faa0c`
+Read candidates: `variable:039356b29d830f68`
+
+### block:d855f67db9b7ae4d
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L475-L475`. Next: `block:86d1c83d0c1fcccd`.
+
+```stata
+ren h1564 noind1564
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:4ccf9edebde1caf9`
+Read candidates: `variable:4693abdb38e8ff96`
+
+### block:86d1c83d0c1fcccd
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L476-L476`. Next: `block:d26a710e0c90baf1`.
+
+```stata
+ren h15p noind15p
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:6f0bc28c8548d6ff`
+Read candidates: `variable:d809dce5dfe1f43b`
+
+### block:d26a710e0c90baf1
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L478-L478`. Next: `block:8b3135b05e8d0a54`.
+
+```stata
+egen double totalhh = total(nohh)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:b1f0cd83a7b9f6c2`
+Read candidates: `variable:3d99b4001097d8d4`
+
+### block:8b3135b05e8d0a54
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L479-L479`. Next: `block:34bdcb31bc5322f6`.
+
+```stata
+egen double totalind = total(noind)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:574b2b33d81afbf6`
+Read candidates: `variable:5c55b3ddd52faa0c`
+
+### block:34bdcb31bc5322f6
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L480-L480`. Next: `block:1522ca24c8f9bf3c`.
+
+```stata
+egen double totalind1564 = total(noind1564)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:828ddf33775b03bf`
+Read candidates: `variable:4ccf9edebde1caf9`
+
+### block:1522ca24c8f9bf3c
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L481-L481`. Next: `block:617cbe401f67df84`.
+
+```stata
+egen double totalind15p = total(noind15p)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:de227be126df6f7b`
+Read candidates: `variable:6f0bc28c8548d6ff`
+
+### block:617cbe401f67df84
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L482-L482`. Next: `block:21a865138bf5db4f`.
+
+```stata
+egen double totalb40 = total(b40)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:8720497c5587e0eb`
+Read candidates: `variable:53b1c8c862813b6c`
+
+### block:21a865138bf5db4f
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L483-L483`. Next: `block:108835d9c2e942fa`.
+
+```stata
+egen double totalt60 = total(t60)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:d599abfe048041ee`
+Read candidates: `variable:5c1f4549ce505a89`
+
+### block:108835d9c2e942fa
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L484-L484`. Next: `block:1dbb89f77e243af7`.
+
+```stata
+gen sh_hh = nohh/totalhh
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:2e327440ef995544`
+Read candidates: `variable:3d99b4001097d8d4`, `variable:b1f0cd83a7b9f6c2`
+
+### block:1dbb89f77e243af7
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L485-L485`. Next: `block:b1a7122e7cc065be`.
+
+```stata
+gen sh_pop = noind/totalind
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:bfd52ca16046e0e8`
+Read candidates: `variable:5c55b3ddd52faa0c`, `variable:574b2b33d81afbf6`
+
+### block:b1a7122e7cc065be
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L486-L486`. Next: `block:8f229945f5c82e23`.
+
+```stata
+gen sh_pop1564 = noind1564/totalind1564
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:e23be44eb563e33c`
+Read candidates: `variable:4ccf9edebde1caf9`, `variable:828ddf33775b03bf`
+
+### block:8f229945f5c82e23
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L487-L487`. Next: `block:7409c4d3660bb683`.
+
+```stata
+gen sh_pop15p = noind15p/totalind15p
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:e686415fe5066606`
+Read candidates: `variable:6f0bc28c8548d6ff`, `variable:de227be126df6f7b`
+
+### block:7409c4d3660bb683
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L488-L488`. Next: `block:282769ac48dadff9`.
+
+```stata
+gen sh_b40 = b40/totalb40
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:911abe111d017d26`
+Read candidates: `variable:53b1c8c862813b6c`, `variable:8720497c5587e0eb`
+
+### block:282769ac48dadff9
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L489-L489`. Next: `block:51d2eff2ebd33fa0`.
+
+```stata
+gen sh_t60 = t60/totalt60
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:aa1e5ee0c95102e3`
+Read candidates: `variable:5c1f4549ce505a89`, `variable:d599abfe048041ee`
+
+### block:51d2eff2ebd33fa0
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L490-L490`. Next: `block:a356e990794c300a`.
+
+```stata
+forv it=1(1)5 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+
+### block:a356e990794c300a
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L491-L491`. Next: `block:eeba70aaf93a9598`.
+
+```stata
+egen double total_d_`it' = total(d_`it')
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {` → `forv it=1(1)5 {`
+New: `variable:e09ad65b23e2caef`
+Read candidates: `variable:c29143621907da7f`
+
+### block:eeba70aaf93a9598
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L492-L492`. Next: `block:bb2657e65e283090`.
+
+```stata
+gen sh_d_`it' = d_`it'/total_d_`it'
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {` → `forv it=1(1)5 {`
+New: `variable:5537bf6ab0978059`
+Read candidates: `variable:c29143621907da7f`, `variable:e09ad65b23e2caef`
+
+### block:bb2657e65e283090
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L493-L493`. Next: `block:10733ff09674e4aa`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+
+### block:10733ff09674e4aa
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L495-L495`. Next: `block:9f2366587ce64773`.
+
+```stata
+foreach ppp1 of global ppplist {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+
+### block:9f2366587ce64773
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L496-L496`. Next: `block:b64a17ead40c1105`.
+
+```stata
+ren __a`ppp1' mean`ppp1'
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {` → `foreach ppp1 of global ppplist {`
+New: `variable:28a46fb35c616bc3`
+Read candidates: `variable:6a539cea0ad1f233`
+
+### block:b64a17ead40c1105
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L497-L497`. Next: `block:6e85a14a129088ee`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+
+### block:6e85a14a129088ee
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L499-L499`. Next: `block:410b2e7e57d536ce`.
+
+```stata
+ren b1 gini
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:005bea41b192a81f`
+Read candidates: `variable:7673d00442b772aa`
+
+### block:410b2e7e57d536ce
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L500-L500`. Next: `block:47bf22d1ad276e0b`.
+
+```stata
+ren b2 theil
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:3e48caf6cde7aed4`
+Read candidates: `variable:929d939050c606ce`
+
+### block:47bf22d1ad276e0b
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L501-L501`. Next: `block:d60d5a6154678017`.
+
+```stata
+gen byvar = "`lvl'"
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:be93ee5260166f21`
+
+### block:d60d5a6154678017
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L502-L502`. Next: `block:dcec5045009f6652`.
+
+```stata
+gen lvlvar = "`lvlvar'"
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:75ab6925e8ddee76`
+
+### block:dcec5045009f6652
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L503-L503`. Next: `block:aac2cd0b49471bfd`.
+
+```stata
+ren `lvl' level
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:eebd1f6f089e7fa7`
+Read candidates: `variable:b2bc6c70ce24a279`
+
+### block:aac2cd0b49471bfd
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L504-L504`. Next: `block:48cf1a445b214b56`.
+
+```stata
+tostring level, replace
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+Modified: `variable:eebd1f6f089e7fa7`
+Read candidates: `variable:eebd1f6f089e7fa7`
+
+### block:48cf1a445b214b56
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L505-L505`. Next: `block:8db3879f1b037861`.
+
+```stata
+gen code = "`code'"
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:f1a438fee2f35b29`
+
+### block:8db3879f1b037861
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L506-L506`. Next: `block:1a95180729138687`.
+
+```stata
+gen surveyid = "`surveyid'"
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:25e259bbec1f06be`
+
+### block:1a95180729138687
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L507-L507`. Next: `block:1eb2adf7b733cd4a`.
+
+```stata
+gen year = `year'
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:ef77a98ea4904213`
+
+### block:1eb2adf7b733cd4a
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L508-L508`. Next: `block:232bd6a29fc98bd0`.
+
+```stata
+gen mod = "`mod'"
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+New: `variable:8e0f8fa2831ba717`
+
+### block:232bd6a29fc98bd0
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L509-L509`. Next: `block:881b37991719e265`.
+
+```stata
+drop  d_* total_d_* b40 t60 totalb40 totalt60
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+Read candidates: `variable:6f4575cdd519d5e6`, `variable:1c271e13d1068bef`, `variable:53b1c8c862813b6c`, `variable:5c1f4549ce505a89`, `variable:8720497c5587e0eb`, `variable:d599abfe048041ee`
+
+### block:881b37991719e265
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L511-L511`. Next: `block:9afd75f942f3af1f`.
+
+```stata
+append using `dataall'
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+Read datasets: `dataset:09d0e95ba6dcc51c`
+
+### block:9afd75f942f3af1f
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L512-L512`. Next: `block:4ba2a4368c71e0a0`.
+
+```stata
+save `dataall', replace
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+Write datasets: `dataset:09d0e95ba6dcc51c`
+
+### block:4ba2a4368c71e0a0
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L513-L513`. Next: `block:24e21d559ffe7be6`.
+
+```stata
+save "${out}\\03.intermediate\\GMI_extended_${rnd}_allgroups1", replace
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {` → `qui if r(N)>0 {`
+Write datasets: `dataset:1a291c72644c9300`
+
+### block:24e21d559ffe7be6
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L514-L514`. Next: `block:78cc958301006bd1`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local oklist2 {`
+
+### block:78cc958301006bd1
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L515-L515`. Next: `block:f1cb056d97d14c31`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:f1cb056d97d14c31
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L518-L518`. Next: `block:702cee07ad94fd59`.
+
+```stata
+cap erase `data3'
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:702cee07ad94fd59
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L519-L519`. Next: `block:53358d0d810a481b`.
+
+```stata
+tempfile data3
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:53358d0d810a481b
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L520-L520`. Next: `block:275134223bae818d`.
+
+```stata
+foreach lvl of local byind {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:275134223bae818d
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L521-L521`. Next: `block:8ca55d09e6dddaad`.
+
+```stata
+use `data2', clear
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local byind {`
+Read datasets: `dataset:93e4de04cf6bb473`
+
+### block:8ca55d09e6dddaad
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L522-L522`. Next: `block:b522ea79db09e100`.
+
+```stata
+qui ta `lvl'
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local byind {`
+
+### block:b522ea79db09e100
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L523-L523`. Next: `block:69f7f4750ffc52c8`.
+
+```stata
+qui if r(N)>0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local byind {`
+
+### block:69f7f4750ffc52c8
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L524-L524`. Next: `block:ad0293b7c68993ce`.
+
+```stata
+noi dis in yellow "`i'-2-`code'-`year'-`surveyid'-`mod' - `lvlvar' - `lvl'"
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local byind {` → `qui if r(N)>0 {`
+
+### block:ad0293b7c68993ce
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L527-L527`. Next: `block:0ef543bc9366ec33`.
+
+```stata
+groupfunction  [aw=`wgt'], mean(`demolist') rawsum(h) count(_count)  by(`lvl')
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local byind {` → `qui if r(N)>0 {`
+Read candidates: `variable:576753579fec5af0`, `variable:32442e9eb1e11e94`
+
+### block:0ef543bc9366ec33
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L529-L529`. Next: `block:0a107cf08805eddf`.
+
+```stata
+ren `lvl' _bygroup
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local byind {` → `qui if r(N)>0 {`
+New: `variable:9087b9199935f1f5`
+Read candidates: `variable:892a5c7b5e3b9024`
+
+### block:0a107cf08805eddf
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L530-L530`. Next: `block:98ca4f792bdc7da5`.
+
+```stata
+gen _varname = "`lvl'"
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local byind {` → `qui if r(N)>0 {`
+New: `variable:6b87703df3b5710b`
+
+### block:98ca4f792bdc7da5
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L531-L531`. Next: `block:0974c2d553726cde`.
+
+```stata
+ren h _pop
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local byind {` → `qui if r(N)>0 {`
+New: `variable:f4b18f2d5320cf2c`
+Read candidates: `variable:576753579fec5af0`
+
+### block:0974c2d553726cde
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L532-L532`. Next: `block:4e2abb996bb0a2cc`.
+
+```stata
+gen code = "`code'"
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local byind {` → `qui if r(N)>0 {`
+New: `variable:e12750784aef88e4`
+
+### block:4e2abb996bb0a2cc
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L533-L533`. Next: `block:a2f659db3954ca52`.
+
+```stata
+gen surveyid = "`surveyid'"
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local byind {` → `qui if r(N)>0 {`
+New: `variable:21b05dead29a6229`
+
+### block:a2f659db3954ca52
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L534-L534`. Next: `block:82bf9a810f12d4d9`.
+
+```stata
+gen year = `year'
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local byind {` → `qui if r(N)>0 {`
+New: `variable:55d69df355d46996`
+
+### block:82bf9a810f12d4d9
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L535-L535`. Next: `block:223798965437ec50`.
+
+```stata
+gen mod = "`mod'"
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local byind {` → `qui if r(N)>0 {`
+New: `variable:bf591b8a4e64be60`
+
+### block:223798965437ec50
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L536-L536`. Next: `block:2967380487145032`.
+
+```stata
+append using `dataall2'
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local byind {` → `qui if r(N)>0 {`
+Read datasets: `dataset:6869c66e344fc9c0`
+
+### block:2967380487145032
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L537-L537`. Next: `block:cf9d8ff50defbad5`.
+
+```stata
+save `dataall2', replace
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local byind {` → `qui if r(N)>0 {`
+Write datasets: `dataset:6869c66e344fc9c0`
+
+### block:cf9d8ff50defbad5
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L538-L538`. Next: `block:86049e2323fd15e3`.
+
+```stata
+save "${out}\\03.intermediate\\GMI_extended_${rnd}_PNP1", replace
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local byind {` → `qui if r(N)>0 {`
+Write datasets: `dataset:101da30021cb4578`
+
+### block:86049e2323fd15e3
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L552-L552`. Next: `block:0ac4eb0cacf6fc03`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `foreach lvl of local byind {`
+
+### block:0ac4eb0cacf6fc03
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L553-L553`. Next: `block:b4ce82384ee56a8a`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:b4ce82384ee56a8a
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L554-L554`. Next: `block:a230e728afd0e5ab`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {`
+
+### block:a230e728afd0e5ab
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L555-L555`. Next: `block:e7ce153a8bbe6c67`.
+
+```stata
+}
+```
+
+### block:e7ce153a8bbe6c67
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L557-L557`. Next: `block:4ed5db8dd90980fd`.
+
+```stata
+use `dataall', clear
+```
+Read datasets: `dataset:09d0e95ba6dcc51c`
+
+### block:4ed5db8dd90980fd
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L558-L558`. Next: `block:0dd93313be6d96ab`.
+
+```stata
+order code year surveyid lvlvar byvar level count
+```
+
+### block:0dd93313be6d96ab
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L559-L559`. Next: `block:9cef7463e9c70b36`.
+
+```stata
+sort code year surveyid lvlvar byvar level
+```
+
+### block:9cef7463e9c70b36
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L560-L560`. Next: `block:40fc03f5e666fbf7`.
+
+```stata
+s
+```
+
+### block:40fc03f5e666fbf7
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L561-L561`. Next: `block:b087fd9413cbdbbb`.
+
+```stata
+use "${out}\\Subnational_2017ICP_${rnd}_rev", clear
+```
+Read datasets: `dataset:485cadd7413edee9`
+
+### block:b087fd9413cbdbbb
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L562-L562`. Next: `block:c5590a1cd2b2dd99`.
+
+```stata
+replace survname="ECH-S2" if survname=="ECH" & year==0000
+```
+Modified: `variable:33f83efa9180ace6`
+Read candidates: `variable:33f83efa9180ace6`, `variable:686b916722ee3c48`
+
+### block:c5590a1cd2b2dd99
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L563-L563`. Next: `block:f17802ea973b08a5`.
+
+```stata
+replace level = "National" if level=="1" & byvar=="_all_"
+```
+Modified: `variable:d58f14061b84c017`
+Read candidates: `variable:d58f14061b84c017`, `variable:4325b42813aa36f9`
+
+### block:f17802ea973b08a5
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L564-L564`. Next: `block:887de915c1f93b96`.
+
+```stata
+merge m:1 code year survname using $pfw , keepus(rep_year ref_year reg_pcn survey_coverage datatype comparability link)
+```
+Read datasets: `dataset:0fa1cc3d12b9e4be`
+
+### block:887de915c1f93b96
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L565-L565`. Next: `block:3da4fc1d949efa94`.
+
+```stata
+drop if _m==2
+```
+Read candidates: `variable:75108191730f60f6`
+
+### block:3da4fc1d949efa94
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L566-L566`. Next: `block:121df747571f5068`.
+
+```stata
+drop _m
+```
+Read candidates: `variable:75108191730f60f6`
+
+### block:121df747571f5068
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L567-L567`. Next: `block:01eb9a49147cb616`.
+
+```stata
+order reg_pcn code year surveyid survname  byvar level link survey_coverage datatype comparability poor* nohh noind totalhh totalind sh_hh sh_pop  sh_d_* mean* gini theil
+```
+
+### block:01eb9a49147cb616
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L568-L568`. Next: `block:91109a141ddb3b0e`.
+
+```stata
+sort code year surveyid byvar level
+```
+
+### block:91109a141ddb3b0e
+
+Evidence: `01.Programs/archive/01aa-GMI extended indicators.do:L569-L569`. Next: `end`.
+
+```stata
+br
+```

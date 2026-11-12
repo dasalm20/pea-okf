@@ -1,0 +1,22 @@
+{
+  "$schema": "EVIDENCE_REF_206ae48f6cae3f8701b1",
+  "title": "variables",
+  "allOf": [
+    {
+      "$ref": "record.schema.json"
+    },
+    {
+      "properties": {
+        "record_type": {
+          "const": "variable"
+        }
+      },
+      "required": [
+        "dataset_context_id",
+        "transformations",
+        "reader_block_ids",
+        "writer_block_ids"
+      ]
+    }
+  ]
+}

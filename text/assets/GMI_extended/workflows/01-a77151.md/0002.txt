@@ -1,0 +1,1097 @@
+putexcel A21 = "0 means the harmonization created the variable and left it empty. That can be legitimate:"
+```
+
+### block:a80621666a15b7fc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L337-L337`. Next: `block:91e23836d72411b3`.
+
+```stata
+putexcel A22 = "a 7-day-only labour survey will have an empty 12-month block, and the lstatus_tr flag says so."
+```
+
+### block:91e23836d72411b3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L338-L338`. Next: `block:daf54d211a6c7359`.
+
+```stata
+putexcel A23 = "NA means the variable never arrived. That one always needs a conversation with the region."
+```
+
+### block:daf54d211a6c7359
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L340-L340`. Next: `block:10495b06074e4b54`.
+
+```stata
+putexcel A25 = "SHEETS", bold
+```
+
+### block:10495b06074e4b54
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L341-L341`. Next: `block:47b50756527752b2`.
+
+```stata
+putexcel A26 = "DELIVERED"
+```
+
+### block:47b50756527752b2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L342-L342`. Next: `block:834a07027864369f`.
+
+```stata
+putexcel B26 = "one row per GMI variable, one column per country-year, 1 / 0 / NA"
+```
+
+### block:834a07027864369f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L343-L343`. Next: `block:590e52280585cb72`.
+
+```stata
+putexcel A27 = "COVERAGE"
+```
+
+### block:590e52280585cb72
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L344-L344`. Next: `block:abd9e3df9fdbdd59`.
+
+```stata
+putexcel B27 = "same grid, percentage of non-missing instead of the 1"
+```
+
+### block:abd9e3df9fdbdd59
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L345-L345`. Next: `block:42dd6afc9d906f02`.
+
+```stata
+putexcel A28 = "LONG"
+```
+
+### block:42dd6afc9d906f02
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L346-L346`. Next: `block:d32d8d9ee1ae975a`.
+
+```stata
+putexcel B28 = "one row per variable per country-year, with row counts. For pivoting."
+```
+
+### block:d32d8d9ee1ae975a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L348-L348`. Next: `block:76ccd77c7b480b88`.
+
+```stata
+putexcel A30 = "Row 1 of DELIVERED and COVERAGE carries the region. Row 2 carries the country-year."
+```
+
+### block:76ccd77c7b480b88
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L349-L349`. Next: `block:758ae6a579a1a755`.
+
+```stata
+putexcel A31 = "n_delivered counts the country-years that sent the variable WITH data, so 0 and NA both"
+```
+
+### block:758ae6a579a1a755
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L350-L350`. Next: `block:730ef1c0c10330eb`.
+
+```stata
+putexcel A32 = "count as not delivered there."
+```
+
+### block:730ef1c0c10330eb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L356-L356`. Next: `block:b9484222fe9cc8eb`.
+
+```stata
+preserve
+```
+
+### block:b9484222fe9cc8eb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L357-L357`. Next: `block:b43983384d7eb365`.
+
+```stata
+keep ord module variable cyid cell has_name
+```
+Read candidates: `variable:06554a38d1b420ce`, `variable:456e65b4493f2b71`, `variable:a47a883021827613`, `variable:8277e0f6ceb50eb6`, `variable:2884574c796b8815`, `variable:325d1c3ad0c8d8ad`
+
+### block:b43983384d7eb365
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L358-L358`. Next: `block:532652ef5095bfcf`.
+
+```stata
+qui reshape wide cell has_name, i(ord module variable) j(cyid) string
+```
+Read candidates: `variable:34b196b90d01623b`, `variable:2884574c796b8815`, `variable:325d1c3ad0c8d8ad`, `variable:06554a38d1b420ce`, `variable:456e65b4493f2b71`, `variable:a47a883021827613`, `variable:8277e0f6ceb50eb6`, `variable:9e52cad77c721ca2`
+
+### block:532652ef5095bfcf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L359-L359`. Next: `block:74ebf72e212feb1f`.
+
+```stata
+foreach c of local collist {
+```
+
+### block:74ebf72e212feb1f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L360-L360`. Next: `block:322593c91083e595`.
+
+```stata
+capture rename cell`c' `c'
+```
+Enclosing controls: `foreach c of local collist {`
+New: `variable:f4d41f3647c5bf54`
+Read candidates: `variable:4f3a771fdc20d3f8`
+
+### block:322593c91083e595
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L361-L361`. Next: `block:d3e346fe0e6a941a`.
+
+```stata
+capture rename has_name`c' hn`c'
+```
+Enclosing controls: `foreach c of local collist {`
+New: `variable:e25177a652a3e422`
+Read candidates: `variable:5da13d94e0c355c4`
+
+### block:d3e346fe0e6a941a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L362-L362`. Next: `block:057ad30f72081b00`.
+
+```stata
+capture replace `c'   = 0 if missing(`c')
+```
+Enclosing controls: `foreach c of local collist {`
+Modified: `variable:f4d41f3647c5bf54`
+Read candidates: `variable:db5673ee99ca56b0`
+
+### block:057ad30f72081b00
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L363-L363`. Next: `block:e5573011376fdd7a`.
+
+```stata
+capture replace hn`c' = 0 if missing(hn`c')
+```
+Enclosing controls: `foreach c of local collist {`
+Modified: `variable:e25177a652a3e422`
+Read candidates: `variable:e25177a652a3e422`, `variable:db5673ee99ca56b0`
+
+### block:e5573011376fdd7a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L364-L364`. Next: `block:caaaa5dc28e77ee9`.
+
+```stata
+}
+```
+
+### block:caaaa5dc28e77ee9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L365-L365`. Next: `block:ad6749d674b50ca1`.
+
+```stata
+sort ord
+```
+
+### block:ad6749d674b50ca1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L368-L368`. Next: `block:603dc040d80d6152`.
+
+```stata
+egen int n_delivered = rowtotal(`collist')
+```
+New: `variable:729a0f026a06e696`
+
+### block:603dc040d80d6152
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L375-L375`. Next: `block:a02eeae24115c44f`.
+
+```stata
+foreach c of local collist {
+```
+
+### block:a02eeae24115c44f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L376-L376`. Next: `block:0895fda6eca734cb`.
+
+```stata
+gen str4 s`c' = "NA"
+```
+Enclosing controls: `foreach c of local collist {`
+New: `variable:88d04beb92e6b684`
+
+### block:0895fda6eca734cb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L377-L377`. Next: `block:34cf5be46b974b3c`.
+
+```stata
+replace s`c' = "0" if hn`c' == 1 & `c' == 0
+```
+Enclosing controls: `foreach c of local collist {`
+Modified: `variable:88d04beb92e6b684`
+Read candidates: `variable:e25177a652a3e422`
+
+### block:34cf5be46b974b3c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L378-L378`. Next: `block:b53bde3ec425ffa5`.
+
+```stata
+replace s`c' = "1" if `c' == 1
+```
+Enclosing controls: `foreach c of local collist {`
+Modified: `variable:88d04beb92e6b684`
+
+### block:b53bde3ec425ffa5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L379-L379`. Next: `block:e43f126623e2e6b3`.
+
+```stata
+drop `c' hn`c'
+```
+Enclosing controls: `foreach c of local collist {`
+Read candidates: `variable:e25177a652a3e422`
+
+### block:e43f126623e2e6b3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L380-L380`. Next: `block:e8ac90b8d1393a3e`.
+
+```stata
+rename s`c' `c'
+```
+Enclosing controls: `foreach c of local collist {`
+New: `variable:f4d41f3647c5bf54`
+Read candidates: `variable:88d04beb92e6b684`
+
+### block:e8ac90b8d1393a3e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L381-L381`. Next: `block:5ef188a468585431`.
+
+```stata
+}
+```
+
+### block:5ef188a468585431
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L383-L383`. Next: `block:93a2a551249ac768`.
+
+```stata
+order ord module variable `collist' n_delivered
+```
+
+### block:93a2a551249ac768
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L384-L384`. Next: `block:a3d69dfb3d3b2d17`.
+
+```stata
+drop ord
+```
+Read candidates: `variable:06554a38d1b420ce`
+
+### block:a3d69dfb3d3b2d17
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L386-L386`. Next: `block:e3cf12461959f507`.
+
+```stata
+label var module      "Module"
+```
+
+### block:e3cf12461959f507
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L387-L387`. Next: `block:c5ff8dbe5eb40f21`.
+
+```stata
+label var variable    "GMI_ext_Variable"
+```
+
+### block:c5ff8dbe5eb40f21
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L388-L388`. Next: `block:2d9ad475694ad339`.
+
+```stata
+label var n_delivered "delivered with data, N country-years"
+```
+
+### block:2d9ad475694ad339
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L392-L393`. Next: `block:c9fdd4b32b9cea11`.
+
+```stata
+export excel using "`outfile'", sheet("DELIVERED", replace) cell(A2) firstrow(varlabels)
+```
+Write datasets: `dataset:427cc089a9aa2cd7`
+
+### block:c9fdd4b32b9cea11
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L394-L394`. Next: `block:ea941b97135b0a52`.
+
+```stata
+local nrows = _N
+```
+
+### block:ea941b97135b0a52
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L395-L395`. Next: `block:707d74a283f1300c`.
+
+```stata
+restore
+```
+
+### block:707d74a283f1300c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L405-L405`. Next: `block:5d93a8e2141b3109`.
+
+```stata
+preserve
+```
+
+### block:5d93a8e2141b3109
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L406-L406`. Next: `block:16dce0e83f710ff9`.
+
+```stata
+keep ord module variable cyid pct_cover has_name
+```
+Read candidates: `variable:06554a38d1b420ce`, `variable:456e65b4493f2b71`, `variable:a47a883021827613`, `variable:8277e0f6ceb50eb6`, `variable:ddf0be57cbe506e7`, `variable:325d1c3ad0c8d8ad`
+
+### block:16dce0e83f710ff9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L407-L407`. Next: `block:12c28ee4ba966331`.
+
+```stata
+qui reshape wide pct_cover has_name, i(ord module variable) j(cyid) string
+```
+Read candidates: `variable:34b196b90d01623b`, `variable:ddf0be57cbe506e7`, `variable:325d1c3ad0c8d8ad`, `variable:06554a38d1b420ce`, `variable:456e65b4493f2b71`, `variable:a47a883021827613`, `variable:8277e0f6ceb50eb6`, `variable:9e52cad77c721ca2`
+
+### block:12c28ee4ba966331
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L408-L408`. Next: `block:af26ecdf67c7e7fb`.
+
+```stata
+foreach c of local collist {
+```
+
+### block:af26ecdf67c7e7fb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L409-L409`. Next: `block:c290e77b89865807`.
+
+```stata
+capture rename pct_cover`c' `c'
+```
+Enclosing controls: `foreach c of local collist {`
+New: `variable:f4d41f3647c5bf54`
+Read candidates: `variable:0d57a4f2350c200e`
+
+### block:c290e77b89865807
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L410-L410`. Next: `block:53779051bd1dc83d`.
+
+```stata
+capture rename has_name`c' hn`c'
+```
+Enclosing controls: `foreach c of local collist {`
+New: `variable:e25177a652a3e422`
+Read candidates: `variable:5da13d94e0c355c4`
+
+### block:53779051bd1dc83d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L411-L411`. Next: `block:8e0d101fe4a77978`.
+
+```stata
+capture replace hn`c' = 0 if missing(hn`c')
+```
+Enclosing controls: `foreach c of local collist {`
+Modified: `variable:e25177a652a3e422`
+Read candidates: `variable:e25177a652a3e422`, `variable:db5673ee99ca56b0`
+
+### block:8e0d101fe4a77978
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L412-L412`. Next: `block:8a288775ca283623`.
+
+```stata
+}
+```
+
+### block:8a288775ca283623
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L413-L413`. Next: `block:19daefb7027908ce`.
+
+```stata
+sort ord
+```
+
+### block:19daefb7027908ce
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L417-L417`. Next: `block:9210ec40c9b1e867`.
+
+```stata
+egen double avg_cover = rowmean(`collist')
+```
+New: `variable:e80d59888b0a4a66`
+
+### block:9210ec40c9b1e867
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L418-L418`. Next: `block:ac36f64d0d2c2187`.
+
+```stata
+format avg_cover %5.1f
+```
+
+### block:ac36f64d0d2c2187
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L421-L421`. Next: `block:dbe0dfc4110e5611`.
+
+```stata
+foreach c of local collist {
+```
+
+### block:dbe0dfc4110e5611
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L422-L422`. Next: `block:da00d14d83833e0d`.
+
+```stata
+gen str8 s`c' = "NA"
+```
+Enclosing controls: `foreach c of local collist {`
+New: `variable:88d04beb92e6b684`
+
+### block:da00d14d83833e0d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L423-L423`. Next: `block:367c17637ed495fe`.
+
+```stata
+replace s`c' = string(`c', "%5.1f") if hn`c' == 1 & !missing(`c')
+```
+Enclosing controls: `foreach c of local collist {`
+Modified: `variable:88d04beb92e6b684`
+Read candidates: `variable:e25177a652a3e422`
+
+### block:367c17637ed495fe
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L424-L424`. Next: `block:0467693e3f984114`.
+
+```stata
+replace s`c' = "0.0"                if hn`c' == 1 & `c' == 0
+```
+Enclosing controls: `foreach c of local collist {`
+Modified: `variable:88d04beb92e6b684`
+Read candidates: `variable:e25177a652a3e422`
+
+### block:0467693e3f984114
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L425-L425`. Next: `block:7ecb8f362f8c6ae5`.
+
+```stata
+drop `c' hn`c'
+```
+Enclosing controls: `foreach c of local collist {`
+Read candidates: `variable:e25177a652a3e422`
+
+### block:7ecb8f362f8c6ae5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L426-L426`. Next: `block:d4e19f05e7319a16`.
+
+```stata
+rename s`c' `c'
+```
+Enclosing controls: `foreach c of local collist {`
+New: `variable:f4d41f3647c5bf54`
+Read candidates: `variable:88d04beb92e6b684`
+
+### block:d4e19f05e7319a16
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L427-L427`. Next: `block:6fb02eef6ef9ddf2`.
+
+```stata
+}
+```
+
+### block:6fb02eef6ef9ddf2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L429-L429`. Next: `block:77ebe45a84613e0c`.
+
+```stata
+order ord module variable `collist' avg_cover
+```
+
+### block:77ebe45a84613e0c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L430-L430`. Next: `block:929aa203c1b6a2da`.
+
+```stata
+drop ord
+```
+Read candidates: `variable:06554a38d1b420ce`
+
+### block:929aa203c1b6a2da
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L432-L432`. Next: `block:1f935ff7c666d462`.
+
+```stata
+label var module    "Module"
+```
+
+### block:1f935ff7c666d462
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L433-L433`. Next: `block:c65064290da51b64`.
+
+```stata
+label var variable  "GMI_ext_Variable"
+```
+
+### block:c65064290da51b64
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L434-L434`. Next: `block:a45796ca869a49b6`.
+
+```stata
+label var avg_cover "average coverage pct, delivered only"
+```
+
+### block:a45796ca869a49b6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L436-L437`. Next: `block:94cc6e134089fe96`.
+
+```stata
+export excel using "`outfile'", sheet("COVERAGE", modify) cell(A2) firstrow(varlabels)
+```
+Write datasets: `dataset:427cc089a9aa2cd7`
+
+### block:94cc6e134089fe96
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L438-L438`. Next: `block:34503096ea61e219`.
+
+```stata
+restore
+```
+
+### block:34503096ea61e219
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L443-L443`. Next: `block:5420b939e535299d`.
+
+```stata
+preserve
+```
+
+### block:5420b939e535299d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L444-L445`. Next: `block:45e9480f47bc0d20`.
+
+```stata
+keep region ccode cyear survey module variable has_name has_data n_obs n_nonmiss pct_cover
+```
+Read candidates: `variable:a4a952c0975a8b9e`, `variable:c10d7acd18ef31e4`, `variable:98de5c4016006cec`, `variable:4813762fab6ca522`, `variable:456e65b4493f2b71`, `variable:a47a883021827613`, `variable:325d1c3ad0c8d8ad`, `variable:618abfe82f8993bf`, `variable:2f98c2340d8da355`, `variable:ea19ee096f8c712f`, `variable:ddf0be57cbe506e7`
+
+### block:45e9480f47bc0d20
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L446-L447`. Next: `block:7d26e55df3336096`.
+
+```stata
+order region ccode cyear survey module variable has_name has_data n_obs n_nonmiss pct_cover
+```
+
+### block:7d26e55df3336096
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L448-L448`. Next: `block:cc922bf22b27a6e5`.
+
+```stata
+format pct_cover %5.1f
+```
+
+### block:cc922bf22b27a6e5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L449-L449`. Next: `block:7481778403decac7`.
+
+```stata
+sort region ccode cyear variable
+```
+
+### block:7481778403decac7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L450-L450`. Next: `block:5ee516db54c96a03`.
+
+```stata
+label var region   "region"
+```
+
+### block:5ee516db54c96a03
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L451-L451`. Next: `block:657f91890dc1e6c4`.
+
+```stata
+label var ccode    "country"
+```
+
+### block:657f91890dc1e6c4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L452-L452`. Next: `block:aeb409c6f9479459`.
+
+```stata
+label var cyear    "year"
+```
+
+### block:aeb409c6f9479459
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L453-L453`. Next: `block:16eb6bedef91a94d`.
+
+```stata
+label var survey   "survey"
+```
+
+### block:16eb6bedef91a94d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L454-L454`. Next: `block:f2b9416967a392e2`.
+
+```stata
+label var module   "module"
+```
+
+### block:f2b9416967a392e2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L455-L455`. Next: `block:faa5f5cdf69ea36b`.
+
+```stata
+label var variable "GMI_ext_Variable"
+```
+
+### block:faa5f5cdf69ea36b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L456-L456`. Next: `block:8c3ecc14c896f442`.
+
+```stata
+label var has_name "name delivered"
+```
+
+### block:8c3ecc14c896f442
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L457-L457`. Next: `block:1c89ad477652001b`.
+
+```stata
+label var has_data  "name delivered and populated"
+```
+
+### block:1c89ad477652001b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L458-L458`. Next: `block:64034c7aba057282`.
+
+```stata
+label var n_obs     "rows in the file that carries it"
+```
+
+### block:64034c7aba057282
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L459-L459`. Next: `block:16f348a9b2eef2f0`.
+
+```stata
+label var n_nonmiss "rows with a value"
+```
+
+### block:16f348a9b2eef2f0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L460-L460`. Next: `block:aba05ef2815bc188`.
+
+```stata
+label var pct_cover "coverage pct"
+```
+
+### block:aba05ef2815bc188
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L461-L461`. Next: `block:c6c8d80b8eed44cf`.
+
+```stata
+export excel using "`outfile'", sheet("LONG", modify) firstrow(varlabels)
+```
+Write datasets: `dataset:427cc089a9aa2cd7`
+
+### block:c6c8d80b8eed44cf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L462-L462`. Next: `block:9090079dd0149a1b`.
+
+```stata
+restore
+```
+
+### block:9090079dd0149a1b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L470-L470`. Next: `block:6fb246d545eff3df`.
+
+```stata
+foreach sh in "DELIVERED" "COVERAGE" {
+```
+
+### block:6fb246d545eff3df
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L471-L471`. Next: `block:802791fe939f2d8b`.
+
+```stata
+putexcel set "`outfile'", sheet("`sh'") modify
+```
+Enclosing controls: `foreach sh in "DELIVERED" "COVERAGE" {`
+Write datasets: `dataset:427cc089a9aa2cd7`
+
+### block:802791fe939f2d8b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L472-L472`. Next: `block:454c9aac513f2c0b`.
+
+```stata
+local j = 0
+```
+Enclosing controls: `foreach sh in "DELIVERED" "COVERAGE" {`
+
+### block:454c9aac513f2c0b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L473-L473`. Next: `block:f8e7f677812e8029`.
+
+```stata
+foreach rg of local reglist {
+```
+Enclosing controls: `foreach sh in "DELIVERED" "COVERAGE" {`
+
+### block:f8e7f677812e8029
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L474-L474`. Next: `block:466676124e3e808c`.
+
+```stata
+local ++j
+```
+Enclosing controls: `foreach sh in "DELIVERED" "COVERAGE" {` → `foreach rg of local reglist {`
+
+### block:466676124e3e808c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L475-L475`. Next: `block:18eae0997b9e3125`.
+
+```stata
+local cnum = `j' + 2
+```
+Enclosing controls: `foreach sh in "DELIVERED" "COVERAGE" {` → `foreach rg of local reglist {`
+
+### block:18eae0997b9e3125
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L476-L476`. Next: `block:e4311edb67c44f0d`.
+
+```stata
+local cl = ""
+```
+Enclosing controls: `foreach sh in "DELIVERED" "COVERAGE" {` → `foreach rg of local reglist {`
+
+### block:e4311edb67c44f0d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L477-L477`. Next: `block:66b3cd2f84bb92a1`.
+
+```stata
+if `cnum' <= 26 local cl = char(64 + `cnum')
+```
+Enclosing controls: `foreach sh in "DELIVERED" "COVERAGE" {` → `foreach rg of local reglist {`
+
+### block:66b3cd2f84bb92a1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L478-L478`. Next: `block:f40d9c898e5bf535`.
+
+```stata
+else {
+```
+Enclosing controls: `foreach sh in "DELIVERED" "COVERAGE" {` → `foreach rg of local reglist {`
+
+### block:f40d9c898e5bf535
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L479-L479`. Next: `block:f573d2c688f8dfd3`.
+
+```stata
+local c1 = int((`cnum'-1)/26)
+```
+Enclosing controls: `foreach sh in "DELIVERED" "COVERAGE" {` → `foreach rg of local reglist {` → `else {`
+
+### block:f573d2c688f8dfd3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L480-L480`. Next: `block:f451b7b588f7d89b`.
+
+```stata
+local c2 = mod(`cnum'-1, 26) + 1
+```
+Enclosing controls: `foreach sh in "DELIVERED" "COVERAGE" {` → `foreach rg of local reglist {` → `else {`
+
+### block:f451b7b588f7d89b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L481-L481`. Next: `block:2f40e900f9db7502`.
+
+```stata
+local cl = char(64 + `c1') + char(64 + `c2')
+```
+Enclosing controls: `foreach sh in "DELIVERED" "COVERAGE" {` → `foreach rg of local reglist {` → `else {`
+
+### block:2f40e900f9db7502
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L482-L482`. Next: `block:d6a9669ce0f2bb7f`.
+
+```stata
+}
+```
+Enclosing controls: `foreach sh in "DELIVERED" "COVERAGE" {` → `foreach rg of local reglist {`
+
+### block:d6a9669ce0f2bb7f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L483-L483`. Next: `block:bc21812f75eaea39`.
+
+```stata
+putexcel `cl'1 = "`rg'", bold
+```
+Enclosing controls: `foreach sh in "DELIVERED" "COVERAGE" {` → `foreach rg of local reglist {`
+
+### block:bc21812f75eaea39
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L484-L484`. Next: `block:e4bb61ff8a6d245c`.
+
+```stata
+}
+```
+Enclosing controls: `foreach sh in "DELIVERED" "COVERAGE" {`
+
+### block:e4bb61ff8a6d245c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L485-L485`. Next: `block:ffdb633b1ad01572`.
+
+```stata
+putexcel A1 = "Region", bold
+```
+Enclosing controls: `foreach sh in "DELIVERED" "COVERAGE" {`
+
+### block:ffdb633b1ad01572
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L486-L486`. Next: `block:7e22a76f6302ee62`.
+
+```stata
+putexcel A2:B2, overwritefmt bold
+```
+Enclosing controls: `foreach sh in "DELIVERED" "COVERAGE" {`
+
+### block:7e22a76f6302ee62
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L487-L487`. Next: `block:3e7f4abe2b963d58`.
+
+```stata
+}
+```
+
+### block:3e7f4abe2b963d58
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L489-L489`. Next: `block:7808ce2a92de79fe`.
+
+```stata
+di as result _n(2) "{hline 78}"
+```
+
+### block:7808ce2a92de79fe
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L490-L490`. Next: `block:382fb855e0d08d03`.
+
+```stata
+di as result "  DONE"
+```
+
+### block:382fb855e0d08d03
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L491-L491`. Next: `block:91389353bdf8f52d`.
+
+```stata
+di as result "{hline 78}"
+```
+
+### block:91389353bdf8f52d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L492-L492`. Next: `block:276a29ae545c3d74`.
+
+```stata
+di as text "  workbook: `outfile'"
+```
+
+### block:276a29ae545c3d74
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L493-L493`. Next: `block:7c2d60ead746200b`.
+
+```stata
+di as text "  sheets  : READ ME | DELIVERED | COVERAGE | LONG"
+```
+
+### block:7c2d60ead746200b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L494-L494`. Next: `block:50bb47ce6972d54e`.
+
+```stata
+di as text _n "  Both grids use THREE states, not two:"
+```
+
+### block:50bb47ce6972d54e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L495-L495`. Next: `block:80db21da865fc9e8`.
+
+```stata
+di as text "    1 or a pct   Variable found, and it holds values"
+```
+
+### block:80db21da865fc9e8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L496-L496`. Next: `block:10483b68bdf161b0`.
+
+```stata
+di as text "    0            Variable found but every value is missing"
+```
+
+### block:10483b68bdf161b0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L497-L497`. Next: `block:b8c7be338e86466b`.
+
+```stata
+di as text "    NA           Variable not found in files"
+```
+
+### block:b8c7be338e86466b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L498-L498`. Next: `block:9b939ae7cd55cf71`.
+
+```stata
+di as text _n "  The legend is on the READ ME sheet, left-most tab."
+```
+
+### block:9b939ae7cd55cf71
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L499-L499`. Next: `block:1830a2e2fee8b578`.
+
+```stata
+di as result "{hline 78}" _n
+```
+
+### block:1830a2e2fee8b578
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L502-L502`. Next: `block:266fa70bbd375a95`.
+
+```stata
+use `RES', clear
+```
+Read datasets: `dataset:eca063bb15f25e5a`
+
+### block:266fa70bbd375a95
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L503-L503`. Next: `block:a90cbd5b4f644131`.
+
+```stata
+gen int ord = .
+```
+New: `variable:51f9803b3864c6b6`
+
+### block:a90cbd5b4f644131
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L504-L504`. Next: `block:1eef27b2b47cd99d`.
+
+```stata
+local i = 0
+```
+
+### block:1eef27b2b47cd99d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L505-L505`. Next: `block:86a45c450c8d5cff`.
+
+```stata
+foreach pair of local vlist {
+```
+
+### block:86a45c450c8d5cff
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L506-L506`. Next: `block:cd3ce83908ab55d4`.
+
+```stata
+local ++i
+```
+Enclosing controls: `foreach pair of local vlist {`
+
+### block:cd3ce83908ab55d4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L507-L507`. Next: `block:eca72e16ec719807`.
+
+```stata
+local col = strpos("`pair'", ":")
+```
+Enclosing controls: `foreach pair of local vlist {`
+
+### block:eca72e16ec719807
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L508-L508`. Next: `block:511c99f188b12012`.
+
+```stata
+local v   = substr("`pair'", `col'+1, .)
+```
+Enclosing controls: `foreach pair of local vlist {`
+
+### block:511c99f188b12012
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L509-L509`. Next: `block:9073a481ade05b94`.
+
+```stata
+qui replace ord = `i' if variable == "`v'"
+```
+Enclosing controls: `foreach pair of local vlist {`
+Modified: `variable:51f9803b3864c6b6`
+Read candidates: `variable:c2536f8c1eba6fed`, `variable:6f3a4e035a923f7d`
+
+### block:9073a481ade05b94
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L510-L510`. Next: `block:8094461cfbadc66f`.
+
+```stata
+}
+```
+
+### block:8094461cfbadc66f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L511-L511`. Next: `block:89390d6da35059e2`.
+
+```stata
+gen byte cell = cond(`requiredata', has_data, has_name)
+```
+New: `variable:bb39cf359018966f`
+Read candidates: `variable:ef4c11a3a68bf252`, `variable:68a662c2729e4a66`
+
+### block:89390d6da35059e2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L512-L512`. Next: `block:51d0663fceaf8ba7`.
+
+```stata
+collapse (sum) delivered = cell (sum) named = has_name, by(ord module variable)
+```
+Read candidates: `variable:3de56ded8ffcb2f5`, `variable:586a93ac8a3b8cd1`, `variable:68a662c2729e4a66`, `variable:51f9803b3864c6b6`, `variable:71073bd3f1ae47f7`, `variable:c2536f8c1eba6fed`
+
+### block:51d0663fceaf8ba7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L513-L513`. Next: `block:731b1ba1090a8be0`.
+
+```stata
+sort ord
+```
+
+### block:731b1ba1090a8be0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L514-L514`. Next: `block:c61e963b1535bf26`.
+
+```stata
+drop ord
+```
+Read candidates: `variable:51f9803b3864c6b6`
+
+### block:c61e963b1535bf26
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L515-L515`. Next: `block:c5db4fc38cef3679`.
+
+```stata
+di as result "  How many country-years delivered each variable"
+```
+
+### block:c5db4fc38cef3679
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L516-L516`. Next: `block:a2dd2c3490ff836c`.
+
+```stata
+di as result "{hline 78}"
+```
+
+### block:a2dd2c3490ff836c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do:L517-L517`. Next: `end`.
+
+```stata
+list module variable named delivered, noobs sep(0) abbrev(20)
+```

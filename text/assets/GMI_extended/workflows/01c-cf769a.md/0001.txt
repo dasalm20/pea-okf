@@ -1,0 +1,1090 @@
+# 01.Programs/01c-GMI extended spells pov elasticity.do
+
+PIP/GDP spell elasticities and descriptive regressions
+
+Status: PARTIAL_STATIC. Every lexically active statement is indexed; complete runtime schema and macro expansion are not established.
+
+Source snapshot: numbered source (deployment lookup: lookup/sources/GMI_extended/source_maps/01c-cf769a.md.md)
+
+## Execution-order blocks
+
+### block:455195b931992c27
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L13-L13`. Next: `block:5f99e5c08b4158fe`.
+
+```stata
+clear
+```
+
+### block:5f99e5c08b4158fe
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L18-L18`. Next: `block:9e2851a496eb7dbb`.
+
+```stata
+tempfile pfw pip1 pip2 datagic dataall dataall2 prosdecomp
+```
+
+### block:9e2851a496eb7dbb
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L19-L19`. Next: `block:e489e00095b91831`.
+
+```stata
+save `datagic', replace emptyok
+```
+Write datasets: `dataset:078b5b10bd9e3c87`
+
+### block:e489e00095b91831
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L20-L20`. Next: `block:0489ab64a32fdf35`.
+
+```stata
+save `prosdecomp', replace emptyok
+```
+Write datasets: `dataset:6842c690de887d2e`
+
+### block:0489ab64a32fdf35
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L21-L21`. Next: `block:cb65eb4d86df2f3f`.
+
+```stata
+save `dataall', replace emptyok
+```
+Write datasets: `dataset:35ff0e43c51ecfc9`
+
+### block:cb65eb4d86df2f3f
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L22-L22`. Next: `block:f5e1db03c1b779f4`.
+
+```stata
+save `dataall2', replace emptyok
+```
+Write datasets: `dataset:df8f472f9899af90`
+
+### block:f5e1db03c1b779f4
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L24-L24`. Next: `block:01dce7945407e5bd`.
+
+```stata
+set varabbrev off
+```
+
+### block:01dce7945407e5bd
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L72-L72`. Next: `block:941dd3fced6912c4`.
+
+```stata
+dlw, country(support) year(2005) type(gmdraw) surveyid(${cpiversion}) filename(Survey_price_framework.dta) files
+```
+Read datasets: `dataset:a9ce47a00fc130b5`
+
+### block:941dd3fced6912c4
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L73-L73`. Next: `block:2120b6ae977d2966`.
+
+```stata
+keep code year rep_year datatype display_cp survname
+```
+Read candidates: `variable:fb44173b5111109e`, `variable:ef2f679007ce981e`, `variable:6a60e7ed810bf139`, `variable:35b56c7d7382eb94`, `variable:25d5a57c94f7f4fa`, `variable:0c347501e21b7270`
+
+### block:2120b6ae977d2966
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L74-L74`. Next: `block:763efb288437aa39`.
+
+```stata
+gen		welfare_type = 1 if datatype == "CONS" | datatype == "C" | datatype == "c"
+```
+New: `variable:30f3e74d810872f2`
+Read candidates: `variable:35b56c7d7382eb94`
+
+### block:763efb288437aa39
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L75-L75`. Next: `block:7be4f15f4cdb6bfe`.
+
+```stata
+replace welfare_type = 2 if datatype == "INC" | datatype == "I" | datatype == "i"
+```
+Modified: `variable:30f3e74d810872f2`
+Read candidates: `variable:35b56c7d7382eb94`
+
+### block:7be4f15f4cdb6bfe
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L76-L76`. Next: `block:3ae25b9bec7c46f2`.
+
+```stata
+save `pfw', replace
+```
+Write datasets: `dataset:a41ea45b4551fe0d`
+
+### block:3ae25b9bec7c46f2
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L82-L82`. Next: `block:d9e978e8c8afb6a7`.
+
+```stata
+use "$inputapi\pip2021.dta", clear
+```
+Read datasets: `dataset:bf829e5629c98fb1`
+
+### block:d9e978e8c8afb6a7
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L83-L83`. Next: `block:d5f7061c76d8d21c`.
+
+```stata
+isid country_code year survey_acronym welfare_type
+```
+Read candidates: `variable:53138350ae89d9d7`, `variable:4c881628458c84e2`, `variable:28937007c5200663`, `variable:2beac9633f7debce`
+
+### block:d5f7061c76d8d21c
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L84-L84`. Next: `block:ddde7f329e10ec75`.
+
+```stata
+keep country_code year survey_acronym welfare_type fgt0_*
+```
+Read candidates: `variable:53138350ae89d9d7`, `variable:4c881628458c84e2`, `variable:28937007c5200663`, `variable:2beac9633f7debce`, `variable:65c5f57cf1345bd9`
+
+### block:ddde7f329e10ec75
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L85-L85`. Next: `block:840f8a988677a7da`.
+
+```stata
+reshape long fgt0_, i(country_code year survey_acronym welfare_type) j(povline)
+```
+Read candidates: `variable:65c5f57cf1345bd9`, `variable:53138350ae89d9d7`, `variable:4c881628458c84e2`, `variable:28937007c5200663`, `variable:2beac9633f7debce`, `variable:87aec00919f669f4`
+
+### block:840f8a988677a7da
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L86-L86`. Next: `block:285b96e77ffd39ac`.
+
+```stata
+gen ppp = 2021
+```
+New: `variable:da924013fb0dbdd5`
+
+### block:285b96e77ffd39ac
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L87-L87`. Next: `block:2b034a356a771e9c`.
+
+```stata
+save `pip1', replace
+```
+Write datasets: `dataset:471727ca9f95a369`
+
+### block:2b034a356a771e9c
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L89-L89`. Next: `block:fea8cda35d384310`.
+
+```stata
+use "$inputapi\pip2017.dta", clear
+```
+Read datasets: `dataset:fb40a76b8229a5d7`
+
+### block:fea8cda35d384310
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L90-L90`. Next: `block:b4cbe376b0874151`.
+
+```stata
+isid country_code year survey_acronym welfare_type
+```
+Read candidates: `variable:acce60d0c60792b3`, `variable:a893bb3c07320741`, `variable:b3b5d8db4c120a46`, `variable:3dc7826351f46702`
+
+### block:b4cbe376b0874151
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L91-L91`. Next: `block:268c258a91dd52fb`.
+
+```stata
+keep country_code year survey_acronym welfare_type fgt0_*
+```
+Read candidates: `variable:acce60d0c60792b3`, `variable:a893bb3c07320741`, `variable:b3b5d8db4c120a46`, `variable:3dc7826351f46702`, `variable:b86e197ecb90672c`
+
+### block:268c258a91dd52fb
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L92-L92`. Next: `block:e4ccea1a9161bd56`.
+
+```stata
+reshape long fgt0_, i(country_code year survey_acronym welfare_type) j(povline)
+```
+Read candidates: `variable:b86e197ecb90672c`, `variable:acce60d0c60792b3`, `variable:a893bb3c07320741`, `variable:b3b5d8db4c120a46`, `variable:3dc7826351f46702`, `variable:89c564bdf26f90fe`
+
+### block:e4ccea1a9161bd56
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L93-L93`. Next: `block:3c1fc63980565406`.
+
+```stata
+gen ppp = 2017
+```
+New: `variable:3f5a13306cdc51cb`
+
+### block:3c1fc63980565406
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L94-L94`. Next: `block:57bdc19a4dd36f38`.
+
+```stata
+append using `pip1'
+```
+Read datasets: `dataset:471727ca9f95a369`
+
+### block:57bdc19a4dd36f38
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L95-L95`. Next: `block:992b9c8e1e6e6e4c`.
+
+```stata
+ren country_code code
+```
+New: `variable:afb5c8846ac6cbe1`
+Read candidates: `variable:acce60d0c60792b3`
+
+### block:992b9c8e1e6e6e4c
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L97-L97`. Next: `block:6717dfc924b567fd`.
+
+```stata
+merge m:1 code year using "$inputapi\PIP_all_GDP.dta", keepus(gdppc)
+```
+Read datasets: `dataset:01f1237d8f54211e`
+
+### block:6717dfc924b567fd
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L98-L98`. Next: `block:38bbec2715e94125`.
+
+```stata
+drop if _merge==2
+```
+Read candidates: `variable:4a4f4eb56891fe27`
+
+### block:38bbec2715e94125
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L99-L99`. Next: `block:57df0b92c4b70914`.
+
+```stata
+drop _merge
+```
+Read candidates: `variable:4a4f4eb56891fe27`
+
+### block:57df0b92c4b70914
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L100-L100`. Next: `block:d776ffa32599f6ce`.
+
+```stata
+gen welftype = "CONS" if welfare_type==1
+```
+New: `variable:631792a4ac44773d`
+Read candidates: `variable:3dc7826351f46702`
+
+### block:d776ffa32599f6ce
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L101-L101`. Next: `block:dc8c8818ede9fa7b`.
+
+```stata
+replace welftype = "INC" if welfare_type==2
+```
+Modified: `variable:631792a4ac44773d`
+Read candidates: `variable:3dc7826351f46702`
+
+### block:dc8c8818ede9fa7b
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L102-L102`. Next: `block:6007ccabe95f8239`.
+
+```stata
+ren survey_acronym survname
+```
+New: `variable:2cc9aa2de7324934`
+Read candidates: `variable:b3b5d8db4c120a46`
+
+### block:6007ccabe95f8239
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L103-L103`. Next: `block:bad21e4a8723aaea`.
+
+```stata
+ren year rep_year
+```
+New: `variable:b4ff6d51986fe462`
+Read candidates: `variable:a893bb3c07320741`
+
+### block:bad21e4a8723aaea
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L106-L106`. Next: `block:c56f831176923818`.
+
+```stata
+merge m:1 code rep_year welfare_type survname using `pfw', nogen
+```
+Read datasets: `dataset:a41ea45b4551fe0d`
+
+### block:c56f831176923818
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L107-L107`. Next: `block:04776eea914847d9`.
+
+```stata
+drop if display_cp == 0 | display_cp == .
+```
+Read candidates: `variable:397c1bdb763c0882`
+
+### block:04776eea914847d9
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L108-L108`. Next: `block:d7c31289f840103f`.
+
+```stata
+save `pip1', replace
+```
+Write datasets: `dataset:471727ca9f95a369`
+
+### block:d7c31289f840103f
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L113-L113`. Next: `block:a41af3a001338e6e`.
+
+```stata
+tempfile data1 data2
+```
+
+### block:a41af3a001338e6e
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L114-L114`. Next: `block:b4a7cc9f1631db41`.
+
+```stata
+use "$fromservers\repo_${rnd}all.dta" , clear
+```
+Read datasets: `dataset:2427a62d3bc9c48f`
+
+### block:b4a7cc9f1631db41
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L115-L115`. Next: `block:56b1063f1397d788`.
+
+```stata
+gen year = years
+```
+New: `variable:9f515f73a6acc8f9`
+Read candidates: `variable:91476f02729d140a`
+
+### block:56b1063f1397d788
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L116-L116`. Next: `block:63b23ef742bd5401`.
+
+```stata
+destring year, replace
+```
+Modified: `variable:9f515f73a6acc8f9`
+Read candidates: `variable:9f515f73a6acc8f9`
+
+### block:63b23ef742bd5401
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L117-L117`. Next: `block:30218dd1951b06a1`.
+
+```stata
+ren country countrycode
+```
+New: `variable:2c12818c6a47785f`
+Read candidates: `variable:980a18de54f3e2df`
+
+### block:30218dd1951b06a1
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L118-L118`. Next: `block:3920afb4df339eeb`.
+
+```stata
+keep if module=="ALL"
+```
+Read candidates: `variable:369260c24d36de78`
+
+### block:3920afb4df339eeb
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L119-L119`. Next: `block:82f043aa1bf98ba1`.
+
+```stata
+save `data1', replace
+```
+Write datasets: `dataset:344687d3bd003c83`
+
+### block:82f043aa1bf98ba1
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L121-L121`. Next: `block:68f168dd46477b5c`.
+
+```stata
+use "$fromservers\GMI_SPspell_all.dta" , clear
+```
+Read datasets: `dataset:1bd858813fb1d63b`
+
+### block:68f168dd46477b5c
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L122-L122`. Next: `block:c04ced83711d578c`.
+
+```stata
+drop if datamod=="bin"
+```
+Read candidates: `variable:4de70e4f66c1b0ba`
+
+### block:c04ced83711d578c
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L123-L123`. Next: `block:bb97fd7b3aaf9149`.
+
+```stata
+drop if countrycode=="ISO3"|countrycode=="ISO3"|countrycode=="ISO3"|countrycode=="ISO3"
+```
+Read candidates: `variable:94cd2f29d35c2b91`
+
+### block:bb97fd7b3aaf9149
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L124-L124`. Next: `block:c9e6ec3ae53bfffe`.
+
+```stata
+ren surveyname survname
+```
+New: `variable:6798b4cc26be519e`
+Read candidates: `variable:184b473c4a3a8282`
+
+### block:c9e6ec3ae53bfffe
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L125-L125`. Next: `block:14e41d58a0308371`.
+
+```stata
+merge m:m countrycode year survname using `data1', keepus(module)
+```
+Read datasets: `dataset:344687d3bd003c83`
+
+### block:14e41d58a0308371
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L126-L126`. Next: `block:91227ebe74a03101`.
+
+```stata
+drop if _merge==2
+```
+Read candidates: `variable:b32993b289180d44`
+
+### block:91227ebe74a03101
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L128-L128`. Next: `block:6a69f26861aadbe9`.
+
+```stata
+bys countrycode period welftype (year): gen seq = _N
+```
+New: `variable:f53cfaf592e16a4f`
+Read candidates: `variable:94cd2f29d35c2b91`, `variable:a0b1d4a3c234c6c6`, `variable:b36c6c3c1e48f08e`
+
+### block:6a69f26861aadbe9
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L129-L129`. Next: `block:9f3911219a10f626`.
+
+```stata
+bys countrycode period welftype (year): gen seq1 = _n
+```
+New: `variable:7e0be01edc769e34`
+Read candidates: `variable:94cd2f29d35c2b91`, `variable:a0b1d4a3c234c6c6`, `variable:b36c6c3c1e48f08e`
+
+### block:9f3911219a10f626
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L130-L130`. Next: `block:4afc029206ebc205`.
+
+```stata
+drop if seq==1
+```
+Read candidates: `variable:f53cfaf592e16a4f`
+
+### block:4afc029206ebc205
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L131-L131`. Next: `block:408d919d50fb9686`.
+
+```stata
+drop seq _merge ref rep region welvar datamod filename
+```
+Read candidates: `variable:f53cfaf592e16a4f`, `variable:b32993b289180d44`, `variable:df075db0752ad9a9`, `variable:7fbd133372a2e705`, `variable:e439d432fcb0f816`, `variable:42f91fa4fb6c7258`, `variable:4de70e4f66c1b0ba`, `variable:b385f7e34aee422e`
+
+### block:408d919d50fb9686
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L132-L132`. Next: `block:bc3f5fe0859d85c5`.
+
+```stata
+replace module="MIS" if module==""
+```
+Modified: `variable:5484955e77764fc4`
+Read candidates: `variable:5484955e77764fc4`
+
+### block:bc3f5fe0859d85c5
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L134-L134`. Next: `block:acb0aea82a690f8c`.
+
+```stata
+reshape wide year survname module, i(countrycode period welftype) j(seq1)
+```
+Read candidates: `variable:f508b5927675f6b3`, `variable:b36c6c3c1e48f08e`, `variable:6798b4cc26be519e`, `variable:5484955e77764fc4`, `variable:94cd2f29d35c2b91`, `variable:a0b1d4a3c234c6c6`, `variable:278c5b0b0c7e2252`, `variable:7e0be01edc769e34`
+
+### block:acb0aea82a690f8c
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L135-L135`. Next: `block:52ccefb2114adf82`.
+
+```stata
+gen type = 0
+```
+New: `variable:0cf5741cad4fa12a`
+
+### block:52ccefb2114adf82
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L136-L136`. Next: `block:ca0e05a562b62790`.
+
+```stata
+replace type = 1 if module1=="ALL" & module2=="ALL"
+```
+Modified: `variable:0cf5741cad4fa12a`
+Read candidates: `variable:af99d05973e1b2a9`, `variable:481db7544bb4009c`
+
+### block:ca0e05a562b62790
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L137-L137`. Next: `block:77ac7e3223790080`.
+
+```stata
+drop if countrycode=="ISO3" & year1==0000
+```
+Read candidates: `variable:94cd2f29d35c2b91`, `variable:2c6a49de5f0e4957`
+
+### block:77ac7e3223790080
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L139-L139`. Next: `block:34db834c78c569ed`.
+
+```stata
+local nobs = _N
+```
+
+### block:34db834c78c569ed
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L140-L140`. Next: `block:0a5c4f0850b92397`.
+
+```stata
+save `data1', replace
+```
+Write datasets: `dataset:344687d3bd003c83`
+
+### block:0a5c4f0850b92397
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L145-L145`. Next: `block:b00167d951f5d212`.
+
+```stata
+keep countrycode welftype period year1 survname1 module1
+```
+Read candidates: `variable:94cd2f29d35c2b91`, `variable:278c5b0b0c7e2252`, `variable:a0b1d4a3c234c6c6`, `variable:2c6a49de5f0e4957`, `variable:8a710c6648c9fe00`, `variable:af99d05973e1b2a9`
+
+### block:b00167d951f5d212
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L146-L146`. Next: `block:33d228a6aaec153a`.
+
+```stata
+ren year1 year
+```
+New: `variable:b36c6c3c1e48f08e`
+Read candidates: `variable:2c6a49de5f0e4957`
+
+### block:33d228a6aaec153a
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L147-L147`. Next: `block:e94ebd448356673e`.
+
+```stata
+ren survname1 survname
+```
+New: `variable:6798b4cc26be519e`
+Read candidates: `variable:8a710c6648c9fe00`
+
+### block:e94ebd448356673e
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L148-L148`. Next: `block:41c1a6bc9cb3550b`.
+
+```stata
+ren module1 module
+```
+New: `variable:5484955e77764fc4`
+Read candidates: `variable:af99d05973e1b2a9`
+
+### block:41c1a6bc9cb3550b
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L149-L149`. Next: `block:f6c1c479dbade3c9`.
+
+```stata
+save `data2', replace
+```
+Write datasets: `dataset:ee115784901fa337`
+
+### block:f6c1c479dbade3c9
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L151-L151`. Next: `block:3532bb1e97e0455f`.
+
+```stata
+use `data1', clear
+```
+Read datasets: `dataset:344687d3bd003c83`
+
+### block:3532bb1e97e0455f
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L152-L152`. Next: `block:ddac9dbe31eb7d9d`.
+
+```stata
+keep countrycode welftype period year2 survname2 module2
+```
+Read candidates: `variable:c699570dbd1317dc`, `variable:4406b59f8e7e6ab8`, `variable:822a64592e186888`, `variable:ca0859ceb3155c61`, `variable:13832cff51bf5f7c`, `variable:7021ba07371a5961`
+
+### block:ddac9dbe31eb7d9d
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L153-L153`. Next: `block:4c65b6e3f9f44f44`.
+
+```stata
+ren year2 year
+```
+New: `variable:b45396e006e64eb6`
+Read candidates: `variable:ca0859ceb3155c61`
+
+### block:4c65b6e3f9f44f44
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L154-L154`. Next: `block:14b590c9759cfccd`.
+
+```stata
+ren survname2 survname
+```
+New: `variable:404065e2a7ea3d84`
+Read candidates: `variable:13832cff51bf5f7c`
+
+### block:14b590c9759cfccd
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L155-L155`. Next: `block:79890f108416dbf7`.
+
+```stata
+ren module2 module
+```
+New: `variable:84726949097658dd`
+Read candidates: `variable:7021ba07371a5961`
+
+### block:79890f108416dbf7
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L156-L156`. Next: `block:201a62fed482a59a`.
+
+```stata
+append using `data2'
+```
+Read datasets: `dataset:ee115784901fa337`
+
+### block:201a62fed482a59a
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L157-L157`. Next: `block:0eaf4d65d01e0cc5`.
+
+```stata
+ren countrycode code
+```
+New: `variable:e8df213a65c80e14`
+Read candidates: `variable:c699570dbd1317dc`
+
+### block:0eaf4d65d01e0cc5
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L158-L158`. Next: `block:ef9c5365c4daf1ff`.
+
+```stata
+save `data2', replace
+```
+Write datasets: `dataset:ee115784901fa337`
+
+### block:ef9c5365c4daf1ff
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L162-L162`. Next: `block:c578b8964a519f32`.
+
+```stata
+joinby code year survname welftype using `pip1'
+```
+Read datasets: `dataset:471727ca9f95a369`
+
+### block:c578b8964a519f32
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L164-L164`. Next: `block:0edc3f7e02dcf431`.
+
+```stata
+sort ppp code  welftype povline period year
+```
+
+### block:0edc3f7e02dcf431
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L165-L165`. Next: `block:d565880b52660959`.
+
+```stata
+bys ppp code  welftype povline period (year): gen x = _N
+```
+New: `variable:414724ebd848e6f1`
+Read candidates: `variable:6508939ec133cdb2`, `variable:e8df213a65c80e14`, `variable:4406b59f8e7e6ab8`, `variable:78ce77281aefb24e`, `variable:b45396e006e64eb6`
+
+### block:d565880b52660959
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L166-L166`. Next: `block:47227bda826c6340`.
+
+```stata
+ta x
+```
+Read candidates: `variable:414724ebd848e6f1`
+
+### block:47227bda826c6340
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L167-L167`. Next: `block:c509e6db42803fa9`.
+
+```stata
+drop if x==1
+```
+Read candidates: `variable:414724ebd848e6f1`
+
+### block:c509e6db42803fa9
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L168-L168`. Next: `block:8e2655586b5a4673`.
+
+```stata
+drop x
+```
+Read candidates: `variable:414724ebd848e6f1`
+
+### block:8e2655586b5a4673
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L173-L173`. Next: `block:c894e2c845babb24`.
+
+```stata
+bys ppp code  welftype povline period (year): gen ch_fgt0 = ln(fgt0_[2]/fgt0_[1])
+```
+New: `variable:917cbbd8dd578c17`
+Read candidates: `variable:da3a7fd3678b34f6`, `variable:6508939ec133cdb2`, `variable:e8df213a65c80e14`, `variable:4406b59f8e7e6ab8`, `variable:78ce77281aefb24e`, `variable:b45396e006e64eb6`
+
+### block:c894e2c845babb24
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L174-L174`. Next: `block:ec633d48a757fef2`.
+
+```stata
+bys ppp code  welftype povline period (year): gen ch_gdppc = ln(gdppc[2]/gdppc[1])
+```
+New: `variable:6132fcb91b00a327`
+Read candidates: `variable:1e29f2f93de21d4e`, `variable:6508939ec133cdb2`, `variable:e8df213a65c80e14`, `variable:4406b59f8e7e6ab8`, `variable:78ce77281aefb24e`, `variable:b45396e006e64eb6`
+
+### block:ec633d48a757fef2
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L175-L175`. Next: `block:6b0046255f03ac11`.
+
+```stata
+bys ppp code  welftype povline period (year): gen ch_year = year[2]-year[1]
+```
+New: `variable:b006cb376ec8bef4`
+Read candidates: `variable:b45396e006e64eb6`, `variable:6508939ec133cdb2`, `variable:e8df213a65c80e14`, `variable:4406b59f8e7e6ab8`, `variable:78ce77281aefb24e`
+
+### block:6b0046255f03ac11
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L176-L176`. Next: `block:7357f82192b96877`.
+
+```stata
+bys ppp code  welftype povline period (year): gen gr_fgt0 = ((fgt0_[2]/fgt0_[1])^(1/(year[2]-year[1])) -1)*100
+```
+New: `variable:76a36cac12f11634`
+Read candidates: `variable:da3a7fd3678b34f6`, `variable:b45396e006e64eb6`, `variable:6508939ec133cdb2`, `variable:e8df213a65c80e14`, `variable:4406b59f8e7e6ab8`, `variable:78ce77281aefb24e`
+
+### block:7357f82192b96877
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L177-L177`. Next: `block:f33e8dea46c15269`.
+
+```stata
+bys ppp code  welftype povline period (year): gen gr_gdppc = ((gdppc[2]/gdppc[1])^(1/(year[2]-year[1])) -1)*100
+```
+New: `variable:d98497f987b3347d`
+Read candidates: `variable:1e29f2f93de21d4e`, `variable:b45396e006e64eb6`, `variable:6508939ec133cdb2`, `variable:e8df213a65c80e14`, `variable:4406b59f8e7e6ab8`, `variable:78ce77281aefb24e`
+
+### block:f33e8dea46c15269
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L178-L178`. Next: `block:6e605bdd1ba16964`.
+
+```stata
+gen double pov_elasticity = ch_fgt0/ch_gdppc
+```
+New: `variable:3d011f90d11768de`
+Read candidates: `variable:917cbbd8dd578c17`, `variable:6132fcb91b00a327`
+
+### block:6e605bdd1ba16964
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L179-L179`. Next: `block:ac2ac376bb4cdb9d`.
+
+```stata
+gen double pov_elasticity2 = gr_fgt0/gr_gdppc
+```
+New: `variable:c70eed057cab0f77`
+Read candidates: `variable:76a36cac12f11634`, `variable:d98497f987b3347d`
+
+### block:ac2ac376bb4cdb9d
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L180-L180`. Next: `block:731e004dd721da0f`.
+
+```stata
+save "$interm\GMI_extended_${rnd}_pov_elas_raw", replace
+```
+Write datasets: `dataset:634ec6bb67664d65`
+
+### block:731e004dd721da0f
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L183-L183`. Next: `block:1591ed448b301fff`.
+
+```stata
+keep code welftype period povline ppp ch_fgt0 ch_gdppc ch_year pov_elasticity gr_fgt0 gr_gdppc pov_elasticity2
+```
+Read candidates: `variable:e8df213a65c80e14`, `variable:4406b59f8e7e6ab8`, `variable:822a64592e186888`, `variable:78ce77281aefb24e`, `variable:6508939ec133cdb2`, `variable:917cbbd8dd578c17`, `variable:6132fcb91b00a327`, `variable:b006cb376ec8bef4`, `variable:3d011f90d11768de`, `variable:76a36cac12f11634`, `variable:d98497f987b3347d`, `variable:c70eed057cab0f77`
+
+### block:1591ed448b301fff
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L184-L184`. Next: `block:32f82b9d2f0a5f22`.
+
+```stata
+duplicates drop _all, force
+```
+
+### block:32f82b9d2f0a5f22
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L185-L185`. Next: `block:c11584199c65e72d`.
+
+```stata
+la var ch_fgt0 		"Change in poverty rate (difference in log)"
+```
+
+### block:c11584199c65e72d
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L186-L186`. Next: `block:255a9ce294d12a4a`.
+
+```stata
+la var ch_gdppc 	"Change in GDP per capita (difference in log)"
+```
+
+### block:255a9ce294d12a4a
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L187-L187`. Next: `block:af5fcaaddcfec99f`.
+
+```stata
+la var pov_elasticity 	   	"GPD-poverty elasticity (annualized)"
+```
+
+### block:af5fcaaddcfec99f
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L189-L189`. Next: `block:95aa35174c3eb344`.
+
+```stata
+la var gr_fgt0 		"Change in poverty rate (annualized growth)"
+```
+
+### block:95aa35174c3eb344
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L190-L190`. Next: `block:5fbf3ff756a9e586`.
+
+```stata
+la var gr_gdppc 	"Change in GDP per capita (annualized growth)"
+```
+
+### block:5fbf3ff756a9e586
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L191-L191`. Next: `block:9850d694f989d37d`.
+
+```stata
+la var pov_elasticity2 	   	"GPD-poverty elasticity (annualized growth)"
+```
+
+### block:9850d694f989d37d
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L193-L193`. Next: `block:b12bfa78e6e2fba0`.
+
+```stata
+save "$interm\GMI_extended_${rnd}_pov_elas_fmt", replace
+```
+Write datasets: `dataset:97dd84985edad28a`
+
+### block:b12bfa78e6e2fba0
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L194-L194`. Next: `block:2ce4aa89b88965a2`.
+
+```stata
+save "$pea\GMI_extended_pov_elas_fmt", replace
+```
+Write datasets: `dataset:085509f7e55fbfe3`
+
+### block:2ce4aa89b88965a2
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L203-L203`. Next: `block:0812626fb0046bca`.
+
+```stata
+tempfile data10
+```
+
+### block:0812626fb0046bca
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L204-L204`. Next: `block:467ba1cccd75492f`.
+
+```stata
+use "$inputapi\CLASS_incg_region.dta", clear
+```
+Read datasets: `dataset:fd532614e693f3bd`
+
+### block:467ba1cccd75492f
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L205-L205`. Next: `block:7c3fee6e4ec42e73`.
+
+```stata
+su year, meanonly
+```
+Read candidates: `variable:f128772a09013282`, `variable:97a1a8d419b0da3e`
+
+### block:7c3fee6e4ec42e73
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L206-L206`. Next: `block:b52a9f26dfabaf1a`.
+
+```stata
+local ymax = r(max)
+```
+
+### block:b52a9f26dfabaf1a
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L207-L207`. Next: `block:26139d19786b3c68`.
+
+```stata
+keep if year==`ymax'
+```
+Read candidates: `variable:f128772a09013282`
+
+### block:26139d19786b3c68
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L208-L208`. Next: `block:4c48c7a5a6275cca`.
+
+```stata
+save `data10', replace
+```
+Write datasets: `dataset:4db1e556ef0c8c13`
+
+### block:4c48c7a5a6275cca
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L210-L210`. Next: `block:6be47a14b3bbe25a`.
+
+```stata
+use "$interm\GMI_extended_${rnd}_pov_elas_fmt", clear
+```
+Read datasets: `dataset:97dd84985edad28a`
+
+### block:6be47a14b3bbe25a
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L211-L211`. Next: `block:5cf864d18cadc42c`.
+
+```stata
+merge m:1 code using `data10', keepus(region region_pip region_SSA incgroup_current)
+```
+Read datasets: `dataset:4db1e556ef0c8c13`
+
+### block:5cf864d18cadc42c
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L212-L212`. Next: `block:b6b240488e353665`.
+
+```stata
+drop if _merge==2
+```
+Read candidates: `variable:6ebbaa60e7813fe3`
+
+### block:b6b240488e353665
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L213-L213`. Next: `block:16f3c7f093b885b8`.
+
+```stata
+drop _merge
+```
+Read candidates: `variable:6ebbaa60e7813fe3`
+
+### block:16f3c7f093b885b8
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L215-L215`. Next: `block:c6206f61b2dc2089`.
+
+```stata
+gen lnline = ln(povline)
+```
+New: `variable:c9cd6233b196ef60`
+Read candidates: `variable:23ad12b49c767d63`
+
+### block:c6206f61b2dc2089
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L216-L216`. Next: `block:3a959c0dfdc7c097`.
+
+```stata
+encode welftype, gen(type)
+```
+New: `variable:90c33a067cc3e824`
+Read candidates: `variable:5af7b7a0596ea527`
+
+### block:3a959c0dfdc7c097
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L217-L217`. Next: `block:5138c64e90e918cf`.
+
+```stata
+encode region, gen(region2)
+```
+New: `variable:ca0b2fdd7c5835de`
+Read candidates: `variable:ab25935171585c91`
+
+### block:5138c64e90e918cf
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L218-L218`. Next: `block:2407a98759ba262b`.
+
+```stata
+encode region_pip, gen(region_pip2)
+```
+New: `variable:59c87a2c46ae8308`
+Read candidates: `variable:a8fd939b21d08ee0`
+
+### block:2407a98759ba262b
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L219-L219`. Next: `block:b935831c966addc5`.
+
+```stata
+encode incgroup_current, gen(incgroup_current2)
+```
+New: `variable:508a9fe098b1c0e8`
+Read candidates: `variable:25ef7b929bbf67ec`
+
+### block:b935831c966addc5
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L222-L222`. Next: `block:79fddf322855db63`.
+
+```stata
+reg ch_fgt0 ch_gdppc lnline i.type i.region2 i.incgroup_current2 if  ppp==2021
+```
+Read candidates: `variable:414e65da253b8926`, `variable:855a80bc5aa82a81`, `variable:c9cd6233b196ef60`, `variable:e6ad5563c12b2052`, `variable:90c33a067cc3e824`, `variable:ca0b2fdd7c5835de`, `variable:508a9fe098b1c0e8`, `variable:c3caa7f8a92d53f2`
+
+### block:79fddf322855db63
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L224-L224`. Next: `block:7703451523713ce3`.
+
+```stata
+bys region2: reg ch_fgt0 ch_gdppc lnline i.type  if  ppp==2021
+```
+Read candidates: `variable:414e65da253b8926`, `variable:855a80bc5aa82a81`, `variable:c9cd6233b196ef60`, `variable:e6ad5563c12b2052`, `variable:90c33a067cc3e824`, `variable:c3caa7f8a92d53f2`
+
+### block:7703451523713ce3
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L226-L226`. Next: `block:342853f0b5fc45f1`.
+
+```stata
+bys incgroup_current2: reg ch_fgt0 ch_gdppc lnline i.type  if  ppp==2021
+```
+Read candidates: `variable:414e65da253b8926`, `variable:855a80bc5aa82a81`, `variable:c9cd6233b196ef60`, `variable:e6ad5563c12b2052`, `variable:90c33a067cc3e824`, `variable:c3caa7f8a92d53f2`
+
+### block:342853f0b5fc45f1
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L229-L229`. Next: `block:4cc2e9fd6b51b2be`.
+
+```stata
+reg ch_fgt0 ch_gdppc  i.type i.region2 i.incgroup_current2 if  ppp==2021 & povline==300
+```
+Read candidates: `variable:414e65da253b8926`, `variable:855a80bc5aa82a81`, `variable:e6ad5563c12b2052`, `variable:90c33a067cc3e824`, `variable:ca0b2fdd7c5835de`, `variable:508a9fe098b1c0e8`, `variable:c3caa7f8a92d53f2`, `variable:23ad12b49c767d63`
+
+### block:4cc2e9fd6b51b2be
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L231-L231`. Next: `block:8596a47a76e35179`.
+
+```stata
+bys region2: reg ch_fgt0 ch_gdppc  i.type  if  ppp==2021 & povline==300
+```
+Read candidates: `variable:414e65da253b8926`, `variable:855a80bc5aa82a81`, `variable:e6ad5563c12b2052`, `variable:90c33a067cc3e824`, `variable:c3caa7f8a92d53f2`, `variable:23ad12b49c767d63`
+
+### block:8596a47a76e35179
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L233-L233`. Next: `block:1fbfc3c8d50d6017`.
+
+```stata
+bys incgroup_current2: reg ch_fgt0 ch_gdppc  i.type  if  ppp==2021 & povline==300
+```
+Read candidates: `variable:414e65da253b8926`, `variable:855a80bc5aa82a81`, `variable:e6ad5563c12b2052`, `variable:90c33a067cc3e824`, `variable:c3caa7f8a92d53f2`, `variable:23ad12b49c767d63`
+
+### block:1fbfc3c8d50d6017
+
+Evidence: `01.Programs/01c-GMI extended spells pov elasticity.do:L238-L238`. Next: `end`.
+
+```stata
+s
+```

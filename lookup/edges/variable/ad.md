@@ -1,0 +1,19 @@
+---
+{"generated":{"by":"process:build-wbg-okf"},"help_center_commit":"sanitized:3922b3bfe000a87b8aae5305d8d9417ff53718922349db932f5eb85ceef1342d","type":"Guide"}
+---
+
+# Recorded direct dependencies
+
+Read every listed edge record, or every reference-page child and its edge records. Incoming and outgoing edges are both included. Zero is explicit; a missing lookup is a retrieval failure/unknown, not zero.
+
+| Key / source range | Retrieve |
+|---|---|
+| variable:ad0be610f5fcc943 | in=0; out=3; [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0082.txt#L63-L63); [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0082.txt#L99-L99); [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0082.txt#L113-L113) |
+| variable:ad196042bbb385c4 | in=0; out=2; [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0037.txt#L114-L114); [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0038.txt#L31-L31) |
+| variable:ad1a8490ef3cd44b | in=0; out=1; [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0026.txt#L72-L72) |
+| variable:ad2ad31de7777a37 | in=4; out=4; [2 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0019.txt#L60-L61); [2 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0019.txt#L64-L65); [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0019.txt#L108-L108); [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0019.txt#L110-L110); [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0019.txt#L131-L131); [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0020.txt#L22-L22) |
+| variable:ad3aa97623a39f58 | in=3; out=6; [3 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0129.txt#L68-L70); [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0129.txt#L75-L75); [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0129.txt#L77-L77); [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0130.txt#L12-L12); [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0130.txt#L72-L72); [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0130.txt#L115-L115); [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0189.txt#L103-L103) |
+| variable:ad43d61b602831aa | in=1; out=2; [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0062.txt#L30-L30); [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0062.txt#L67-L67); [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0062.txt#L90-L90) |
+| variable:ad6f445dace54279 | in=0; out=2; [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0063.txt#L104-L104); [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0064.txt#L21-L21) |
+| variable:ada3e71c4cedaf22 | in=0; out=4; [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0035.txt#L41-L41); [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0035.txt#L43-L43); [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0036.txt#L3-L3); [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0036.txt#L69-L69) |
+| variable:add252314b827c5a | in=0; out=3; [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0085.txt#L23-L23); [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0085.txt#L106-L106); [1 edge records](../../../text/assets/GMI_extended/index/dependencies.jsonl/0086.txt#L3-L3) |

@@ -1,0 +1,2057 @@
+# 01.Programs/00b-Pull_API_data.do
+
+Cache PIP, price framework, GDP and country classification inputs
+
+Status: PARTIAL_STATIC. Every lexically active statement is indexed; complete runtime schema and macro expansion are not established.
+
+Source snapshot: numbered source (deployment lookup: lookup/sources/GMI_extended/source_maps/00b-cc12bf.md.md)
+
+## Execution-order blocks
+
+### block:2d69f9c0b92bb3e1
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L7-L7`. Next: `block:906f02dc0adf7150`.
+
+```stata
+global forcepull 0
+```
+
+### block:906f02dc0adf7150
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L10-L10`. Next: `block:72d40b501f45bd37`.
+
+```stata
+cap program drop _apipull
+```
+
+### block:72d40b501f45bd37
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L11-L11`. Next: `block:afcac870c672cbda`.
+
+```stata
+program define _apipull
+```
+
+### block:afcac870c672cbda
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L12-L12`. Next: `block:288c298cd64a946d`.
+
+```stata
+args label cmdstr
+```
+
+### block:288c298cd64a946d
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L13-L13`. Next: `block:e162d30331345999`.
+
+```stata
+local try 1
+```
+
+### block:e162d30331345999
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L14-L14`. Next: `block:ccf13d04d86a87a5`.
+
+```stata
+local ok  0
+```
+
+### block:ccf13d04d86a87a5
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L15-L15`. Next: `block:1da025538fb6eeec`.
+
+```stata
+while `try' <= 4 & `ok' == 0 {
+```
+
+### block:1da025538fb6eeec
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L16-L16`. Next: `block:61ceeb1581bc661b`.
+
+```stata
+cap `cmdstr'
+```
+Enclosing controls: `while `try' <= 4 & `ok' == 0 {`
+
+### block:61ceeb1581bc661b
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L17-L17`. Next: `block:9194e656a32a10fe`.
+
+```stata
+if _rc == 0 local ok 1
+```
+Enclosing controls: `while `try' <= 4 & `ok' == 0 {`
+
+### block:9194e656a32a10fe
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L18-L18`. Next: `block:1a95676508bfd2e6`.
+
+```stata
+else {
+```
+Enclosing controls: `while `try' <= 4 & `ok' == 0 {`
+
+### block:1a95676508bfd2e6
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L19-L19`. Next: `block:fde27d4c900cbb73`.
+
+```stata
+local rc = _rc
+```
+Enclosing controls: `while `try' <= 4 & `ok' == 0 {` → `else {`
+
+### block:fde27d4c900cbb73
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L20-L20`. Next: `block:92632db9acf4ea1c`.
+
+```stata
+if `try' < 4 sleep `=3000*`try''
+```
+Enclosing controls: `while `try' <= 4 & `ok' == 0 {` → `else {`
+
+### block:92632db9acf4ea1c
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L21-L21`. Next: `block:3f45be2c55ddccda`.
+
+```stata
+local try = `try' + 1
+```
+Enclosing controls: `while `try' <= 4 & `ok' == 0 {` → `else {`
+
+### block:3f45be2c55ddccda
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L22-L22`. Next: `block:0b55e81864541920`.
+
+```stata
+}
+```
+Enclosing controls: `while `try' <= 4 & `ok' == 0 {`
+
+### block:0b55e81864541920
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L23-L23`. Next: `block:0a29a418252abd4a`.
+
+```stata
+}
+```
+
+### block:0a29a418252abd4a
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L24-L24`. Next: `block:2c4c66122dd99a37`.
+
+```stata
+if `ok' == 0 {
+```
+
+### block:2c4c66122dd99a37
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L25-L25`. Next: `block:e5f5f77541300f6c`.
+
+```stata
+dis as error "FAILED: `label' (rc=`rc') after 4 tries."
+```
+Enclosing controls: `if `ok' == 0 {`
+
+### block:e5f5f77541300f6c
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L26-L26`. Next: `block:d1c96e6f6f196834`.
+
+```stata
+exit `rc'
+```
+Enclosing controls: `if `ok' == 0 {`
+
+### block:d1c96e6f6f196834
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L27-L27`. Next: `block:7e5c1d6643a5e5f3`.
+
+```stata
+}
+```
+
+### block:7e5c1d6643a5e5f3
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L28-L28`. Next: `block:17cdfc863b7ec508`.
+
+```stata
+end
+```
+
+### block:17cdfc863b7ec508
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L31-L31`. Next: `block:74a62bab8c9d37dc`.
+
+```stata
+cap program drop _pip_clean
+```
+
+### block:74a62bab8c9d37dc
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L32-L32`. Next: `block:4ebcdb95351d0426`.
+
+```stata
+program define _pip_clean
+```
+
+### block:4ebcdb95351d0426
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L33-L33`. Next: `block:73cb35407f5f44fe`.
+
+```stata
+args ppp1 line
+```
+
+### block:73cb35407f5f44fe
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L34-L34`. Next: `block:6bd38832a761f529`.
+
+```stata
+drop if country_code=="ISO3" & (reporting_level=="urban"|reporting_level=="rural")
+```
+Read candidates: `variable:6f2c3d52aa1ebb52`, `variable:9cd66ae2805f9be9`
+
+### block:6bd38832a761f529
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L35-L35`. Next: `block:19d59dda8936aaff`.
+
+```stata
+drop if country_code=="ISO3" & (reporting_level=="urban"|reporting_level=="rural")
+```
+Read candidates: `variable:6f2c3d52aa1ebb52`, `variable:9cd66ae2805f9be9`
+
+### block:19d59dda8936aaff
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L36-L36`. Next: `block:28471941a03e4b6b`.
+
+```stata
+drop if country_code=="ISO3" & (reporting_level=="urban"|reporting_level=="rural")
+```
+Read candidates: `variable:6f2c3d52aa1ebb52`, `variable:9cd66ae2805f9be9`
+
+### block:28471941a03e4b6b
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L37-L37`. Next: `block:38da7298d3afa344`.
+
+```stata
+ren ppp icp
+```
+New: `variable:a285436cd0ebcc88`
+Read candidates: `variable:927d64a5801d5e2f`
+
+### block:38da7298d3afa344
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L38-L38`. Next: `block:65e6c6a0b5ff7490`.
+
+```stata
+ren headcount fgt0_`line'
+```
+New: `variable:f8ef316bcce6347a`
+Read candidates: `variable:599122c4218ca309`
+
+### block:65e6c6a0b5ff7490
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L39-L39`. Next: `block:f3ad4afdad618a05`.
+
+```stata
+ren poverty_gap fgt1_`line'
+```
+New: `variable:14e3d57f9221d323`
+Read candidates: `variable:897b5503261f5b5a`
+
+### block:f3ad4afdad618a05
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L40-L40`. Next: `block:862a2b4d951cac49`.
+
+```stata
+ren poverty_severity fgt2_`line'
+```
+New: `variable:b517aa3d3be1eed5`
+Read candidates: `variable:74c843c14e9125bc`
+
+### block:862a2b4d951cac49
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L41-L41`. Next: `block:1d8306745f43f2c9`.
+
+```stata
+gen ppp = `ppp1'
+```
+New: `variable:927d64a5801d5e2f`
+
+### block:1d8306745f43f2c9
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L42-L42`. Next: `block:edab258b5cc5b747`.
+
+```stata
+end
+```
+
+### block:edab258b5cc5b747
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L44-L44`. Next: `block:bb2f6f14fb5a3338`.
+
+```stata
+local statusA "PULLED"
+```
+
+### block:bb2f6f14fb5a3338
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L45-L45`. Next: `block:44020a20ff91774d`.
+
+```stata
+local statusB "PENDING"
+```
+
+### block:44020a20ff91774d
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L46-L46`. Next: `block:ba74e3c1fd8fcd98`.
+
+```stata
+local statusC "PENDING"
+```
+
+### block:ba74e3c1fd8fcd98
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L47-L47`. Next: `block:b0e928189b61f442`.
+
+```stata
+local statusD "PENDING"
+```
+
+### block:b0e928189b61f442
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L48-L48`. Next: `block:a42f0c20e66074d0`.
+
+```stata
+local statusE "PENDING"
+```
+
+### block:a42f0c20e66074d0
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L49-L49`. Next: `block:051837770c72d181`.
+
+```stata
+local statusF "PENDING"
+```
+
+### block:051837770c72d181
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L57-L57`. Next: `block:db551296e617a639`.
+
+```stata
+foreach ppp1 of global ppplist {
+```
+
+### block:db551296e617a639
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L59-L59`. Next: `block:3b20a2a4e3bbfe48`.
+
+```stata
+local cachefile "$inputapi\pip`ppp1'.dta"
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+
+### block:3b20a2a4e3bbfe48
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L60-L60`. Next: `block:251d6c28c5c6e4f6`.
+
+```stata
+local needpull 1
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+
+### block:251d6c28c5c6e4f6
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L61-L61`. Next: `block:9875475acb503d1e`.
+
+```stata
+if $forcepull == 0 {
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+
+### block:9875475acb503d1e
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L62-L62`. Next: `block:283bb9612e07e32c`.
+
+```stata
+cap confirm file "`cachefile'"
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `if $forcepull == 0 {`
+
+### block:283bb9612e07e32c
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L63-L63`. Next: `block:5383fd0e8914c621`.
+
+```stata
+if _rc == 0 local needpull 0
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `if $forcepull == 0 {`
+
+### block:5383fd0e8914c621
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L64-L64`. Next: `block:361163f841a180a5`.
+
+```stata
+}
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+
+### block:361163f841a180a5
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L66-L66`. Next: `block:30ed7d39e211702b`.
+
+```stata
+if `needpull' == 0 {
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+
+### block:30ed7d39e211702b
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L67-L67`. Next: `block:3d670af97d0cca2a`.
+
+```stata
+dis as text "[A] pip`ppp1'.dta cached -- skipping pull."
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `if `needpull' == 0 {`
+
+### block:3d670af97d0cca2a
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L68-L68`. Next: `block:a6a0ffddf1ada4c8`.
+
+```stata
+use "`cachefile'", clear
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `if `needpull' == 0 {`
+Read datasets: `dataset:2233ff17d89f8e5f`
+
+### block:a6a0ffddf1ada4c8
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L69-L69`. Next: `block:9a0756577361b4ea`.
+
+```stata
+save "$input\pip`ppp1'.dta", replace
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `if `needpull' == 0 {`
+Write datasets: `dataset:bfbd3a80b3b47697`
+
+### block:9a0756577361b4ea
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L70-L70`. Next: `block:929796b535ef0111`.
+
+```stata
+if "`statusA'" == "PULLED" local statusA "CACHED"
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `if `needpull' == 0 {`
+
+### block:929796b535ef0111
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L71-L71`. Next: `block:eb06d24334e9a5c7`.
+
+```stata
+}
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+
+### block:eb06d24334e9a5c7
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L72-L72`. Next: `block:4239f16d595001a2`.
+
+```stata
+else {
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+
+### block:4239f16d595001a2
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L73-L73`. Next: `block:093820d354be367c`.
+
+```stata
+dis as result "[A] Pulling pip`ppp1'.dta ..."
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {`
+
+### block:093820d354be367c
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L74-L74`. Next: `block:84cdb3a3c5ef7ee9`.
+
+```stata
+local num1 = `=${line`ppp1'}/100'
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {`
+
+### block:84cdb3a3c5ef7ee9
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L76-L77`. Next: `block:653a034d53885640`.
+
+```stata
+_apipull "A: headline ppp`ppp1'" `"pip, country(all) ppp_year(`ppp1') povline(`num1') ${piptxt} clear"'
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {`
+
+### block:653a034d53885640
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L78-L78`. Next: `block:1c732101e2e55b33`.
+
+```stata
+_pip_clean `ppp1' ${line`ppp1'}
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {`
+
+### block:1c732101e2e55b33
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L79-L79`. Next: `block:17a0e5998e94dde7`.
+
+```stata
+drop poverty_line
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {`
+Read candidates: `variable:1617bbbef9fb6f6d`
+
+### block:17a0e5998e94dde7
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L80-L80`. Next: `block:afd81f6a7485ff29`.
+
+```stata
+tempfile pipbase
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {`
+
+### block:afd81f6a7485ff29
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L81-L81`. Next: `block:2f97ca37e4fabf5d`.
+
+```stata
+save `pipbase', replace
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {`
+Write datasets: `dataset:83ddf112039eda06`
+
+### block:2f97ca37e4fabf5d
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L82-L82`. Next: `block:d257a48443ff69c8`.
+
+```stata
+dis as result "[A] ppp`ppp1' headline line done."
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {`
+
+### block:d257a48443ff69c8
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L84-L84`. Next: `block:db20e56f581b3997`.
+
+```stata
+local nlines : word count ${pipextra`ppp1'}
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {`
+
+### block:db20e56f581b3997
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L85-L85`. Next: `block:68092778e26934a8`.
+
+```stata
+local i 0
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {`
+
+### block:68092778e26934a8
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L86-L86`. Next: `block:8589d55a76465928`.
+
+```stata
+foreach num of numlist ${pipextra`ppp1'} {
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {`
+
+### block:8589d55a76465928
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L87-L87`. Next: `block:e1c0e1696b06022e`.
+
+```stata
+local ++i
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {` → `foreach num of numlist ${pipextra`ppp1'} {`
+
+### block:e1c0e1696b06022e
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L88-L89`. Next: `block:6b7065f4fb72fc2e`.
+
+```stata
+_apipull "A: ppp`ppp1' line `num'" `"pip, country(all) ppp_year(`ppp1') povline(`=`num'/100') ${piptxt} clear"'
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {` → `foreach num of numlist ${pipextra`ppp1'} {`
+
+### block:6b7065f4fb72fc2e
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L90-L90`. Next: `block:96562565689f22e4`.
+
+```stata
+_pip_clean `ppp1' `num'
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {` → `foreach num of numlist ${pipextra`ppp1'} {`
+
+### block:96562565689f22e4
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L91-L91`. Next: `block:216aa0050b72632a`.
+
+```stata
+merge 1:1 country_code year survey_acronym welfare_type using `pipbase', keepus(fgt*)
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {` → `foreach num of numlist ${pipextra`ppp1'} {`
+Read datasets: `dataset:83ddf112039eda06`
+
+### block:216aa0050b72632a
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L92-L92`. Next: `block:e687ebdc3b180c83`.
+
+```stata
+drop _merge
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {` → `foreach num of numlist ${pipextra`ppp1'} {`
+Read candidates: `variable:5a23a5ce46c685ae`
+
+### block:e687ebdc3b180c83
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L93-L93`. Next: `block:f709c2830d8dc7e6`.
+
+```stata
+order country_code year survey_acronym welfare_type
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {` → `foreach num of numlist ${pipextra`ppp1'} {`
+
+### block:f709c2830d8dc7e6
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L94-L94`. Next: `block:d62aa83d351322f0`.
+
+```stata
+save `pipbase', replace
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {` → `foreach num of numlist ${pipextra`ppp1'} {`
+Write datasets: `dataset:83ddf112039eda06`
+
+### block:d62aa83d351322f0
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L95-L95`. Next: `block:2fc4f5e4446c75b5`.
+
+```stata
+dis as result "[A] ppp`ppp1' line `num' done (`i'/`nlines')."
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {` → `foreach num of numlist ${pipextra`ppp1'} {`
+
+### block:2fc4f5e4446c75b5
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L96-L96`. Next: `block:c58abd3095998005`.
+
+```stata
+}
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {`
+
+### block:c58abd3095998005
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L98-L98`. Next: `block:67e0b22372ba3dad`.
+
+```stata
+use `pipbase', clear
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {`
+Read datasets: `dataset:83ddf112039eda06`
+
+### block:67e0b22372ba3dad
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L99-L99`. Next: `block:f0da05f4444fc7a7`.
+
+```stata
+char _dta[version] $S_DATE
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {`
+
+### block:f0da05f4444fc7a7
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L100-L100`. Next: `block:0ccad5f96bab5f14`.
+
+```stata
+save "`cachefile'", replace
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {`
+Write datasets: `dataset:2233ff17d89f8e5f`
+
+### block:0ccad5f96bab5f14
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L101-L101`. Next: `block:a06b1de84c286610`.
+
+```stata
+save "$input\pip`ppp1'.dta", replace
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {`
+Write datasets: `dataset:bfbd3a80b3b47697`
+
+### block:a06b1de84c286610
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L102-L102`. Next: `block:cfdfb7381d8c12d6`.
+
+```stata
+dis as result "[A] pip`ppp1'.dta saved."
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `else {`
+
+### block:cfdfb7381d8c12d6
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L103-L103`. Next: `block:2e53ec3aa7198664`.
+
+```stata
+}
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+
+### block:2e53ec3aa7198664
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L104-L104`. Next: `block:8b0547e1ff860590`.
+
+```stata
+}
+```
+
+### block:8b0547e1ff860590
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L111-L111`. Next: `block:da574f2d9d1e5f7d`.
+
+```stata
+local cachefile "$inputapi\pip_framework.dta"
+```
+
+### block:da574f2d9d1e5f7d
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L112-L112`. Next: `block:e7d0f40be40e15f8`.
+
+```stata
+local needpull 1
+```
+
+### block:e7d0f40be40e15f8
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L113-L113`. Next: `block:47ab339fb8902949`.
+
+```stata
+if $forcepull == 0 {
+```
+
+### block:47ab339fb8902949
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L114-L114`. Next: `block:5299b82186ff3248`.
+
+```stata
+cap confirm file "`cachefile'"
+```
+Enclosing controls: `if $forcepull == 0 {`
+
+### block:5299b82186ff3248
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L115-L115`. Next: `block:34b18392f27c6c3b`.
+
+```stata
+if _rc == 0 local needpull 0
+```
+Enclosing controls: `if $forcepull == 0 {`
+
+### block:34b18392f27c6c3b
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L116-L116`. Next: `block:baae505706ce3766`.
+
+```stata
+}
+```
+
+### block:baae505706ce3766
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L118-L118`. Next: `block:bbce457388251eb6`.
+
+```stata
+if `needpull' == 0 {
+```
+
+### block:bbce457388251eb6
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L119-L119`. Next: `block:d1e4d29d1b70377a`.
+
+```stata
+local statusB "CACHED"
+```
+Enclosing controls: `if `needpull' == 0 {`
+
+### block:d1e4d29d1b70377a
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L120-L120`. Next: `block:53bc367059707003`.
+
+```stata
+dis as text "[B] pip_framework.dta cached -- skipping pull."
+```
+Enclosing controls: `if `needpull' == 0 {`
+
+### block:53bc367059707003
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L121-L121`. Next: `block:c2f1791ccdee2dfd`.
+
+```stata
+use "`cachefile'", clear
+```
+Enclosing controls: `if `needpull' == 0 {`
+Read datasets: `dataset:204922f53ae83bbc`
+
+### block:c2f1791ccdee2dfd
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L122-L122`. Next: `block:a2ba6369cac8a336`.
+
+```stata
+save "$input\pip_framework.dta", replace
+```
+Enclosing controls: `if `needpull' == 0 {`
+Write datasets: `dataset:5d9cbafab03bc624`
+
+### block:a2ba6369cac8a336
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L123-L123`. Next: `block:913fb8dc85547aa1`.
+
+```stata
+}
+```
+
+### block:913fb8dc85547aa1
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L124-L124`. Next: `block:97f642738fc6a87f`.
+
+```stata
+else {
+```
+
+### block:97f642738fc6a87f
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L125-L125`. Next: `block:2576f89acaf2fd5f`.
+
+```stata
+dis as result "[B] Pulling pip_framework.dta ..."
+```
+Enclosing controls: `else {`
+
+### block:2576f89acaf2fd5f
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L126-L126`. Next: `block:72a43444be1afa75`.
+
+```stata
+_apipull "B: pip tables framework" "pip tables, table(framework) clear"
+```
+Enclosing controls: `else {`
+
+### block:72a43444be1afa75
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L127-L127`. Next: `block:5c9ac2403d166a11`.
+
+```stata
+char _dta[version] $S_DATE
+```
+Enclosing controls: `else {`
+
+### block:5c9ac2403d166a11
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L128-L128`. Next: `block:49d051f4ae3b2a4d`.
+
+```stata
+save "`cachefile'", replace
+```
+Enclosing controls: `else {`
+Write datasets: `dataset:204922f53ae83bbc`
+
+### block:49d051f4ae3b2a4d
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L129-L129`. Next: `block:d1d2a5709c4a4587`.
+
+```stata
+save "$input\pip_framework.dta", replace
+```
+Enclosing controls: `else {`
+Write datasets: `dataset:5d9cbafab03bc624`
+
+### block:d1d2a5709c4a4587
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L130-L130`. Next: `block:0c6df6c2ce60fb92`.
+
+```stata
+local statusB "PULLED"
+```
+Enclosing controls: `else {`
+
+### block:0c6df6c2ce60fb92
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L131-L131`. Next: `block:0a981bdc10318da8`.
+
+```stata
+dis as result "[B] pip_framework.dta saved."
+```
+Enclosing controls: `else {`
+
+### block:0a981bdc10318da8
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L132-L132`. Next: `block:c8f1e3797169778b`.
+
+```stata
+}
+```
+
+### block:c8f1e3797169778b
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L139-L139`. Next: `block:05fafbd67cf60d13`.
+
+```stata
+local cachefile "$inputapi\pip_pop.dta"
+```
+
+### block:05fafbd67cf60d13
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L140-L140`. Next: `block:3e278bb991c128b5`.
+
+```stata
+local needpull 1
+```
+
+### block:3e278bb991c128b5
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L141-L141`. Next: `block:46b89b771c4aefea`.
+
+```stata
+if $forcepull == 0 {
+```
+
+### block:46b89b771c4aefea
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L142-L142`. Next: `block:d9e6f6df3cacbb37`.
+
+```stata
+cap confirm file "`cachefile'"
+```
+Enclosing controls: `if $forcepull == 0 {`
+
+### block:d9e6f6df3cacbb37
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L143-L143`. Next: `block:d1364172c934ace8`.
+
+```stata
+if _rc == 0 local needpull 0
+```
+Enclosing controls: `if $forcepull == 0 {`
+
+### block:d1364172c934ace8
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L144-L144`. Next: `block:32e8149e56f3d5c9`.
+
+```stata
+}
+```
+
+### block:32e8149e56f3d5c9
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L146-L146`. Next: `block:6747c80c7010e5f0`.
+
+```stata
+if `needpull' == 0 {
+```
+
+### block:6747c80c7010e5f0
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L147-L147`. Next: `block:4c182e2a8dc4a621`.
+
+```stata
+local statusC "CACHED"
+```
+Enclosing controls: `if `needpull' == 0 {`
+
+### block:4c182e2a8dc4a621
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L148-L148`. Next: `block:89ce979fa1912997`.
+
+```stata
+dis as text "[C] pip_pop.dta cached -- skipping pull."
+```
+Enclosing controls: `if `needpull' == 0 {`
+
+### block:89ce979fa1912997
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L149-L149`. Next: `block:01127b41515053ca`.
+
+```stata
+use "`cachefile'", clear
+```
+Enclosing controls: `if `needpull' == 0 {`
+Read datasets: `dataset:3d5327b86b4390ff`
+
+### block:01127b41515053ca
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L150-L150`. Next: `block:2dad87e5aa667627`.
+
+```stata
+save "$input\pip_pop.dta", replace
+```
+Enclosing controls: `if `needpull' == 0 {`
+Write datasets: `dataset:a7b0892ed73404b7`
+
+### block:2dad87e5aa667627
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L151-L151`. Next: `block:f91b318eb44a8be5`.
+
+```stata
+}
+```
+
+### block:f91b318eb44a8be5
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L152-L152`. Next: `block:2d25505f6743ca97`.
+
+```stata
+else {
+```
+
+### block:2d25505f6743ca97
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L153-L153`. Next: `block:7d067c76ec0211b2`.
+
+```stata
+dis as result "[C] Pulling pip_pop.dta ..."
+```
+Enclosing controls: `else {`
+
+### block:7d067c76ec0211b2
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L154-L154`. Next: `block:72b5d3cf70dafd19`.
+
+```stata
+_apipull "C: pip tables pop" "pip tables, table(pop) clear"
+```
+Enclosing controls: `else {`
+
+### block:72b5d3cf70dafd19
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L155-L155`. Next: `block:de0f3c6181ea673e`.
+
+```stata
+char _dta[version] $S_DATE
+```
+Enclosing controls: `else {`
+
+### block:de0f3c6181ea673e
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L156-L156`. Next: `block:792f081dad02d102`.
+
+```stata
+save "`cachefile'", replace
+```
+Enclosing controls: `else {`
+Write datasets: `dataset:3d5327b86b4390ff`
+
+### block:792f081dad02d102
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L157-L157`. Next: `block:eece609260d270fa`.
+
+```stata
+save "$input\pip_pop.dta", replace
+```
+Enclosing controls: `else {`
+Write datasets: `dataset:a7b0892ed73404b7`
+
+### block:eece609260d270fa
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L158-L158`. Next: `block:1d3975bea5c8de67`.
+
+```stata
+local statusC "PULLED"
+```
+Enclosing controls: `else {`
+
+### block:1d3975bea5c8de67
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L159-L159`. Next: `block:adc19f2bd88a4926`.
+
+```stata
+dis as result "[C] pip_pop.dta saved."
+```
+Enclosing controls: `else {`
+
+### block:adc19f2bd88a4926
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L160-L160`. Next: `block:6a5255ceb43f3139`.
+
+```stata
+}
+```
+
+### block:6a5255ceb43f3139
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L167-L167`. Next: `block:66b67dd06567eaa6`.
+
+```stata
+local cachefile "$inputapi\Survey_price_framework.dta"
+```
+
+### block:66b67dd06567eaa6
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L168-L168`. Next: `block:56a93fa6df043aa5`.
+
+```stata
+local needpull 1
+```
+
+### block:56a93fa6df043aa5
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L169-L169`. Next: `block:67a7e48db5558e57`.
+
+```stata
+if $forcepull == 0 {
+```
+
+### block:67a7e48db5558e57
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L170-L170`. Next: `block:af933be3aad5d62b`.
+
+```stata
+cap confirm file "`cachefile'"
+```
+Enclosing controls: `if $forcepull == 0 {`
+
+### block:af933be3aad5d62b
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L171-L171`. Next: `block:28938cfdfa334d3b`.
+
+```stata
+if _rc == 0 local needpull 0
+```
+Enclosing controls: `if $forcepull == 0 {`
+
+### block:28938cfdfa334d3b
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L172-L172`. Next: `block:4e8dd34a96674938`.
+
+```stata
+}
+```
+
+### block:4e8dd34a96674938
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L174-L174`. Next: `block:29b06dcbf42b5358`.
+
+```stata
+if `needpull' == 0 {
+```
+
+### block:29b06dcbf42b5358
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L175-L175`. Next: `block:0c79163fd603f193`.
+
+```stata
+local statusD "CACHED"
+```
+Enclosing controls: `if `needpull' == 0 {`
+
+### block:0c79163fd603f193
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L176-L176`. Next: `block:e876d4c59e57de9d`.
+
+```stata
+dis as text "[D] Survey_price_framework.dta cached -- skipping pull."
+```
+Enclosing controls: `if `needpull' == 0 {`
+
+### block:e876d4c59e57de9d
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L177-L177`. Next: `block:0a1c6cf5d2cc9ab7`.
+
+```stata
+use "`cachefile'", clear
+```
+Enclosing controls: `if `needpull' == 0 {`
+Read datasets: `dataset:2ac400011235d8a6`
+
+### block:0a1c6cf5d2cc9ab7
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L178-L178`. Next: `block:068b794cc4312091`.
+
+```stata
+save "$pfw", replace
+```
+Enclosing controls: `if `needpull' == 0 {`
+Write datasets: `dataset:0fa1cc3d12b9e4be`
+
+### block:068b794cc4312091
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L179-L179`. Next: `block:0ef9f970bb296e50`.
+
+```stata
+}
+```
+
+### block:0ef9f970bb296e50
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L180-L180`. Next: `block:c2e09dfb05ce34b8`.
+
+```stata
+else {
+```
+
+### block:c2e09dfb05ce34b8
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L181-L181`. Next: `block:f1a10adb2799b57c`.
+
+```stata
+dis as result "[D] Pulling Survey_price_framework.dta ($cpiversion) ..."
+```
+Enclosing controls: `else {`
+
+### block:f1a10adb2799b57c
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L182-L183`. Next: `block:ac4ee1cbe70879ac`.
+
+```stata
+_apipull "D: dlw price framework" `"dlw, country(Support) year(2005) type(GMDRAW) surveyid($cpiversion) filename(Survey_price_framework.dta) files"'
+```
+Enclosing controls: `else {`
+
+### block:ac4ee1cbe70879ac
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L184-L184`. Next: `block:9dc3d70801253b03`.
+
+```stata
+char _dta[version] $S_DATE
+```
+Enclosing controls: `else {`
+
+### block:9dc3d70801253b03
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L185-L185`. Next: `block:3162584c2066efcc`.
+
+```stata
+save "`cachefile'", replace
+```
+Enclosing controls: `else {`
+Write datasets: `dataset:2ac400011235d8a6`
+
+### block:3162584c2066efcc
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L186-L186`. Next: `block:4ed1540c5fba62c6`.
+
+```stata
+save "$pfw", replace
+```
+Enclosing controls: `else {`
+Write datasets: `dataset:0fa1cc3d12b9e4be`
+
+### block:4ed1540c5fba62c6
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L187-L187`. Next: `block:1e2b600c68ca3c7d`.
+
+```stata
+local statusD "PULLED"
+```
+Enclosing controls: `else {`
+
+### block:1e2b600c68ca3c7d
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L188-L188`. Next: `block:a3a5ff5051cfbbdc`.
+
+```stata
+dis as result "[D] Survey_price_framework.dta saved."
+```
+Enclosing controls: `else {`
+
+### block:a3a5ff5051cfbbdc
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L189-L189`. Next: `block:877f3e20b7c3b22b`.
+
+```stata
+}
+```
+
+### block:877f3e20b7c3b22b
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L197-L197`. Next: `block:7568e47848c7a872`.
+
+```stata
+local cachefile "$inputapi\PIP_all_GDP.dta"
+```
+
+### block:7568e47848c7a872
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L198-L198`. Next: `block:ef3a82336749322f`.
+
+```stata
+local needpull 1
+```
+
+### block:ef3a82336749322f
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L199-L199`. Next: `block:51793897e5958eaf`.
+
+```stata
+if $forcepull == 0 {
+```
+
+### block:51793897e5958eaf
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L200-L200`. Next: `block:8657587c14bd7a6a`.
+
+```stata
+cap confirm file "`cachefile'"
+```
+Enclosing controls: `if $forcepull == 0 {`
+
+### block:8657587c14bd7a6a
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L201-L201`. Next: `block:4b6fcc6583c8b4d1`.
+
+```stata
+if _rc == 0 local needpull 0
+```
+Enclosing controls: `if $forcepull == 0 {`
+
+### block:4b6fcc6583c8b4d1
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L202-L202`. Next: `block:e2f4d1f9c30f0053`.
+
+```stata
+}
+```
+
+### block:e2f4d1f9c30f0053
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L204-L204`. Next: `block:157eb8ae28aa220c`.
+
+```stata
+if `needpull' == 0 {
+```
+
+### block:157eb8ae28aa220c
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L205-L205`. Next: `block:59d0459b6e1419ab`.
+
+```stata
+local statusE "CACHED"
+```
+Enclosing controls: `if `needpull' == 0 {`
+
+### block:59d0459b6e1419ab
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L206-L206`. Next: `block:4fd0021ab2cd6cd0`.
+
+```stata
+dis as text "[E] PIP_all_GDP.dta cached -- skipping pull."
+```
+Enclosing controls: `if `needpull' == 0 {`
+
+### block:4fd0021ab2cd6cd0
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L207-L207`. Next: `block:b1f6fbc0538ea78a`.
+
+```stata
+use "`cachefile'", clear
+```
+Enclosing controls: `if `needpull' == 0 {`
+Read datasets: `dataset:01f1237d8f54211e`
+
+### block:b1f6fbc0538ea78a
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L208-L208`. Next: `block:b3eda3aabe9a25ef`.
+
+```stata
+save "$input\PIP_all_GDP.dta", replace
+```
+Enclosing controls: `if `needpull' == 0 {`
+Write datasets: `dataset:50f6ff5068bd43c0`
+
+### block:b3eda3aabe9a25ef
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L209-L209`. Next: `block:1b47c4825d84ea97`.
+
+```stata
+}
+```
+
+### block:1b47c4825d84ea97
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L210-L210`. Next: `block:72cf15730b232e30`.
+
+```stata
+else {
+```
+
+### block:72cf15730b232e30
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L211-L211`. Next: `block:0ea9eb4705fe88d2`.
+
+```stata
+dis as result "[E] Pulling PIP_all_GDP.dta ..."
+```
+Enclosing controls: `else {`
+
+### block:0ea9eb4705fe88d2
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L212-L212`. Next: `block:e941dbacad6a730b`.
+
+```stata
+_apipull "E: pip tables gdp" "pip tables, table(gdp) clear"
+```
+Enclosing controls: `else {`
+
+### block:e941dbacad6a730b
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L213-L213`. Next: `block:9bd640a734646a16`.
+
+```stata
+ren country_code code
+```
+Enclosing controls: `else {`
+New: `variable:437e34a2adf2115a`
+Read candidates: `variable:5492b83ea1bd831d`
+
+### block:9bd640a734646a16
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L214-L214`. Next: `block:419e2950656ec7ce`.
+
+```stata
+keep if data_level=="national"
+```
+Enclosing controls: `else {`
+Read candidates: `variable:569dde3fa357c522`
+
+### block:419e2950656ec7ce
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L215-L215`. Next: `block:9766c0a818fa063e`.
+
+```stata
+ren value gdppc
+```
+Enclosing controls: `else {`
+New: `variable:6da3b967b4563b2c`
+Read candidates: `variable:e8e98727837f19af`
+
+### block:9766c0a818fa063e
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L216-L216`. Next: `block:8a899c2a8d35ef73`.
+
+```stata
+char _dta[version] $S_DATE
+```
+Enclosing controls: `else {`
+
+### block:8a899c2a8d35ef73
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L217-L217`. Next: `block:5808153123e0953b`.
+
+```stata
+save "`cachefile'", replace
+```
+Enclosing controls: `else {`
+Write datasets: `dataset:01f1237d8f54211e`
+
+### block:5808153123e0953b
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L218-L218`. Next: `block:4cd36357f49f2570`.
+
+```stata
+save "$input\PIP_all_GDP.dta", replace
+```
+Enclosing controls: `else {`
+Write datasets: `dataset:50f6ff5068bd43c0`
+
+### block:4cd36357f49f2570
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L219-L219`. Next: `block:3f5fcc5cab500ab5`.
+
+```stata
+local statusE "PULLED"
+```
+Enclosing controls: `else {`
+
+### block:3f5fcc5cab500ab5
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L220-L220`. Next: `block:4db6f5887a2fb682`.
+
+```stata
+dis as result "[E] PIP_all_GDP.dta saved."
+```
+Enclosing controls: `else {`
+
+### block:4db6f5887a2fb682
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L221-L221`. Next: `block:3c9967fbceb3bbd4`.
+
+```stata
+}
+```
+
+### block:3c9967fbceb3bbd4
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L230-L230`. Next: `block:8a61ed032ca34922`.
+
+```stata
+local cachefile "$inputapi\CLASS_incg_region.dta"
+```
+
+### block:8a61ed032ca34922
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L231-L231`. Next: `block:8f6023c96f1e97f6`.
+
+```stata
+local needpull 1
+```
+
+### block:8f6023c96f1e97f6
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L232-L232`. Next: `block:c33ce19429172275`.
+
+```stata
+if $forcepull == 0 {
+```
+
+### block:c33ce19429172275
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L233-L233`. Next: `block:2b440ce9b18500f5`.
+
+```stata
+cap confirm file "`cachefile'"
+```
+Enclosing controls: `if $forcepull == 0 {`
+
+### block:2b440ce9b18500f5
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L234-L234`. Next: `block:ac6493eff37f0fe9`.
+
+```stata
+if _rc == 0 local needpull 0
+```
+Enclosing controls: `if $forcepull == 0 {`
+
+### block:ac6493eff37f0fe9
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L235-L235`. Next: `block:53256fc86c1f8244`.
+
+```stata
+}
+```
+
+### block:53256fc86c1f8244
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L237-L237`. Next: `block:e3504036aadd5311`.
+
+```stata
+if `needpull' == 0 {
+```
+
+### block:e3504036aadd5311
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L238-L238`. Next: `block:dd7af9fd481dbbad`.
+
+```stata
+local statusF "CACHED"
+```
+Enclosing controls: `if `needpull' == 0 {`
+
+### block:dd7af9fd481dbbad
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L239-L239`. Next: `block:168d40ecee6bcefe`.
+
+```stata
+dis as text "[F] CLASS_incg_region.dta cached -- skipping download."
+```
+Enclosing controls: `if `needpull' == 0 {`
+
+### block:168d40ecee6bcefe
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L240-L240`. Next: `block:6ffaac1e1e3ba2bd`.
+
+```stata
+use "`cachefile'", clear
+```
+Enclosing controls: `if `needpull' == 0 {`
+Read datasets: `dataset:fd532614e693f3bd`
+
+### block:6ffaac1e1e3ba2bd
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L241-L241`. Next: `block:c3d695dc440e6a85`.
+
+```stata
+save "$input\CLASS_incg_region.dta", replace
+```
+Enclosing controls: `if `needpull' == 0 {`
+Write datasets: `dataset:20c6d59690848bb2`
+
+### block:c3d695dc440e6a85
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L242-L242`. Next: `block:7dd59dff20503401`.
+
+```stata
+}
+```
+
+### block:7dd59dff20503401
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L243-L243`. Next: `block:315a6bf80d85333f`.
+
+```stata
+else {
+```
+
+### block:315a6bf80d85333f
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L244-L244`. Next: `block:dbf04cbf09f66236`.
+
+```stata
+dis as result "[F] Downloading CLASS.dta from GitHub (GPID-WB/Class) ..."
+```
+Enclosing controls: `else {`
+
+### block:dbf04cbf09f66236
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L245-L246`. Next: `block:a5998dbf5a4182a8`.
+
+```stata
+_apipull "F: download CLASS.dta" `"copy "https:
+```
+Enclosing controls: `else {`
+
+### block:a5998dbf5a4182a8
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L248-L248`. Next: `block:551cab9da54e0ba2`.
+
+```stata
+use "$inputapi\CLASS_raw.dta", clear
+```
+Enclosing controls: `else {`
+Read datasets: `dataset:45b5ddf45706e7ae`
+
+### block:551cab9da54e0ba2
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L249-L249`. Next: `block:e1fd8bc80361eb71`.
+
+```stata
+rename (year_data economy) (year country_name)
+```
+Enclosing controls: `else {`
+New: `variable:94740a37127337fe`, `variable:e2c93c485faf8629`
+Read candidates: `variable:d7e8c43d790bbe8c`, `variable:2ec5f184fc6e2a88`
+
+### block:e1fd8bc80361eb71
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L250-L250`. Next: `block:cbff855b4e639dd8`.
+
+```stata
+rename regionssa_code region_SSA
+```
+Enclosing controls: `else {`
+New: `variable:52b14c1c673a0f18`
+Read candidates: `variable:e1b44053947cc971`
+
+### block:cbff855b4e639dd8
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L251-L251`. Next: `block:c7f273d594160cd2`.
+
+```stata
+rename region_code region_pip
+```
+Enclosing controls: `else {`
+New: `variable:aaccffdebbbad612`
+Read candidates: `variable:207c15960b35e6b5`
+
+### block:c7f273d594160cd2
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L252-L252`. Next: `block:4b179f7f8b0eb2b7`.
+
+```stata
+rename incgroup incgroup_historical
+```
+Enclosing controls: `else {`
+New: `variable:4595402b1e6d8ac5`
+Read candidates: `variable:02088ded640d08b0`
+
+### block:4b179f7f8b0eb2b7
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L253-L253`. Next: `block:56abbd36f6a93779`.
+
+```stata
+keep code year incgroup_historical region_pip region region_SSA country_name
+```
+Enclosing controls: `else {`
+Read candidates: `variable:e504fe306f0dc61a`, `variable:94740a37127337fe`, `variable:4595402b1e6d8ac5`, `variable:aaccffdebbbad612`, `variable:8bb6f8dd44581d11`, `variable:52b14c1c673a0f18`, `variable:e2c93c485faf8629`
+
+### block:56abbd36f6a93779
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L254-L254`. Next: `block:f485d1b3934c1cce`.
+
+```stata
+bysort code (year): gen incgroup_current = incgroup_historical[_N]
+```
+Enclosing controls: `else {`
+New: `variable:72a1654c2b63bac5`
+Read candidates: `variable:4595402b1e6d8ac5`, `variable:94740a37127337fe`
+
+### block:f485d1b3934c1cce
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L255-L255`. Next: `block:201ed941bfc65c7f`.
+
+```stata
+foreach v in incgroup_current incgroup_historical {
+```
+Enclosing controls: `else {`
+
+### block:201ed941bfc65c7f
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L256-L256`. Next: `block:f433899fa2287c33`.
+
+```stata
+replace `v' = subinstr(`v', " ", "-", .)
+```
+Enclosing controls: `else {` → `foreach v in incgroup_current incgroup_historical {`
+Modified: `variable:3dd85c45aa6a47b6`
+
+### block:f433899fa2287c33
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L257-L257`. Next: `block:a716d817fdd8b9b0`.
+
+```stata
+replace `v' = subinstr(`v', "income", "income countries", .)
+```
+Enclosing controls: `else {` → `foreach v in incgroup_current incgroup_historical {`
+Modified: `variable:3dd85c45aa6a47b6`
+
+### block:a716d817fdd8b9b0
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L258-L258`. Next: `block:2bb616d7de45b53b`.
+
+```stata
+}
+```
+Enclosing controls: `else {`
+
+### block:2bb616d7de45b53b
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L259-L259`. Next: `block:5bb6744b363f078a`.
+
+```stata
+tempfile incgroup
+```
+Enclosing controls: `else {`
+
+### block:5bb6744b363f078a
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L260-L260`. Next: `block:6ef88bd142ec0f58`.
+
+```stata
+save `incgroup', replace
+```
+Enclosing controls: `else {`
+Write datasets: `dataset:152ebfca2def79f0`
+
+### block:6ef88bd142ec0f58
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L264-L264`. Next: `block:a549350489313908`.
+
+```stata
+qui su year, meanonly
+```
+Enclosing controls: `else {`
+Read candidates: `variable:94740a37127337fe`, `variable:7b1c3dd357cf74bf`
+
+### block:a549350489313908
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L265-L265`. Next: `block:1770e71bad7bfdfd`.
+
+```stata
+local ymax = r(max)
+```
+Enclosing controls: `else {`
+
+### block:1770e71bad7bfdfd
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L266-L266`. Next: `block:115254424cb34ecd`.
+
+```stata
+keep if year == `ymax'
+```
+Enclosing controls: `else {`
+Read candidates: `variable:94740a37127337fe`
+
+### block:115254424cb34ecd
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L267-L267`. Next: `block:5765be29c6939339`.
+
+```stata
+replace year = `ymax' + 1
+```
+Enclosing controls: `else {`
+Modified: `variable:94740a37127337fe`
+
+### block:5765be29c6939339
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L268-L268`. Next: `block:08c08f23427b4ca3`.
+
+```stata
+append using `incgroup'
+```
+Enclosing controls: `else {`
+Read datasets: `dataset:152ebfca2def79f0`
+
+### block:08c08f23427b4ca3
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L270-L270`. Next: `block:58d5d249ef248bcd`.
+
+```stata
+char _dta[version] $S_DATE
+```
+Enclosing controls: `else {`
+
+### block:58d5d249ef248bcd
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L271-L271`. Next: `block:6c559a9e63de0e20`.
+
+```stata
+save "`cachefile'", replace
+```
+Enclosing controls: `else {`
+Write datasets: `dataset:fd532614e693f3bd`
+
+### block:6c559a9e63de0e20
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L272-L272`. Next: `block:4e6c8aa9e76746bd`.
+
+```stata
+save "$input\CLASS_incg_region.dta", replace
+```
+Enclosing controls: `else {`
+Write datasets: `dataset:20c6d59690848bb2`
+
+### block:4e6c8aa9e76746bd
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L273-L273`. Next: `block:2bf4630359e4f8e2`.
+
+```stata
+local statusF "PULLED"
+```
+Enclosing controls: `else {`
+
+### block:2bf4630359e4f8e2
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L274-L274`. Next: `block:a56d60b8f66bcb81`.
+
+```stata
+dis as result "[F] CLASS_incg_region.dta saved (year `ymax' extended to `=`ymax'+1')."
+```
+Enclosing controls: `else {`
+
+### block:a56d60b8f66bcb81
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L275-L275`. Next: `block:d6deb656bbb1c101`.
+
+```stata
+}
+```
+
+### block:d6deb656bbb1c101
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L281-L281`. Next: `block:171407507278ce21`.
+
+```stata
+local w 66
+```
+
+### block:171407507278ce21
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L282-L282`. Next: `block:409b030cbf0cceb5`.
+
+```stata
+dis as text _dup(`w') "-"
+```
+
+### block:409b030cbf0cceb5
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L283-L283`. Next: `block:5c2203061a48da64`.
+
+```stata
+dis as text "  GMI EXTENDED PIPELINE -- API PULL SUMMARY"
+```
+
+### block:5c2203061a48da64
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L284-L284`. Next: `block:d9c76736c90beaab`.
+
+```stata
+dis as text "  Round: $rnd" _col(30) "Run: `c(current_date)' `c(current_time)'"
+```
+
+### block:d9c76736c90beaab
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L285-L285`. Next: `block:fed54e42b5b52037`.
+
+```stata
+dis as text _dup(`w') "-"
+```
+
+### block:fed54e42b5b52037
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L287-L287`. Next: `block:b36d00efcfa91fb4`.
+
+```stata
+local labA "Section A  PIP headcount/gap/severity (pip2017/pip2021)"
+```
+
+### block:b36d00efcfa91fb4
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L288-L288`. Next: `block:10fd733e36b1d351`.
+
+```stata
+local labB "Section B  PIP framework table (pip_framework)"
+```
+
+### block:10fd733e36b1d351
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L289-L289`. Next: `block:79ca48eed402d8f4`.
+
+```stata
+local labC "Section C  PIP population table (pip_pop)"
+```
+
+### block:79ca48eed402d8f4
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L290-L290`. Next: `block:5b865c0a379987a7`.
+
+```stata
+local labD "Section D  DLW price framework (Survey_price_framework)"
+```
+
+### block:5b865c0a379987a7
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L292-L292`. Next: `block:8bded918d29bafb4`.
+
+```stata
+foreach s in A B C D {
+```
+
+### block:8bded918d29bafb4
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L293-L293`. Next: `block:b2ac33977070e1e2`.
+
+```stata
+local lab  "`lab`s''"
+```
+Enclosing controls: `foreach s in A B C D {`
+
+### block:b2ac33977070e1e2
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L294-L294`. Next: `block:066726f3304f28d6`.
+
+```stata
+local stat "`status`s''"
+```
+Enclosing controls: `foreach s in A B C D {`
+
+### block:066726f3304f28d6
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L295-L295`. Next: `block:ae28e78e3c01a62c`.
+
+```stata
+if "`stat'"      == "FAILED" dis as error "  [ FAIL   ]  `lab'"
+```
+Enclosing controls: `foreach s in A B C D {`
+
+### block:ae28e78e3c01a62c
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L296-L296`. Next: `block:f7de0aeb800820d4`.
+
+```stata
+else if "`stat'" == "PULLED" dis as result "  [ PULLED ]  `lab'"
+```
+Enclosing controls: `foreach s in A B C D {`
+
+### block:f7de0aeb800820d4
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L297-L297`. Next: `block:98cd90e962b366e2`.
+
+```stata
+else if "`stat'" == "CACHED" dis as text   "  [ CACHED ]  `lab'"
+```
+Enclosing controls: `foreach s in A B C D {`
+
+### block:98cd90e962b366e2
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L298-L298`. Next: `block:eeab98132844adf9`.
+
+```stata
+else                         dis as text   "  [ ????   ]  `lab'"
+```
+Enclosing controls: `foreach s in A B C D {`
+
+### block:eeab98132844adf9
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L299-L299`. Next: `block:42f6230ce19a859e`.
+
+```stata
+}
+```
+
+### block:42f6230ce19a859e
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L301-L301`. Next: `block:a3847545faf47197`.
+
+```stata
+dis as text _dup(`w') "-"
+```
+
+### block:a3847545faf47197
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L302-L302`. Next: `block:b2a6731fd343b6d3`.
+
+```stata
+if "`statusA'"=="FAILED" | "`statusB'"=="FAILED" | "`statusC'"=="FAILED" | "`statusD'"=="FAILED" {
+```
+
+### block:b2a6731fd343b6d3
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L303-L303`. Next: `block:e1df6da7d50cd5e9`.
+
+```stata
+dis as error "  RESULT: one or more pulls FAILED -- see [FAIL] messages above."
+```
+Enclosing controls: `if "`statusA'"=="FAILED" | "`statusB'"=="FAILED" | "`statusC'"=="FAILED" | "`statusD'"=="FAILED" {`
+
+### block:e1df6da7d50cd5e9
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L304-L304`. Next: `block:939bb5ea3c790e17`.
+
+```stata
+}
+```
+
+### block:939bb5ea3c790e17
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L305-L305`. Next: `block:25a054a373855925`.
+
+```stata
+else {
+```
+
+### block:25a054a373855925
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L306-L306`. Next: `block:4b53acb346fecf72`.
+
+```stata
+dis as result "  RESULT: all inputs ready. Safe to proceed to 01aa / 01ab / 01b / 01c / 02 / 03."
+```
+Enclosing controls: `else {`
+
+### block:4b53acb346fecf72
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L307-L307`. Next: `block:6977e6cc0784e626`.
+
+```stata
+}
+```
+
+### block:6977e6cc0784e626
+
+Evidence: `01.Programs/00b-Pull_API_data.do:L308-L308`. Next: `end`.
+
+```stata
+dis as text _dup(`w') "-"
+```

@@ -1,0 +1,772 @@
+# 01.Programs/01b-GMI extended indicators spells.do
+
+Sanitized source projection; applicability placeholders are not executable values. Original SHA256: afd5d2a67e1b4f4f4654938af476da737d73a93ba6e2d99db3d5db220889a9f9
+
+```stata
+0001 | //GMI extended indicators - for spells
+0002 | //Running in the server, so paths will be different.
+0003 | //
+0004 | //==============================================================================
+0005 | // CHANGE LOG - all edits marked with  *** FIX ***  inline below
+0006 | //
+0007 | // FIX 1 (GIC national):
+0008 | //   Added  drop if missing(__a`ppp1')  before  clonevar q100 = __a`ppp1'
+0009 | //
+0010 | // FIX 2 (GIC urban/rural):
+0011 | //   Added  drop if missing(__a`ppp1')  before  clonevar q100 = __a`ppp1'
+0012 | //
+0013 | // FIX 3 (QC log):
+0014 | //   Every drop is recorded to a postfile during the loop, and a bin-count
+0015 | //   check runs after it. Both are written to a log file listing ONLY flagged
+0016 | //   country-spells. Overwritten on every run - no accumulation.
+0017 | //
+0018 | // WHY THE FIX IS NEEDED:
+0019 | //      clonevar copies missing welfare values into the tiling variable q100.
+0020 | //      Stata ranks missing (.) above every real value, so records with missing
+0021 | //      welfare are placed in the TOP percentile bins. The genuine top of the
+0022 | //      distribution is then compressed into a single lower bin, and the bins
+0023 | //      above it contain only missings so mean() returns nothing and they
+0024 | //      vanish from the output.
+0025 | //
+0026 | //      A recorded case had missing welfare observations; counts and rates: [ESTIMATE].
+0027 | //      The GPWG file had missing welfare. The number of populated bins was [ESTIMATE], below the intended 100.
+0028 | //      Recorded top-bin mean and reference-percentile comparison: [ESTIMATE]. The GIC
+0029 | //      therefore sloped UPWARD at the top instead of downward.
+0030 | //
+0031 | //      A recorded post-fix comparison checked the intended 100-bin construction.
+0032 | //      PIP comparisons at p50, p95 and p99 are [ESTIMATE]; this is not a new runtime verification.
+0033 | //
+0034 | //      Check missing-welfare handling for each input survey; no country/year inference is supported.
+0035 | //      only some country-years show the symptom.
+0036 | //
+0037 | // NOT CHANGED (deliberately):
+0038 | //   - prosperity gap block: groupfunction mean() already excludes missings
+0039 | //     from the mean, and no tiling is involved, so no bin distortion.
+0040 | //   - drdecomp / skdecomp blocks: handle missings internally.
+0041 | //   - Huppi-Ravallion / sedecomposition blocks: no percentile construction.
+0042 | //   Keeping the change minimal avoids altering any published number other
+0043 | //   than the GIC bins that were wrong.
+0044 | //
+0045 | // NOTE: the bare  e  statements (exit) at three points below are inherited
+0046 | //       from the original file and will HALT execution there. They appear to
+0047 | //       be interactive debugging breaks. Comment them out for an unattended
+0048 | //       full run.
+0049 | //==============================================================================
+0050 | //
+0051 | // GLOBALS/PATHS -- migrated to 00-Master.do in this pass (see FLAG note
+0052 | // below the commented-out block). No analysis logic, FIX 1/2/3 code, or
+0053 | // decomposition blocks were touched.
+0054 | //==============================================================================
+0055 | 
+0056 | clear
+0057 | set max_memory ., permanently
+0058 | // Four running accumulators, cleared/initialized at the top so append-based
+0059 | // loops below always have something to append to on the first iteration:
+0060 | //   datagic     -- GIC (growth incidence curve) percentile-bin results
+0061 | //   dataall     -- (declared but not used further in this file)
+0062 | //   dataall2    -- (declared but not used further in this file)
+0063 | //   prosdecomp  -- prosperity-gap decomposition results
+0064 | tempfile datagic dataall dataall2 prosdecomp
+0065 | save `datagic', replace emptyok
+0066 | save `prosdecomp', replace emptyok
+0067 | save `dataall', replace emptyok
+0068 | save `dataall2', replace emptyok
+0069 | 
+0070 | set varabbrev off
+0071 | 
+0072 | //===============================================================
+0073 | // Globals now come from 00-Master.do -- run that first, every
+0074 | // session, before this file. Original hardcoded block commented
+0075 | // out below for reference (every line prefixed with // rather
+0076 | // than wrapped in /* */, so nothing downstream can be swallowed
+0077 | // by a mis-parsed block comment).
+0078 | //===============================================================
+0079 | //global rnd SM26
+0080 | //global path \\wbgfscifs01\GTSD\03.projects_corp\04.GPWG\04.GPWG_${rnd}\04.GPWG_${rnd}_QA
+0081 | //global reposource "${path}\01.programs\02.dofile\repo\"
+0082 | //global out D:\daylan\test\GMI\out
+0083 | //
+0084 | //*** FIX 3 *** where the flagged-countries QC output is written.
+0085 | //    Both files use replace, so every run starts from a clean slate.
+0086 | //global qclog "${out}\\03.intermediate\\GIC_QC_flagged_${rnd}.log"
+0087 | //global qccsv "${out}\\03.intermediate\\GIC_QC_flagged_${rnd}.csv"
+0088 | //
+0089 | //global ppplist 2017 2021
+0090 | //global pppmax 2021
+0091 | //
+0092 | //global floor2021 0.28
+0093 | //global gap2021 28
+0094 | //global floor2017 0.25
+0095 | //global gap2017 25
+0096 | //global floor2011 0.22
+0097 | //global gap2011 22
+0098 | //
+0099 | //global plines2021 300 420 830 450 630 1245 600 840 1660
+0100 | //global plines2017 215 365 685 322 547 1027 430 730 1370
+0101 | //global plines2011 190 320 550
+0102 | //global cpiversion Support_2005_CPI_V14_M
+0103 | //
+0104 | //global pwf "D:\daylan\test\GMI\Survey_price_framework.dta"
+0105 | //global repotxt repo(use ${rnd}all) reporoot(${reposource})
+0106 | 
+0107 | //===============================================================
+0108 | // FLAGGED -- two discrepancies found migrating this file's globals
+0109 | // to 00-Master.do. Not corrected here since both are substantive
+0110 | // (not a pure rename), pending your confirmation:
+0111 | //
+0112 | // 1) $cpiversion mismatch: this file originally pointed to
+0113 | //    Support_2005_CPI_V14_M, while 00-Master.do (and 01aa/01ab)
+0114 | //    use $cpiver = v15 -> Support_2005_CPI_V15_M. Once this file
+0115 | //    relies on the master, it will pull V15 instead of V14 --
+0116 | //    confirm that's intended before running for real.
+0117 | //
+0118 | // 2) $pwf vs $pfw: this file declared "global pwf" (not "pfw"),
+0119 | //    but a search of the rest of this do-file shows $pwf is never
+0120 | //    actually referenced anywhere below -- looks like a dead/typo
+0121 | //    global. 00-Master.do defines $pfw (the survey price framework
+0122 | //    path) under that correct spelling; nothing here currently
+0123 | //    reads it under either name, so no output should be affected,
+0124 | //    but flagging in case something was meant to use it.
+0125 | //===============================================================
+0126 | 
+0127 | // QC log destinations -- these two are specific to this file (not covered
+0128 | // by 00-Master.do's globals), so still set locally here, repointed from
+0129 | // $out to $interm (the new "working/QC files" folder).
+0130 | global qclog "$interm\GIC_QC_flagged_${rnd}.log"
+0131 | global qccsv "$interm\GIC_QC_flagged_${rnd}.csv"
+0132 | 
+0133 | tempfile data1
+0134 | use "$fromservers\repo_${rnd}all.dta" , clear
+0135 | gen year = years
+0136 | destring year, replace
+0137 | ren country countrycode
+0138 | keep if module=="ALL"
+0139 | save `data1', replace
+0140 | 
+0141 | // GMI spell file (which survey pairs with which, by country/period) --
+0142 | // copied into $fromservers by 00c-Fetch_server_data.do.
+0143 | use "$fromservers\GMI_SPspell_all.dta", clear
+0144 | *use "\\wbgfscifs01\GTSD\03.projects_corp\06.GMI\06.GMI_SM25\06.GMI_SM25_QA\03.output\01.data\GMI_SPspell_all.dta" , clear
+0145 | drop if datamod=="bin"
+0146 | drop if countrycode=="ISO3"|countrycode=="ISO3"|countrycode=="ISO3"|countrycode=="ISO3"
+0147 | ren surveyname survname
+0148 | // Attach module (ALL vs GPWG) from the repo list so type==1 (both-ALL)
+0149 | // spells can be identified below for the Huppi-Ravallion blocks.
+0150 | merge m:m countrycode year survname using `data1', keepus(module)
+0151 | drop if _merge==2
+0152 | 
+0153 | // Keep only the most recent survey pair per country/period/welfare-type
+0154 | // (drop earlier "vintages" of the same spell).
+0155 | bys countrycode period welftype (year): gen seq = _N
+0156 | bys countrycode period welftype (year): gen seq1 = _n
+0157 | drop if seq==1
+0158 | drop seq _merge ref rep region welvar datamod filename
+0159 | replace module="MIS" if module==""
+0160 | 
+0161 | // Reshape long (one row per spell-endpoint) to wide (one row per spell,
+0162 | // with year1/survname1/module1 = start, year2/survname2/module2 = end).
+0163 | reshape wide year survname module, i(countrycode period welftype) j(seq1)
+0164 | gen type = 0
+0165 | replace type = 1 if module1=="ALL" & module2=="ALL"
+0166 | drop if countrycode=="ISO3" & year1==0000
+0167 | //ISO32006 Urban |         30   - 99.55 rural
+0168 | drop if countrycode=="ISO3" & (year1==0000 & survname1=="EPH") | (year2==0000 & survname2=="EPH")
+0169 | local nobs = _N
+0170 | //remove ISO3 0000 EPH
+0171 | replace welftype = "INC" if countrycode=="ISO3" & period=="0000-0000" & welftype=="CONS"
+0172 | 
+0173 | 
+0174 | 
+0175 | 
+0176 | ***Run code for the following countries separetly
+0177 | // Already inactive in the original file (author's own comment block) --
+0178 | // left untouched, not part of this globals-only pass.
+0179 | /*
+0180 | gen keep = 0
+0181 | 
+0182 | replace keep =1  if countrycode =="ISO3" & period=="0000-0000"
+0183 | replace keep =1  if countrycode =="ISO3" & period=="0000-0000"
+0184 | replace keep =1  if countrycode =="ISO3" & period=="0000-0000"
+0185 | replace keep =1  if year2 ==2024 | year2 ==2025
+0186 | replace keep =1  if year2 ==2023 & survname2=="EU-SILC"
+0187 | replace keep =1  if countrycode =="ISO3" & year2 ==0000
+0188 | replace keep =1  if countrycode =="ISO3" & year2 ==0000
+0189 | replace keep =1  if countrycode =="ISO3" & year2 ==0000
+0190 | replace keep =1  if countrycode =="ISO3" & year2 ==0000
+0191 | replace keep =1  if countrycode =="ISO3" & year2 ==0000
+0192 | replace keep =1  if countrycode =="ISO3" & year2 ==0000
+0193 | replace keep =1  if countrycode =="ISO3" & year2 ==0000
+0194 | 
+0195 | 
+0196 | keep if keep ==1
+0197 | //keep if countrycode =="ISO3"
+0198 | 
+0199 | 
+0200 | drop if year2 ==2023 & survname2=="EU-SILC"
+0201 | //replace year2 = year2-1
+0202 | */
+0203 | 
+0204 | //keep  if countrycode =="ISO3" & period=="0000-0000"
+0205 | //keep  if countrycode =="ISO3"
+0206 | 
+0207 | //*** FIX (optional) *** to rerun ONLY the country-years known to be affected
+0208 | //    by the missing-welfare bug, uncomment the line below.
+0209 | //keep if inlist(countrycode,"ISO3","ISO3","ISO3")
+0210 | 
+0211 | 
+0212 | 
+0213 | save `data1', replace
+0214 | 
+0215 | // Frames to collect Datt-Ravallion / Shorrocks-Kolenikov (decomp_results)
+0216 | // and Huppi-Ravallion (decomp_results2) decomposition output across every
+0217 | // spell in the loop below, posted to row-by-row via `frame post`.
+0218 | cap frame create temp_frame
+0219 | cap frame change temp_frame
+0220 | cap frame drop decomp_results
+0221 | cap frame drop decomp_results2
+0222 | frame create decomp_results strL(code welftype decomp spell povline) float(value1 value2 value3 value4 ppp)
+0223 | frame create decomp_results2 strL(code welftype decomp spell povline) float(value1 value2 value3 value4 value5 ppp)
+0224 | 
+0225 | //*** FIX 3 *** open the collector for dropped-observation events.
+0226 | //    Declared here so it stays in scope for the whole loop; closed after it.
+0227 | //    `replace` means a rerun starts from an empty collector.
+0228 | tempfile qccollect
+0229 | capture postclose qcdrops
+0230 | postfile qcdrops str3 qc_code str20 qc_spell str4 qc_welf int qc_ppp ///
+0231 |     str12 qc_block long qc_ndropped long qc_ntotal double qc_pctdropped ///
+0232 |     using `qccollect', replace
+0233 | 
+0234 | 
+0235 | // Already inactive in the original file -- left untouched.
+0236 | /*
+0237 |   use `data1', clear
+0238 |   drop if missing(countrycode) | missing(year1) | missing(year2)
+0239 |   local nobs = _N
+0240 |   save 	`data1', replace
+0241 | 
+0242 |   dlw, country(support) year(2005) type(GMDRAW) surveyid(Support_2005_CPI_V15_M) filename(Final_CPI_PPP_to_be_used.dta)
+0243 | 
+0244 | keep if datalevel ==2
+0245 | 
+0246 | //ren code countrycode
+0247 | keep code year survname cpi2017 icp2017 cpi2021 icp2021
+0248 | replace year = year + 1 if survname =="EU-SILC"
+0249 | //isid countrycode year survname
+0250 | 
+0251 | tempfile cpi
+0252 | save `cpi'
+0253 | 
+0254 | */
+0255 | 
+0256 | 
+0257 | 
+0258 | //keep if countrycode =="ISO3" & period =="0000-0000"
+0259 |  local nobs = _N
+0260 |   save 	`data1', replace
+0261 | //keep if countrycode =="ISO3" & period =="0000-0000"
+0262 | 
+0263 | //======================================================================
+0264 | // MAIN LOOP -- one iteration per country-spell (start/end survey pair).
+0265 | // For each spell: pull both endpoint surveys via dlw, build welfare
+0266 | // (__a2017/__a2021), then run:
+0267 | //   - GIC (growth incidence curve), national and urban/rural
+0268 | //   - prosperity-gap decomposition
+0269 | //   - Datt-Ravallion and Shorrocks-Kolenikov poverty-change decomposition
+0270 | //   - (if both endpoints are "ALL"-module surveys) Huppi-Ravallion
+0271 | //     urban/rural and sectoral decomposition
+0272 | //======================================================================
+0273 | forv i=1(1)`nobs' {
+0274 | //forv i=1(1)1 {
+0275 | 	tempfile data1a data1b
+0276 |     use `data1', clear
+0277 | 	*local period period[`i']
+0278 | 	local welftype = welftype[`i']
+0279 | 	local code = countrycode[`i']
+0280 | 	local year1 = year1[`i']
+0281 | 	local survname1 = survname1[`i']
+0282 | 
+0283 | 	local year2 = year2[`i']
+0284 | 	local survname2 = survname2[`i']
+0285 | 	*local spellx = "`year1'-`year2'"
+0286 | 	local spellx = period[`i']
+0287 | 	local type = type[`i']
+0288 | 	//GIC - national and urban/rural
+0289 | 	//Prosperity gap decomposition
+0290 | 	//Datt-Ravallion
+0291 | 	//Shorrocks-Kolenikov decomposition
+0292 | 	noi dis "`i'-`code'-`year1'-`survname1'-`year2'-`survname2'-`spellx'"
+0293 | 
+0294 | 	// GPWG module, household weight -- used for GIC / prosperity-gap /
+0295 | 	// Datt-Ravallion / Shorrocks-Kolenikov below.
+0296 | 	local mod GPWG
+0297 | 	local wgt weight
+0298 | 	local x1 = 0
+0299 | 	local x2 = 0
+0300 | 	//year1
+0301 | 	// Pull spell endpoint 1 and build daily welfare per PPP vintage,
+0302 | 	// inequality ratio (y/ybar), and prosperity-gap indicator.
+0303 | 	cap dlw, country(`code') year(`year1') type(gmd) surveyid(`survname1') mod(`mod') files $repotxt
+0304 | 	qui if _rc==0 {
+0305 | 		cap drop survname
+0306 | 		gen survname = "`survname1'"
+0307 | 		egen HHID_new = group(hhid)
+0308 |     	local x1=1
+0309 | 		foreach ppp1 of global ppplist {
+0310 | 			gen double __a`ppp1' = welfare/cpi`ppp1'/icp`ppp1'/365
+0311 | 			replace __a`ppp1' = ${floor`ppp1'} if __a`ppp1' < ${floor`ppp1'}
+0312 | 			su __a`ppp1' [aw=weight]
+0313 | 			local m1 = r(mean)
+0314 | 			gen inq_y_ybar`ppp1' = `m1'/__a`ppp1'
+0315 | 			gen prosg`ppp1' = ${gap`ppp1'}/__a`ppp1'
+0316 | 		}
+0317 | 		cap des urban
+0318 | 		if _rc==0 keep code year HHID_new  __a* weight urban prosg* inq_y_ybar* survname
+0319 | 		else keep code year HHID_new  __a* weight prosg* inq_y_ybar* survname
+0320 | 		save `data1a', replace
+0321 | 	}
+0322 | 	//year2
+0323 | 	// Same as above, for spell endpoint 2 -- appended onto endpoint 1
+0324 | 	// so `data1a' holds both years of the spell together.
+0325 | 	cap dlw, country(`code') year(`year2') type(gmd) surveyid(`survname2') mod(`mod') files $repotxt
+0326 | 	qui if _rc==0 {
+0327 | 		cap drop survname
+0328 | 		gen survname = "`survname2'"
+0329 | 		egen HHID_new = group(hhid)
+0330 | 		local x2=1
+0331 | 		foreach ppp1 of global ppplist {
+0332 | 			gen double __a`ppp1' = welfare/cpi`ppp1'/icp`ppp1'/365
+0333 | 			replace __a`ppp1' = ${floor`ppp1'} if __a`ppp1' < ${floor`ppp1'}
+0334 | 			su __a`ppp1' [aw=weight]
+0335 | 			local m1 = r(mean)
+0336 | 			gen inq_y_ybar`ppp1' = `m1'/__a`ppp1'
+0337 | 			gen prosg`ppp1' = ${gap`ppp1'}/__a`ppp1'
+0338 | 		}
+0339 | 		cap des urban
+0340 | 		if _rc==0 keep code year HHID_new  __a* weight urban prosg* inq_y_ybar* survname
+0341 | 		else keep code year HHID_new  __a* weight prosg* inq_y_ybar* survname
+0342 | 		append using `data1a'
+0343 | 		save `data1a', replace
+0344 | 	}
+0345 | 
+0346 | 	if `x1'==1 & `x2'==1 {
+0347 | 		foreach ppp1 of global ppplist {
+0348 | 			//GIC national
+0349 | 			use `data1a', clear
+0350 | 
+0351 | 			//*** FIX 1 *** drop records with missing welfare BEFORE tiling.
+0352 | 			//    Without this, clonevar carries missings into q100 and Stata
+0353 | 			//    ranks them above all real values, so they occupy the top bins
+0354 | 			//    and squash the real top of the distribution into one bin.
+0355 | 			//    Every drop event is recorded to the QC collector.
+0356 | 			qui count
+0357 | 			local qc_tot = r(N)
+0358 | 			qui count if missing(__a`ppp1')
+0359 | 			local qc_drop = r(N)
+0360 | 			if `qc_drop' > 0 {
+0361 | 				local qc_pct = 100*`qc_drop'/`qc_tot'
+0362 | 				noi dis in yellow "  FLAG GIC-nat: `code' `spellx' ppp`ppp1' - dropped `qc_drop' of `qc_tot' missing welfare"
+0363 | 				post qcdrops ("`code'") ("`spellx'") ("`welftype'") (`ppp1') ///
+0364 | 				    ("national") (`qc_drop') (`qc_tot') (`qc_pct')
+0365 | 			}
+0366 | 			drop if missing(__a`ppp1')
+0367 | 
+0368 | 			// Tile welfare into 100 percentile bins by year, mean welfare
+0369 | 			// per bin -- this is the national GIC series for this spell/ppp.
+0370 | 			clonevar q100 = __a`ppp1'
+0371 | 			groupfunction [aw=`wgt'], mean(__a`ppp1') xtile(q100) nq(100) by(year )
+0372 | 			ren __a`ppp1' mean
+0373 | 			gen ppp = `ppp1'
+0374 | 			gen data = "All sample"
+0375 | 			gen data_group = 1
+0376 | 			gen welftype = "`welftype'"
+0377 | 			gen code = "`code'"
+0378 | 			append using `datagic'
+0379 | 			save `datagic', replace
+0380 | 
+0381 | 			//GIC Urban or rural
+0382 | 			use `data1a', clear
+0383 | 			cap des urban
+0384 | 			if _rc==0 {
+0385 | 
+0386 | 				//*** FIX 2 *** same drop for the urban/rural tiling.
+0387 | 				//    Inside the urban branch so it only runs when the urban
+0388 | 				//    variable actually exists.
+0389 | 				qui count
+0390 | 				local qc_tot = r(N)
+0391 | 				qui count if missing(__a`ppp1')
+0392 | 				local qc_drop = r(N)
+0393 | 				if `qc_drop' > 0 {
+0394 | 					local qc_pct = 100*`qc_drop'/`qc_tot'
+0395 | 					noi dis in yellow "  FLAG GIC-u/r: `code' `spellx' ppp`ppp1' - dropped `qc_drop' of `qc_tot' missing welfare"
+0396 | 					post qcdrops ("`code'") ("`spellx'") ("`welftype'") (`ppp1') ///
+0397 | 					    ("urban_rural") (`qc_drop') (`qc_tot') (`qc_pct')
+0398 | 				}
+0399 | 				drop if missing(__a`ppp1')
+0400 | 
+0401 | 				// Same tiling as national GIC, but by year x urban so the
+0402 | 				// GIC can be split into urban/rural series.
+0403 | 				clonevar q100 = __a`ppp1'
+0404 | 				groupfunction [aw=`wgt'], mean(__a`ppp1') xtile(q100) nq(100) by(year  urban)
+0405 | 				ren __a`ppp1' mean
+0406 | 				gen ppp = `ppp1'
+0407 | 				gen data = "Urban or rural"
+0408 | 				ren urban data_group
+0409 | 				gen welftype = "`welftype'"
+0410 | 				gen code = "`code'"
+0411 | 				append using `datagic'
+0412 | 				save `datagic', replace
+0413 | 			}
+0414 | 
+0415 | 			//prosperity gap decomposition
+0416 | 			// NOT CHANGED - no tiling here, groupfunction mean() already
+0417 | 			// excludes missings from the mean.
+0418 | 			// Decomposes the change in mean welfare/prosperity-gap/inequality
+0419 | 			// ratio between the two spell years into log-change terms
+0420 | 			// (annualized by dividing by the year gap).
+0421 | 			use `data1a', clear
+0422 | 			qui {
+0423 | 				groupfunction [aw=`wgt'], mean(__a* prosg* inq_y_ybar*) by(year )
+0424 | 				gen spell = "`spellx'"
+0425 | 				reshape long __a prosg inq_y_ybar, i(spell year) j(ppp)
+0426 | 				ren __a mean
+0427 | 				foreach var of varlist prosg inq_y_ybar mean {
+0428 | 					gen ln`var' = ln(`var')
+0429 | 					//change in ln
+0430 | 					bys ppp spell (year): gen ch_ln`var' = (ln`var'[_n]- ln`var'[_n-1])/(year[_n]-year[_n-1])
+0431 | 				}
+0432 | 				gen code = "`code'"
+0433 | 				gen welftype = "`welftype'"
+0434 | 				replace ch_lninq_y_ybar = ch_lninq_y_ybar *100
+0435 | 				replace ch_lnmean = -1 * ch_lnmean *100
+0436 | 				replace ch_lnprosg = ch_lnprosg *100
+0437 | 				append using `prosdecomp'
+0438 | 				save `prosdecomp', replace
+0439 | 			} //qui
+0440 | 
+0441 | 			//decomposition
+0442 | 			// NOT CHANGED - drdecomp and skdecomp handle missings internally.
+0443 | 			// For each poverty line: Datt-Ravallion decomposes the change in
+0444 | 			// poverty into growth/redistribution/interaction; Shorrocks-
+0445 | 			// Kolenikov gives an alternative (4-term) decomposition. Both
+0446 | 			// post their results row-by-row into the decomp_results frame.
+0447 | 			use `data1a', clear
+0448 | 			foreach num of numlist ${plines`ppp1'} {
+0449 | 				gen _pline`num' = `=`num'/100'
+0450 | 
+0451 | 				//Datt-Ravallion
+0452 | 				*noi dis "Datt-Ravallion - `num' - `ppp1'"
+0453 | 				qui drdecomp __a`ppp1' [aw=`wgt'] if year==`year1'|year==`year2', by(year) varpl(_pline`num')
+0454 | 				mat a = r(b)
+0455 | 				local value1 = a[1,3]
+0456 | 				local value2 = a[2,3]
+0457 | 				local value3 = a[3,3]
+0458 | 				* Post the results to the frame
+0459 | 				* `year1'-`year2'-->`spellx'
+0460 | 				frame decomp_results {
+0461 | 					frame post decomp_results ("`code'") ("`welftype'") ("Datt-Ravallion") ("`spellx'") ("`num'") (`value3') (`value1') (`value2') (-9999)	(`ppp1')
+0462 | 				}
+0463 | 
+0464 | 				//Shorrocks-Kolenikov
+0465 | 				*noi dis "Shorrocks-Kolenikov  - `num' - `ppp1'"
+0466 | 				qui skdecomp __a`ppp1' [aw=`wgt'] if year==`year1'|year==`year2', by(year) varpl(_pline`num')
+0467 | 				mat a = r(b)
+0468 | 				local value1 = a[1,3]
+0469 | 				local value2 = a[2,3]
+0470 | 				local value3 = a[3,3]
+0471 | 				local value4 = a[4,3]
+0472 | 				* Post the results to the frame
+0473 | 				frame decomp_results {
+0474 | 					frame post decomp_results ("`code'") ("`welftype'") ("Shorrocks-Kolenikov") ("`spellx'") ("`num'") (`value4') (`value1') (`value2') (`value3') (`ppp1')
+0475 | 				}
+0476 | 			} // num
+0477 | 		} //ppplist
+0478 | 	} //load both years
+0479 | 
+0480 | 	if `type'==1 { //both ALL files
+0481 | 		//Huppi-Ravallion decomposition (urban/rural)
+0482 | 		//Huppi-Ravallion decomposition (sectoral)
+0483 | 		// NOT CHANGED - no percentile construction in this section.
+0484 | 		// Only runs when BOTH spell endpoints are "ALL"-module surveys
+0485 | 		// (type==1), since it needs the ALL module's person weight and
+0486 | 		// industry variables (not present in GPWG-only surveys).
+0487 | 		local mod ALL
+0488 | 		local wgt weight_p
+0489 | 		local x1 = 0
+0490 | 		local x2 = 0
+0491 | 
+0492 | 		//year2
+0493 | 		// Pull endpoint 2 (ALL module) and build welfare + poverty-line
+0494 | 		// indicators, plus urban and industrycat4/sector_nonag flags when
+0495 | 		// available (gates which Huppi-Ravallion splits run below).
+0496 | 		cap dlw, country(`code') year(`year2') type(gmd) surveyid(`survname2') mod(`mod') files $repotxt
+0497 | 		qui if _rc==0 {
+0498 | 			egen HHID_new = group(hhid)
+0499 | 			//combine 2 reference calls (7-day, 1-year, other recalls)
+0500 | 			// Same block as 01aa/01ab -- keeps all three files on the
+0501 | 			// same series. Only industrycat4 is used in this file; the
+0502 | 			// other three are no-ops here but kept for consistency.
+0503 | 			cap replace lstatus = lstatus_year if missing(lstatus) & !missing(lstatus_year)
+0504 | 			cap replace industrycat4 = industrycat4_year if missing(industrycat4) & !missing(industrycat4_year)
+0505 | 			cap replace industrycat10 = industrycat10_year if missing(industrycat10) & !missing(industrycat10_year)
+0506 | 			cap replace empstat = empstat_year if missing(empstat) & !missing(empstat_year)
+0507 | 			
+0508 | 			local x2=1
+0509 | 			foreach ppp1 of global ppplist {
+0510 | 				gen double __a`ppp1' = welfare/cpi`ppp1'/icp`ppp1'/365
+0511 | 				replace __a`ppp1' = ${floor`ppp1'} if __a`ppp1' < ${floor`ppp1'}
+0512 | 				foreach num of numlist ${plines`ppp1'} {
+0513 | 					gen _pline`num' = `=`num'/100'
+0514 | 				}
+0515 | 			}
+0516 | 
+0517 | 			local ub2 = 0
+0518 | 			local ubvar
+0519 | 			cap des urban
+0520 | 			if _rc==0 {
+0521 | 				su urban,d
+0522 | 				if r(N)>0 {
+0523 | 					local ub2 = 1
+0524 | 					local ubvar urban
+0525 | 				}
+0526 | 			}
+0527 | 
+0528 | 			local ind2 = 0
+0529 | 			local indvar
+0530 | 			cap des industrycat4
+0531 | 			if _rc==0 {
+0532 | 				su industrycat4,d
+0533 | 				if r(N)>0 {
+0534 | 					local ind2 = 1
+0535 | 					gen sector_nonag = industrycat4 ~= 1 if industrycat4 ~= .
+0536 | 					local indvar industrycat4 sector_nonag
+0537 | 				}
+0538 | 			}
+0539 | 			cap des weight_p
+0540 | 			if _rc~=0 gen weight_p = weight
+0541 | 			keep code year HHID_new  __a* `wgt' `ubvar' `indvar' _pline*
+0542 | 			save `data1b', replace
+0543 | 		}
+0544 | 
+0545 | 		//year1
+0546 | 		// Same as endpoint 2, for endpoint 1.
+0547 | 		cap dlw, country(`code') year(`year1') type(gmd) surveyid(`survname1') mod(`mod') files $repotxt
+0548 | 		qui if _rc==0 {
+0549 | 			egen HHID_new = group(hhid)
+0550 | 			local x1=1
+0551 | 			foreach ppp1 of global ppplist {
+0552 | 				gen double __a`ppp1' = welfare/cpi`ppp1'/icp`ppp1'/365
+0553 | 				replace __a`ppp1' = ${floor`ppp1'} if __a`ppp1' < ${floor`ppp1'}
+0554 | 				foreach num of numlist ${plines`ppp1'} {
+0555 | 					gen _pline`num' = `=`num'/100'
+0556 | 				}
+0557 | 			}
+0558 | 
+0559 | 			local ub1 = 0
+0560 | 			local ubvar
+0561 | 			cap des urban
+0562 | 			if _rc==0 {
+0563 | 				su urban,d
+0564 | 				if r(N)>0 {
+0565 | 					local ub1 = 1
+0566 | 					local ubvar urban
+0567 | 				}
+0568 | 			}
+0569 | 
+0570 | 			local ind1 = 0
+0571 | 			local indvar
+0572 | 			cap des industrycat4
+0573 | 			if _rc==0 {
+0574 | 				su industrycat4,d
+0575 | 				if r(N)>0 {
+0576 | 					local ind1 = 1
+0577 | 					gen sector_nonag = industrycat4 ~= 1 if industrycat4 ~= .
+0578 | 					local indvar industrycat4 sector_nonag
+0579 | 				}
+0580 | 			}
+0581 | 			cap des weight_p
+0582 | 			if _rc~=0 gen weight_p = weight
+0583 | 			keep code year HHID_new  __a* `wgt' `ubvar' `indvar' _pline*
+0584 | 			save `data1a', replace
+0585 | 		}
+0586 | 
+0587 | 		//load OK both ALL files
+0588 | 		if `x1'==1 & `x2'==1 {
+0589 | 			//urban/rural
+0590 | 			// Splits the poverty change between the two spell years into a
+0591 | 			// within-sector and a between-sector (urban vs rural) component.
+0592 | 			if `ub1'==1 & `ub2'==1 {
+0593 | 				use `data1a', clear
+0594 | 				foreach ppp1 of global ppplist {
+0595 | 					foreach num of numlist ${plines`ppp1'} {
+0596 | 						qui sedecomposition using `data1b' [aw=`wgt'], sector(urban) pline1(_pline`num') pline2(_pline`num') var1(__a`ppp1') var2(__a`ppp1') hc
+0597 | 						mat a = r(b_sec)
+0598 | 						mat b = r(b_tot)
+0599 | 
+0600 | 						local value1 = b[1,1]
+0601 | 						local value2 = a[1,2]
+0602 | 						local value3 = a[2,2]
+0603 | 						local value4 = b[3,1]
+0604 | 						local value5 = b[4,1]
+0605 | 						* Post the results to the frame
+0606 | 						frame decomp_results2 {
+0607 | 							frame post decomp_results2 ("`code'") ("`welftype'") ("Huppi-Ravallion UR") ("`spellx'") ("`num'") (`value1') (`value2') (`value3') (`value4') (`value5') (`ppp1')
+0608 | 						}
+0609 | 					} //num
+0610 | 				} //pp1
+0611 | 			} //ur
+0612 | 
+0613 | 			//industrycat4
+0614 | 			// Same decomposition, but splitting by sector (agriculture vs
+0615 | 			// non-agriculture) instead of urban/rural.
+0616 | 			if `ind1'==1 & `ind2'==1 {
+0617 | 				use `data1a', clear
+0618 | 				foreach ppp1 of global ppplist {
+0619 | 					foreach num of numlist ${plines`ppp1'} {
+0620 | 						qui sedecomposition using `data1b' [aw=`wgt'], sector(sector_nonag) pline1(_pline`num') pline2(_pline`num') var1(__a`ppp1') var2(__a`ppp1') hc
+0621 | 						mat a = r(b_sec)
+0622 | 						mat b = r(b_tot)
+0623 | 
+0624 | 						local value1 = b[1,1]
+0625 | 						local value2 = a[1,2]
+0626 | 						local value3 = a[2,2]
+0627 | 						local value4 = b[3,1]
+0628 | 						local value5 = b[4,1]
+0629 | 
+0630 | 						* Post the results to the frame
+0631 | 						frame decomp_results2 {
+0632 | 							frame post decomp_results2 ("`code'") ("`welftype'") ("Huppi-Ravallion SEC") ("`spellx'") ("`num'") (`value1') (`value2') (`value3') (`value4') (`value5') (`ppp1')
+0633 | 						}
+0634 | 					} //num
+0635 | 				} //ppp1
+0636 | 			} //ind
+0637 | 		} //x1x2
+0638 | 	} //type==1
+0639 | 	clear
+0640 | } //i
+0641 | 
+0642 | //*** FIX 3 *** close the collector before reading it back.
+0643 | capture postclose qcdrops
+0644 | 
+0645 | use `datagic', clear
+0646 | save "$interm\GMI_extended_${rnd}_GIC", replace
+0647 | 
+0648 | //==============================================================================
+0649 | //*** FIX 3 *** QC LOG - FLAGGED COUNTRIES ONLY
+0650 | //
+0651 | // Writes two files, both with `replace`, so each run starts clean:
+0652 | //   $qclog - human-readable text log
+0653 | //   $qccsv - machine-readable table for follow-up
+0654 | //
+0655 | // Contents:
+0656 | //   Section A - country-spells where records were dropped for missing welfare
+0657 | //   Section B - national GIC series that still lack a full 100 bins
+0658 | //
+0659 | // If neither section has entries the log says so explicitly. It is written
+0660 | // either way, so an empty log is evidence the check ran rather than evidence
+0661 | // it was skipped.
+0662 | //==============================================================================
+0663 | 
+0664 | // --- Section B input: bin counts from the GIC output just built
+0665 | tempfile qcbins
+0666 | use "$interm\GMI_extended_${rnd}_GIC", clear
+0667 | keep if data_group==1
+0668 | bys code year ppp welftype: gen nbins = _N
+0669 | keep if nbins < 100
+0670 | bys code year ppp welftype: keep if _n==1
+0671 | keep code year ppp welftype nbins
+0672 | save `qcbins', replace
+0673 | local n_binfail = _N
+0674 | 
+0675 | // --- Section A input: the dropped-record collector
+0676 | use `qccollect', clear
+0677 | local n_drops = _N
+0678 | 
+0679 | // --- Text log
+0680 | capture log close qcflag
+0681 | log using "$qclog", replace text name(qcflag)
+0682 | 
+0683 | dis "=============================================================="
+0684 | dis " GIC QC - FLAGGED COUNTRIES ONLY"
+0685 | dis " Round: ${rnd}"
+0686 | dis " Run:   `c(current_date)' `c(current_time)'"
+0687 | dis "=============================================================="
+0688 | dis ""
+0689 | dis "SECTION A - records dropped for missing welfare before tiling"
+0690 | dis "--------------------------------------------------------------"
+0691 | if `n_drops' == 0 {
+0692 | 	dis "  None. No survey had missing welfare in any spell."
+0693 | }
+0694 | else {
+0695 | 	dis "  `n_drops' country-spell-ppp-block combination(s) affected."
+0696 | 	dis "  A high percentage means the published GIC would have been"
+0697 | 	dis "  materially wrong without the fix."
+0698 | 	dis ""
+0699 | 	use `qccollect', clear
+0700 | 	gsort -qc_pctdropped
+0701 | 	list qc_code qc_spell qc_welf qc_ppp qc_block qc_ndropped qc_ntotal qc_pctdropped, ///
+0702 | 	    noobs sep(0) abbrev(12)
+0703 | }
+0704 | 
+0705 | dis ""
+0706 | dis "SECTION B - national GIC series with fewer than 100 bins"
+0707 | dis "--------------------------------------------------------------"
+0708 | if `n_binfail' == 0 {
+0709 | 	dis "  None. All national GIC series have a full 100 bins."
+0710 | }
+0711 | else {
+0712 | 	dis "  `n_binfail' series still incomplete - INVESTIGATE before release."
+0713 | 	dis "  With FIX 1 and FIX 2 applied this should normally be empty."
+0714 | 	dis ""
+0715 | 	use `qcbins', clear
+0716 | 	list code year ppp welftype nbins, noobs sep(0)
+0717 | }
+0718 | 
+0719 | dis ""
+0720 | dis "=============================================================="
+0721 | if `n_drops'==0 & `n_binfail'==0 {
+0722 | 	dis " RESULT: CLEAN - nothing flagged."
+0723 | }
+0724 | else {
+0725 | 	dis " RESULT: `n_drops' drop event(s), `n_binfail' incomplete series."
+0726 | }
+0727 | dis "=============================================================="
+0728 | 
+0729 | log close qcflag
+0730 | 
+0731 | // --- CSV companion: sections A and B stacked, tagged by qc_section
+0732 | use `qccollect', clear
+0733 | gen str12 qc_section = "A_dropped"
+0734 | if `n_binfail' > 0 {
+0735 | 	tempfile qcA
+0736 | 	save `qcA', replace
+0737 | 	use `qcbins', clear
+0738 | 	tostring year, replace
+0739 | 	rename (code year ppp welftype nbins) (qc_code qc_spell qc_ppp qc_welf qc_nbins)
+0740 | 	gen str12 qc_section = "B_bins_lt100"
+0741 | 	append using `qcA'
+0742 | }
+0743 | export delimited using "$qccsv", replace
+0744 | 
+0745 | noi dis as result "QC log written to: $qclog"
+0746 | noi dis as result "QC csv written to: $qccsv"
+0747 | //==============================================================================
+0748 | 
+0749 | use `prosdecomp', clear
+0750 | save "$interm\GMI_extended_${rnd}_prosg_decomp", replace
+0751 | 
+0752 | frame change decomp_results
+0753 | save "$interm\GMI_extended_${rnd}_decomp1", replace
+0754 | 
+0755 | frame change decomp_results2
+0756 | save "$interm\GMI_extended_${rnd}_decomp2", replace
+0757 | 
+0758 | // Trailing scratch block below -- inactive/dead code, confirmed not run
+0759 | // (matches the "s"/reshape/decomp_results2 leftovers already commented
+0760 | // out elsewhere in this pipeline). Left in place as a comment, untouched.
+0761 | //s
+0762 | //	reshape long value, i(decomp spell povline) j(subind)
+0763 | //	la def subind 1 "Total change in p.p." 2 "Growth" 3 "Redistribution" 4 "Line"
+0764 | //	la val subind subind
+0765 | //	decomp_results2
+0766 | //	la def subind 1 "Total change in p.p." `rlbl' 4 "Population shift" 5 "Interaction"
+```

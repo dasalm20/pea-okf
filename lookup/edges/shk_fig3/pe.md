@@ -1,0 +1,16 @@
+---
+{"generated":{"by":"process:build-wbg-okf"},"help_center_commit":"sanitized:3922b3bfe000a87b8aae5305d8d9417ff53718922349db932f5eb85ceef1342d","type":"Guide"}
+---
+
+# Recorded direct dependencies
+
+Read every listed edge record, or every reference-page child and its edge records. Incoming and outgoing edges are both included. Zero is explicit; a missing lookup is a retrieval failure/unknown, not zero.
+
+| Key / source range | Retrieve |
+|---|---|
+| shk_fig3:per_allsp.cov_pop | in=0; out=0; No recorded direct edges in this snapshot. |
+| shk_fig3:per_allsp.cov_q1 | in=0; out=0; No recorded direct edges in this snapshot. |
+| shk_fig3:per_allsp.cov_q2 | in=0; out=0; No recorded direct edges in this snapshot. |
+| shk_fig3:per_allsp.cov_q3 | in=0; out=0; No recorded direct edges in this snapshot. |
+| shk_fig3:per_allsp.cov_q4 | in=0; out=0; No recorded direct edges in this snapshot. |
+| shk_fig3:per_allsp.cov_q5 | in=0; out=0; No recorded direct edges in this snapshot. |

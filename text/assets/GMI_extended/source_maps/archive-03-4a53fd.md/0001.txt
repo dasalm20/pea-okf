@@ -1,0 +1,150 @@
+# 01.Programs/archive/03-MPO to PEA.do
+
+Sanitized source projection; applicability placeholders are not executable values. Original SHA256: d4db17b73532c81c45bf11ca32ba202aed1d906921380b3e4134d575267a9e01
+
+```stata
+0001 | //MPO data for PEA dashboard
+0002 | //2017PPP last round is SM25
+0003 | //2021PPP update per changes, then lock 2021PPP when moving to a new PPP
+0004 | 
+0005 | clear
+0006 | tempfile data1 data2 data3 data2017 data2021
+0007 | global rnd SM26
+0008 | global rnd1 SM2026
+0009 | *global out \\wbgfscifs01\GPWG-GMD\Datalib\Minh\GMI\\${rnd}\
+0010 | global out D:\daylan\test\GMI\out\
+0011 | 
+0012 | //2021 PPP
+0013 | use "\\wbgfscifs01\GTSD\03.projects_corp\02.MPO\02.MPO_${rnd}\02.MPO_${rnd}_QA\03.output\MPO\01.data\To MFM\global_ex.dta" , clear
+0014 | reshape long y, i( region Code Indicator Label runtime ) j(year)
+0015 | drop runtime region
+0016 | drop if y==""
+0017 | destring y, gen(value)
+0018 | 
+0019 | drop if Label=="National poverty line" | Label =="National poverty rate"
+0020 | 
+0021 | gen povline = 300 if Label=="International poverty rate ($3.00 in 2021 PPP)"
+0022 | replace povline = 420 if Label=="Lower middle-income poverty rate ($4.20 in 2021 PPP)"
+0023 | replace povline = 830 if Label=="Upper middle-income poverty rate ($8.30 in 2021 PPP)"
+0024 | ren Code code
+0025 | drop Label Indicator
+0026 | 
+0027 | isid code year povline
+0028 | 
+0029 | save `data1', replace
+0030 | 
+0031 | use "\\wbgfscifs01\GTSD\03.projects_corp\02.MPO\02.MPO_${rnd}\02.MPO_${rnd}_QA\03.output\Observed poverty 2021PPP.dta" , clear
+0032 | *isid countrycode year povline type
+0033 | duplicates tag countrycode year povline, gen(a)
+0034 | ta a
+0035 | ren countrycode code
+0036 | drop if code=="ISO3" & surveyname=="HBS"
+0037 | drop if code=="ISO3" & type=="C"
+0038 | drop if code=="ISO3" & type=="C"
+0039 | drop if code=="ISO3" & type=="C"
+0040 | isid code year povline
+0041 | merge 1:1 code year povline using `data1'
+0042 | gen esttype = 1 if pov~=.
+0043 | replace esttype = 2 if pov==. & _merge==2 & esttype==.
+0044 | replace pov = value if pov==. & _merge==2 & esttype==2
+0045 | la def esttype 1 "Actual" 2 "Projected"
+0046 | la val esttype esttype
+0047 | ren _merge merge1
+0048 | save `data1', replace
+0049 | 
+0050 | keep if esttype==1
+0051 | keep code year type comparability
+0052 | duplicates drop code year type comparability, force
+0053 | bys code (year): egen ymax = max(year)
+0054 | gen latest = year==ymax
+0055 | keep if latest==1
+0056 | keep code comparability type
+0057 | ren comparability comparability2
+0058 | ren type type2
+0059 | save `data2', replace
+0060 | 
+0061 | use `data1', clear
+0062 | merge m:1 code using `data2'
+0063 | sort code povline year
+0064 | replace type = type2 if type=="" & type2~="" & esttype==2
+0065 | replace comparability = comparability2 if comparability==. & comparability2~=. & esttype==2
+0066 | ren surveyname survname 
+0067 | gen ppp = 2021
+0068 | ren type welftype
+0069 | replace welftype = "CONS" if welftype=="C"
+0070 | replace welftype = "INC" if welftype=="I"
+0071 | 
+0072 | gen vintage = "Spring 2026"
+0073 | keep code year survname povline pov esttype comparability ppp vintage
+0074 | save `data2021', replace
+0075 | 
+0076 | //2021 PPP (last round is AM25)  FIXED
+0077 | use "\\wbgfscifs01\GTSD\03.projects_corp\02.MPO\02.MPO_AM25\02.MPO_AM25_QA\03.output\MPO\01.data\To MFM\global_ex.dta", clear
+0078 | reshape long y, i( region Code Indicator Label runtime ) j(year)
+0079 | drop runtime region
+0080 | drop if y==""
+0081 | destring y, gen(value)
+0082 | drop if Label=="National poverty line"
+0083 | 
+0084 | 
+0085 | //Changes to the poverty lines, now for AM we only use 2021 PPPs MPO
+0086 | gen povline = 300 if Label=="International poverty rate ($3.00 in 2021 PPP)"
+0087 | replace povline = 420 if Label=="Lower middle-income poverty rate ($4.20 in 2021 PPP)"
+0088 | replace povline = 830 if Label=="Upper middle-income poverty rate ($8.30 in 2021 PPP)"
+0089 | ren Code code
+0090 | drop Label Indicator
+0091 | isid code year povline
+0092 | save `data1', replace
+0093 | 
+0094 | use "\\wbgfscifs01\GTSD\03.projects_corp\02.MPO\02.MPO_AM25\02.MPO_AM25_QA\03.output\Observed poverty 2021PPP.dta" , clear
+0095 | isid countrycode year povline type
+0096 | //drop type is C/I
+0097 | ren countrycode code
+0098 | drop if code=="ISO3" & surveyname=="HBS"
+0099 | drop if code=="ISO3" & type=="C"
+0100 | drop if code=="ISO3" & type=="C"
+0101 | drop if code =="ISO3" & type=="C"
+0102 | 
+0103 | isid code year povline
+0104 | 
+0105 | merge 1:1 code year povline using `data1'
+0106 | gen esttype = 1 if pov~=.
+0107 | replace esttype = 2 if pov==. & _merge==2 & esttype==.
+0108 | replace pov = value if pov==. & _merge==2 & esttype==2
+0109 | la def esttype 1 "Actual" 2 "Projected"
+0110 | la val esttype esttype
+0111 | ren _merge merge1
+0112 | save `data1', replace
+0113 | 
+0114 | keep if esttype==1
+0115 | keep code year type comparability
+0116 | duplicates drop code year type comparability, force
+0117 | bys code (year): egen ymax = max(year)
+0118 | gen latest = year==ymax
+0119 | keep if latest==1
+0120 | keep code comparability type
+0121 | ren comparability comparability2
+0122 | ren type type2
+0123 | save `data2', replace
+0124 | 
+0125 | use `data1', clear
+0126 | merge m:1 code using `data2'
+0127 | sort code povline year
+0128 | replace type = type2 if type=="" & type2~="" & esttype==2
+0129 | replace comparability = comparability2 if comparability==. & comparability2~=. & esttype==2
+0130 | ren surveyname survname 
+0131 | gen ppp = 2021
+0132 | ren type welftype
+0133 | replace welftype = "CONS" if welftype=="C"
+0134 | replace welftype = "INC" if welftype=="I"
+0135 | 
+0136 | gen vintage = "Fall 2025"
+0137 | keep code year survname povline pov esttype comparability ppp vintage
+0138 | 
+0139 | save `data2021_previous', replace
+0140 | 
+0141 | append using `data2021'
+0142 | sort ppp code povline year
+0143 | compress
+0144 | save "${out}\04.output\PEA_Dashboard\MPO_poverty_data", replace
+```

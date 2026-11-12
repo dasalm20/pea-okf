@@ -1,0 +1,2178 @@
+Read candidates: `variable:f94c7059aa20d4d1`, `variable:04eee9527dbf0bf8`, `variable:d82d70ffbafcae05`, `variable:c0d51010513ee2a2`, `variable:e824ec9ad4ad2cdf`, `variable:ae8daafda9766383`, `variable:1e30eed23ba785ee`, `variable:6b9d60913b4de1f7`
+
+### block:42cc880e6d62f35d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L712-L712`. Next: `block:1653fa17433781cd`.
+
+```stata
+foreach b of local lpairs {
+```
+
+### block:1653fa17433781cd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L713-L713`. Next: `block:fe8a7ff7b06a280f`.
+
+```stata
+capture confirm variable pop`b'
+```
+Enclosing controls: `foreach b of local lpairs {`
+
+### block:fe8a7ff7b06a280f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L714-L714`. Next: `block:177ac8503d625d14`.
+
+```stata
+if _rc qui gen byte pop`b' = 0
+```
+Enclosing controls: `foreach b of local lpairs {`
+New: `variable:953c2cd429cc6893`
+Read candidates: `variable:2d30842dbfc54834`
+
+### block:177ac8503d625d14
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L715-L715`. Next: `block:13a20abee4448e5f`.
+
+```stata
+qui replace pop`b' = 0 if missing(pop`b')
+```
+Enclosing controls: `foreach b of local lpairs {`
+Modified: `variable:953c2cd429cc6893`
+Read candidates: `variable:953c2cd429cc6893`, `variable:2d30842dbfc54834`
+
+### block:13a20abee4448e5f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L717-L717`. Next: `block:7cb4bf486c421893`.
+
+```stata
+capture confirm variable pop`b'_year
+```
+Enclosing controls: `foreach b of local lpairs {`
+
+### block:7cb4bf486c421893
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L718-L718`. Next: `block:f23ce5e06e9e4c3f`.
+
+```stata
+if _rc qui gen byte pop`b'_year = 0
+```
+Enclosing controls: `foreach b of local lpairs {`
+New: `variable:55ba1e18aa65f559`
+Read candidates: `variable:2d30842dbfc54834`
+
+### block:f23ce5e06e9e4c3f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L719-L719`. Next: `block:a055a5b0e352e12c`.
+
+```stata
+qui replace pop`b'_year = 0 if missing(pop`b'_year)
+```
+Enclosing controls: `foreach b of local lpairs {`
+Modified: `variable:55ba1e18aa65f559`
+Read candidates: `variable:55ba1e18aa65f559`, `variable:2d30842dbfc54834`
+
+### block:a055a5b0e352e12c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L720-L720`. Next: `block:9bad54239277ef60`.
+
+```stata
+}
+```
+
+### block:9bad54239277ef60
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L722-L722`. Next: `block:8e78e134834178c0`.
+
+```stata
+local nrow = _N
+```
+
+### block:8e78e134834178c0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L723-L723`. Next: `block:38b699d73af06572`.
+
+```stata
+forvalues i = 1/`nrow' {
+```
+
+### block:38b699d73af06572
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L724-L724`. Next: `block:2e1fc249caad22a0`.
+
+```stata
+local rg = region[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:2e1fc249caad22a0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L725-L725`. Next: `block:e0d10dd2126f19d0`.
+
+```stata
+local cc = ccode[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:e0d10dd2126f19d0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L726-L726`. Next: `block:603d59d853247cf1`.
+
+```stata
+local yr = cyear[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:603d59d853247cf1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L727-L727`. Next: `block:6d701ff623e18d88`.
+
+```stata
+local sv = survey[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:6d701ff623e18d88
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L728-L728`. Next: `block:e49632d46ae5e343`.
+
+```stata
+foreach b of local lpairs {
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:e49632d46ae5e343
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L729-L729`. Next: `block:a75b6be1d33b585e`.
+
+```stata
+local p7 = pop`b'[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `foreach b of local lpairs {`
+
+### block:a75b6be1d33b585e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L730-L730`. Next: `block:4a09e686b512486b`.
+
+```stata
+local p12 = pop`b'_year[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `foreach b of local lpairs {`
+
+### block:4a09e686b512486b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L731-L731`. Next: `block:1a78f4be54714c8d`.
+
+```stata
+if `p7' == 0 & `p12' == 0 {
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `foreach b of local lpairs {`
+
+### block:1a78f4be54714c8d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L732-L732`. Next: `block:f8bc5d628f10f7d8`.
+
+```stata
+local d9 "`lab_`b'' is empty for the whole survey: `b' (last 7 days) and `b'_year (last 12 months) both hold no values."
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `foreach b of local lpairs {` → `if `p7' == 0 & `p12' == 0 {`
+
+### block:f8bc5d628f10f7d8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L733-L735`. Next: `block:05b3a289eaf632f3`.
+
+```stata
+post qc ("`cc'") ("`sv'") (`yr') ("`rg'") ("`b'") ("Urgent") (0) (0) (100) ("`d9'") ("missing(`b') & missing(`b'_year)") (9) (2)
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `foreach b of local lpairs {` → `if `p7' == 0 & `p12' == 0 {`
+
+### block:05b3a289eaf632f3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L736-L736`. Next: `block:d0394683e0a6d9ff`.
+
+```stata
+}
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `foreach b of local lpairs {`
+
+### block:d0394683e0a6d9ff
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L737-L737`. Next: `block:ac03e2d1bc713657`.
+
+```stata
+}
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:ac03e2d1bc713657
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L738-L738`. Next: `block:f8f766b19590cb85`.
+
+```stata
+}
+```
+
+### block:f8f766b19590cb85
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L740-L740`. Next: `block:309e21f78e3b280f`.
+
+```stata
+postclose qc
+```
+
+### block:309e21f78e3b280f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L761-L761`. Next: `block:3eb241396a12badd`.
+
+```stata
+use `QC', clear
+```
+Read datasets: `dataset:a8a45534ac98375d`
+
+### block:3eb241396a12badd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L762-L762`. Next: `block:724c54d4ed67d6d0`.
+
+```stata
+qui count
+```
+
+### block:724c54d4ed67d6d0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L763-L763`. Next: `block:32c9302c096aaae6`.
+
+```stata
+local anyfind = r(N)
+```
+
+### block:32c9302c096aaae6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L764-L764`. Next: `block:2151683ea5c6c4e9`.
+
+```stata
+if `anyfind' == 0 {
+```
+
+### block:2151683ea5c6c4e9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L765-L765`. Next: `block:fac6c3ae994054ca`.
+
+```stata
+di as result _n "  No findings. Nothing failed any test."
+```
+Enclosing controls: `if `anyfind' == 0 {`
+
+### block:fac6c3ae994054ca
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L766-L766`. Next: `block:5f365fc8897a7c41`.
+
+```stata
+qui set obs 1
+```
+Enclosing controls: `if `anyfind' == 0 {`
+
+### block:5f365fc8897a7c41
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L767-L767`. Next: `block:8c0c81584fc445e6`.
+
+```stata
+qui replace acronym  = ""
+```
+Enclosing controls: `if `anyfind' == 0 {`
+Modified: `variable:f53a0274aedf09a3`
+Read candidates: `variable:435b6fccdf45a3cb`
+
+### block:8c0c81584fc445e6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L768-L768`. Next: `block:5cd7d737aa369162`.
+
+```stata
+qui replace warn     = ""
+```
+Enclosing controls: `if `anyfind' == 0 {`
+Modified: `variable:e6bf011986664d89`
+Read candidates: `variable:435b6fccdf45a3cb`
+
+### block:5cd7d737aa369162
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L769-L769`. Next: `block:190324600688364e`.
+
+```stata
+qui replace desc     = "no findings"
+```
+Enclosing controls: `if `anyfind' == 0 {`
+Modified: `variable:21642480875b2dd6`
+Read candidates: `variable:435b6fccdf45a3cb`
+
+### block:190324600688364e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L770-L770`. Next: `block:54ab67fce7b34f51`.
+
+```stata
+}
+```
+
+### block:54ab67fce7b34f51
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L772-L772`. Next: `block:6aa385f0565da494`.
+
+```stata
+gsort -code -impact region acronym year variable test
+```
+
+### block:6aa385f0565da494
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L773-L773`. Next: `block:003b1843d893bb5d`.
+
+```stata
+gen int contador = _n
+```
+New: `variable:b893b8b2561e50d3`
+
+### block:003b1843d893bb5d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L774-L775`. Next: `block:c702a579c20bad0a`.
+
+```stata
+order acronym survey year region contador variable warn impact freq percentage desc iff test code
+```
+
+### block:c702a579c20bad0a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L776-L776`. Next: `block:234a7cfcc0ec89f6`.
+
+```stata
+format percentage %9.6f
+```
+
+### block:234a7cfcc0ec89f6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L777-L777`. Next: `block:5e2f54309c5fab69`.
+
+```stata
+format impact     %7.2f
+```
+
+### block:5e2f54309c5fab69
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L779-L779`. Next: `block:ff6514d8fdbe09e8`.
+
+```stata
+label var acronym    "acronym"
+```
+
+### block:ff6514d8fdbe09e8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L780-L780`. Next: `block:393f8b6c68601e7f`.
+
+```stata
+label var survey     "survey"
+```
+
+### block:393f8b6c68601e7f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L781-L781`. Next: `block:182c20c7d081311a`.
+
+```stata
+label var year       "year"
+```
+
+### block:182c20c7d081311a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L782-L782`. Next: `block:5a9d91ad691cb63f`.
+
+```stata
+label var region     "region"
+```
+
+### block:5a9d91ad691cb63f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L783-L783`. Next: `block:01acd77641d31207`.
+
+```stata
+label var contador   "contador"
+```
+
+### block:01acd77641d31207
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L784-L784`. Next: `block:52a5fbcfd7b06fae`.
+
+```stata
+label var variable   "variable"
+```
+
+### block:52a5fbcfd7b06fae
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L785-L785`. Next: `block:fcdaa303378ef535`.
+
+```stata
+label var warn       "warn"
+```
+
+### block:fcdaa303378ef535
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L786-L786`. Next: `block:c2cb89644962a331`.
+
+```stata
+label var impact     "impact (pct)"
+```
+
+### block:c2cb89644962a331
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L787-L787`. Next: `block:8942d5ac7ba14f72`.
+
+```stata
+label var freq       "freq"
+```
+
+### block:8942d5ac7ba14f72
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L788-L788`. Next: `block:8591627096d91e50`.
+
+```stata
+label var percentage "percentage"
+```
+
+### block:8591627096d91e50
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L789-L789`. Next: `block:0e129a2bbdd72a3c`.
+
+```stata
+label var desc       "desc"
+```
+
+### block:0e129a2bbdd72a3c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L790-L790`. Next: `block:ff4381b12fa3f648`.
+
+```stata
+label var iff        "iff"
+```
+
+### block:ff4381b12fa3f648
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L791-L791`. Next: `block:9eb0676121ce529d`.
+
+```stata
+label var test       "test"
+```
+
+### block:9eb0676121ce529d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L792-L792`. Next: `block:1d82bf4dd7af5073`.
+
+```stata
+label var code       "code"
+```
+
+### block:1d82bf4dd7af5073
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L794-L794`. Next: `block:1c1d7f6d49be6a3c`.
+
+```stata
+qui count if warn == "Urgent"
+```
+Read candidates: `variable:e6bf011986664d89`
+
+### block:1c1d7f6d49be6a3c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L795-L795`. Next: `block:de77970caa2dbd4f`.
+
+```stata
+local nurg = r(N)
+```
+
+### block:de77970caa2dbd4f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L796-L796`. Next: `block:4b19385a5482304d`.
+
+```stata
+qui count if warn == "Check"
+```
+Read candidates: `variable:e6bf011986664d89`
+
+### block:4b19385a5482304d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L797-L797`. Next: `block:bbfe199862f5940c`.
+
+```stata
+local nchk = r(N)
+```
+
+### block:bbfe199862f5940c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L798-L798`. Next: `block:e1fc165ab75ae246`.
+
+```stata
+qui count if warn == "Note"
+```
+Read candidates: `variable:e6bf011986664d89`
+
+### block:e1fc165ab75ae246
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L799-L799`. Next: `block:ae822ed7dadffecc`.
+
+```stata
+local nnote = r(N)
+```
+
+### block:ae822ed7dadffecc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L800-L800`. Next: `block:ac661156fe86fa16`.
+
+```stata
+local nqc = `anyfind'
+```
+
+### block:ac661156fe86fa16
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L801-L801`. Next: `block:e61ca09320450184`.
+
+```stata
+tempfile SHQ
+```
+
+### block:e61ca09320450184
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L802-L802`. Next: `block:80e967df84f36020`.
+
+```stata
+qui save `SHQ'
+```
+Write datasets: `dataset:0f33813001571ce6`
+
+### block:80e967df84f36020
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L803-L803`. Next: `block:69c7fac65ca19718`.
+
+```stata
+di as text _n "  findings: `nqc'   Urgent `nurg'   Check `nchk'   Note `nnote'"
+```
+
+### block:69c7fac65ca19718
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L812-L812`. Next: `block:943f60c768f6ba11`.
+
+```stata
+use `SM', clear
+```
+Read datasets: `dataset:97bd60f867796290`
+
+### block:943f60c768f6ba11
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L813-L813`. Next: `block:02c264940c0ac903`.
+
+```stata
+levelsof region, local(outregs) clean
+```
+
+### block:02c264940c0ac903
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L815-L815`. Next: `block:19fd99accc7fda42`.
+
+```stata
+foreach rg of local outregs {
+```
+
+### block:19fd99accc7fda42
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L819-L819`. Next: `block:2108251397837dcf`.
+
+```stata
+local outfile "`checksdir'/`outstub'_`rg'.xlsx"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:2108251397837dcf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L822-L822`. Next: `block:97e0b793f2d0921f`.
+
+```stata
+use `SHQ', clear
+```
+Enclosing controls: `foreach rg of local outregs {`
+Read datasets: `dataset:0f33813001571ce6`
+
+### block:97e0b793f2d0921f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L823-L823`. Next: `block:f88e392bba382392`.
+
+```stata
+qui keep if region == "`rg'"
+```
+Enclosing controls: `foreach rg of local outregs {`
+Read candidates: `variable:227e451cfca7fd55`
+
+### block:f88e392bba382392
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L824-L824`. Next: `block:8f8558dc27cf9a81`.
+
+```stata
+if _N == 0 {
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:8f8558dc27cf9a81
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L825-L825`. Next: `block:c0c804cf137e3626`.
+
+```stata
+qui set obs 1
+```
+Enclosing controls: `foreach rg of local outregs {` → `if _N == 0 {`
+
+### block:c0c804cf137e3626
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L826-L826`. Next: `block:4e8c048ce5d56e0d`.
+
+```stata
+qui replace region  = "`rg'"
+```
+Enclosing controls: `foreach rg of local outregs {` → `if _N == 0 {`
+Modified: `variable:227e451cfca7fd55`
+Read candidates: `variable:ca01b5bc4bd58fb8`
+
+### block:4e8c048ce5d56e0d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L827-L827`. Next: `block:37452db7d6306cfc`.
+
+```stata
+qui replace warn    = ""
+```
+Enclosing controls: `foreach rg of local outregs {` → `if _N == 0 {`
+Modified: `variable:1f718a9d23680950`
+Read candidates: `variable:ca01b5bc4bd58fb8`
+
+### block:37452db7d6306cfc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L828-L828`. Next: `block:73046eb585b99d8a`.
+
+```stata
+qui replace desc    = "no findings"
+```
+Enclosing controls: `foreach rg of local outregs {` → `if _N == 0 {`
+Modified: `variable:87ffe400d55629cf`
+Read candidates: `variable:ca01b5bc4bd58fb8`
+
+### block:73046eb585b99d8a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L829-L829`. Next: `block:ef70205c8ada3e46`.
+
+```stata
+}
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:ef70205c8ada3e46
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L830-L830`. Next: `block:f5c3002df66ff99f`.
+
+```stata
+qui replace contador = _n
+```
+Enclosing controls: `foreach rg of local outregs {`
+Modified: `variable:f1ddefa61a6ae977`
+Read candidates: `variable:ca01b5bc4bd58fb8`
+
+### block:f5c3002df66ff99f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L831-L831`. Next: `block:1b1cbd4567daee5a`.
+
+```stata
+qui count
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:1b1cbd4567daee5a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L832-L832`. Next: `block:33e9f57c7498c6b9`.
+
+```stata
+local rqc = r(N)
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:33e9f57c7498c6b9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L833-L833`. Next: `block:8c5dd58e09261c2b`.
+
+```stata
+qui count if warn == "Urgent"
+```
+Enclosing controls: `foreach rg of local outregs {`
+Read candidates: `variable:1f718a9d23680950`
+
+### block:8c5dd58e09261c2b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L834-L834`. Next: `block:410bcc72d61aa773`.
+
+```stata
+local rurg = r(N)
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:410bcc72d61aa773
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L835-L835`. Next: `block:78b8e97b5d1e3029`.
+
+```stata
+qui count if warn == "Check"
+```
+Enclosing controls: `foreach rg of local outregs {`
+Read candidates: `variable:1f718a9d23680950`
+
+### block:78b8e97b5d1e3029
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L836-L836`. Next: `block:9e7e1c7655cb14f1`.
+
+```stata
+local rchk = r(N)
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:9e7e1c7655cb14f1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L837-L837`. Next: `block:d1d760a7a58901c0`.
+
+```stata
+qui count if warn == "Note"
+```
+Enclosing controls: `foreach rg of local outregs {`
+Read candidates: `variable:1f718a9d23680950`
+
+### block:d1d760a7a58901c0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L838-L838`. Next: `block:ec638c3b5a2f60b1`.
+
+```stata
+local rnote = r(N)
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:ec638c3b5a2f60b1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L839-L839`. Next: `block:e3f65603b28714ca`.
+
+```stata
+tempfile RQ
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:e3f65603b28714ca
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L840-L840`. Next: `block:85272fe648ad43c6`.
+
+```stata
+qui save `RQ'
+```
+Enclosing controls: `foreach rg of local outregs {`
+Write datasets: `dataset:6f38b6d1e6c5c123`
+
+### block:85272fe648ad43c6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L845-L845`. Next: `block:0f4f106a3b9e229c`.
+
+```stata
+putexcel set "`outfile'", sheet("READ ME") replace
+```
+Enclosing controls: `foreach rg of local outregs {`
+Write datasets: `dataset:f2e38524a8489863`
+
+### block:0f4f106a3b9e229c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L847-L847`. Next: `block:fefb09db3459aa4c`.
+
+```stata
+putexcel A1 = "GMD QUALITY CHECK -- `rg'", bold
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:fefb09db3459aa4c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L848-L848`. Next: `block:07861ac4a3b90c65`.
+
+```stata
+putexcel A2 = "Round `rnd'.  Run `c(current_date)' `c(current_time)'."
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:07861ac4a3b90c65
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L849-L849`. Next: `block:75d6bf3f8a72b08b`.
+
+```stata
+putexcel A3 = "Built from the harmonized files as delivered. Nothing here is compared against DataLibWeb."
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:75d6bf3f8a72b08b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L851-L851`. Next: `block:f00664a8ddb4f7db`.
+
+```stata
+putexcel A5 = "WHAT IS BEING LOOKED AT", bold
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:f00664a8ddb4f7db
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L852-L852`. Next: `block:50d06b48271a9a55`.
+
+```stata
+putexcel A6 = "Every variable the GMI extended pipeline uses that is present under its GMD"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:50d06b48271a9a55
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L853-L853`. Next: `block:c67071235a3ca639`.
+
+```stata
+putexcel A7 = "name. Codes are read against the GMD guidelines codebook in section 6 of the"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:c67071235a3ca639
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L854-L854`. Next: `block:cb45491bb5f5e06b`.
+
+```stata
+putexcel A8 = "script, taken from GMD3.0_List_fo_variables. A survey filling only 2 of 4"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:cb45491bb5f5e06b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L855-L855`. Next: `block:1ea9032df299c0d1`.
+
+```stata
+putexcel A9 = "allowed categories is expected and reads as a Note. A code outside the range"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:1ea9032df299c0d1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L856-L856`. Next: `block:99fb6e2cc1195741`.
+
+```stata
+putexcel A10 = "is a finding."
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:99fb6e2cc1195741
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L858-L858`. Next: `block:46670805b2d5c9f2`.
+
+```stata
+putexcel A12 = "SHEET: QCHECK -- START HERE", bold
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:46670805b2d5c9f2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L859-L859`. Next: `block:4979597a559b2344`.
+
+```stata
+putexcel A13 = "One row per finding, sorted by urgency level. Filter on warn, or sort on code."
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:4979597a559b2344
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L860-L860`. Next: `block:64f71767ae84dc7a`.
+
+```stata
+putexcel A14 = "desc states what was observed and what the guidelines allow, in one sentence."
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:64f71767ae84dc7a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L861-L861`. Next: `block:0f5631ee108afc06`.
+
+```stata
+putexcel A15 = "iff holds a Stata condition you can paste straight into the file to see the rows."
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:0f5631ee108afc06
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L862-L862`. Next: `block:ac65ae535436de5e`.
+
+```stata
+putexcel A16 = "impact is the size of the finding as a percent, and it sets the urgency level."
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:ac65ae535436de5e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L864-L864`. Next: `block:7cacb6f2c9531085`.
+
+```stata
+putexcel A18 = "warn"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:7cacb6f2c9531085
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L865-L865`. Next: `block:b9c8587048f5f23c`.
+
+```stata
+putexcel B18 = "code"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:b9c8587048f5f23c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L866-L866`. Next: `block:3a90f0228bc1e259`.
+
+```stata
+putexcel C18 = "meaning"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:3a90f0228bc1e259
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L867-L867`. Next: `block:1f39859e09d7f6e2`.
+
+```stata
+putexcel A18:C18, overwritefmt bold
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:1f39859e09d7f6e2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L868-L868`. Next: `block:86546c1a637d5f55`.
+
+```stata
+putexcel A19 = "Urgent"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:86546c1a637d5f55
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L869-L869`. Next: `block:13e770ce3c50092a`.
+
+```stata
+putexcel B19 = 2
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:13e770ce3c50092a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L870-L870`. Next: `block:0fc3daa2e5ca4c80`.
+
+```stata
+putexcel C19 = "outside the guidelines range, or a series with nothing in it. Worth raising."
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:0fc3daa2e5ca4c80
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L871-L871`. Next: `block:79ffd11d3daca8b7`.
+
+```stata
+putexcel A20 = "Check"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:79ffd11d3daca8b7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L872-L872`. Next: `block:2f587abda80b51d1`.
+
+```stata
+putexcel B20 = 1
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:2f587abda80b51d1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L873-L873`. Next: `block:a053459c2ae33fbd`.
+
+```stata
+putexcel C20 = "worth a second look. May well be what the questionnaire supports."
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:a053459c2ae33fbd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L874-L874`. Next: `block:bfcb47894533bd51`.
+
+```stata
+putexcel A21 = "Note"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:bfcb47894533bd51
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L875-L875`. Next: `block:3545c72b934a2c1f`.
+
+```stata
+putexcel B21 = 0
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:3545c72b934a2c1f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L876-L876`. Next: `block:0926c1881dafdd81`.
+
+```stata
+putexcel C21 = "for information. Usually expected."
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:0926c1881dafdd81
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L878-L878`. Next: `block:840a33f6c8b5dd8b`.
+
+```stata
+putexcel A23 = "THE TESTS", bold
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:840a33f6c8b5dd8b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L879-L879`. Next: `block:dbf3858215e0dbd2`.
+
+```stata
+putexcel A24 = "test"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:dbf3858215e0dbd2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L880-L880`. Next: `block:a071645aa754e42d`.
+
+```stata
+putexcel B24 = "what it looks at"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:a071645aa754e42d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L881-L881`. Next: `block:006301bcd31ca0c7`.
+
+```stata
+putexcel C24 = "urgency level"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:006301bcd31ca0c7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L882-L882`. Next: `block:5d376726e5591ef7`.
+
+```stata
+putexcel A24:C24, overwritefmt bold
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:5d376726e5591ef7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L883-L883`. Next: `block:c6f074345c6ebae8`.
+
+```stata
+putexcel A25 = 1
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:c6f074345c6ebae8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L884-L884`. Next: `block:da5c75d8bce79e2e`.
+
+```stata
+putexcel B25 = "a code outside the range the guidelines allow"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:da5c75d8bce79e2e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L885-L885`. Next: `block:44c18c1fe179fd0a`.
+
+```stata
+putexcel C25 = "Urgent"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:44c18c1fe179fd0a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L886-L886`. Next: `block:3f29881924ad0f8e`.
+
+```stata
+putexcel A26 = 2
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:3f29881924ad0f8e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L887-L887`. Next: `block:5aed8ba90b042dd6`.
+
+```stata
+putexcel B26 = "no values populated"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:5aed8ba90b042dd6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L888-L888`. Next: `block:fb3edb7525f688e1`.
+
+```stata
+putexcel C26 = "Urgent, Check for a labour variable"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:fb3edb7525f688e1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L889-L889`. Next: `block:8be80d529f892d74`.
+
+```stata
+putexcel A27 = 3
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:8be80d529f892d74
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L890-L890`. Next: `block:1d55a3ce87ce9696`.
+
+```stata
+putexcel B27 = "a single value across all non-missing observations"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:1d55a3ce87ce9696
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L891-L891`. Next: `block:fc895b7946ed0293`.
+
+```stata
+putexcel C27 = "Check"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:fc895b7946ed0293
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L892-L892`. Next: `block:036f6fb600d60915`.
+
+```stata
+putexcel A28 = 4
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:036f6fb600d60915
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L893-L893`. Next: `block:8d4de58042ac3282`.
+
+```stata
+putexcel B28 = "a category share unusually LOW"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:8d4de58042ac3282
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L894-L894`. Next: `block:9f98c1425c94211c`.
+
+```stata
+putexcel C28 = "Check under `thinpct' pct of valid, Urgent under `thinurg' pct"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:9f98c1425c94211c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L895-L895`. Next: `block:def716368e7c1e53`.
+
+```stata
+putexcel A29 = 5
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:def716368e7c1e53
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L896-L896`. Next: `block:edc9c955ac7d94bf`.
+
+```stata
+putexcel B29 = "a category share unusually HIGH"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:edc9c955ac7d94bf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L897-L897`. Next: `block:b6a88c366d50e69e`.
+
+```stata
+putexcel C29 = "Check over `domipct' pct of valid, Urgent over `domiurg' pct"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:b6a88c366d50e69e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L898-L898`. Next: `block:838a81744f4dabfb`.
+
+```stata
+putexcel A30 = 6
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:838a81744f4dabfb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L899-L899`. Next: `block:697e04a0b5cb6101`.
+
+```stata
+putexcel B30 = "an allowed category with no observations"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:697e04a0b5cb6101
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L900-L900`. Next: `block:3557aba19a4734ca`.
+
+```stata
+putexcel C30 = "Note"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:3557aba19a4734ca
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L901-L901`. Next: `block:313a551f59679329`.
+
+```stata
+putexcel A31 = 7
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:313a551f59679329
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L902-L902`. Next: `block:04871ef0f8956e6a`.
+
+```stata
+putexcel B31 = "mostly, but not entirely, unpopulated"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:04871ef0f8956e6a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L903-L903`. Next: `block:c9ebc3fb006a85c5`.
+
+```stata
+putexcel C31 = "Check over `missmax' pct missing, Urgent over `missurg' pct"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:c9ebc3fb006a85c5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L904-L904`. Next: `block:34bffd330ede347d`.
+
+```stata
+putexcel A32 = 8
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:34bffd330ede347d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L905-L905`. Next: `block:b267ffba1aa274f8`.
+
+```stata
+putexcel B32 = "a value outside the expected range, age for now"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:b267ffba1aa274f8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L906-L906`. Next: `block:a7cb32609f16296e`.
+
+```stata
+putexcel C32 = "Urgent"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:a7cb32609f16296e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L907-L907`. Next: `block:774d42100520a8fc`.
+
+```stata
+putexcel A33 = 9
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:774d42100520a8fc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L908-L908`. Next: `block:bae13f7b6a503629`.
+
+```stata
+putexcel B33 = "a labour variable empty on BOTH 7 day and 12 month"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:bae13f7b6a503629
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L909-L909`. Next: `block:a0e2249ac3d7a42e`.
+
+```stata
+putexcel C33 = "Urgent"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:a0e2249ac3d7a42e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L911-L911`. Next: `block:7f3db7764c5115e6`.
+
+```stata
+putexcel A35 = "THE LABOUR PAIRS, TESTS 2 ISO3 9", bold
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:7f3db7764c5115e6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L912-L912`. Next: `block:a93c6496c9bc18a9`.
+
+```stata
+putexcel A36 = "Each labour variable comes twice, one per period: lstatus is the last 7 days"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:a93c6496c9bc18a9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L913-L913`. Next: `block:383464e3e11a257f`.
+
+```stata
+putexcel A37 = "and lstatus_year the last 12 months, and the same for empstat, industrycat4"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:383464e3e11a257f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L914-L914`. Next: `block:d32a56418d4c0bc0`.
+
+```stata
+putexcel A38 = "and industrycat10. A survey normally asks only one of the two, so ONE side"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:d32a56418d4c0bc0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L915-L915`. Next: `block:a8c13e3dfce6353c`.
+
+```stata
+putexcel A39 = "being unpopulated is expected and reads as a Check on test 2."
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:a8c13e3dfce6353c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L916-L916`. Next: `block:95de85b9be728878`.
+
+```stata
+putexcel A40 = "BOTH sides unpopulated is test 9, and that is the one that matters: the"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:95de85b9be728878
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L917-L917`. Next: `block:e9655f36cea7191b`.
+
+```stata
+putexcel A41 = "variable is then empty for the whole survey and there is nothing to use."
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:e9655f36cea7191b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L919-L919`. Next: `block:cb72cfcf4ee12c70`.
+
+```stata
+putexcel A43 = "HOW THE RANGE CHECK IS WRITTEN", bold
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:cb72cfcf4ee12c70
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L920-L920`. Next: `block:aba32f780a382c92`.
+
+```stata
+putexcel A44 = "Always against the guidelines RANGE, never against the code that happened to"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:aba32f780a382c92
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L921-L921`. Next: `block:1d8ee17bd8995e24`.
+
+```stata
+putexcel A45 = "show up. So iff on test 1 reads"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:1d8ee17bd8995e24
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L922-L922`. Next: `block:400cf436edcebb56`.
+
+```stata
+putexcel A46 = "    !inlist(electricity,0,1) & !missing(electricity)"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:400cf436edcebb56
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L923-L923`. Next: `block:f96700adca0314db`.
+
+```stata
+putexcel A47 = "and the same line catches a 5 or a 6 in the next country without being"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:f96700adca0314db
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L924-L924`. Next: `block:d41bb2866791bd1d`.
+
+```stata
+putexcel A48 = "rewritten. On tests 4 and 5 the condition covers the whole allowed range, so"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:d41bb2866791bd1d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L925-L925`. Next: `block:cef32fbc34f0a3cb`.
+
+```stata
+putexcel A49 = "you can tab the variable in context. On test 3 it names the single value."
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:cef32fbc34f0a3cb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L927-L927`. Next: `block:a2b0d9a89f5466d5`.
+
+```stata
+putexcel A51 = "WHY TESTS 4 ISO3 5 SKIP THE 0/1 VARIABLES", bold
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:a2b0d9a89f5466d5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L928-L928`. Next: `block:1328604e2bf4d4db`.
+
+```stata
+putexcel A52 = "On a 0/1 asset a small share is a fact about the country: 0.4 pct car ownership"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:1328604e2bf4d4db
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L929-L929`. Next: `block:03529f457740d021`.
+
+```stata
+putexcel A53 = "is what the country looks like. So LOW and HIGH only run on variables with more"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:03529f457740d021
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L930-L930`. Next: `block:3e1bc252a8364940`.
+
+```stata
+putexcel A54 = "than two allowed codes. A 0/1 variable with one value throughout is still"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:3e1bc252a8364940
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L931-L931`. Next: `block:165ecc727d486d8a`.
+
+```stata
+putexcel A55 = "picked up, by test 3."
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:165ecc727d486d8a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L933-L933`. Next: `block:22a1bd8548214dea`.
+
+```stata
+putexcel A57 = "SHEET: CATEGORIES", bold
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:22a1bd8548214dea
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L934-L934`. Next: `block:77ffe62d36ce479a`.
+
+```stata
+putexcel A58 = "The full frequency table behind the QCHECK rows. One row per variable per"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:77ffe62d36ce479a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L935-L935`. Next: `block:9834a227fbb5f257`.
+
+```stata
+putexcel A59 = "category per country-year, with the share, the label the file carries and"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:9834a227fbb5f257
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L936-L936`. Next: `block:a4b3151e17c2768b`.
+
+```stata
+putexcel A60 = "whether the code is inside the guidelines range."
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:a4b3151e17c2768b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L938-L938`. Next: `block:b7c8b3ad1b1de2f1`.
+
+```stata
+putexcel A62 = "SHEET: VARIABLES", bold
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:b7c8b3ad1b1de2f1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L939-L939`. Next: `block:e88374db5413085e`.
+
+```stata
+putexcel A63 = "One row per variable per country-year: rows, missing, distinct values. This is"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:e88374db5413085e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L940-L940`. Next: `block:ae60c0bb955ae446`.
+
+```stata
+putexcel A64 = "where to look for a variable that passed every test but still reads thin."
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:ae60c0bb955ae446
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L945-L945`. Next: `block:45851e7c39874c79`.
+
+```stata
+use `RQ', clear
+```
+Enclosing controls: `foreach rg of local outregs {`
+Read datasets: `dataset:6f38b6d1e6c5c123`
+
+### block:45851e7c39874c79
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L946-L946`. Next: `block:ae6e9d7e20bc5795`.
+
+```stata
+export excel using "`outfile'", sheet("QCHECK", modify) firstrow(varlabels)
+```
+Enclosing controls: `foreach rg of local outregs {`
+Write datasets: `dataset:f2e38524a8489863`
+
+### block:ae6e9d7e20bc5795
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L951-L951`. Next: `block:6c4014526c010261`.
+
+```stata
+use `CATOK', clear
+```
+Enclosing controls: `foreach rg of local outregs {`
+Read datasets: `dataset:332709279a34f5a8`
+
+### block:6c4014526c010261
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L952-L952`. Next: `block:f63d02558320fdbd`.
+
+```stata
+qui keep if region == "`rg'"
+```
+Enclosing controls: `foreach rg of local outregs {`
+Read candidates: `variable:c3b828551cc133f0`
+
+### block:f63d02558320fdbd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L953-L953`. Next: `block:2349481c0f0facff`.
+
+```stata
+qui count
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:2349481c0f0facff
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L954-L954`. Next: `block:bd146724b6295d2f`.
+
+```stata
+if r(N) > 0 {
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:bd146724b6295d2f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L955-L955`. Next: `block:41fcdc5e04bc79b4`.
+
+```stata
+gen str14 in_guidelines = "not judged"
+```
+Enclosing controls: `foreach rg of local outregs {` → `if r(N) > 0 {`
+New: `variable:4130c7f0f14dc796`
+
+### block:41fcdc5e04bc79b4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L956-L956`. Next: `block:1c61c68798f96255`.
+
+```stata
+qui replace in_guidelines = "in range" if codes_allowed != "" & ok == 1
+```
+Enclosing controls: `foreach rg of local outregs {` → `if r(N) > 0 {`
+Modified: `variable:4130c7f0f14dc796`
+Read candidates: `variable:e6e645c5369f26f3`, `variable:00e567c6d70ef63d`, `variable:5a15c8e1178fa4d3`
+
+### block:1c61c68798f96255
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L957-L957`. Next: `block:ca742f2d590fbcf9`.
+
+```stata
+qui replace in_guidelines = "outside range" if codes_allowed != "" & ok == 0
+```
+Enclosing controls: `foreach rg of local outregs {` → `if r(N) > 0 {`
+Modified: `variable:4130c7f0f14dc796`
+Read candidates: `variable:e6e645c5369f26f3`, `variable:00e567c6d70ef63d`, `variable:5a15c8e1178fa4d3`
+
+### block:ca742f2d590fbcf9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L958-L958`. Next: `block:08ebd5a2d20239ef`.
+
+```stata
+drop ok n_allowed
+```
+Enclosing controls: `foreach rg of local outregs {` → `if r(N) > 0 {`
+Read candidates: `variable:00e567c6d70ef63d`, `variable:a3be54b5f404c7be`
+
+### block:08ebd5a2d20239ef
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L959-L960`. Next: `block:89405f79dfecaeac`.
+
+```stata
+order region ccode cyear survey variable value lbl n pct nvalid in_guidelines codes_allowed
+```
+Enclosing controls: `foreach rg of local outregs {` → `if r(N) > 0 {`
+
+### block:89405f79dfecaeac
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L961-L961`. Next: `block:a77fcb6d68eaad68`.
+
+```stata
+format pct %7.3f
+```
+Enclosing controls: `foreach rg of local outregs {` → `if r(N) > 0 {`
+
+### block:a77fcb6d68eaad68
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L962-L962`. Next: `block:38cfa69ef8a04c12`.
+
+```stata
+sort ccode cyear variable value
+```
+Enclosing controls: `foreach rg of local outregs {` → `if r(N) > 0 {`
+
+### block:38cfa69ef8a04c12
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L963-L963`. Next: `block:f54efbed4094fdb4`.
+
+```stata
+label var region        "region"
+```
+Enclosing controls: `foreach rg of local outregs {` → `if r(N) > 0 {`
+
+### block:f54efbed4094fdb4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L964-L964`. Next: `block:6cd80176b37300d2`.
+
+```stata
+label var ccode         "country"
+```
+Enclosing controls: `foreach rg of local outregs {` → `if r(N) > 0 {`
+
+### block:6cd80176b37300d2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L965-L965`. Next: `block:6bdd8ba59a7dd414`.
+
+```stata
+label var cyear         "year"
+```
+Enclosing controls: `foreach rg of local outregs {` → `if r(N) > 0 {`
+
+### block:6bdd8ba59a7dd414
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L966-L966`. Next: `block:6d4ef48d3eb769de`.
+
+```stata
+label var survey        "survey"
+```
+Enclosing controls: `foreach rg of local outregs {` → `if r(N) > 0 {`
+
+### block:6d4ef48d3eb769de
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L967-L967`. Next: `block:7f69aabccbfa288d`.
+
+```stata
+label var variable      "variable"
+```
+Enclosing controls: `foreach rg of local outregs {` → `if r(N) > 0 {`
+
+### block:7f69aabccbfa288d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L968-L968`. Next: `block:a24100709946120d`.
+
+```stata
+label var value         "category code"
+```
+Enclosing controls: `foreach rg of local outregs {` → `if r(N) > 0 {`
+
+### block:a24100709946120d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L969-L969`. Next: `block:57cd5081aa88bbeb`.
+
+```stata
+label var lbl           "category label in the file"
+```
+Enclosing controls: `foreach rg of local outregs {` → `if r(N) > 0 {`
+
+### block:57cd5081aa88bbeb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L970-L970`. Next: `block:c4d7d83d10794fd6`.
+
+```stata
+label var n             "observations"
+```
+Enclosing controls: `foreach rg of local outregs {` → `if r(N) > 0 {`
+
+### block:c4d7d83d10794fd6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L971-L971`. Next: `block:9d909323233292d3`.
+
+```stata
+label var pct           "pct of valid"
+```
+Enclosing controls: `foreach rg of local outregs {` → `if r(N) > 0 {`
+
+### block:9d909323233292d3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L972-L972`. Next: `block:3fcbf9307cb06633`.
+
+```stata
+label var nvalid        "valid observations"
+```
+Enclosing controls: `foreach rg of local outregs {` → `if r(N) > 0 {`
+
+### block:3fcbf9307cb06633
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L973-L973`. Next: `block:db69fc9d09d2d82d`.
+
+```stata
+label var in_guidelines "code vs guidelines range"
+```
+Enclosing controls: `foreach rg of local outregs {` → `if r(N) > 0 {`
+
+### block:db69fc9d09d2d82d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L974-L974`. Next: `block:e522fa9424692dbe`.
+
+```stata
+label var codes_allowed "codes allowed"
+```
+Enclosing controls: `foreach rg of local outregs {` → `if r(N) > 0 {`
+
+### block:e522fa9424692dbe
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L975-L975`. Next: `block:260a539149e62c60`.
+
+```stata
+export excel using "`outfile'", sheet("CATEGORIES", modify) firstrow(varlabels)
+```
+Enclosing controls: `foreach rg of local outregs {` → `if r(N) > 0 {`
+Write datasets: `dataset:f2e38524a8489863`
+
+### block:260a539149e62c60
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L976-L976`. Next: `block:27a8bf5543dd1f68`.
+
+```stata
+}
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:27a8bf5543dd1f68
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L981-L981`. Next: `block:c170e8abd39b97aa`.
+
+```stata
+use `SM', clear
+```
+Enclosing controls: `foreach rg of local outregs {`
+Read datasets: `dataset:97bd60f867796290`
+
+### block:c170e8abd39b97aa
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L982-L982`. Next: `block:bcc9a1f537095f25`.
+
+```stata
+qui keep if region == "`rg'"
+```
+Enclosing controls: `foreach rg of local outregs {`
+Read candidates: `variable:b8ee64b0bdb85dcf`
+
+### block:bcc9a1f537095f25
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L983-L983`. Next: `block:1982fbbae5328d40`.
+
+```stata
+merge m:1 variable using `CBTEXT', gen(_mt) keep(master match)
+```
+Enclosing controls: `foreach rg of local outregs {`
+Read datasets: `dataset:c40ef21ab25ec212`
+
+### block:1982fbbae5328d40
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L984-L984`. Next: `block:88c8378d66282e6a`.
+
+```stata
+drop _mt
+```
+Enclosing controls: `foreach rg of local outregs {`
+Read candidates: `variable:8b9cf7f05ba6454b`
+
+### block:88c8378d66282e6a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L985-L985`. Next: `block:f9a95841bd9fa3e5`.
+
+```stata
+qui replace codes_allowed = "" if missing(codes_allowed)
+```
+Enclosing controls: `foreach rg of local outregs {`
+Modified: `variable:c06e9e694963527e`
+Read candidates: `variable:c06e9e694963527e`, `variable:6d4d12fac755defe`
+
+### block:f9a95841bd9fa3e5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L986-L986`. Next: `block:f79ba8d9adf0fa10`.
+
+```stata
+capture drop n_allowed
+```
+Enclosing controls: `foreach rg of local outregs {`
+Read candidates: `variable:e3641853a8379b36`
+
+### block:f79ba8d9adf0fa10
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L987-L988`. Next: `block:9a786ab6b1811fff`.
+
+```stata
+order region ccode cyear survey variable ntot nmiss pctmiss ndist oneval noor iscat codes_allowed
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:9a786ab6b1811fff
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L989-L989`. Next: `block:cdb5a74384adc049`.
+
+```stata
+format pctmiss %6.2f
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:cdb5a74384adc049
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L990-L990`. Next: `block:475bc1f74cb7f4ac`.
+
+```stata
+sort ccode cyear variable
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:475bc1f74cb7f4ac
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L991-L991`. Next: `block:0579cb12d4d8a2e1`.
+
+```stata
+label var region        "region"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:0579cb12d4d8a2e1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L992-L992`. Next: `block:5996591f9ee00dd6`.
+
+```stata
+label var ccode         "country"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:5996591f9ee00dd6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L993-L993`. Next: `block:c4d06d2911057b0b`.
+
+```stata
+label var cyear         "year"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:c4d06d2911057b0b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L994-L994`. Next: `block:06ee65b21ca2b012`.
+
+```stata
+label var survey        "survey"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:06ee65b21ca2b012
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L995-L995`. Next: `block:4cd0da646c2713d4`.
+
+```stata
+label var variable      "variable"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:4cd0da646c2713d4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L996-L996`. Next: `block:e3a5d2c5055735d6`.
+
+```stata
+label var ntot          "rows in the file that carries it"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:e3a5d2c5055735d6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L997-L997`. Next: `block:67a12753a593a339`.
+
+```stata
+label var nmiss         "rows missing"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:67a12753a593a339
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L998-L998`. Next: `block:142b2e0518b6e44b`.
+
+```stata
+label var pctmiss       "pct missing"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:142b2e0518b6e44b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L999-L999`. Next: `block:9380b6dc6ced779a`.
+
+```stata
+label var ndist         "distinct non-missing values"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:9380b6dc6ced779a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1000-L1000`. Next: `block:fb9d5215adf61461`.
+
+```stata
+label var oneval        "the single value, when there is only one"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:fb9d5215adf61461
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1001-L1001`. Next: `block:faa60121d9dd0318`.
+
+```stata
+label var noor          "values outside the expected range"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:faa60121d9dd0318
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1002-L1002`. Next: `block:6afdb7f7283df375`.
+
+```stata
+label var iscat         "treated as categorical"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:6afdb7f7283df375
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1003-L1003`. Next: `block:eff91a07fb380902`.
+
+```stata
+label var codes_allowed "codes allowed"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:eff91a07fb380902
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1004-L1004`. Next: `block:2a721d9609e1fe12`.
+
+```stata
+export excel using "`outfile'", sheet("VARIABLES", modify) firstrow(varlabels)
+```
+Enclosing controls: `foreach rg of local outregs {`
+Write datasets: `dataset:f2e38524a8489863`
+
+### block:2a721d9609e1fe12
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1006-L1008`. Next: `block:c9635b3146dde4aa`.
+
+```stata
+di as text "  [ `rg' ] `rqc' findings" "   Urgent `rurg'   Check `rchk'   Note `rnote'" "   ->  `outstub'_`rg'.xlsx"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:c9635b3146dde4aa
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1009-L1009`. Next: `block:709d43d2911c9592`.
+
+```stata
+}
+```
+
+### block:709d43d2911c9592
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1012-L1012`. Next: `block:66f0c4477b90911e`.
+
+```stata
+di as result _n(2) "{hline 78}"
+```
+
+### block:66f0c4477b90911e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1013-L1013`. Next: `block:2a078461bd19047e`.
+
+```stata
+di as result "  DONE"
+```
+
+### block:2a078461bd19047e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1014-L1014`. Next: `block:114c4c8e15a4c6d1`.
+
+```stata
+di as result "{hline 78}"
+```
+
+### block:114c4c8e15a4c6d1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1015-L1015`. Next: `block:a660b6acbcd9f531`.
+
+```stata
+di as text "  folder : `checksdir'"
+```
+
+### block:a660b6acbcd9f531
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1016-L1016`. Next: `block:67f94f80ca46b739`.
+
+```stata
+di as text "  sheets : READ ME | QCHECK | CATEGORIES | VARIABLES"
+```
+
+### block:67f94f80ca46b739
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1017-L1017`. Next: `block:dde793d76ef179ae`.
+
+```stata
+foreach rg of local outregs {
+```
+
+### block:dde793d76ef179ae
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1018-L1018`. Next: `block:56534402e4b7c8fd`.
+
+```stata
+di as text "  file   : `outstub'_`rg'.xlsx"
+```
+Enclosing controls: `foreach rg of local outregs {`
+
+### block:56534402e4b7c8fd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1019-L1019`. Next: `block:8bc23d1d93f5b824`.
+
+```stata
+}
+```
+
+### block:8bc23d1d93f5b824
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1020-L1020`. Next: `block:8bc1add4aa722ccb`.
+
+```stata
+di as text _n "  findings across all regions: `nqc'   Urgent `nurg'   Check `nchk'   Note `nnote'"
+```
+
+### block:8bc1add4aa722ccb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1021-L1021`. Next: `block:1d73be62ef87fac9`.
+
+```stata
+di as result "{hline 78}" _n
+```
+
+### block:1d73be62ef87fac9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1024-L1024`. Next: `block:7b81b9ac39320442`.
+
+```stata
+use `SHQ', clear
+```
+Read datasets: `dataset:0f33813001571ce6`
+
+### block:7b81b9ac39320442
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1025-L1025`. Next: `block:100b60f798b2c2d7`.
+
+```stata
+keep if warn == "Urgent"
+```
+Read candidates: `variable:b64a1a893baa2ddf`
+
+### block:100b60f798b2c2d7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1026-L1026`. Next: `block:0aac883b083aefda`.
+
+```stata
+qui count
+```
+
+### block:0aac883b083aefda
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1027-L1027`. Next: `block:57a1e526b6635ad5`.
+
+```stata
+if r(N) > 0 {
+```
+
+### block:57a1e526b6635ad5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1028-L1028`. Next: `block:99e8a29fa59558d4`.
+
+```stata
+di as result "  URGENT findings"
+```
+Enclosing controls: `if r(N) > 0 {`
+
+### block:99e8a29fa59558d4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1029-L1029`. Next: `block:c0fa76827d2901f4`.
+
+```stata
+di as result "{hline 78}"
+```
+Enclosing controls: `if r(N) > 0 {`
+
+### block:c0fa76827d2901f4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1030-L1030`. Next: `block:65e436e83f6ac383`.
+
+```stata
+list acronym year region variable test impact, noobs sep(0) abbrev(16)
+```
+Enclosing controls: `if r(N) > 0 {`
+
+### block:65e436e83f6ac383
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L1031-L1031`. Next: `end`.
+
+```stata
+}
+```

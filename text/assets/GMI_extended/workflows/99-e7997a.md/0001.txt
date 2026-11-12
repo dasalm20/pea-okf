@@ -1,0 +1,1861 @@
+# 04.Checks_Add_reharmonization_results/code/99-build_eap_local.do
+
+Repository documentation/configuration
+
+Status: PARTIAL_STATIC. Every lexically active statement is indexed; complete runtime schema and macro expansion are not established.
+
+Source snapshot: numbered source (deployment lookup: lookup/sources/GMI_extended/source_maps/99-e7997a.md.md)
+
+## Execution-order blocks
+
+### block:a1c5fdd9590fee8f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L23-L23`. Next: `block:c3347299d0b6581c`.
+
+```stata
+clear all
+```
+
+### block:c3347299d0b6581c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L24-L24`. Next: `block:065d499aad978b48`.
+
+```stata
+set more off
+```
+
+### block:065d499aad978b48
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L25-L25`. Next: `block:fa3db8f981003729`.
+
+```stata
+set varabbrev off
+```
+
+### block:fa3db8f981003729
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L32-L32`. Next: `block:e15c2d770a8792f4`.
+
+```stata
+local eaproot "\\wurepliprdfs06\eapfile\eappp\EAP Harmonization"
+```
+
+### block:e15c2d770a8792f4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L35-L35`. Next: `block:bf5c75d61c59af3e`.
+
+```stata
+local subpath "Data/Harmonized"
+```
+
+### block:bf5c75d61c59af3e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L39-L39`. Next: `block:345f03baee547d98`.
+
+```stata
+local ctyfolders ""
+```
+
+### block:345f03baee547d98
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L42-L42`. Next: `block:d64754895eb86b8a`.
+
+```stata
+local skipfolders "workflow archive old temp backup"
+```
+
+### block:d64754895eb86b8a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L45-L45`. Next: `block:6852b42c5ba135fe`.
+
+```stata
+local outdir "$checks/EAP_data"
+```
+
+### block:6852b42c5ba135fe
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L51-L51`. Next: `block:6403761442cb24f4`.
+
+```stata
+local keepdiag 1
+```
+
+### block:6403761442cb24f4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L52-L52`. Next: `block:bd763f9a0d59f912`.
+
+```stata
+local diagvars "lstatus_tr lstatus_ref lb_mod_age hhsize age weight year"
+```
+
+### block:bd763f9a0d59f912
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L56-L56`. Next: `block:faa288175e9b9d4a`.
+
+```stata
+local usemod1 1
+```
+
+### block:faa288175e9b9d4a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L60-L60`. Next: `block:ce48e5b9894097be`.
+
+```stata
+local usemod9 1
+```
+
+### block:ce48e5b9894097be
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L65-L65`. Next: `block:c2d01e0e25a4d808`.
+
+```stata
+local droprowsempty 0
+```
+
+### block:c2d01e0e25a4d808
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L68-L68`. Next: `block:25432d84ce53babf`.
+
+```stata
+local outsuffix "EAPLOCAL"
+```
+
+### block:25432d84ce53babf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L78-L78`. Next: `block:b0d39a5b306d3033`.
+
+```stata
+if "$gmd_opt" == "" {
+```
+
+### block:b0d39a5b306d3033
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L79-L83`. Next: `block:5b29fabfd66628b6`.
+
+```stata
+global gmd_opt  urban male educat4 school relationharm marital lstatus industrycat4 industrycat10 empstat lstatus_year industrycat4_year industrycat10_year empstat_year imp_wat_rec imp_san_rec electricity tv car cellphone computer fridge
+```
+Enclosing controls: `if "$gmd_opt" == "" {`
+
+### block:5b29fabfd66628b6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L84-L84`. Next: `block:be6a40c99992c2b4`.
+
+```stata
+}
+```
+
+### block:be6a40c99992c2b4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L85-L85`. Next: `block:c38e011d02bc3bfc`.
+
+```stata
+if "`outdir'" == "" {
+```
+
+### block:c38e011d02bc3bfc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L86-L86`. Next: `block:c0b8fb8e98926f27`.
+
+```stata
+di as error "  outdir is empty.  Run 00-Master.do, or hard-code a path in section 5."
+```
+Enclosing controls: `if "`outdir'" == "" {`
+
+### block:c0b8fb8e98926f27
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L87-L87`. Next: `block:ba83df46f6219ac4`.
+
+```stata
+exit 198
+```
+Enclosing controls: `if "`outdir'" == "" {`
+
+### block:ba83df46f6219ac4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L88-L88`. Next: `block:b0a71221b343a084`.
+
+```stata
+}
+```
+
+### block:b0a71221b343a084
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L95-L95`. Next: `block:8dc891b5ec827e7b`.
+
+```stata
+local map ""
+```
+
+### block:8dc891b5ec827e7b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L96-L96`. Next: `block:c78d4854f018b95f`.
+
+```stata
+local map "`map' marstat:marital"
+```
+
+### block:c78d4854f018b95f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L97-L97`. Next: `block:dd6a30acac817f60`.
+
+```stata
+local map "`map' reltohead:relationharm"
+```
+
+### block:dd6a30acac817f60
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L98-L98`. Next: `block:5beb342dfa2f587f`.
+
+```stata
+local map "`map' empstat_1:empstat"
+```
+
+### block:5beb342dfa2f587f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L99-L99`. Next: `block:2a1c53debb00def0`.
+
+```stata
+local map "`map' industrycat4_1:industrycat4"
+```
+
+### block:2a1c53debb00def0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L100-L100`. Next: `block:9864fa2ac787f6e1`.
+
+```stata
+local map "`map' industrycat10_1:industrycat10"
+```
+
+### block:9864fa2ac787f6e1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L101-L101`. Next: `block:3e0f5117dd0e93ea`.
+
+```stata
+local map "`map' television:tv"
+```
+
+### block:3e0f5117dd0e93ea
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L102-L102`. Next: `block:c55b66fb67863fb0`.
+
+```stata
+local map "`map' improved_water:imp_wat_rec"
+```
+
+### block:c55b66fb67863fb0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L103-L103`. Next: `block:fef35fcfb5b268ab`.
+
+```stata
+local map "`map' improved_sanitation:imp_san_rec"
+```
+
+### block:fef35fcfb5b268ab
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L108-L108`. Next: `block:7ef24b1f807b6b81`.
+
+```stata
+local map2 ""
+```
+
+### block:7ef24b1f807b6b81
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L109-L109`. Next: `block:8bede5757e5eb16e`.
+
+```stata
+local map2 "`map2' ho13:cellphone"
+```
+
+### block:8bede5757e5eb16e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L120-L120`. Next: `block:ed2c9f8d5fc9a433`.
+
+```stata
+local keepvars hhid pid $gmd_opt
+```
+
+### block:ed2c9f8d5fc9a433
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L121-L121`. Next: `block:778afb6f5ddd91e1`.
+
+```stata
+if `keepdiag' local keepvars `keepvars' `diagvars'
+```
+
+### block:778afb6f5ddd91e1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L124-L124`. Next: `block:ec672632048d07c5`.
+
+```stata
+local want5 "electricity car cellphone computer fridge television improved_water improved_sanitation urban"
+```
+
+### block:ec672632048d07c5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L125-L125`. Next: `block:18feef84bf034fb8`.
+
+```stata
+local want1 "urban year hhsize"
+```
+
+### block:18feef84bf034fb8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L126-L126`. Next: `block:af727c78e614c382`.
+
+```stata
+local want9 "improved_sanitation improved_water ho13"
+```
+
+### block:af727c78e614c382
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L128-L128`. Next: `block:72cc90c8b96c6c03`.
+
+```stata
+di as result _n(2) "{hline 78}"
+```
+
+### block:72cc90c8b96c6c03
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L129-L129`. Next: `block:93d528a7945b2103`.
+
+```stata
+di as result "  BUILD ONE GMD-NAMED FILE PER EAP COUNTRY-YEAR"
+```
+
+### block:93d528a7945b2103
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L130-L130`. Next: `block:22dab3519f599ca3`.
+
+```stata
+di as result "{hline 78}"
+```
+
+### block:22dab3519f599ca3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L131-L131`. Next: `block:f45055326c04e9f9`.
+
+```stata
+di as text "  root      : `eaproot'"
+```
+
+### block:f45055326c04e9f9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L132-L132`. Next: `block:c97ea843923a2be0`.
+
+```stata
+di as text "  output    : `outdir'"
+```
+
+### block:c97ea843923a2be0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L133-L133`. Next: `block:71d285290755fc65`.
+
+```stata
+di as text "  use mod 1 : `usemod1'      use mod 9 : `usemod9'"
+```
+
+### block:71d285290755fc65
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L139-L139`. Next: `block:aadc429c7f073001`.
+
+```stata
+if "`ctyfolders'" == "" {
+```
+
+### block:aadc429c7f073001
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L140-L140`. Next: `block:1199caf50c7d1b78`.
+
+```stata
+local alldirs : dir "`eaproot'" dirs "*"
+```
+Enclosing controls: `if "`ctyfolders'" == "" {`
+
+### block:1199caf50c7d1b78
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L141-L141`. Next: `block:fd42ed2b8ae509c0`.
+
+```stata
+local ctyfolders
+```
+Enclosing controls: `if "`ctyfolders'" == "" {`
+
+### block:fd42ed2b8ae509c0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L142-L142`. Next: `block:a3e455c2f61b115c`.
+
+```stata
+foreach d of local alldirs {
+```
+Enclosing controls: `if "`ctyfolders'" == "" {`
+
+### block:a3e455c2f61b115c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L143-L143`. Next: `block:da1f67587e7985bd`.
+
+```stata
+local dn `d'
+```
+Enclosing controls: `if "`ctyfolders'" == "" {` → `foreach d of local alldirs {`
+
+### block:da1f67587e7985bd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L144-L144`. Next: `block:28e425ec90262d13`.
+
+```stata
+local lowdn = lower("`dn'")
+```
+Enclosing controls: `if "`ctyfolders'" == "" {` → `foreach d of local alldirs {`
+
+### block:28e425ec90262d13
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L145-L145`. Next: `block:3cb9952a587b16ef`.
+
+```stata
+local skip = 0
+```
+Enclosing controls: `if "`ctyfolders'" == "" {` → `foreach d of local alldirs {`
+
+### block:3cb9952a587b16ef
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L146-L146`. Next: `block:98ab9e0f843ca57c`.
+
+```stata
+foreach s of local skipfolders {
+```
+Enclosing controls: `if "`ctyfolders'" == "" {` → `foreach d of local alldirs {`
+
+### block:98ab9e0f843ca57c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L147-L147`. Next: `block:5c07765611163aff`.
+
+```stata
+if "`lowdn'" == lower("`s'") local skip = 1
+```
+Enclosing controls: `if "`ctyfolders'" == "" {` → `foreach d of local alldirs {` → `foreach s of local skipfolders {`
+
+### block:5c07765611163aff
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L148-L148`. Next: `block:33bd894dceda2c69`.
+
+```stata
+}
+```
+Enclosing controls: `if "`ctyfolders'" == "" {` → `foreach d of local alldirs {`
+
+### block:33bd894dceda2c69
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L149-L149`. Next: `block:52b0c5fe08681cef`.
+
+```stata
+if `skip' continue
+```
+Enclosing controls: `if "`ctyfolders'" == "" {` → `foreach d of local alldirs {`
+
+### block:52b0c5fe08681cef
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L150-L150`. Next: `block:7b625673fc7710d9`.
+
+```stata
+local probe : dir "`eaproot'/`dn'/`subpath'" files "*.dta"
+```
+Enclosing controls: `if "`ctyfolders'" == "" {` → `foreach d of local alldirs {`
+
+### block:7b625673fc7710d9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L151-L151`. Next: `block:794ee1e90e74c46c`.
+
+```stata
+if `"`probe'"' != "" local ctyfolders `"`ctyfolders' "`dn'""'
+```
+Enclosing controls: `if "`ctyfolders'" == "" {` → `foreach d of local alldirs {`
+
+### block:794ee1e90e74c46c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L152-L152`. Next: `block:9578b077738849c6`.
+
+```stata
+}
+```
+Enclosing controls: `if "`ctyfolders'" == "" {`
+
+### block:9578b077738849c6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L153-L153`. Next: `block:95f40bd9ae027762`.
+
+```stata
+}
+```
+
+### block:95f40bd9ae027762
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L155-L155`. Next: `block:c4d7c58f747eeb88`.
+
+```stata
+local ncty : word count `ctyfolders'
+```
+
+### block:c4d7c58f747eeb88
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L156-L156`. Next: `block:763f6568e98ce703`.
+
+```stata
+if `ncty' == 0 {
+```
+
+### block:763f6568e98ce703
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L157-L157`. Next: `block:bdff8c47b9c3c7de`.
+
+```stata
+di as error _n "  No country folders found."
+```
+Enclosing controls: `if `ncty' == 0 {`
+
+### block:bdff8c47b9c3c7de
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L158-L158`. Next: `block:9d81bca494a7040a`.
+
+```stata
+exit 601
+```
+Enclosing controls: `if `ncty' == 0 {`
+
+### block:9d81bca494a7040a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L159-L159`. Next: `block:01a538683d0dea58`.
+
+```stata
+}
+```
+
+### block:01a538683d0dea58
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L160-L160`. Next: `block:61c543ca6ed3c96c`.
+
+```stata
+di as text "  countries : `ncty'"
+```
+
+### block:61c543ca6ed3c96c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L162-L162`. Next: `block:6c3cbe94dddb065e`.
+
+```stata
+capture mkdir "$checks"
+```
+
+### block:6c3cbe94dddb065e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L163-L163`. Next: `block:a647857352425198`.
+
+```stata
+capture mkdir "`outdir'"
+```
+
+### block:a647857352425198
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L169-L169`. Next: `block:b41b979018195e1f`.
+
+```stata
+tempfile res
+```
+
+### block:b41b979018195e1f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L170-L170`. Next: `block:81dd5510a57fb4dc`.
+
+```stata
+capture postclose bld
+```
+
+### block:81dd5510a57fb4dc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L171-L176`. Next: `block:47548d777878e5e6`.
+
+```stata
+postfile bld str48 country str16 ccode str8 cyear str24 csurv str90 outfile double nobs double nhh double m5_matched double m1_matched double m9_matched double nvars_kept double nrows_blank str12 lstatus_tr str244 droppedempty str244 notdelivered using `res', replace
+```
+Write datasets: `dataset:6942a540b713eca5`
+
+### block:47548d777878e5e6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L182-L182`. Next: `block:a0ac9061dd39284c`.
+
+```stata
+local nbuilt = 0
+```
+
+### block:a0ac9061dd39284c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L183-L183`. Next: `block:0186506ef65ab697`.
+
+```stata
+local nskip  = 0
+```
+
+### block:0186506ef65ab697
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L185-L185`. Next: `block:ab05b791f03ff5c6`.
+
+```stata
+foreach c of local ctyfolders {
+```
+
+### block:ab05b791f03ff5c6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L186-L186`. Next: `block:3f9d9f6d46f0d09d`.
+
+```stata
+local cty `c'
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:3f9d9f6d46f0d09d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L187-L187`. Next: `block:e529baae4e3cd743`.
+
+```stata
+local dpath "`eaproot'/`cty'/`subpath'"
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:e529baae4e3cd743
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L189-L189`. Next: `block:59f8399e094217e6`.
+
+```stata
+di as result _n "{hline 78}"
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:59f8399e094217e6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L190-L190`. Next: `block:dc82826c370ff655`.
+
+```stata
+di as result "  `cty'"
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:dc82826c370ff655
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L191-L191`. Next: `block:c78e82dffe37ba53`.
+
+```stata
+di as result "{hline 78}"
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:c78e82dffe37ba53
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L194-L194`. Next: `block:9e2c4dea361324f1`.
+
+```stata
+local p1    = upper(substr("`cty'", 1, strpos("`cty'","_")-1))
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:9e2c4dea361324f1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L195-L195`. Next: `block:8cb14cae892f3eba`.
+
+```stata
+local rest  = substr("`cty'", strpos("`cty'","_")+1, .)
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:8cb14cae892f3eba
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L196-L196`. Next: `block:8b28497d6c6be067`.
+
+```stata
+local p2    = substr("`rest'", 1, strpos("`rest'","_")-1)
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:8b28497d6c6be067
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L197-L197`. Next: `block:ebb86030a039c3df`.
+
+```stata
+local rest2 = substr("`rest'", strpos("`rest'","_")+1, .)
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:ebb86030a039c3df
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L198-L198`. Next: `block:ea6ae32b2aca4312`.
+
+```stata
+if strpos("`rest2'","_") > 0 local p3 = upper(substr("`rest2'", 1, strpos("`rest2'","_")-1))
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:ea6ae32b2aca4312
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L199-L199`. Next: `block:9252f85c84578db9`.
+
+```stata
+else                         local p3 = upper("`rest2'")
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:9252f85c84578db9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L201-L201`. Next: `block:5fc1a29ed6a419f2`.
+
+```stata
+local ccode "`p1'"
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:5fc1a29ed6a419f2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L202-L202`. Next: `block:a50c34ddb5de020f`.
+
+```stata
+local cyear "`p2'"
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:a50c34ddb5de020f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L203-L203`. Next: `block:d745b03e349b6a9c`.
+
+```stata
+local csurv "`p3'"
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:d745b03e349b6a9c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L204-L204`. Next: `block:85dc6e80604238ad`.
+
+```stata
+di as text "    code `ccode'  year `cyear'  survey `csurv'"
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:85dc6e80604238ad
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L207-L207`. Next: `block:fe2b73798bb582fe`.
+
+```stata
+local f1 ""
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:fe2b73798bb582fe
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L208-L208`. Next: `block:81a126e71a479fea`.
+
+```stata
+local f2 ""
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:81a126e71a479fea
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L209-L209`. Next: `block:8dc39a1415914ded`.
+
+```stata
+local f5 ""
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:8dc39a1415914ded
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L210-L210`. Next: `block:efc9cd9747824200`.
+
+```stata
+local f9 ""
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:efc9cd9747824200
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L211-L211`. Next: `block:d01571539c3d623e`.
+
+```stata
+local fl : dir "`dpath'" files "*.dta"
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:d01571539c3d623e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L212-L212`. Next: `block:acf056aa0c68577d`.
+
+```stata
+foreach f of local fl {
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:acf056aa0c68577d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L213-L213`. Next: `block:bc26c3a3c60f3606`.
+
+```stata
+local fn `f'
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `foreach f of local fl {`
+
+### block:bc26c3a3c60f3606
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L214-L214`. Next: `block:ac87c7e4653a26ab`.
+
+```stata
+local stem = substr("`fn'", 1, strlen("`fn'")-4)
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `foreach f of local fl {`
+
+### block:ac87c7e4653a26ab
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L215-L215`. Next: `block:4346047d911f24d8`.
+
+```stata
+local tail = substr("`stem'", strrpos("`stem'","_")+1, .)
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `foreach f of local fl {`
+
+### block:4346047d911f24d8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L216-L216`. Next: `block:6fc3dba888009d6d`.
+
+```stata
+if "`tail'" == "1" local f1 "`fn'"
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `foreach f of local fl {`
+
+### block:6fc3dba888009d6d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L217-L217`. Next: `block:a550c49eab19a333`.
+
+```stata
+if "`tail'" == "2" local f2 "`fn'"
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `foreach f of local fl {`
+
+### block:a550c49eab19a333
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L218-L218`. Next: `block:6b569c076428b457`.
+
+```stata
+if "`tail'" == "5" local f5 "`fn'"
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `foreach f of local fl {`
+
+### block:6b569c076428b457
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L219-L219`. Next: `block:fe8c51098ece85ea`.
+
+```stata
+if "`tail'" == "9" local f9 "`fn'"
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `foreach f of local fl {`
+
+### block:fe8c51098ece85ea
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L220-L220`. Next: `block:06af7deec3c57700`.
+
+```stata
+}
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:06af7deec3c57700
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L222-L222`. Next: `block:545c1db5f0554c4e`.
+
+```stata
+if "`f2'" == "" {
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:545c1db5f0554c4e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L223-L223`. Next: `block:aa23012fab11ffda`.
+
+```stata
+di as error "    no module _2 file, cannot build a person-level spine.  SKIPPED."
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f2'" == "" {`
+
+### block:aa23012fab11ffda
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L224-L224`. Next: `block:017598d9790e9117`.
+
+```stata
+local nskip = `nskip' + 1
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f2'" == "" {`
+
+### block:017598d9790e9117
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L225-L226`. Next: `block:85165080f7e8818d`.
+
+```stata
+post bld ("`cty'") ("`ccode'") ("`cyear'") ("`csurv'") ("") (.) (.) (.) (.) (.) (.) (.) ("") ("") ("NO MODULE 2")
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f2'" == "" {`
+
+### block:85165080f7e8818d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L227-L227`. Next: `block:3820e8501d981608`.
+
+```stata
+continue
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f2'" == "" {`
+
+### block:3820e8501d981608
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L228-L228`. Next: `block:828f626930a50323`.
+
+```stata
+}
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:828f626930a50323
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L233-L233`. Next: `block:8c18fb6d1671992a`.
+
+```stata
+qui use "`dpath'/`f2'", clear
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+Read datasets: `dataset:2febce4960782945`
+
+### block:8c18fb6d1671992a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L234-L234`. Next: `block:e57ade8b6774900e`.
+
+```stata
+di as text "    _2  " %11.0fc _N " rows"
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:e57ade8b6774900e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L236-L236`. Next: `block:18469115a6b8c840`.
+
+```stata
+capture confirm variable hhid
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:18469115a6b8c840
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L237-L237`. Next: `block:24984f776077105b`.
+
+```stata
+local ok1 = (_rc == 0)
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:24984f776077105b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L238-L238`. Next: `block:2bd5223ad6af51a6`.
+
+```stata
+capture confirm variable pid
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:2bd5223ad6af51a6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L239-L239`. Next: `block:6354f357d5174fc4`.
+
+```stata
+local ok2 = (_rc == 0)
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:6354f357d5174fc4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L240-L240`. Next: `block:4004f4995e822a28`.
+
+```stata
+if !`ok1' | !`ok2' {
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:4004f4995e822a28
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L241-L241`. Next: `block:02637a1be450f450`.
+
+```stata
+di as error "    module _2 has no hhid and/or pid.  SKIPPED."
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if !`ok1' | !`ok2' {`
+
+### block:02637a1be450f450
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L242-L242`. Next: `block:766ea39ef2de1f62`.
+
+```stata
+local nskip = `nskip' + 1
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if !`ok1' | !`ok2' {`
+
+### block:766ea39ef2de1f62
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L243-L244`. Next: `block:efcf8f5c7d6eab4c`.
+
+```stata
+post bld ("`cty'") ("`ccode'") ("`cyear'") ("`csurv'") ("") (.) (.) (.) (.) (.) (.) (.) ("") ("") ("NO hhid/pid IN MODULE 2")
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if !`ok1' | !`ok2' {`
+
+### block:efcf8f5c7d6eab4c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L245-L245`. Next: `block:401bd3e3e0f025d1`.
+
+```stata
+continue
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if !`ok1' | !`ok2' {`
+
+### block:401bd3e3e0f025d1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L246-L246`. Next: `block:11a8733b5cc2bf25`.
+
+```stata
+}
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:11a8733b5cc2bf25
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L248-L248`. Next: `block:c42dfbd7a6242363`.
+
+```stata
+capture isid hhid pid
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+Read candidates: `variable:a0c7ec0e306e7287`, `variable:28a18498c41ff732`
+
+### block:c42dfbd7a6242363
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L249-L249`. Next: `block:9806b46bc68753b3`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:9806b46bc68753b3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L250-L250`. Next: `block:40044fa5e807130d`.
+
+```stata
+di as error "    hhid + pid not unique in _2, dropping exact duplicates"
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if _rc {`
+
+### block:40044fa5e807130d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L251-L251`. Next: `block:abbcd6a109289cb1`.
+
+```stata
+qui duplicates drop hhid pid, force
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if _rc {`
+
+### block:abbcd6a109289cb1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L252-L252`. Next: `block:2e97c2159e41d999`.
+
+```stata
+capture isid hhid pid
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if _rc {`
+Read candidates: `variable:a0c7ec0e306e7287`, `variable:28a18498c41ff732`
+
+### block:2e97c2159e41d999
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L253-L253`. Next: `block:45c7527fc3b18ed4`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if _rc {`
+
+### block:45c7527fc3b18ed4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L254-L254`. Next: `block:9483392d3e5ac977`.
+
+```stata
+di as error "    still not unique.  SKIPPED."
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if _rc {` → `if _rc {`
+
+### block:9483392d3e5ac977
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L255-L255`. Next: `block:895fff86762fe7d0`.
+
+```stata
+local nskip = `nskip' + 1
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if _rc {` → `if _rc {`
+
+### block:895fff86762fe7d0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L256-L257`. Next: `block:43faaab9a8115c0e`.
+
+```stata
+post bld ("`cty'") ("`ccode'") ("`cyear'") ("`csurv'") ("") (.) (.) (.) (.) (.) (.) (.) ("") ("") ("hhid+pid NOT UNIQUE")
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if _rc {` → `if _rc {`
+
+### block:43faaab9a8115c0e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L258-L258`. Next: `block:965bad4518a422fe`.
+
+```stata
+continue
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if _rc {` → `if _rc {`
+
+### block:965bad4518a422fe
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L259-L259`. Next: `block:9e857869f7a6ec07`.
+
+```stata
+}
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if _rc {`
+
+### block:9e857869f7a6ec07
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L260-L260`. Next: `block:ba0d495e30e142d1`.
+
+```stata
+}
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:ba0d495e30e142d1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L265-L265`. Next: `block:42ee78579be400e2`.
+
+```stata
+local m5match = .
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:42ee78579be400e2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L266-L266`. Next: `block:018bd0571a082d2c`.
+
+```stata
+if "`f5'" != "" {
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:018bd0571a082d2c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L267-L267`. Next: `block:8c5c264f939adb50`.
+
+```stata
+local pulled ""
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {`
+
+### block:8c5c264f939adb50
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L268-L268`. Next: `block:9b3d5337771a45bf`.
+
+```stata
+preserve
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {`
+
+### block:9b3d5337771a45bf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L269-L269`. Next: `block:6d02919c8a118942`.
+
+```stata
+qui use "`dpath'/`f5'", clear
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {`
+Read datasets: `dataset:2febce4960782945`
+
+### block:6d02919c8a118942
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L270-L270`. Next: `block:e66e39f2aa4a2d37`.
+
+```stata
+capture confirm variable hhid
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {`
+
+### block:e66e39f2aa4a2d37
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L271-L271`. Next: `block:afad0fc727f8ab6a`.
+
+```stata
+if _rc  local pulled "NOHHID"
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {`
+
+### block:afad0fc727f8ab6a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L272-L272`. Next: `block:0e84961b81f3244e`.
+
+```stata
+else {
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {`
+
+### block:0e84961b81f3244e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L273-L273`. Next: `block:44ad38d72665eedf`.
+
+```stata
+qui duplicates drop hhid, force
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else {`
+
+### block:44ad38d72665eedf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L274-L274`. Next: `block:0be5cd4a40bebccc`.
+
+```stata
+local h5
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else {`
+
+### block:0be5cd4a40bebccc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L275-L275`. Next: `block:8a3793f51f4245d0`.
+
+```stata
+foreach v of local want5 {
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else {`
+
+### block:8a3793f51f4245d0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L276-L276`. Next: `block:0f884b576199bd29`.
+
+```stata
+capture confirm variable `v'
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else {` → `foreach v of local want5 {`
+
+### block:0f884b576199bd29
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L277-L277`. Next: `block:189c01c5df2ff668`.
+
+```stata
+if !_rc local h5 `h5' `v'
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else {` → `foreach v of local want5 {`
+
+### block:189c01c5df2ff668
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L278-L278`. Next: `block:e6073f08849e2ca3`.
+
+```stata
+}
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else {`
+
+### block:e6073f08849e2ca3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L279-L279`. Next: `block:0f61110882b8f780`.
+
+```stata
+keep hhid `h5'
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else {`
+Read candidates: `variable:ceef62549b06f1b3`
+
+### block:0f61110882b8f780
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L280-L280`. Next: `block:86f0a0bcc8a410d3`.
+
+```stata
+tempfile hh5
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else {`
+
+### block:86f0a0bcc8a410d3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L281-L281`. Next: `block:cf15e620133845d6`.
+
+```stata
+qui save `hh5'
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else {`
+Write datasets: `dataset:1967a1f5d3328403`
+
+### block:cf15e620133845d6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L282-L282`. Next: `block:d76e1ace34bf14fb`.
+
+```stata
+local pulled "`h5'"
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else {`
+
+### block:d76e1ace34bf14fb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L283-L283`. Next: `block:ae6d4f116d9273f6`.
+
+```stata
+}
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {`
+
+### block:ae6d4f116d9273f6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L284-L284`. Next: `block:2a5ce1b182f71050`.
+
+```stata
+restore
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {`
+
+### block:2a5ce1b182f71050
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L285-L285`. Next: `block:f65c2c56c8ab7bb5`.
+
+```stata
+if "`pulled'" == "NOHHID" {
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {`
+
+### block:f65c2c56c8ab7bb5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L286-L286`. Next: `block:5a76c8fe92890966`.
+
+```stata
+di as error "    _5  has no hhid, not merged"
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `if "`pulled'" == "NOHHID" {`
+
+### block:5a76c8fe92890966
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L287-L287`. Next: `block:fea9a48088b2fe0a`.
+
+```stata
+}
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {`
+
+### block:fea9a48088b2fe0a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L288-L288`. Next: `block:9a5ce2d5bd8ccec3`.
+
+```stata
+else if "`pulled'" != "" {
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {`
+
+### block:9a5ce2d5bd8ccec3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L289-L289`. Next: `block:52601c055fb26c49`.
+
+```stata
+local n5 : word count `pulled'
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else if "`pulled'" != "" {`
+
+### block:52601c055fb26c49
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L290-L290`. Next: `block:ffc564b08436bbde`.
+
+```stata
+di as text "    _5  merging `n5' household variables on hhid"
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else if "`pulled'" != "" {`
+
+### block:ffc564b08436bbde
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L291-L291`. Next: `block:bbbdbdcb63dbe64f`.
+
+```stata
+capture merge m:1 hhid using `hh5', gen(_m5) keep(master match)
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else if "`pulled'" != "" {`
+Read datasets: `dataset:1967a1f5d3328403`
+
+### block:bbbdbdcb63dbe64f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L292-L292`. Next: `block:7ecd91285cf0303a`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else if "`pulled'" != "" {`
+
+### block:7ecd91285cf0303a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L293-L293`. Next: `block:fea8aeaf88747a72`.
+
+```stata
+di as error "        merge failed (rc=" _rc "), likely an hhid type mismatch"
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else if "`pulled'" != "" {` → `if _rc {`
+
+### block:fea8aeaf88747a72
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L294-L294`. Next: `block:7a8f4a14a58a50bd`.
+
+```stata
+capture drop _m5
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else if "`pulled'" != "" {` → `if _rc {`
+Read candidates: `variable:aa84314d394a1b98`
+
+### block:7a8f4a14a58a50bd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L295-L295`. Next: `block:82756046cc25f0a7`.
+
+```stata
+}
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else if "`pulled'" != "" {`
+
+### block:82756046cc25f0a7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L296-L296`. Next: `block:27f1819aae7d4dce`.
+
+```stata
+else {
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else if "`pulled'" != "" {`
+
+### block:27f1819aae7d4dce
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L297-L297`. Next: `block:11ba2ce7ac6f7b70`.
+
+```stata
+qui count if _m5 == 3
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else if "`pulled'" != "" {` → `else {`
+Read candidates: `variable:aa84314d394a1b98`
+
+### block:11ba2ce7ac6f7b70
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L298-L298`. Next: `block:a5775dd9a34879fc`.
+
+```stata
+local m5match = r(N)
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else if "`pulled'" != "" {` → `else {`
+
+### block:a5775dd9a34879fc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L299-L299`. Next: `block:ecaff1bf5d810796`.
+
+```stata
+di as text "        matched " %11.0fc `m5match' " of " %11.0fc _N
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else if "`pulled'" != "" {` → `else {`
+
+### block:ecaff1bf5d810796
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L300-L300`. Next: `block:b516bafee8db9c59`.
+
+```stata
+drop _m5
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else if "`pulled'" != "" {` → `else {`
+Read candidates: `variable:aa84314d394a1b98`
+
+### block:b516bafee8db9c59
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L301-L301`. Next: `block:f0a93701c04e3d45`.
+
+```stata
+}
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {` → `else if "`pulled'" != "" {`
+
+### block:f0a93701c04e3d45
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L302-L302`. Next: `block:aeb4f954a3d82f8c`.
+
+```stata
+}
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if "`f5'" != "" {`
+
+### block:aeb4f954a3d82f8c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L303-L303`. Next: `block:745a19f1b953aec1`.
+
+```stata
+}
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:745a19f1b953aec1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L308-L308`. Next: `block:4eb6755fd33920ea`.
+
+```stata
+local m1match = .
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:4eb6755fd33920ea
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L309-L309`. Next: `block:33204fef85c76f0e`.
+
+```stata
+if `usemod1' & "`f1'" != "" {
+```
+Enclosing controls: `foreach c of local ctyfolders {`
+
+### block:33204fef85c76f0e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L310-L310`. Next: `block:8d902ac80a8d4f35`.
+
+```stata
+local need1
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {`
+
+### block:8d902ac80a8d4f35
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L311-L311`. Next: `block:f2d0c681f8a2191c`.
+
+```stata
+foreach v of local want1 {
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {`
+
+### block:f2d0c681f8a2191c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L312-L312`. Next: `block:c03b51a721b88bd0`.
+
+```stata
+capture confirm variable `v'
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `foreach v of local want1 {`
+
+### block:c03b51a721b88bd0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L313-L313`. Next: `block:5aff888c96fbc943`.
+
+```stata
+if _rc local need1 `need1' `v'
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `foreach v of local want1 {`
+
+### block:5aff888c96fbc943
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L314-L314`. Next: `block:7bb909e8d8bea4f5`.
+
+```stata
+}
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {`
+
+### block:7bb909e8d8bea4f5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L315-L315`. Next: `block:6de8d7d7a1bbc68e`.
+
+```stata
+if "`need1'" != "" {
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {`
+
+### block:6de8d7d7a1bbc68e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L316-L316`. Next: `block:eaa5adeb674aea4c`.
+
+```stata
+local pulled ""
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {`
+
+### block:eaa5adeb674aea4c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L317-L317`. Next: `block:50b0123a00c635e6`.
+
+```stata
+preserve
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {`
+
+### block:50b0123a00c635e6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L318-L318`. Next: `block:2863efc2e9cb7713`.
+
+```stata
+qui use "`dpath'/`f1'", clear
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {`
+Read datasets: `dataset:2febce4960782945`
+
+### block:2863efc2e9cb7713
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L319-L319`. Next: `block:fe51dc8b6080c19b`.
+
+```stata
+capture confirm variable hhid
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {`
+
+### block:fe51dc8b6080c19b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L320-L320`. Next: `block:056b9df43a19a11f`.
+
+```stata
+if _rc  local pulled "NOHHID"
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {`
+
+### block:056b9df43a19a11f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L321-L321`. Next: `block:726f824a317442a9`.
+
+```stata
+else {
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {`
+
+### block:726f824a317442a9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L322-L322`. Next: `block:2e3b6cf3b9439a06`.
+
+```stata
+qui duplicates drop hhid, force
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `else {`
+
+### block:2e3b6cf3b9439a06
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L323-L323`. Next: `block:599f3ca81a42758c`.
+
+```stata
+local h1
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `else {`
+
+### block:599f3ca81a42758c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L324-L324`. Next: `block:441e5efe8908ec59`.
+
+```stata
+foreach v of local need1 {
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `else {`
+
+### block:441e5efe8908ec59
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L325-L325`. Next: `block:cea440b986e32a14`.
+
+```stata
+capture confirm variable `v'
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `else {` → `foreach v of local need1 {`
+
+### block:cea440b986e32a14
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L326-L326`. Next: `block:9fb2e76d91945e20`.
+
+```stata
+if !_rc local h1 `h1' `v'
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `else {` → `foreach v of local need1 {`
+
+### block:9fb2e76d91945e20
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L327-L327`. Next: `block:0debff1c1bd09c8b`.
+
+```stata
+}
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `else {`
+
+### block:0debff1c1bd09c8b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L328-L328`. Next: `block:9216a1905ccafa86`.
+
+```stata
+if "`h1'" != "" {
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `else {`
+
+### block:9216a1905ccafa86
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L329-L329`. Next: `block:0653109c5d1b8fda`.
+
+```stata
+keep hhid `h1'
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `else {` → `if "`h1'" != "" {`
+Read candidates: `variable:d42ffb6eea4b77b0`
+
+### block:0653109c5d1b8fda
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L330-L330`. Next: `block:f4554725aff7b42d`.
+
+```stata
+tempfile hh1
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `else {` → `if "`h1'" != "" {`
+
+### block:f4554725aff7b42d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L331-L331`. Next: `block:ead1dec580ae845d`.
+
+```stata
+qui save `hh1'
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `else {` → `if "`h1'" != "" {`
+Write datasets: `dataset:6e9a0d884705ae06`
+
+### block:ead1dec580ae845d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L332-L332`. Next: `block:f018450af1e1ef0f`.
+
+```stata
+}
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `else {`
+
+### block:f018450af1e1ef0f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L333-L333`. Next: `block:655833a2ae7bf5de`.
+
+```stata
+local pulled "`h1'"
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `else {`
+
+### block:655833a2ae7bf5de
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L334-L334`. Next: `block:2766a4c72e97d0ff`.
+
+```stata
+}
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {`
+
+### block:2766a4c72e97d0ff
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L335-L335`. Next: `block:30e4096ca6ea7deb`.
+
+```stata
+restore
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {`
+
+### block:30e4096ca6ea7deb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L336-L336`. Next: `block:08b87a418a43337a`.
+
+```stata
+if "`pulled'" != "" & "`pulled'" != "NOHHID" {
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {`
+
+### block:08b87a418a43337a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L337-L337`. Next: `block:aaaff3f2b5c425c0`.
+
+```stata
+di as text "    _1  filling `pulled' on hhid"
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `if "`pulled'" != "" & "`pulled'" != "NOHHID" {`
+
+### block:aaaff3f2b5c425c0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L338-L338`. Next: `block:10548a9d6c2f89d3`.
+
+```stata
+capture merge m:1 hhid using `hh1', gen(_m1) keep(master match)
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `if "`pulled'" != "" & "`pulled'" != "NOHHID" {`
+Read datasets: `dataset:6e9a0d884705ae06`
+
+### block:10548a9d6c2f89d3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L339-L339`. Next: `block:87dc6e68392ee24e`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `if "`pulled'" != "" & "`pulled'" != "NOHHID" {`
+
+### block:87dc6e68392ee24e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L340-L340`. Next: `block:e71a18d0d3aab51f`.
+
+```stata
+di as error "        merge failed (rc=" _rc ")"
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `if "`pulled'" != "" & "`pulled'" != "NOHHID" {` → `if _rc {`
+
+### block:e71a18d0d3aab51f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L341-L341`. Next: `block:b24ef31c9e3d82b1`.
+
+```stata
+capture drop _m1
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `if "`pulled'" != "" & "`pulled'" != "NOHHID" {` → `if _rc {`
+Read candidates: `variable:5ef306250f6527f4`
+
+### block:b24ef31c9e3d82b1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L342-L342`. Next: `block:f457519bac763949`.
+
+```stata
+}
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `if "`pulled'" != "" & "`pulled'" != "NOHHID" {`
+
+### block:f457519bac763949
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L343-L343`. Next: `block:fe0e4785ed80494e`.
+
+```stata
+else {
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `if "`pulled'" != "" & "`pulled'" != "NOHHID" {`
+
+### block:fe0e4785ed80494e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L344-L344`. Next: `block:ce8a460b938f302f`.
+
+```stata
+qui count if _m1 == 3
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `if "`pulled'" != "" & "`pulled'" != "NOHHID" {` → `else {`
+Read candidates: `variable:5ef306250f6527f4`
+
+### block:ce8a460b938f302f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L345-L345`. Next: `block:fb706f9ea160427a`.
+
+```stata
+local m1match = r(N)
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `if "`pulled'" != "" & "`pulled'" != "NOHHID" {` → `else {`
+
+### block:fb706f9ea160427a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L346-L346`. Next: `block:20078094408b3cf6`.
+
+```stata
+di as text "        matched " %11.0fc `m1match' " of " %11.0fc _N
+```
+Enclosing controls: `foreach c of local ctyfolders {` → `if `usemod1' & "`f1'" != "" {` → `if "`need1'" != "" {` → `if "`pulled'" != "" & "`pulled'" != "NOHHID" {` → `else {`
+
+### block:20078094408b3cf6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-build_eap_local.do:L347-L347`. Next: `block:d12682fb5b4dbc5e`.
+
+```stata
+drop _m1
+```

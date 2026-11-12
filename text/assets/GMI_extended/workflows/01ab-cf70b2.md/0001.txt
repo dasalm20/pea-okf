@@ -1,0 +1,1766 @@
+# 01.Programs/01ab-GMI extended indicators labor ind.do
+
+Working-age labor and industry poverty cross-tabulations
+
+Status: PARTIAL_STATIC. Every lexically active statement is indexed; complete runtime schema and macro expansion are not established.
+
+Source snapshot: numbered source (deployment lookup: lookup/sources/GMI_extended/source_maps/01ab-cf70b2.md.md)
+
+## Execution-order blocks
+
+### block:be7fbcbc8a227da4
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L17-L17`. Next: `block:97639925c062507b`.
+
+```stata
+clear
+```
+
+### block:97639925c062507b
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L18-L18`. Next: `block:6bc31fe94625c953`.
+
+```stata
+macro drop resume nobs
+```
+
+### block:6bc31fe94625c953
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L19-L19`. Next: `block:c709b22874c97626`.
+
+```stata
+set max_memory ., permanently
+```
+
+### block:c709b22874c97626
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L23-L23`. Next: `block:9261794856c71b8a`.
+
+```stata
+local resume $resume_ab
+```
+
+### block:9261794856c71b8a
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L25-L25`. Next: `block:762fde17360cf3bd`.
+
+```stata
+cap confirm integer number `resume'
+```
+
+### block:762fde17360cf3bd
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L26-L26`. Next: `block:509c966e0645a265`.
+
+```stata
+if _rc {
+```
+
+### block:509c966e0645a265
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L27-L27`. Next: `block:0acc0fe38bfa63f6`.
+
+```stata
+dis as error "local resume is not a valid number: |`resume'|"
+```
+Enclosing controls: `if _rc {`
+
+### block:0acc0fe38bfa63f6
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L28-L28`. Next: `block:eee83337f90fe799`.
+
+```stata
+exit 198
+```
+Enclosing controls: `if _rc {`
+
+### block:eee83337f90fe799
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L29-L29`. Next: `block:11d581cfaefd739e`.
+
+```stata
+}
+```
+
+### block:11d581cfaefd739e
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L33-L33`. Next: `block:7b848daff4ba874e`.
+
+```stata
+local dataall "$other\_tmp_dataall_indlabor_${rnd}.dta"
+```
+
+### block:7b848daff4ba874e
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L35-L35`. Next: `block:d672b4d490027c91`.
+
+```stata
+set varabbrev off
+```
+
+### block:d672b4d490027c91
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L67-L67`. Next: `block:2d9284e19d67d599`.
+
+```stata
+if `resume'==1 {
+```
+
+### block:2d9284e19d67d599
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L68-L68`. Next: `block:77fb727cead6a89b`.
+
+```stata
+save `"`dataall'"', replace emptyok
+```
+Enclosing controls: `if `resume'==1 {`
+Write datasets: `dataset:91ebda5702fd4173`
+
+### block:77fb727cead6a89b
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L69-L69`. Next: `block:19a14eb29ee4b73d`.
+
+```stata
+}
+```
+
+### block:19a14eb29ee4b73d
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L107-L107`. Next: `block:6d3437ed9d68316b`.
+
+```stata
+tempfile data1
+```
+
+### block:6d3437ed9d68316b
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L108-L108`. Next: `block:5c63ef2a270301a6`.
+
+```stata
+use "$fromservers\repo_${rnd}all.dta" , clear
+```
+Read datasets: `dataset:2427a62d3bc9c48f`
+
+### block:5c63ef2a270301a6
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L109-L109`. Next: `block:0c8c2bacc9366e14`.
+
+```stata
+gen year = years
+```
+New: `variable:84e21ae9842a2f63`
+Read candidates: `variable:256ac1a33a6510f7`
+
+### block:0c8c2bacc9366e14
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L110-L110`. Next: `block:f6809d3741b43ea1`.
+
+```stata
+destring year, replace
+```
+Modified: `variable:84e21ae9842a2f63`
+Read candidates: `variable:84e21ae9842a2f63`
+
+### block:f6809d3741b43ea1
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L114-L114`. Next: `block:5b507b4a6eb905f1`.
+
+```stata
+drop if module=="ASPIRE" | module=="L"|module=="GROUP"
+```
+Read candidates: `variable:90784ef7cd511ed9`
+
+### block:5b507b4a6eb905f1
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L116-L116`. Next: `block:b83de3fc01260d18`.
+
+```stata
+drop if survname=="EU-SILC" & module=="BIN"
+```
+Read candidates: `variable:efeeaf1ad1ae5665`, `variable:90784ef7cd511ed9`
+
+### block:b83de3fc01260d18
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L117-L117`. Next: `block:97cfeb4274fc2517`.
+
+```stata
+drop if country=="ISO3"
+```
+Read candidates: `variable:157e1ed37b676f10`
+
+### block:97cfeb4274fc2517
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L119-L119`. Next: `block:0873dd248c2d118d`.
+
+```stata
+drop if country=="ISO3" & survname=="EU-SILC"
+```
+Read candidates: `variable:157e1ed37b676f10`, `variable:efeeaf1ad1ae5665`
+
+### block:0873dd248c2d118d
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L120-L120`. Next: `block:fd468203d962b44a`.
+
+```stata
+drop if country=="ISO3" & survname=="PNAD" & year>=0000 & year<=0000
+```
+Read candidates: `variable:157e1ed37b676f10`, `variable:efeeaf1ad1ae5665`, `variable:84e21ae9842a2f63`
+
+### block:fd468203d962b44a
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L122-L122`. Next: `block:cb66a765b98e43da`.
+
+```stata
+drop if country=="ISO3" & survname=="EPH" & year==0000
+```
+Read candidates: `variable:157e1ed37b676f10`, `variable:efeeaf1ad1ae5665`, `variable:84e21ae9842a2f63`
+
+### block:cb66a765b98e43da
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L123-L123`. Next: `block:9807729fed1da74e`.
+
+```stata
+drop if country=="ISO3" & survname=="NSS-SCH1" & year==0000
+```
+Read candidates: `variable:157e1ed37b676f10`, `variable:efeeaf1ad1ae5665`, `variable:84e21ae9842a2f63`
+
+### block:9807729fed1da74e
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L127-L127`. Next: `block:da385547082e1f9b`.
+
+```stata
+drop  if country=="ISO3" & year==0000
+```
+Read candidates: `variable:157e1ed37b676f10`, `variable:84e21ae9842a2f63`
+
+### block:da385547082e1f9b
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L130-L130`. Next: `block:fd6caa4543accef4`.
+
+```stata
+keep if module=="ALL"
+```
+Read candidates: `variable:90784ef7cd511ed9`
+
+### block:fd6caa4543accef4
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L143-L143`. Next: `block:465baed5b752a0d6`.
+
+```stata
+cap gen level ="national"
+```
+New: `variable:d1edf75066a95f08`
+Read candidates: `variable:b15a9cfe5c875268`
+
+### block:465baed5b752a0d6
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L144-L144`. Next: `block:fbbeca623dd98f72`.
+
+```stata
+replace level = "national" if level==""
+```
+Modified: `variable:d1edf75066a95f08`
+Read candidates: `variable:d1edf75066a95f08`
+
+### block:fbbeca623dd98f72
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L151-L151`. Next: `block:aed4252b31fb1384`.
+
+```stata
+local nobs = _N
+```
+
+### block:aed4252b31fb1384
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L152-L152`. Next: `block:d7effbe1ff5e7817`.
+
+```stata
+save `data1', replace
+```
+Write datasets: `dataset:c493f915d00e54fc`
+
+### block:d7effbe1ff5e7817
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L157-L157`. Next: `block:06c05d688c581f64`.
+
+```stata
+if `resume' > 1 {
+```
+
+### block:06c05d688c581f64
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L158-L158`. Next: `block:da21ec5617df6d62`.
+
+```stata
+tempfile purgekeys
+```
+Enclosing controls: `if `resume' > 1 {`
+
+### block:da21ec5617df6d62
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L159-L159`. Next: `block:15ee68d1f3a1bd69`.
+
+```stata
+use `data1', clear
+```
+Enclosing controls: `if `resume' > 1 {`
+Read datasets: `dataset:c493f915d00e54fc`
+
+### block:15ee68d1f3a1bd69
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L160-L160`. Next: `block:53799cd81858137f`.
+
+```stata
+keep in `resume'/`=_N'
+```
+Enclosing controls: `if `resume' > 1 {`
+
+### block:53799cd81858137f
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L161-L161`. Next: `block:2bb45c920429bd5d`.
+
+```stata
+keep country year surveyid
+```
+Enclosing controls: `if `resume' > 1 {`
+Read candidates: `variable:e86ef70ebf134d5b`, `variable:0d7cc0ae33ef3b66`, `variable:9795db65ee37a792`
+
+### block:2bb45c920429bd5d
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L162-L162`. Next: `block:323f217436939b80`.
+
+```stata
+ren country code
+```
+Enclosing controls: `if `resume' > 1 {`
+New: `variable:def1e3f7dec458ab`
+Read candidates: `variable:e86ef70ebf134d5b`
+
+### block:323f217436939b80
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L163-L163`. Next: `block:6ef71354785b1430`.
+
+```stata
+duplicates drop
+```
+Enclosing controls: `if `resume' > 1 {`
+
+### block:6ef71354785b1430
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L164-L164`. Next: `block:a915d37aec0e83da`.
+
+```stata
+save `purgekeys', replace
+```
+Enclosing controls: `if `resume' > 1 {`
+Write datasets: `dataset:1cef5431c4dcdace`
+
+### block:a915d37aec0e83da
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L165-L165`. Next: `block:e74df0bbbb89fff6`.
+
+```stata
+local npurge = _N
+```
+Enclosing controls: `if `resume' > 1 {`
+
+### block:e74df0bbbb89fff6
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L166-L166`. Next: `block:3d8a28fbd29be936`.
+
+```stata
+noi dis in red "Resuming at index `resume': purging `npurge' survey key(s)"
+```
+Enclosing controls: `if `resume' > 1 {`
+
+### block:3d8a28fbd29be936
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L168-L168`. Next: `block:7a87eda38722dee4`.
+
+```stata
+use `"`dataall'"', clear
+```
+Enclosing controls: `if `resume' > 1 {`
+Read datasets: `dataset:91ebda5702fd4173`
+
+### block:7a87eda38722dee4
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L169-L169`. Next: `block:1e93ed7743a08ff4`.
+
+```stata
+cap confirm variable surveyid
+```
+Enclosing controls: `if `resume' > 1 {`
+
+### block:1e93ed7743a08ff4
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L170-L170`. Next: `block:24400e84492d5503`.
+
+```stata
+if _rc==0 {
+```
+Enclosing controls: `if `resume' > 1 {`
+
+### block:24400e84492d5503
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L171-L171`. Next: `block:4734b730a90093c3`.
+
+```stata
+merge m:1 code year surveyid using `purgekeys', keep(master) nogen
+```
+Enclosing controls: `if `resume' > 1 {` → `if _rc==0 {`
+Read datasets: `dataset:1cef5431c4dcdace`
+
+### block:4734b730a90093c3
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L172-L172`. Next: `block:0395f3991d46a8b1`.
+
+```stata
+}
+```
+Enclosing controls: `if `resume' > 1 {`
+
+### block:0395f3991d46a8b1
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L173-L173`. Next: `block:6502facea14d2ce5`.
+
+```stata
+save `"`dataall'"', replace
+```
+Enclosing controls: `if `resume' > 1 {`
+Write datasets: `dataset:91ebda5702fd4173`
+
+### block:6502facea14d2ce5
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L174-L174`. Next: `block:fb9a5c5c67444dc0`.
+
+```stata
+}
+```
+
+### block:fb9a5c5c67444dc0
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L182-L182`. Next: `block:87a07b0a4e9f026e`.
+
+```stata
+forv i=`resume'(1)`nobs' {
+```
+
+### block:87a07b0a4e9f026e
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L184-L184`. Next: `block:d710fd45789bffdc`.
+
+```stata
+use `data1', clear
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {`
+Read datasets: `dataset:c493f915d00e54fc`
+
+### block:d710fd45789bffdc
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L185-L185`. Next: `block:9e2fa5127029ff00`.
+
+```stata
+local code = country[`i']
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {`
+
+### block:9e2fa5127029ff00
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L186-L186`. Next: `block:3e5edb8d7d52bd6c`.
+
+```stata
+local year = year[`i']
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {`
+
+### block:3e5edb8d7d52bd6c
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L187-L187`. Next: `block:e185147de295c634`.
+
+```stata
+local surveyid = surveyid[`i']
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {`
+
+### block:e185147de295c634
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L188-L188`. Next: `block:b98f27a17b930d31`.
+
+```stata
+local survname = survname[`i']
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {`
+
+### block:b98f27a17b930d31
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L189-L189`. Next: `block:84c246423eb25ec4`.
+
+```stata
+local mod = module[`i']
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {`
+
+### block:84c246423eb25ec4
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L190-L190`. Next: `block:0c3f5ec09cd09e6e`.
+
+```stata
+local lvlvar = level[`i']
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {`
+
+### block:0c3f5ec09cd09e6e
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L207-L207`. Next: `block:c33ae6da8754d24a`.
+
+```stata
+local matacode 0
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {`
+
+### block:c33ae6da8754d24a
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L212-L212`. Next: `block:4690ac2d9007c587`.
+
+```stata
+cap dlw, country(`code') year(`year') type(gmd) surveyid(`survname') mod(`mod') files $repotxt
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {`
+Read datasets: `dataset:1b4b698e01154911`
+
+### block:4690ac2d9007c587
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L213-L213`. Next: `block:2afd1afb92268b31`.
+
+```stata
+qui if _rc==0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {`
+
+### block:2afd1afb92268b31
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L214-L214`. Next: `block:31979cf6914958de`.
+
+```stata
+noi dis in white "`i'-`code'-`year'-`surveyid'-`lvlvar'-`mod'"
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:31979cf6914958de
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L221-L221`. Next: `block:d13c0455ca0760c3`.
+
+```stata
+if "`lvlvar'"=="national" local oklist _all_
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:d13c0455ca0760c3
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L222-L222`. Next: `block:84933863035e34a0`.
+
+```stata
+qui else {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:84933863035e34a0
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L223-L223`. Next: `block:d1106444a246d204`.
+
+```stata
+cap confirm numeric variable `lvlvar'
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui else {`
+
+### block:d1106444a246d204
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L224-L224`. Next: `block:03228d2ab6a27928`.
+
+```stata
+if _rc==0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui else {`
+
+### block:03228d2ab6a27928
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L225-L225`. Next: `block:f94306e8361dc5fd`.
+
+```stata
+tempvar xvar
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui else {` → `if _rc==0 {`
+
+### block:f94306e8361dc5fd
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L226-L226`. Next: `block:1a5decc0a30e8d32`.
+
+```stata
+cap decode `lvlvar', gen(`xvar')
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui else {` → `if _rc==0 {`
+New: `variable:93fa8a1fc5654aa6`
+
+### block:1a5decc0a30e8d32
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L227-L227`. Next: `block:3beee9e1472787dd`.
+
+```stata
+if _rc~=0 tostring `lvlvar', gen(`xvar')
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui else {` → `if _rc==0 {`
+New: `variable:93fa8a1fc5654aa6`
+
+### block:3beee9e1472787dd
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L228-L228`. Next: `block:259dac9479bcce15`.
+
+```stata
+cap drop `lvlvar'
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui else {` → `if _rc==0 {`
+
+### block:259dac9479bcce15
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L229-L229`. Next: `block:c10e9b13148c1b1a`.
+
+```stata
+rename `xvar' `lvlvar'
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui else {` → `if _rc==0 {`
+New: `variable:bc2a6dee33f6f2f3`
+Read candidates: `variable:93fa8a1fc5654aa6`
+
+### block:c10e9b13148c1b1a
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L230-L230`. Next: `block:e300b661e0f98482`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui else {`
+
+### block:e300b661e0f98482
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L231-L231`. Next: `block:944721bcfce5e87d`.
+
+```stata
+replace `lvlvar' = trim(`lvlvar')
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui else {`
+Modified: `variable:bc2a6dee33f6f2f3`
+
+### block:944721bcfce5e87d
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L232-L232`. Next: `block:40161bc9e63cf1c9`.
+
+```stata
+local oklist `lvlvar'
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui else {`
+
+### block:40161bc9e63cf1c9
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L233-L233`. Next: `block:6d6576bdbe39ea5a`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:6d6576bdbe39ea5a
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L235-L235`. Next: `block:601e9559d0830a9a`.
+
+```stata
+if `matacode'==1 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:601e9559d0830a9a
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L236-L236`. Next: `block:28b6c6c89d3998a4`.
+
+```stata
+mata: st_local("nr", strofreal(rows(runcode)))
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `if `matacode'==1 {`
+
+### block:28b6c6c89d3998a4
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L237-L237`. Next: `block:9f3d659aebe947ed`.
+
+```stata
+forv i0=1(1)`nr' {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `if `matacode'==1 {`
+
+### block:9f3d659aebe947ed
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L238-L238`. Next: `block:9cbaaa13d7adbc1d`.
+
+```stata
+mata: st_local("runline", runcode[`i0'])
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `if `matacode'==1 {` → `forv i0=1(1)`nr' {`
+
+### block:9cbaaa13d7adbc1d
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L239-L239`. Next: `block:b058b734f05c4842`.
+
+```stata
+`runline'
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `if `matacode'==1 {` → `forv i0=1(1)`nr' {`
+
+### block:b058b734f05c4842
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L240-L240`. Next: `block:e9ce807d0feb33c8`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `if `matacode'==1 {`
+
+### block:e9ce807d0feb33c8
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L241-L241`. Next: `block:a5454ec5c58f4b92`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:a5454ec5c58f4b92
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L246-L246`. Next: `block:f15b8564f36d7b93`.
+
+```stata
+if "`mod'"=="GPWG" local wgt weight
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:f15b8564f36d7b93
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L247-L247`. Next: `block:9ff30f92fd1c8904`.
+
+```stata
+if "`mod'"=="ALL" {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:9ff30f92fd1c8904
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L248-L248`. Next: `block:cd8f1d738bcfa8b7`.
+
+```stata
+cap des weight_p
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `if "`mod'"=="ALL" {`
+
+### block:cd8f1d738bcfa8b7
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L249-L249`. Next: `block:38bbfe90c4fd0a08`.
+
+```stata
+if _rc==0 local wgt weight_p
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `if "`mod'"=="ALL" {`
+
+### block:38bbfe90c4fd0a08
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L250-L250`. Next: `block:d506fd27851fd2f4`.
+
+```stata
+else local wgt weight
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `if "`mod'"=="ALL" {`
+
+### block:d506fd27851fd2f4
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L251-L251`. Next: `block:3d00de0c5af2bfa6`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:3d00de0c5af2bfa6
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L253-L253`. Next: `block:6c8e9e419ee4843d`.
+
+```stata
+qui {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:6c8e9e419ee4843d
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L254-L254`. Next: `block:830ae0d677b462f8`.
+
+```stata
+drop if welfare==.
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+Read candidates: `variable:19e5b1015d0b4e25`
+
+### block:830ae0d677b462f8
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L255-L255`. Next: `block:3fcee806662933ff`.
+
+```stata
+drop if `wgt'==.
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:3fcee806662933ff
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L256-L256`. Next: `block:723606e2ba51b91c`.
+
+```stata
+cap des age
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:723606e2ba51b91c
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L257-L257`. Next: `block:727516c01770499d`.
+
+```stata
+count
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:727516c01770499d
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L258-L258`. Next: `block:6e81688a62a7c71b`.
+
+```stata
+if r(N)>0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {`
+
+### block:6e81688a62a7c71b
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L261-L261`. Next: `block:8802d891f86ed6b0`.
+
+```stata
+gen _all_ = "Total"
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+New: `variable:c38742396c91df7a`
+
+### block:8802d891f86ed6b0
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L262-L262`. Next: `block:9c7b5fe490ddb443`.
+
+```stata
+gen _total = 1
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+New: `variable:a0cdb5521223d220`
+
+### block:9c7b5fe490ddb443
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L264-L264`. Next: `block:cda633a5c396215d`.
+
+```stata
+local urbvar
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:cda633a5c396215d
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L265-L265`. Next: `block:c568a3050882e32d`.
+
+```stata
+cap des urban
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:c568a3050882e32d
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L266-L266`. Next: `block:819e7c8628ceb29e`.
+
+```stata
+qui if _rc==0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:819e7c8628ceb29e
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L267-L267`. Next: `block:0e9e120309a49707`.
+
+```stata
+ta urban
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {`
+Read candidates: `variable:c63ab3910ed00329`
+
+### block:0e9e120309a49707
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L268-L268`. Next: `block:98492830a38cc596`.
+
+```stata
+if r(N)>0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {`
+
+### block:98492830a38cc596
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L269-L269`. Next: `block:580b2611d6139976`.
+
+```stata
+cap decode urban, gen(_urban_)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {` → `if r(N)>0 {`
+New: `variable:9b4f480777eb175e`
+Read candidates: `variable:c63ab3910ed00329`
+
+### block:580b2611d6139976
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L270-L270`. Next: `block:d020a5d69eeb8b0f`.
+
+```stata
+if _rc~=0 tostring urban, gen(_urban_)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {` → `if r(N)>0 {`
+New: `variable:9b4f480777eb175e`
+Read candidates: `variable:c63ab3910ed00329`
+
+### block:d020a5d69eeb8b0f
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L271-L271`. Next: `block:2dec2ea2785b0cab`.
+
+```stata
+replace _urban_ = trim(_urban_)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {` → `if r(N)>0 {`
+Modified: `variable:9b4f480777eb175e`
+Read candidates: `variable:9b4f480777eb175e`
+
+### block:2dec2ea2785b0cab
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L272-L272`. Next: `block:6d0d9b8e2d031bbb`.
+
+```stata
+local urbvar _urban_
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {` → `if r(N)>0 {`
+
+### block:6d0d9b8e2d031bbb
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L273-L273`. Next: `block:7dae6862a7638501`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {`
+
+### block:7dae6862a7638501
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L274-L274`. Next: `block:5aca16770ece99bc`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:5aca16770ece99bc
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L277-L277`. Next: `block:c0ddf9fa8a354da1`.
+
+```stata
+local gendervar
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:c0ddf9fa8a354da1
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L278-L278`. Next: `block:7f8998da9c08e441`.
+
+```stata
+cap des male
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:7f8998da9c08e441
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L279-L279`. Next: `block:156153018ceea96f`.
+
+```stata
+qui if _rc==0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:156153018ceea96f
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L280-L280`. Next: `block:1478dafb23fb54a7`.
+
+```stata
+ta male
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {`
+Read candidates: `variable:d3969c2d1e1de014`
+
+### block:1478dafb23fb54a7
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L281-L281`. Next: `block:bfac7b53c017bef5`.
+
+```stata
+if r(N)>0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {`
+
+### block:bfac7b53c017bef5
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L282-L282`. Next: `block:d364b23addb2b526`.
+
+```stata
+cap decode male, gen(_male_)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {` → `if r(N)>0 {`
+New: `variable:8c8bf585a2255ddf`
+Read candidates: `variable:d3969c2d1e1de014`
+
+### block:d364b23addb2b526
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L283-L283`. Next: `block:170e9fc228a66196`.
+
+```stata
+if _rc~=0 tostring male, gen(_male_)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {` → `if r(N)>0 {`
+New: `variable:8c8bf585a2255ddf`
+Read candidates: `variable:d3969c2d1e1de014`
+
+### block:170e9fc228a66196
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L284-L284`. Next: `block:0b4f9b6ec00aa360`.
+
+```stata
+replace _male_ = trim(_male_)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {` → `if r(N)>0 {`
+Modified: `variable:8c8bf585a2255ddf`
+Read candidates: `variable:8c8bf585a2255ddf`
+
+### block:0b4f9b6ec00aa360
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L285-L285`. Next: `block:270213e6c253e4e4`.
+
+```stata
+local gendervar _male_
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {` → `if r(N)>0 {`
+
+### block:270213e6c253e4e4
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L286-L286`. Next: `block:1482dab6cea244fc`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {`
+
+### block:1482dab6cea244fc
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L287-L287`. Next: `block:01deb2e5cc882187`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:01deb2e5cc882187
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L292-L292`. Next: `block:28bc1e5e92af12ca`.
+
+```stata
+local agevar
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:28bc1e5e92af12ca
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L293-L293`. Next: `block:68ea600c96fd18ef`.
+
+```stata
+cap des age
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:68ea600c96fd18ef
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L294-L294`. Next: `block:227e48b94c5be17d`.
+
+```stata
+qui if _rc==0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:227e48b94c5be17d
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L296-L296`. Next: `block:058cb959252c8c5a`.
+
+```stata
+if "`=upper("`code'")'" == "ISO3" {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {`
+
+### block:058cb959252c8c5a
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L298-L298`. Next: `block:604aae623191bc05`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {`
+
+### block:604aae623191bc05
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L299-L299`. Next: `block:b0270195ea1f1c86`.
+
+```stata
+else {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {`
+
+### block:b0270195ea1f1c86
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L300-L300`. Next: `block:27709d6fc93bd73f`.
+
+```stata
+su age
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {` → `else {`
+Read candidates: `variable:23791d2691dc0231`
+
+### block:27709d6fc93bd73f
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L301-L301`. Next: `block:1ed1ed536ad06c98`.
+
+```stata
+if r(N)>0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {` → `else {`
+
+### block:1ed1ed536ad06c98
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L302-L302`. Next: `block:50805727f2759458`.
+
+```stata
+gen _agegr1_ = "Youth (15-24)" if age>=15 & age<=24
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+New: `variable:d77823c835798bce`
+Read candidates: `variable:23791d2691dc0231`
+
+### block:50805727f2759458
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L303-L303`. Next: `block:bab23406fb1f3631`.
+
+```stata
+replace _agegr1_ = "Prime (25-54)" if age>=25 & age<=54
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+Modified: `variable:d77823c835798bce`
+Read candidates: `variable:23791d2691dc0231`
+
+### block:bab23406fb1f3631
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L304-L304`. Next: `block:b6957411c1c10011`.
+
+```stata
+replace _agegr1_ = "Older (55-64)" if age>=55 & age<=64
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+Modified: `variable:d77823c835798bce`
+Read candidates: `variable:23791d2691dc0231`
+
+### block:b6957411c1c10011
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L305-L305`. Next: `block:5190b050fa29e724`.
+
+```stata
+local agevar _agegr1_
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {` → `else {` → `if r(N)>0 {`
+
+### block:5190b050fa29e724
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L306-L306`. Next: `block:8b90b93ab24b9cd8`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {` → `else {`
+
+### block:8b90b93ab24b9cd8
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L307-L307`. Next: `block:a4fda068fba7b9be`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {`
+
+### block:a4fda068fba7b9be
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L308-L308`. Next: `block:8e4c4db589285584`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:8e4c4db589285584
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L313-L313`. Next: `block:39221b9c47256480`.
+
+```stata
+local eduvar
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:39221b9c47256480
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L314-L314`. Next: `block:7ea835873cb12708`.
+
+```stata
+cap des educat4
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:7ea835873cb12708
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L315-L315`. Next: `block:c4e27eb61540497b`.
+
+```stata
+qui if _rc==0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:c4e27eb61540497b
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L316-L316`. Next: `block:ba54cd2aabcd6c40`.
+
+```stata
+ta educat4
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {`
+Read candidates: `variable:b8902a1aa6519754`
+
+### block:ba54cd2aabcd6c40
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L317-L317`. Next: `block:fc2a26d7760afba0`.
+
+```stata
+if r(N)>0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {`
+
+### block:fc2a26d7760afba0
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L318-L318`. Next: `block:174ec7d7a0b69680`.
+
+```stata
+gen _educat = "No education" if educat4==1 & age>=15 & !missing(age)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {` → `if r(N)>0 {`
+New: `variable:cc7af61c89d8cf46`
+Read candidates: `variable:b8902a1aa6519754`, `variable:23791d2691dc0231`
+
+### block:174ec7d7a0b69680
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L319-L319`. Next: `block:835e6da8c0c78e08`.
+
+```stata
+replace _educat = "Primary" if educat4==2 & age>=15 & !missing(age)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {` → `if r(N)>0 {`
+Modified: `variable:cc7af61c89d8cf46`
+Read candidates: `variable:b8902a1aa6519754`, `variable:23791d2691dc0231`
+
+### block:835e6da8c0c78e08
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L320-L320`. Next: `block:bd9e3c8cf337da6a`.
+
+```stata
+replace _educat = "Secondary" if educat4==3 & age>=15 & !missing(age)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {` → `if r(N)>0 {`
+Modified: `variable:cc7af61c89d8cf46`
+Read candidates: `variable:b8902a1aa6519754`, `variable:23791d2691dc0231`
+
+### block:bd9e3c8cf337da6a
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L321-L321`. Next: `block:d2d912a170c8f142`.
+
+```stata
+replace _educat = "Tertiary" if educat4==4 & age>=15 & !missing(age)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {` → `if r(N)>0 {`
+Modified: `variable:cc7af61c89d8cf46`
+Read candidates: `variable:b8902a1aa6519754`, `variable:23791d2691dc0231`
+
+### block:d2d912a170c8f142
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L322-L322`. Next: `block:6e4c81ee7d0315bd`.
+
+```stata
+replace _educat = "MISSING" if missing(educat4) & age>=15 & !missing(age)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {` → `if r(N)>0 {`
+Modified: `variable:cc7af61c89d8cf46`
+Read candidates: `variable:b8902a1aa6519754`, `variable:23791d2691dc0231`
+
+### block:6e4c81ee7d0315bd
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L323-L323`. Next: `block:735789844f1f5553`.
+
+```stata
+local eduvar _educat
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {` → `if r(N)>0 {`
+
+### block:735789844f1f5553
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L324-L324`. Next: `block:553af4747ceb40a3`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `qui if _rc==0 {`
+
+### block:553af4747ceb40a3
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L325-L325`. Next: `block:eb2217700361f3ec`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:eb2217700361f3ec
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L332-L332`. Next: `block:c0f432baad0f0a15`.
+
+```stata
+cap replace lstatus = lstatus_year if missing(lstatus) & !missing(lstatus_year)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+Modified: `variable:8acae78c4b8fa4bf`
+Read candidates: `variable:64e7189a9c0393eb`, `variable:8acae78c4b8fa4bf`, `variable:01c530b0043b8fcc`
+
+### block:c0f432baad0f0a15
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L333-L333`. Next: `block:d1bc1576912974f7`.
+
+```stata
+cap replace industrycat4 = industrycat4_year if missing(industrycat4) & !missing(industrycat4_year)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+Modified: `variable:5626b9f1a5d435bf`
+Read candidates: `variable:572d31c737ad151a`, `variable:5626b9f1a5d435bf`, `variable:01c530b0043b8fcc`
+
+### block:d1bc1576912974f7
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L334-L334`. Next: `block:150e3e743df95318`.
+
+```stata
+cap replace industrycat10 = industrycat10_year if missing(industrycat10) & !missing(industrycat10_year)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+Modified: `variable:f841cb0bfdf4e439`
+Read candidates: `variable:59a095336b3d5f3d`, `variable:f841cb0bfdf4e439`, `variable:01c530b0043b8fcc`
+
+### block:150e3e743df95318
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L335-L335`. Next: `block:2edf1bdecb5c6dc3`.
+
+```stata
+cap replace empstat = empstat_year if missing(empstat) & !missing(empstat_year)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+Modified: `variable:443f7825e2769221`
+Read candidates: `variable:592e4bddf96bc168`, `variable:443f7825e2769221`, `variable:01c530b0043b8fcc`
+
+### block:2edf1bdecb5c6dc3
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L342-L342`. Next: `block:c6c6dfc5e81af4c9`.
+
+```stata
+local lstatus_list
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:c6c6dfc5e81af4c9
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L343-L343`. Next: `block:5e9108535d8f7f4f`.
+
+```stata
+local lstatus_indok = 0
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:5e9108535d8f7f4f
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L344-L344`. Next: `block:e355595ca41760c6`.
+
+```stata
+cap des lstatus
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:e355595ca41760c6
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L345-L345`. Next: `block:c8b5010d376a6340`.
+
+```stata
+if _rc==0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:c8b5010d376a6340
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L346-L346`. Next: `block:49488e84777e0db3`.
+
+```stata
+cap su lstatus,d
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {`
+Read candidates: `variable:8acae78c4b8fa4bf`, `variable:77be8ae66bb714d9`
+
+### block:49488e84777e0db3
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L347-L347`. Next: `block:c4bcaa89ff5ac31d`.
+
+```stata
+if r(N)>0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {`
+
+### block:c4bcaa89ff5ac31d
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L348-L348`. Next: `block:1ac7434daa83eed8`.
+
+```stata
+gen _working_ind = lstatus==1 if age>=15 & age<=64 & !missing(lstatus)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {` → `if r(N)>0 {`
+New: `variable:bb2ecae22dfc8a96`
+Read candidates: `variable:8acae78c4b8fa4bf`, `variable:23791d2691dc0231`
+
+### block:1ac7434daa83eed8
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L349-L349`. Next: `block:4d38cbc01228ef8e`.
+
+```stata
+gen _notworking_ind = (lstatus==2|lstatus==3) if age>=15 & age<=64. & !missing(lstatus)
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {` → `if r(N)>0 {`
+New: `variable:3b9b06fd8333cbe2`
+Read candidates: `variable:8acae78c4b8fa4bf`, `variable:23791d2691dc0231`
+
+### block:4d38cbc01228ef8e
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L350-L350`. Next: `block:8c5aa6408fca4fcc`.
+
+```stata
+gen _misslfs_ind = missing(lstatus) if age>=15 & age<=64
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {` → `if r(N)>0 {`
+New: `variable:e62f010c1b055472`
+Read candidates: `variable:8acae78c4b8fa4bf`, `variable:23791d2691dc0231`
+
+### block:8c5aa6408fca4fcc
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L351-L351`. Next: `block:4c32a11803d164b6`.
+
+```stata
+local lstatus_indok = 1
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {` → `if r(N)>0 {`
+
+### block:4c32a11803d164b6
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L352-L352`. Next: `block:fb60c2079ab1ccb0`.
+
+```stata
+local lstatus_list _working_ind _notworking_ind _misslfs_ind
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {` → `if r(N)>0 {`
+
+### block:fb60c2079ab1ccb0
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L353-L353`. Next: `block:9037fa96b6955492`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {`
+
+### block:9037fa96b6955492
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L354-L354`. Next: `block:45a7472634a932b2`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:45a7472634a932b2
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L359-L359`. Next: `block:1648a2b74f1f9ce1`.
+
+```stata
+local industrycat4_list
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:1648a2b74f1f9ce1
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L360-L360`. Next: `block:5895c93736089291`.
+
+```stata
+local ind4_ok = 0
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:5895c93736089291
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L361-L361`. Next: `block:834a23444d5642d3`.
+
+```stata
+cap des industrycat4
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:834a23444d5642d3
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L362-L362`. Next: `block:be381f0729fd304b`.
+
+```stata
+if _rc==0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:be381f0729fd304b
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L363-L363`. Next: `block:2d94e5edb265395b`.
+
+```stata
+cap su industrycat4,d
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {`
+Read candidates: `variable:5626b9f1a5d435bf`, `variable:77be8ae66bb714d9`
+
+### block:2d94e5edb265395b
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L364-L364`. Next: `block:babc9b06dacf3ea6`.
+
+```stata
+if r(N)>0 & `lstatus_indok'==1 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {`
+
+### block:babc9b06dacf3ea6
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L365-L365`. Next: `block:0d1184acb5f2c0cd`.
+
+```stata
+local ind4_ok = 1
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {` → `if r(N)>0 & `lstatus_indok'==1 {`
+
+### block:0d1184acb5f2c0cd
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L366-L366`. Next: `block:3a25faccfefd975d`.
+
+```stata
+gen _industry_nonagr_ind = industrycat4>=2 & industrycat4<=4 if age>=15 & age<=64 & !missing(industrycat4) & lstatus==1
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {` → `if r(N)>0 & `lstatus_indok'==1 {`
+New: `variable:0eca24ad9a64131e`
+Read candidates: `variable:5626b9f1a5d435bf`, `variable:23791d2691dc0231`, `variable:8acae78c4b8fa4bf`
+
+### block:3a25faccfefd975d
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L367-L367`. Next: `block:ba5c378586afa7af`.
+
+```stata
+gen _industry_nonagr_ind3 = industrycat4>=2 & industrycat4<=3 if age>=15 & age<=64 & !missing(industrycat4) & lstatus==1
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {` → `if r(N)>0 & `lstatus_indok'==1 {`
+New: `variable:f96203d05d393be0`
+Read candidates: `variable:5626b9f1a5d435bf`, `variable:23791d2691dc0231`, `variable:8acae78c4b8fa4bf`
+
+### block:ba5c378586afa7af
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L368-L368`. Next: `block:e241abcd8486e504`.
+
+```stata
+forv x=1(1)4 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {` → `if r(N)>0 & `lstatus_indok'==1 {`
+
+### block:e241abcd8486e504
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L369-L369`. Next: `block:eab60c1faf4a442f`.
+
+```stata
+gen _industry_ind`x' = industrycat4==`x' if age>=15 & age<=64 & !missing(industrycat4) & lstatus==1
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {` → `if r(N)>0 & `lstatus_indok'==1 {` → `forv x=1(1)4 {`
+New: `variable:6b15d0f512bd8ec4`
+Read candidates: `variable:5626b9f1a5d435bf`, `variable:23791d2691dc0231`, `variable:8acae78c4b8fa4bf`
+
+### block:eab60c1faf4a442f
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L370-L370`. Next: `block:df5fc502b6e0af1e`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {` → `if r(N)>0 & `lstatus_indok'==1 {`
+
+### block:df5fc502b6e0af1e
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L371-L371`. Next: `block:2e578aabd6e7b43e`.
+
+```stata
+gen _industry_ind_m = missing(industrycat4) if age>=15 & age<=64 & lstatus==1
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {` → `if r(N)>0 & `lstatus_indok'==1 {`
+New: `variable:276e4e792f21e0ea`
+Read candidates: `variable:5626b9f1a5d435bf`, `variable:23791d2691dc0231`, `variable:8acae78c4b8fa4bf`
+
+### block:2e578aabd6e7b43e
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L372-L372`. Next: `block:e6da0647f05f12b1`.
+
+```stata
+local industrycat4_list _industry_ind1 _industry_ind2 _industry_ind3 _industry_ind4 _industry_nonagr_ind _industry_nonagr_ind3 _industry_ind_m
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {` → `if r(N)>0 & `lstatus_indok'==1 {`
+
+### block:e6da0647f05f12b1
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L373-L373`. Next: `block:5f0b9a2aeb93a940`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {`
+
+### block:5f0b9a2aeb93a940
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L374-L374`. Next: `block:36f6f02fb7777e50`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:36f6f02fb7777e50
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L378-L378`. Next: `block:669db9e960d78381`.
+
+```stata
+local industrycat10_list
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:669db9e960d78381
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L379-L379`. Next: `block:2e890912a72a6c9a`.
+
+```stata
+cap des industrycat10
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:2e890912a72a6c9a
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L380-L380`. Next: `block:b4be20365f62a40b`.
+
+```stata
+if _rc==0 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {`
+
+### block:b4be20365f62a40b
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L381-L381`. Next: `block:2bbfcb11c3160aa6`.
+
+```stata
+cap su industrycat10,d
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {`
+Read candidates: `variable:f841cb0bfdf4e439`, `variable:77be8ae66bb714d9`
+
+### block:2bbfcb11c3160aa6
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L382-L382`. Next: `block:841719f21c4b3c4a`.
+
+```stata
+if r(N)>0 & `lstatus_indok'==1 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {`
+
+### block:841719f21c4b3c4a
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L383-L383`. Next: `block:fa7f40e1a7371b41`.
+
+```stata
+forv x=1(1)10 {
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {` → `if r(N)>0 & `lstatus_indok'==1 {`
+
+### block:fa7f40e1a7371b41
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L384-L384`. Next: `block:e42876e8ce17c195`.
+
+```stata
+cap gen _industry10_ind`x' = industrycat10==`x' if age>=15 & age<=64 & !missing(industrycat10) & lstatus==1
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {` → `if r(N)>0 & `lstatus_indok'==1 {` → `forv x=1(1)10 {`
+New: `variable:22f4d8f7fab47206`
+Read candidates: `variable:f841cb0bfdf4e439`, `variable:23791d2691dc0231`, `variable:8acae78c4b8fa4bf`, `variable:01c530b0043b8fcc`
+
+### block:e42876e8ce17c195
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L385-L385`. Next: `block:32c6133be00f7899`.
+
+```stata
+if _rc==0 local industrycat10_list "`industrycat10_list' _industry10_ind`x'"
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {` → `if r(N)>0 & `lstatus_indok'==1 {` → `forv x=1(1)10 {`
+
+### block:32c6133be00f7899
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L386-L386`. Next: `block:86e96143f1b0de52`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {` → `if r(N)>0 & `lstatus_indok'==1 {`
+
+### block:86e96143f1b0de52
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L387-L387`. Next: `block:5977d804bfc36399`.
+
+```stata
+gen _industry10_ind_m = missing(industrycat10) if age>=15 & age<=64 & lstatus==1
+```
+Enclosing controls: `forv i=`resume'(1)`nobs' {` → `qui if _rc==0 {` → `qui {` → `if r(N)>0 {` → `if _rc==0 {` → `if r(N)>0 & `lstatus_indok'==1 {`
+New: `variable:3e1976d1055bb9a3`
+Read candidates: `variable:f841cb0bfdf4e439`, `variable:23791d2691dc0231`, `variable:8acae78c4b8fa4bf`
+
+### block:5977d804bfc36399
+
+Evidence: `01.Programs/01ab-GMI extended indicators labor ind.do:L388-L388`. Next: `block:d9d6936a4a9f7d7b`.
+
+```stata

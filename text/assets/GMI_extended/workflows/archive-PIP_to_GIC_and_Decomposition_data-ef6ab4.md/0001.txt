@@ -1,0 +1,769 @@
+# 01.Programs/archive/PIP to GIC and Decomposition data.do
+
+Legacy binned welfare conversion and GIC export
+
+Status: PARTIAL_STATIC. Every lexically active statement is indexed; complete runtime schema and macro expansion are not established.
+
+Source snapshot: numbered source (deployment lookup: lookup/sources/GMI_extended/source_maps/archive-PIP_to_GIC_and_Decomposition_data-ef6ab4.md.md)
+
+## Execution-order blocks
+
+### block:774417500f736818
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L3-L3`. Next: `block:5e202c1b814a6c5c`.
+
+```stata
+clear
+```
+
+### block:5e202c1b814a6c5c
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L4-L4`. Next: `block:84779cecdeffa88b`.
+
+```stata
+global rnd SM26
+```
+
+### block:84779cecdeffa88b
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L5-L5`. Next: `block:c6d7a86306658205`.
+
+```stata
+global rnd1 SM2026
+```
+
+### block:c6d7a86306658205
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L6-L6`. Next: `block:a998f10246112024`.
+
+```stata
+global path \\wbgfscifs01\GTSD\03.projects_corp\04.GPWG\04.GPWG_${rnd}\04.GPWG_${rnd}_QA
+```
+
+### block:a998f10246112024
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L7-L7`. Next: `block:6d808f9e4c10c042`.
+
+```stata
+global reposource "${path}\01.programs\02.dofile\repo\"
+```
+
+### block:6d808f9e4c10c042
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L9-L9`. Next: `block:cc5e6506abdc0a22`.
+
+```stata
+global out  D:\daylan\test\GMI\out\
+```
+
+### block:cc5e6506abdc0a22
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L10-L10`. Next: `block:9579e3d339bb5fb9`.
+
+```stata
+global pwf "D:\daylan\test\GMI\Survey_price_framework.dta"
+```
+
+### block:9579e3d339bb5fb9
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L11-L11`. Next: `block:aa95b24d175806df`.
+
+```stata
+global pea "${out}\04.output\PEA_Dashboard\"
+```
+
+### block:aa95b24d175806df
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L13-L13`. Next: `block:96897ad15703452c`.
+
+```stata
+tempfile data1 data2 data3 data4 bindata
+```
+
+### block:96897ad15703452c
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L14-L14`. Next: `block:553e4ba5c43dcaa4`.
+
+```stata
+save `data1', replace emptyok
+```
+Write datasets: `dataset:a3808ab95018a5ef`
+
+### block:553e4ba5c43dcaa4
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L16-L16`. Next: `block:16569cee11bcc1b2`.
+
+```stata
+global vintage Spring 2026
+```
+
+### block:16569cee11bcc1b2
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L17-L17`. Next: `block:0be2cbc97d90981c`.
+
+```stata
+global rnd SM26
+```
+
+### block:0be2cbc97d90981c
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L19-L19`. Next: `block:0b4d0db5a381671c`.
+
+```stata
+global datain D:\daylan\test\GMI
+```
+
+### block:0b4d0db5a381671c
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L20-L20`. Next: `block:eb6787b342ee5f59`.
+
+```stata
+global piptxt server(prod) version(20260324_2021_01_02_PROD)
+```
+
+### block:eb6787b342ee5f59
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L25-L25`. Next: `block:e89f5b2dda82c9f0`.
+
+```stata
+pip tables, table(framework) clear ${piptxt}
+```
+Read datasets: `dataset:364308a3cf81c06d`
+
+### block:e89f5b2dda82c9f0
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L26-L26`. Next: `block:3a8d8c85f6b0959d`.
+
+```stata
+drop year
+```
+Read candidates: `variable:8f4172bc245dadd6`
+
+### block:3a8d8c85f6b0959d
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L27-L27`. Next: `block:bc8b2e103034b235`.
+
+```stata
+ren reporting_year year
+```
+New: `variable:8f4172bc245dadd6`
+Read candidates: `variable:2f9b231ba1434f84`
+
+### block:bc8b2e103034b235
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L28-L28`. Next: `block:2152ae6d723753f4`.
+
+```stata
+ren survey_coverage reporting_level
+```
+New: `variable:3a87d356e22de7c3`
+Read candidates: `variable:9136df25ec3611e4`
+
+### block:2152ae6d723753f4
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L31-L31`. Next: `block:3974b5efaf0fbd84`.
+
+```stata
+bys country_code  welfare_type survey_comparability (year): egen nobs = count( year)
+```
+New: `variable:6a3b43f5c9c7eb0e`
+Read candidates: `variable:8f4172bc245dadd6`, `variable:285b8c283d9e4402`, `variable:26e74ef6e669f866`
+
+### block:3974b5efaf0fbd84
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L32-L32`. Next: `block:79ce0e9fd8938569`.
+
+```stata
+drop if nobs==1
+```
+Read candidates: `variable:6a3b43f5c9c7eb0e`
+
+### block:79ce0e9fd8938569
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L33-L33`. Next: `block:eb3c49cc54c7f32f`.
+
+```stata
+drop nobs
+```
+Read candidates: `variable:6a3b43f5c9c7eb0e`
+
+### block:eb3c49cc54c7f32f
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L34-L34`. Next: `block:efc985a22a9ee954`.
+
+```stata
+save `data2', replace
+```
+Write datasets: `dataset:2e883d89fc2c056b`
+
+### block:efc985a22a9ee954
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L37-L37`. Next: `block:bc73ac1a16ea36aa`.
+
+```stata
+pip tables, table(pop) clear ${piptxt}
+```
+Read datasets: `dataset:b8aa2b21a7178ce7`
+
+### block:bc73ac1a16ea36aa
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L38-L38`. Next: `block:cb8688dfc3e8cc34`.
+
+```stata
+keep if country_code=="ISO3"|country_code=="ISO3"
+```
+Read candidates: `variable:b197e7936230ba0b`
+
+### block:cb8688dfc3e8cc34
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L39-L39`. Next: `block:0fa901915221c062`.
+
+```stata
+drop if data_level=="national"
+```
+Read candidates: `variable:b1d5f83dfc55e729`
+
+### block:0fa901915221c062
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L40-L40`. Next: `block:8308451a7568fd56`.
+
+```stata
+bys country_code year: egen double tot = sum(value)
+```
+New: `variable:f3d67fb9c2319164`
+Read candidates: `variable:1a849ac48f6db64c`, `variable:b197e7936230ba0b`, `variable:005606e27a5cac41`
+
+### block:8308451a7568fd56
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L41-L41`. Next: `block:c0ce092345ad277c`.
+
+```stata
+gen double popshare = value/tot
+```
+New: `variable:52ce45c87a24d106`
+Read candidates: `variable:1a849ac48f6db64c`, `variable:f3d67fb9c2319164`
+
+### block:c0ce092345ad277c
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L42-L42`. Next: `block:f5920f7d8dc4c965`.
+
+```stata
+save `data3', replace
+```
+Write datasets: `dataset:75db017d689cec81`
+
+### block:f5920f7d8dc4c965
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L45-L45`. Next: `block:a0d72294dea2fc5b`.
+
+```stata
+use "$datain\world_1000bin.dta"  ,clear
+```
+Read datasets: `dataset:090ed4a39f1740c1`
+
+### block:a0d72294dea2fc5b
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L47-L47`. Next: `block:2ce952b068787f51`.
+
+```stata
+keep if country_code=="ISO3"|country_code=="ISO3"
+```
+Read candidates: `variable:5b52bab4a4fef0b0`
+
+### block:2ce952b068787f51
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L48-L48`. Next: `block:1e59999d107d63ec`.
+
+```stata
+decode reporting_level, gen(data_level)
+```
+New: `variable:6e1c0e1be1b16673`
+Read candidates: `variable:2d18e4a8127954fb`
+
+### block:1e59999d107d63ec
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L49-L49`. Next: `block:23262a7e63ac7c7b`.
+
+```stata
+merge m:1 country_code year data_level using `data3'
+```
+Read datasets: `dataset:75db017d689cec81`
+
+### block:23262a7e63ac7c7b
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L50-L50`. Next: `block:8c1de44e4d5c2687`.
+
+```stata
+drop if _merge==2
+```
+Read candidates: `variable:6cd390660aba83a6`
+
+### block:8c1de44e4d5c2687
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L51-L51`. Next: `block:4b66445ba1623329`.
+
+```stata
+drop _merge
+```
+Read candidates: `variable:6cd390660aba83a6`
+
+### block:4b66445ba1623329
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L52-L52`. Next: `block:a43c436083cf8b8b`.
+
+```stata
+sort country_code year reporting_level percentile
+```
+
+### block:a43c436083cf8b8b
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L53-L53`. Next: `block:7fce1093b4d6c320`.
+
+```stata
+collapse (mean) avg_welfare pop_share welfare_share quantile [aw=popshare], by(country_code year welfare_type percentile)
+```
+Read candidates: `variable:c73971879f95a2e0`, `variable:c66165f185cf26d1`, `variable:0c17a7fc205a18ad`, `variable:846b3779bd888655`, `variable:3477d2bb0622c32d`, `variable:5b52bab4a4fef0b0`, `variable:bcf1918491c68a85`, `variable:243173cdf667392b`, `variable:0d3be676a5b786a0`
+
+### block:7fce1093b4d6c320
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L54-L54`. Next: `block:228704259c5e8f39`.
+
+```stata
+gen reporting_level = 1
+```
+New: `variable:2d18e4a8127954fb`
+
+### block:228704259c5e8f39
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L55-L55`. Next: `block:5514b838ba5a692f`.
+
+```stata
+save `data4', replace
+```
+Write datasets: `dataset:ad1a8a9b299e0efc`
+
+### block:5514b838ba5a692f
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L57-L57`. Next: `block:b367795aec319bce`.
+
+```stata
+use "$datain\world_1000bin.dta"  ,clear
+```
+Read datasets: `dataset:090ed4a39f1740c1`
+
+### block:b367795aec319bce
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L59-L59`. Next: `block:b040ee6ad0cad5db`.
+
+```stata
+drop if country_code=="ISO3"|country_code=="ISO3"
+```
+Read candidates: `variable:0bcf1125b892a26a`
+
+### block:b040ee6ad0cad5db
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L60-L60`. Next: `block:aa8681ff50cd6ed3`.
+
+```stata
+append using `data4'
+```
+Read datasets: `dataset:ad1a8a9b299e0efc`
+
+### block:aa8681ff50cd6ed3
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L62-L62`. Next: `block:79c5f8c498007eed`.
+
+```stata
+sort country_code year reporting_level welfare_type percentile
+```
+
+### block:79c5f8c498007eed
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L63-L63`. Next: `block:1794e4ed0d812dc0`.
+
+```stata
+bys country_code year reporting_level welfare_type (percentile): gen double headcount = sum(pop_share)
+```
+New: `variable:b0898b4fde2e3070`
+Read candidates: `variable:9908b3c7b1f0b84c`, `variable:0bcf1125b892a26a`, `variable:3358c601e7ac8299`, `variable:7609fe4c7816d6a9`, `variable:1a1f9ee57880cf09`
+
+### block:1794e4ed0d812dc0
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L65-L65`. Next: `block:56e1fa03462db3ac`.
+
+```stata
+gen double t1 = avg_welfare*pop_share
+```
+New: `variable:94adfc6eccb23891`
+Read candidates: `variable:411d8212759ce378`, `variable:9908b3c7b1f0b84c`
+
+### block:56e1fa03462db3ac
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L66-L66`. Next: `block:cfef23285c8ed5c3`.
+
+```stata
+bys country_code year reporting_level welfare_type (percentile): gen double t1s = sum(t1)
+```
+New: `variable:8b57ffbe7ebde61c`
+Read candidates: `variable:94adfc6eccb23891`, `variable:0bcf1125b892a26a`, `variable:3358c601e7ac8299`, `variable:7609fe4c7816d6a9`, `variable:1a1f9ee57880cf09`
+
+### block:cfef23285c8ed5c3
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L67-L67`. Next: `block:8d39c3e1e82022f0`.
+
+```stata
+gen double cumm_welfare = t1s/headcount
+```
+New: `variable:af5a99f361a50fd6`
+Read candidates: `variable:8b57ffbe7ebde61c`, `variable:b0898b4fde2e3070`
+
+### block:8d39c3e1e82022f0
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L68-L68`. Next: `block:8e2cd076770d2580`.
+
+```stata
+drop t1 t1s
+```
+Read candidates: `variable:94adfc6eccb23891`, `variable:8b57ffbe7ebde61c`
+
+### block:8e2cd076770d2580
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L71-L71`. Next: `block:19f103c044744742`.
+
+```stata
+decode reporting_level, gen(tmp)
+```
+New: `variable:3a3c3709c544eb98`
+Read candidates: `variable:7609fe4c7816d6a9`
+
+### block:19f103c044744742
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L72-L72`. Next: `block:1a82189604841ca0`.
+
+```stata
+ren reporting_level lvl
+```
+New: `variable:d31e9fc6df9688b4`
+Read candidates: `variable:7609fe4c7816d6a9`
+
+### block:1a82189604841ca0
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L73-L73`. Next: `block:52ac075438169adc`.
+
+```stata
+ren tmp reporting_level
+```
+New: `variable:7609fe4c7816d6a9`
+Read candidates: `variable:3a3c3709c544eb98`
+
+### block:52ac075438169adc
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L74-L74`. Next: `block:f022b4f091be4526`.
+
+```stata
+merge m:1 country_code year reporting_level welfare_type using `data2', keepus(survey_acronym survey_comparability welfare_time)
+```
+Read datasets: `dataset:2e883d89fc2c056b`
+
+### block:f022b4f091be4526
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L76-L76`. Next: `block:2bc9bcdf35bd54f6`.
+
+```stata
+keep if _merge==3
+```
+Read candidates: `variable:624ca2c4bea1c886`
+
+### block:2bc9bcdf35bd54f6
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L77-L77`. Next: `block:2c497cad65266454`.
+
+```stata
+drop _merge lvl
+```
+Read candidates: `variable:624ca2c4bea1c886`, `variable:d31e9fc6df9688b4`
+
+### block:2c497cad65266454
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L79-L79`. Next: `block:719615b02e3f71a7`.
+
+```stata
+bys country_code year reporting_level welfare_type survey_acronym survey_comparability (percentile): gen last = _n==_N
+```
+New: `variable:7b6766f4c69a5037`
+Read candidates: `variable:0bcf1125b892a26a`, `variable:3358c601e7ac8299`, `variable:7609fe4c7816d6a9`, `variable:7293f3cdcd832666`, `variable:9078affb55358f74`, `variable:1a1f9ee57880cf09`
+
+### block:719615b02e3f71a7
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L80-L80`. Next: `block:48dbed2cf2471755`.
+
+```stata
+gen ds = cumm_welfare if last==1
+```
+New: `variable:2354249268c5027a`
+Read candidates: `variable:af5a99f361a50fd6`, `variable:7b6766f4c69a5037`
+
+### block:48dbed2cf2471755
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L81-L81`. Next: `block:2f5d69427b88bb7e`.
+
+```stata
+bys country_code year reporting_level welfare_type survey_acronym survey_comparability (percentile): egen mean = total(ds)
+```
+New: `variable:75d3256211d1ab50`
+Read candidates: `variable:2354249268c5027a`, `variable:0bcf1125b892a26a`, `variable:3358c601e7ac8299`, `variable:7609fe4c7816d6a9`, `variable:7293f3cdcd832666`, `variable:9078affb55358f74`, `variable:1a1f9ee57880cf09`
+
+### block:2f5d69427b88bb7e
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L82-L82`. Next: `block:12c62eee3d6cbf2c`.
+
+```stata
+drop ds last
+```
+Read candidates: `variable:2354249268c5027a`, `variable:7b6766f4c69a5037`
+
+### block:12c62eee3d6cbf2c
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L84-L84`. Next: `block:7f8e01244a6f30d9`.
+
+```stata
+compress
+```
+
+### block:7f8e01244a6f30d9
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L85-L85`. Next: `block:6d71f19687f15c84`.
+
+```stata
+saveold "$out\03.intermediate\PIP_povdecomp_${rnd}", replace
+```
+Write datasets: `dataset:f2bdbce0d6cfc6af`
+
+### block:6d71f19687f15c84
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L89-L89`. Next: `block:56fef69075c9cb18`.
+
+```stata
+use "$out\03.intermediate\PIP_povdecomp_${rnd}", clear
+```
+Read datasets: `dataset:f2bdbce0d6cfc6af`
+
+### block:56fef69075c9cb18
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L90-L90`. Next: `block:b9f609fb170e9993`.
+
+```stata
+gen bin = .
+```
+New: `variable:a3ba7b526e294f2a`
+
+### block:b9f609fb170e9993
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L91-L91`. Next: `block:b64b7983d69c113c`.
+
+```stata
+qui forv i=1(1)100 {
+```
+
+### block:b64b7983d69c113c
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L92-L92`. Next: `block:193606d433ad4c91`.
+
+```stata
+replace bin = `i' if percentile >=`=`i'-1'*10 + 1 & percentile <=`i'*10
+```
+Enclosing controls: `qui forv i=1(1)100 {`
+Modified: `variable:a3ba7b526e294f2a`
+Read candidates: `variable:2f0377696e38843a`
+
+### block:193606d433ad4c91
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L93-L93`. Next: `block:71bb9f71d4d60ed6`.
+
+```stata
+}
+```
+
+### block:71bb9f71d4d60ed6
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L95-L95`. Next: `block:d432277266c56c8c`.
+
+```stata
+clonevar pop1 = pop_share
+```
+New: `variable:0454351e32ec3149`
+Read candidates: `variable:c592a64c005694e8`
+
+### block:d432277266c56c8c
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L96-L96`. Next: `block:d4a42745358497dc`.
+
+```stata
+collapse (mean) avg_welfare (rawsum) pop1 [aw=pop_share], by(country_code year reporting_level welfare_type survey_acronym survey_comparability welfare_time bin)
+```
+Read candidates: `variable:99d85afa954132c3`, `variable:0454351e32ec3149`, `variable:c592a64c005694e8`, `variable:5a9c46770571912d`, `variable:040b52529d05a43f`, `variable:f009c974db170e87`, `variable:0bd350602141c982`, `variable:4f71bc31fd73ae94`, `variable:ab17ea3e0e7bcdb9`, `variable:7934c595365c2ea0`, `variable:a3ba7b526e294f2a`
+
+### block:d4a42745358497dc
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L97-L97`. Next: `block:4ec1bb41046b07fe`.
+
+```stata
+ren pop1 pop_share
+```
+New: `variable:c592a64c005694e8`
+Read candidates: `variable:0454351e32ec3149`
+
+### block:4ec1bb41046b07fe
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L99-L99`. Next: `block:224f19939169222d`.
+
+```stata
+bys country_code year reporting_level welfare_type (bin): gen double headcount = sum(pop_share)
+```
+New: `variable:95418bb0b266d641`
+Read candidates: `variable:c592a64c005694e8`, `variable:5a9c46770571912d`, `variable:040b52529d05a43f`, `variable:f009c974db170e87`, `variable:a3ba7b526e294f2a`
+
+### block:224f19939169222d
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L101-L101`. Next: `block:16ff748234e43033`.
+
+```stata
+gen double t1 = avg_welfare*pop_share
+```
+New: `variable:7e64539612185b8c`
+Read candidates: `variable:71b4bc5e9bdb0c0d`, `variable:c592a64c005694e8`
+
+### block:16ff748234e43033
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L102-L102`. Next: `block:b94b5581e25929bf`.
+
+```stata
+bys country_code year reporting_level welfare_type (bin): gen double t1s = sum(t1)
+```
+New: `variable:cb3477fee0180db4`
+Read candidates: `variable:7e64539612185b8c`, `variable:5a9c46770571912d`, `variable:040b52529d05a43f`, `variable:f009c974db170e87`, `variable:a3ba7b526e294f2a`
+
+### block:b94b5581e25929bf
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L103-L103`. Next: `block:5474e9281312c912`.
+
+```stata
+gen double cumm_welfare = t1s/headcount
+```
+New: `variable:f9a93a240a65112b`
+Read candidates: `variable:cb3477fee0180db4`, `variable:95418bb0b266d641`
+
+### block:5474e9281312c912
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L104-L104`. Next: `block:b70386576b85d44c`.
+
+```stata
+drop t1 t1s
+```
+Read candidates: `variable:7e64539612185b8c`, `variable:cb3477fee0180db4`
+
+### block:b70386576b85d44c
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L105-L105`. Next: `block:c4cc5112854ac5b1`.
+
+```stata
+bys country_code year reporting_level welfare_type survey_acronym survey_comparability (bin): gen last = _n==_N
+```
+New: `variable:931e667de665b5e3`
+Read candidates: `variable:5a9c46770571912d`, `variable:040b52529d05a43f`, `variable:f009c974db170e87`, `variable:0bd350602141c982`, `variable:4f71bc31fd73ae94`, `variable:a3ba7b526e294f2a`
+
+### block:c4cc5112854ac5b1
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L106-L106`. Next: `block:615ce53ece70de71`.
+
+```stata
+gen ds = cumm_welfare if last==1
+```
+New: `variable:aa31237a46292713`
+Read candidates: `variable:f9a93a240a65112b`, `variable:931e667de665b5e3`
+
+### block:615ce53ece70de71
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L107-L107`. Next: `block:87a59a6c75329ecb`.
+
+```stata
+bys country_code year reporting_level welfare_type survey_acronym survey_comparability (bin): egen mean = total(ds)
+```
+New: `variable:fdb5a85b60ba8a46`
+Read candidates: `variable:aa31237a46292713`, `variable:5a9c46770571912d`, `variable:040b52529d05a43f`, `variable:f009c974db170e87`, `variable:0bd350602141c982`, `variable:4f71bc31fd73ae94`, `variable:a3ba7b526e294f2a`
+
+### block:87a59a6c75329ecb
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L108-L108`. Next: `block:5ef11a77863adbe6`.
+
+```stata
+drop ds last
+```
+Read candidates: `variable:aa31237a46292713`, `variable:931e667de665b5e3`
+
+### block:5ef11a77863adbe6
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L110-L110`. Next: `block:38ebd856c9ec9dd8`.
+
+```stata
+bys country_code year reporting_level welfare_type survey_acronym survey_comparability (bin): egen totalincome = total(avg_welfare*pop_share)
+```
+New: `variable:eea34ca3c37ad7d8`
+Read candidates: `variable:71b4bc5e9bdb0c0d`, `variable:c592a64c005694e8`, `variable:5a9c46770571912d`, `variable:040b52529d05a43f`, `variable:f009c974db170e87`, `variable:0bd350602141c982`, `variable:4f71bc31fd73ae94`, `variable:a3ba7b526e294f2a`
+
+### block:38ebd856c9ec9dd8
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L111-L111`. Next: `block:d3e1d021db18ef2a`.
+
+```stata
+gen welfare_share 	 = (avg_welfare*pop_share)/totalincome
+```
+New: `variable:66cf23fb0ae8a089`
+Read candidates: `variable:71b4bc5e9bdb0c0d`, `variable:c592a64c005694e8`, `variable:eea34ca3c37ad7d8`
+
+### block:d3e1d021db18ef2a
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L112-L112`. Next: `block:35395a27068fed3c`.
+
+```stata
+drop totalincome
+```
+Read candidates: `variable:eea34ca3c37ad7d8`
+
+### block:35395a27068fed3c
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L113-L113`. Next: `block:c4ebbd43b3eaa847`.
+
+```stata
+bys country_code year reporting_level welfare_type survey_acronym survey_comparability (bin): gen cum_popshare = sum( pop_share)
+```
+New: `variable:85de628dca7d4855`
+Read candidates: `variable:c592a64c005694e8`, `variable:5a9c46770571912d`, `variable:040b52529d05a43f`, `variable:f009c974db170e87`, `variable:0bd350602141c982`, `variable:4f71bc31fd73ae94`, `variable:a3ba7b526e294f2a`
+
+### block:c4ebbd43b3eaa847
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L114-L114`. Next: `block:99d29c97b0e62a22`.
+
+```stata
+bys country_code year reporting_level welfare_type survey_acronym survey_comparability (bin): gen cum_welfshare = sum( welfare_share)
+```
+New: `variable:92ec5d7dc55dc939`
+Read candidates: `variable:66cf23fb0ae8a089`, `variable:5a9c46770571912d`, `variable:040b52529d05a43f`, `variable:f009c974db170e87`, `variable:0bd350602141c982`, `variable:4f71bc31fd73ae94`, `variable:a3ba7b526e294f2a`
+
+### block:99d29c97b0e62a22
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L116-L116`. Next: `block:a6801223d1179b30`.
+
+```stata
+saveold "$out\03.intermediate\PIP_GICs_${rnd}", replace
+```
+Write datasets: `dataset:3f469bde756cdc97`
+
+### block:a6801223d1179b30
+
+Evidence: `01.Programs/archive/PIP to GIC and Decomposition data.do:L117-L117`. Next: `end`.
+
+```stata
+export delimit _all using "$out\04.output\PEA_Dashboard\PIP_GICs.csv" , delim(",") replace datafmt
+```
+Write datasets: `dataset:8dc6b39c2c53d551`

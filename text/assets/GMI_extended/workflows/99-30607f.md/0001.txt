@@ -1,0 +1,1935 @@
+# 04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do
+
+Repository documentation/configuration
+
+Status: PARTIAL_STATIC. Every lexically active statement is indexed; complete runtime schema and macro expansion are not established.
+
+Source snapshot: numbered source (deployment lookup: lookup/sources/GMI_extended/source_maps/99-30607f.md.md)
+
+## Execution-order blocks
+
+### block:dd0266d8bb4ef5a9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L42-L42`. Next: `block:7f55e8a1b5535251`.
+
+```stata
+local regions   SSA EAP
+```
+
+### block:7f55e8a1b5535251
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L53-L53`. Next: `block:c34a7324a0a99f99`.
+
+```stata
+local SSA_dir   "C:\Users\wb570371\OneDrive - WBG\Shortcuts\Haoyu Wu's files - toshare"
+```
+
+### block:c34a7324a0a99f99
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L54-L54`. Next: `block:b651ff4c3443ad8b`.
+
+```stata
+local EAP_dir   "$checks\EAP_data"
+```
+
+### block:b651ff4c3443ad8b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L55-L55`. Next: `block:fb44b8474422d7dc`.
+
+```stata
+local MNA_dir   ""
+```
+
+### block:fb44b8474422d7dc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L56-L56`. Next: `block:f5e9de6863d90881`.
+
+```stata
+local LAC_dir   ""
+```
+
+### block:f5e9de6863d90881
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L62-L62`. Next: `block:a550331ac1f3cd69`.
+
+```stata
+local SSA_n     18
+```
+
+### block:a550331ac1f3cd69
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L63-L63`. Next: `block:631939305e3dd66b`.
+
+```stata
+local EAP_n     6
+```
+
+### block:631939305e3dd66b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L64-L64`. Next: `block:2f1b291d93df23d9`.
+
+```stata
+local MNA_n     .
+```
+
+### block:2f1b291d93df23d9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L65-L65`. Next: `block:b7c934f6a5c82a7d`.
+
+```stata
+local LAC_n     .
+```
+
+### block:b7c934f6a5c82a7d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L72-L72`. Next: `block:e86a04da7e3e8bf1`.
+
+```stata
+local outdir    "$checks"
+```
+
+### block:e86a04da7e3e8bf1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L73-L73`. Next: `block:2c2cf9b6dc69418c`.
+
+```stata
+local outfile   "`outdir'\gmdpatch_diagnostics_${rnd}.xlsx"
+```
+
+### block:2c2cf9b6dc69418c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L77-L77`. Next: `block:ca1b87555b140c55`.
+
+```stata
+local outdir_fallback "C:\Users\wb570371\Documents\PEA\GMI_extended\04.Checks_Add_reharmonization_results"
+```
+
+### block:ca1b87555b140c55
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L85-L85`. Next: `block:153335a73770bb8c`.
+
+```stata
+local codedir   "`outdir_fallback'\code"
+```
+
+### block:153335a73770bb8c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L95-L95`. Next: `block:5a38fa1e1da3f8e6`.
+
+```stata
+local wipeqa    1
+```
+
+### block:5a38fa1e1da3f8e6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L101-L101`. Next: `block:b5f75a37a55323e8`.
+
+```stata
+local minmatch  0.95
+```
+
+### block:b5f75a37a55323e8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L107-L107`. Next: `block:1f76e066ee06e2ef`.
+
+```stata
+local show_detail   1
+```
+
+### block:1f76e066ee06e2ef
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L113-L113`. Next: `block:357b58acebc67f58`.
+
+```stata
+local onlycodes
+```
+
+### block:357b58acebc67f58
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L122-L122`. Next: `block:775dedefc1c08c79`.
+
+```stata
+local pendingcodes "ISO3"
+```
+
+### block:775dedefc1c08c79
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L132-L132`. Next: `block:354ab6425958e040`.
+
+```stata
+local docodes   1
+```
+
+### block:354ab6425958e040
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L133-L133`. Next: `block:b5a9b69aa73c8dcc`.
+
+```stata
+local catmax    25
+```
+
+### block:b5a9b69aa73c8dcc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L144-L144`. Next: `block:ee03af096da6c94e`.
+
+```stata
+clear
+```
+
+### block:ee03af096da6c94e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L145-L145`. Next: `block:3da70eae31bd90cc`.
+
+```stata
+capture postclose dsurv
+```
+
+### block:3da70eae31bd90cc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L146-L146`. Next: `block:06355301ac9c8694`.
+
+```stata
+capture postclose dvar
+```
+
+### block:06355301ac9c8694
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L149-L149`. Next: `block:c09c97d8752a82b0`.
+
+```stata
+if "`outdir'" == "" | "`outdir'" == "\gmdpatch_diagnostics_${rnd}.xlsx" {
+```
+
+### block:c09c97d8752a82b0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L150-L150`. Next: `block:c4b414e25619f7ea`.
+
+```stata
+local outdir  "`outdir_fallback'"
+```
+Enclosing controls: `if "`outdir'" == "" | "`outdir'" == "\gmdpatch_diagnostics_${rnd}.xlsx" {`
+
+### block:c4b414e25619f7ea
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L151-L151`. Next: `block:5533161f53cb73c0`.
+
+```stata
+local outfile "`outdir'\gmdpatch_diagnostics_${rnd}.xlsx"
+```
+Enclosing controls: `if "`outdir'" == "" | "`outdir'" == "\gmdpatch_diagnostics_${rnd}.xlsx" {`
+
+### block:5533161f53cb73c0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L152-L152`. Next: `block:001fd9f718d1183c`.
+
+```stata
+dis as error "  NOTE: \$checks was empty -- output path set inside this script."
+```
+Enclosing controls: `if "`outdir'" == "" | "`outdir'" == "\gmdpatch_diagnostics_${rnd}.xlsx" {`
+
+### block:001fd9f718d1183c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L153-L153`. Next: `block:f054d554604af686`.
+
+```stata
+}
+```
+
+### block:f054d554604af686
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L154-L154`. Next: `block:166a35a467bdb3cd`.
+
+```stata
+cap mkdir "`outdir'"
+```
+
+### block:166a35a467bdb3cd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L159-L159`. Next: `block:2b51ee399f7ba5e9`.
+
+```stata
+local qadir "`outdir'\_qa_data"
+```
+
+### block:2b51ee399f7ba5e9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L160-L160`. Next: `block:e512f69012c9452d`.
+
+```stata
+capture mkdir "`qadir'"
+```
+
+### block:e512f69012c9452d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L161-L161`. Next: `block:62145712141ad75e`.
+
+```stata
+if `wipeqa' {
+```
+
+### block:62145712141ad75e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L162-L162`. Next: `block:c07ddc16315eebda`.
+
+```stata
+foreach z in qa_surv qa_var qa_code {
+```
+Enclosing controls: `if `wipeqa' {`
+
+### block:c07ddc16315eebda
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L163-L163`. Next: `block:219d6d9c1b7649f4`.
+
+```stata
+capture erase "`qadir'/`z'.dta"
+```
+Enclosing controls: `if `wipeqa' {` → `foreach z in qa_surv qa_var qa_code {`
+
+### block:219d6d9c1b7649f4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L164-L164`. Next: `block:39131681e64ac0c1`.
+
+```stata
+}
+```
+Enclosing controls: `if `wipeqa' {`
+
+### block:39131681e64ac0c1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L165-L165`. Next: `block:4ea9a7d025a729b6`.
+
+```stata
+dis as text "  raw results folder: `qadir'  (started fresh)"
+```
+Enclosing controls: `if `wipeqa' {`
+
+### block:4ea9a7d025a729b6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L166-L166`. Next: `block:5a3f710138b54ef7`.
+
+```stata
+}
+```
+
+### block:5a3f710138b54ef7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L167-L167`. Next: `block:d4fb97300ba7839d`.
+
+```stata
+else {
+```
+
+### block:d4fb97300ba7839d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L168-L168`. Next: `block:1ae10f9641c00abb`.
+
+```stata
+dis as text "  raw results folder: `qadir'  (adding to what is there)"
+```
+Enclosing controls: `else {`
+
+### block:1ae10f9641c00abb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L169-L169`. Next: `block:9a9e208cf7e53b2d`.
+
+```stata
+dis as error "  wipeqa is 0: if you re-run a region already in there, it will be"
+```
+Enclosing controls: `else {`
+
+### block:9a9e208cf7e53b2d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L170-L170`. Next: `block:72bb60675b41fb26`.
+
+```stata
+dis as error "  counted twice. Set wipeqa to 1 for a clean full run."
+```
+Enclosing controls: `else {`
+
+### block:72bb60675b41fb26
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L171-L171`. Next: `block:e965f2dc8c4b6640`.
+
+```stata
+}
+```
+
+### block:e965f2dc8c4b6640
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L177-L177`. Next: `block:8d8f25b6a0a10b66`.
+
+```stata
+if "$gmd_opt" == "" {
+```
+
+### block:8d8f25b6a0a10b66
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L178-L182`. Next: `block:7185dd2b078fac7c`.
+
+```stata
+global gmd_opt  urban male educat4 school relationharm marital lstatus industrycat4 industrycat10 empstat lstatus_year industrycat4_year industrycat10_year empstat_year imp_wat_rec imp_san_rec electricity tv car cellphone computer fridge
+```
+Enclosing controls: `if "$gmd_opt" == "" {`
+
+### block:7185dd2b078fac7c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L183-L183`. Next: `block:3bc3334329765765`.
+
+```stata
+dis as error "  NOTE: \$gmd_opt was empty -- set inside this script instead."
+```
+Enclosing controls: `if "$gmd_opt" == "" {`
+
+### block:3bc3334329765765
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L184-L184`. Next: `block:f4e1bf2776517a5b`.
+
+```stata
+}
+```
+
+### block:f4e1bf2776517a5b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L185-L185`. Next: `block:3913585ac689687e`.
+
+```stata
+local ngmdopt : word count $gmd_opt
+```
+
+### block:3913585ac689687e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L201-L201`. Next: `block:d4a57915e335cdea`.
+
+```stata
+capture program drop _idfinger
+```
+
+### block:d4a57915e335cdea
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L202-L202`. Next: `block:bfbf4dd8531aca91`.
+
+```stata
+program define _idfinger, rclass
+```
+
+### block:bfbf4dd8531aca91
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L203-L203`. Next: `block:9356707b29958bce`.
+
+```stata
+tempvar a b f
+```
+
+### block:9356707b29958bce
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L204-L204`. Next: `block:295447119aa8dcc8`.
+
+```stata
+capture confirm string variable hhid
+```
+
+### block:295447119aa8dcc8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L205-L205`. Next: `block:81d7b7622c064a9e`.
+
+```stata
+if _rc == 0  qui gen double `a' = length(hhid) + cond(missing(real(hhid)), 0, real(hhid))
+```
+New: `variable:8954e172d7a17132`
+Read candidates: `variable:97146a0cb29cb8ff`, `variable:4aa9a30f7eb9ef84`
+
+### block:81d7b7622c064a9e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L206-L206`. Next: `block:159937c1dc9e6bea`.
+
+```stata
+else         qui gen double `a' = hhid
+```
+New: `variable:8954e172d7a17132`
+Read candidates: `variable:97146a0cb29cb8ff`, `variable:9f4104bfccba9e13`, `variable:4aa9a30f7eb9ef84`
+
+### block:159937c1dc9e6bea
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L207-L207`. Next: `block:24d64bb31d623b0e`.
+
+```stata
+capture confirm string variable pid
+```
+
+### block:24d64bb31d623b0e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L208-L208`. Next: `block:f7fc0d254e7c7e99`.
+
+```stata
+if _rc == 0  qui gen double `b' = length(pid)  + cond(missing(real(pid)),  0, real(pid))
+```
+New: `variable:55dc5d9d53104c09`
+Read candidates: `variable:fd422e3feb4a097a`, `variable:4aa9a30f7eb9ef84`
+
+### block:f7fc0d254e7c7e99
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L209-L209`. Next: `block:d8b5d4578200d89d`.
+
+```stata
+else         qui gen double `b' = pid
+```
+New: `variable:55dc5d9d53104c09`
+Read candidates: `variable:fd422e3feb4a097a`, `variable:9f4104bfccba9e13`, `variable:4aa9a30f7eb9ef84`
+
+### block:d8b5d4578200d89d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L210-L210`. Next: `block:85a75ebc67ccc689`.
+
+```stata
+qui gen double `f' = sum(`a' + `b')
+```
+New: `variable:d2c869256d2110b5`
+Read candidates: `variable:4aa9a30f7eb9ef84`
+
+### block:85a75ebc67ccc689
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L211-L211`. Next: `block:8d1b4d95b6697172`.
+
+```stata
+return scalar fp = `f'[_N]
+```
+
+### block:8d1b4d95b6697172
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L212-L212`. Next: `block:5bade3de2a8553ed`.
+
+```stata
+end
+```
+
+### block:5bade3de2a8553ed
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L224-L224`. Next: `block:94e18832ad6b556d`.
+
+```stata
+capture program list _gmdpatch_fixid
+```
+
+### block:94e18832ad6b556d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L225-L225`. Next: `block:a3b02a0fe9277be4`.
+
+```stata
+if _rc {
+```
+
+### block:a3b02a0fe9277be4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L227-L227`. Next: `block:899199c1d10895e8`.
+
+```stata
+local fixidfound 0
+```
+Enclosing controls: `if _rc {`
+
+### block:899199c1d10895e8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L228-L228`. Next: `block:c0addcddc35a9165`.
+
+```stata
+capture run "`codedir'/gmdpatch_fixid.do"
+```
+Enclosing controls: `if _rc {`
+
+### block:c0addcddc35a9165
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L229-L229`. Next: `block:dc00fe9290adec0d`.
+
+```stata
+if _rc == 0 {
+```
+Enclosing controls: `if _rc {`
+
+### block:dc00fe9290adec0d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L230-L230`. Next: `block:0118bdcea7e6acc9`.
+
+```stata
+local fixidfound 1
+```
+Enclosing controls: `if _rc {` → `if _rc == 0 {`
+
+### block:0118bdcea7e6acc9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L231-L231`. Next: `block:422aa32a6aad4504`.
+
+```stata
+dis as text "  _gmdpatch_fixid loaded from `codedir'"
+```
+Enclosing controls: `if _rc {` → `if _rc == 0 {`
+
+### block:422aa32a6aad4504
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L232-L232`. Next: `block:60db4ceb5073c53b`.
+
+```stata
+}
+```
+Enclosing controls: `if _rc {`
+
+### block:60db4ceb5073c53b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L233-L233`. Next: `block:c66d5052bb6814f0`.
+
+```stata
+if `fixidfound' == 0 {
+```
+Enclosing controls: `if _rc {`
+
+### block:c66d5052bb6814f0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L234-L234`. Next: `block:1755298f92e287e4`.
+
+```stata
+capture run "$prog/gmdpatch_fixid.do"
+```
+Enclosing controls: `if _rc {` → `if `fixidfound' == 0 {`
+
+### block:1755298f92e287e4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L235-L235`. Next: `block:2e881fedf76d2235`.
+
+```stata
+if _rc == 0 {
+```
+Enclosing controls: `if _rc {` → `if `fixidfound' == 0 {`
+
+### block:2e881fedf76d2235
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L236-L236`. Next: `block:154c7087b5249da5`.
+
+```stata
+local fixidfound 1
+```
+Enclosing controls: `if _rc {` → `if `fixidfound' == 0 {` → `if _rc == 0 {`
+
+### block:154c7087b5249da5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L237-L237`. Next: `block:fcd58893277654a5`.
+
+```stata
+dis as text "  _gmdpatch_fixid loaded from $prog"
+```
+Enclosing controls: `if _rc {` → `if `fixidfound' == 0 {` → `if _rc == 0 {`
+
+### block:fcd58893277654a5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L238-L238`. Next: `block:491f14eedf7de99a`.
+
+```stata
+}
+```
+Enclosing controls: `if _rc {` → `if `fixidfound' == 0 {`
+
+### block:491f14eedf7de99a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L239-L239`. Next: `block:70402c6afd040c37`.
+
+```stata
+}
+```
+Enclosing controls: `if _rc {`
+
+### block:70402c6afd040c37
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L240-L240`. Next: `block:3db2866ca19029c4`.
+
+```stata
+if `fixidfound' == 0 {
+```
+Enclosing controls: `if _rc {`
+
+### block:3db2866ca19029c4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L241-L241`. Next: `block:67d918f69b78887e`.
+
+```stata
+dis as error "  gmdpatch_fixid.do was not found. Looked in:"
+```
+Enclosing controls: `if _rc {` → `if `fixidfound' == 0 {`
+
+### block:67d918f69b78887e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L242-L242`. Next: `block:5066e24886515196`.
+
+```stata
+dis as error "    `codedir'"
+```
+Enclosing controls: `if _rc {` → `if `fixidfound' == 0 {`
+
+### block:5066e24886515196
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L243-L243`. Next: `block:54eb7730ae6b47ec`.
+
+```stata
+dis as error "    $prog"
+```
+Enclosing controls: `if _rc {` → `if `fixidfound' == 0 {`
+
+### block:54eb7730ae6b47ec
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L244-L244`. Next: `block:b0578344e1767d20`.
+
+```stata
+dis as error "  Save it in one of those, as a .do file, then run this again."
+```
+Enclosing controls: `if _rc {` → `if `fixidfound' == 0 {`
+
+### block:b0578344e1767d20
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L245-L245`. Next: `block:48f800a9ca061f4b`.
+
+```stata
+exit 601
+```
+Enclosing controls: `if _rc {` → `if `fixidfound' == 0 {`
+
+### block:48f800a9ca061f4b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L246-L246`. Next: `block:992fe3bcee8058c6`.
+
+```stata
+}
+```
+Enclosing controls: `if _rc {`
+
+### block:992fe3bcee8058c6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L247-L247`. Next: `block:c9cd5c9feb1004c8`.
+
+```stata
+}
+```
+
+### block:c9cd5c9feb1004c8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L253-L253`. Next: `block:59c2999b8ebabbe1`.
+
+```stata
+if "$gmdpatch_fixid_version" != "2" {
+```
+
+### block:59c2999b8ebabbe1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L254-L254`. Next: `block:4a09d108bd90eb1c`.
+
+```stata
+capture run "$prog/gmdpatch_fixid.do"
+```
+Enclosing controls: `if "$gmdpatch_fixid_version" != "2" {`
+
+### block:4a09d108bd90eb1c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L255-L255`. Next: `block:6ea3bcaa5b570339`.
+
+```stata
+if "$gmdpatch_fixid_version" != "2" {
+```
+Enclosing controls: `if "$gmdpatch_fixid_version" != "2" {`
+
+### block:6ea3bcaa5b570339
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L256-L256`. Next: `block:9a6cc69ed080192d`.
+
+```stata
+dis as error "  The _gmdpatch_fixid in memory is an old copy: it does not use the side argument."
+```
+Enclosing controls: `if "$gmdpatch_fixid_version" != "2" {` → `if "$gmdpatch_fixid_version" != "2" {`
+
+### block:9a6cc69ed080192d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L257-L257`. Next: `block:f38f8d83d928a992`.
+
+```stata
+dis as error "  ISO3 0000 would be joined on the wrong key. Run gmdpatch_fixid.do, then try again."
+```
+Enclosing controls: `if "$gmdpatch_fixid_version" != "2" {` → `if "$gmdpatch_fixid_version" != "2" {`
+
+### block:f38f8d83d928a992
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L258-L258`. Next: `block:fc37e413c98006f8`.
+
+```stata
+exit 198
+```
+Enclosing controls: `if "$gmdpatch_fixid_version" != "2" {` → `if "$gmdpatch_fixid_version" != "2" {`
+
+### block:fc37e413c98006f8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L259-L259`. Next: `block:9f68e7049fafa7e3`.
+
+```stata
+}
+```
+Enclosing controls: `if "$gmdpatch_fixid_version" != "2" {`
+
+### block:9f68e7049fafa7e3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L260-L260`. Next: `block:53adda693fc9d78c`.
+
+```stata
+}
+```
+
+### block:53adda693fc9d78c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L262-L262`. Next: `block:339c42e7941dd07a`.
+
+```stata
+dis as text _n(2) _dup(92) "="
+```
+
+### block:339c42e7941dd07a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L263-L263`. Next: `block:0213444938390bc9`.
+
+```stata
+dis as text "  LOCAL HARMONIZATION DIAGNOSTICS"
+```
+
+### block:0213444938390bc9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L264-L264`. Next: `block:1eb9a8037f413036`.
+
+```stata
+dis as text "  Round: $rnd" _col(42) "Run: `c(current_date)' `c(current_time)'"
+```
+
+### block:1eb9a8037f413036
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L265-L265`. Next: `block:5bf8c3191ebcb715`.
+
+```stata
+dis as text _dup(92) "="
+```
+
+### block:5bf8c3191ebcb715
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L266-L266`. Next: `block:779a8c413bdb932c`.
+
+```stata
+dis as text "  Regions:   `regions'"
+```
+
+### block:779a8c413bdb932c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L267-L267`. Next: `block:4decf985703d4fd1`.
+
+```stata
+dis as text "  Variables: `ngmdopt'"
+```
+
+### block:4decf985703d4fd1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L268-L268`. Next: `block:88aa322cd5809569`.
+
+```stata
+dis as text "  Workbook:  `outfile'"
+```
+
+### block:88aa322cd5809569
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L269-L270`. Next: `block:c047a9ad95fc20b9`.
+
+```stata
+if "`onlycodes'" != "" dis as error "  LIMITED RUN -- only these countries: `onlycodes'"
+```
+
+### block:c047a9ad95fc20b9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L279-L279`. Next: `block:ce9197f64fbc0524`.
+
+```stata
+putexcel set "`outfile'", sheet("README") replace
+```
+Write datasets: `dataset:e38d6b529f9f8802`
+
+### block:ce9197f64fbc0524
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L281-L281`. Next: `block:e39acebc6ad4f4ff`.
+
+```stata
+putexcel A1 = "HOW TO READ THIS WORKBOOK", bold
+```
+
+### block:e39acebc6ad4f4ff
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L282-L282`. Next: `block:b81be8695fdf5d73`.
+
+```stata
+putexcel A2 = "Local harmonization diagnostics -- round $rnd -- run `c(current_date)' `c(current_time)'"
+```
+
+### block:b81be8695fdf5d73
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L284-L284`. Next: `block:1c715e990aab24d4`.
+
+```stata
+putexcel A4 = "WHAT THIS IS", bold
+```
+
+### block:1c715e990aab24d4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L285-L285`. Next: `block:87feb07d41e46785`.
+
+```stata
+putexcel A5 = "Some regions re-harmonize survey files and send them to us before the files reach DataLibWeb (DLW)."
+```
+
+### block:87feb07d41e46785
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L286-L286`. Next: `block:8d0ac0f89f15f14f`.
+
+```stata
+putexcel A6 = "Before using them, this check compares each local file against the same survey pulled from DLW,"
+```
+Write datasets: `dataset:20988b65a7b0b9bb`
+
+### block:8d0ac0f89f15f14f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L287-L287`. Next: `block:0355a2e2a07d9f84`.
+
+```stata
+putexcel A7 = "person by person, and reports every difference. One sheet per region (SSA, EAP, ...)."
+```
+
+### block:0355a2e2a07d9f84
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L289-L289`. Next: `block:74336cbfc906f02b`.
+
+```stata
+putexcel A9 = "WHAT GETS REPLACED", bold
+```
+
+### block:74336cbfc906f02b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L290-L290`. Next: `block:b9687c49950d23f9`.
+
+```stata
+putexcel A10 = "ONLY these variables are taken from the local files:"
+```
+
+### block:b9687c49950d23f9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L291-L291`. Next: `block:b8f58c600acf5d70`.
+
+```stata
+putexcel A11 = "$gmd_opt"
+```
+
+### block:b8f58c600acf5d70
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L292-L292`. Next: `block:7e22672709939943`.
+
+```stata
+putexcel A12 = "Everything else -- welfare, weight, weight_p, cpi, icp, hhid, pid, age -- always comes from DLW."
+```
+
+### block:7e22672709939943
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L294-L294`. Next: `block:2ff5dcac6fea3807`.
+
+```stata
+putexcel A14 = "HOW THE TWO FILES ARE JOINED", bold
+```
+
+### block:2ff5dcac6fea3807
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L295-L295`. Next: `block:5fa4b386f050cba5`.
+
+```stata
+putexcel A15 = "Each person is matched on hhid + pid. Three things can happen to a row:"
+```
+
+### block:5fa4b386f050cba5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L296-L296`. Next: `block:c9ed2b0ce4a1105d`.
+
+```stata
+putexcel A16 = "  matched            the person is in both files. The local file's values win."
+```
+
+### block:c9ed2b0ce4a1105d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L297-L297`. Next: `block:323a6f582c307b4b`.
+
+```stata
+putexcel A17 = "  DLW only           the person is in DLW but not in the local file. The variables above come back BLANK."
+```
+
+### block:323a6f582c307b4b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L298-L298`. Next: `block:1629b46e568cfa77`.
+
+```stata
+putexcel A18 = "  local file only    the person is in the local file but not in DLW. The row is DROPPED."
+```
+
+### block:1629b46e568cfa77
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L300-L300`. Next: `block:06d51cd0f9c4c9ac`.
+
+```stata
+putexcel A20 = "SECTION 2 -- THE SUMMARY GRID: WHAT EACH CODE MEANS", bold
+```
+
+### block:06d51cd0f9c4c9ac
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L301-L301`. Next: `block:6eeedebe758629c9`.
+
+```stata
+putexcel A21 = "One row per country-year, one column per variable. Each cell summarises that variable"
+```
+
+### block:6eeedebe758629c9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L302-L302`. Next: `block:cff3b3057c444cef`.
+
+```stata
+putexcel A22 = "in that survey, counted over the matched people only."
+```
+
+### block:cff3b3057c444cef
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L304-L304`. Next: `block:462a3b4070800844`.
+
+```stata
+putexcel A24 = "Code"              , bold
+```
+
+### block:462a3b4070800844
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L305-L305`. Next: `block:226338ce20a7eae2`.
+
+```stata
+putexcel B24 = "Meaning"           , bold
+```
+
+### block:226338ce20a7eae2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L306-L306`. Next: `block:cd5f75d35d8ed2c8`.
+
+```stata
+putexcel C24 = "Example"           , bold
+```
+
+### block:cd5f75d35d8ed2c8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L308-L308`. Next: `block:e785fb0f63dfdb5a`.
+
+```stata
+putexcel A25 = "no change"
+```
+
+### block:e785fb0f63dfdb5a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L309-L309`. Next: `block:b83d9a8f5af4b5df`.
+
+```stata
+putexcel B25 = "The local file carries this variable and every matched person has exactly the same value as in DLW."
+```
+
+### block:b83d9a8f5af4b5df
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L310-L310`. Next: `block:7c1188df34cfc323`.
+
+```stata
+putexcel C25 = "no change"
+```
+
+### block:7c1188df34cfc323
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L312-L312`. Next: `block:e82b008774a79d44`.
+
+```stata
+putexcel A26 = "BLANKED"
+```
+
+### block:e82b008774a79d44
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L313-L313`. Next: `block:7ce78d7dd5b471ec`.
+
+```stata
+putexcel B26 = "The variable had values in DLW and is now blank for EVERY one of those people. The whole series is gone."
+```
+
+### block:7ce78d7dd5b471ec
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L314-L314`. Next: `block:c416dd652cb0fcb9`.
+
+```stata
+putexcel C26 = "BLANKED"
+```
+
+### block:c416dd652cb0fcb9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L316-L316`. Next: `block:44e5b5f462f78361`.
+
+```stata
+putexcel A27 = "-n"
+```
+
+### block:44e5b5f462f78361
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L317-L317`. Next: `block:2743abb4872fddbe`.
+
+```stata
+putexcel B27 = "n people LOST a value: they had one in DLW, they have none in the local file. (Some, not all -- all of them would read BLANKED.)"
+```
+
+### block:2743abb4872fddbe
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L318-L318`. Next: `block:1630c2b4ce988a99`.
+
+```stata
+putexcel C27 = "-[ESTIMATE]  means [ESTIMATE] people lost their value"
+```
+
+### block:1630c2b4ce988a99
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L320-L320`. Next: `block:f299d1ee6cde782a`.
+
+```stata
+putexcel A28 = "+n"
+```
+
+### block:f299d1ee6cde782a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L321-L321`. Next: `block:1a993c33958062c9`.
+
+```stata
+putexcel B28 = "n people GAINED a value: blank in DLW, filled in the local file."
+```
+
+### block:1a993c33958062c9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L322-L322`. Next: `block:0dad0db3de2a32d1`.
+
+```stata
+putexcel C28 = "+[ESTIMATE]  means [ESTIMATE] people gained a value"
+```
+
+### block:0dad0db3de2a32d1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L324-L324`. Next: `block:9c06938ef5248d35`.
+
+```stata
+putexcel A29 = "NEW +n"
+```
+
+### block:9c06938ef5248d35
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L325-L325`. Next: `block:e19516f062315ebd`.
+
+```stata
+putexcel B29 = "The variable was COMPLETELY empty in DLW for this survey and the local file fills it for n people. A brand new series."
+```
+
+### block:e19516f062315ebd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L326-L326`. Next: `block:81953043bf100039`.
+
+```stata
+putexcel C29 = "NEW +45060"
+```
+
+### block:81953043bf100039
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L328-L328`. Next: `block:c626eb93d271e861`.
+
+```stata
+putexcel A30 = "~n"
+```
+
+### block:c626eb93d271e861
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L329-L329`. Next: `block:5d621e8207eb7640`.
+
+```stata
+putexcel B30 = "n people have a value in BOTH files, but the value is DIFFERENT. The category was re-coded."
+```
+
+### block:5d621e8207eb7640
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L330-L330`. Next: `block:f936e139428eeb84`.
+
+```stata
+putexcel C30 = "~[ESTIMATE]  means [ESTIMATE] people were re-coded"
+```
+
+### block:f936e139428eeb84
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L332-L332`. Next: `block:de8ad0d3c4ab7b8e`.
+
+```stata
+putexcel A31 = "not in local file"
+```
+
+### block:de8ad0d3c4ab7b8e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L333-L333`. Next: `block:90bd91ff879fb701`.
+
+```stata
+putexcel B31 = "The local file does not contain this variable at all, so DLW's values are kept unchanged."
+```
+
+### block:90bd91ff879fb701
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L334-L334`. Next: `block:5836e6eb65a3927e`.
+
+```stata
+putexcel C31 = "not in local file"
+```
+
+### block:5836e6eb65a3927e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L336-L336`. Next: `block:70b7a3dac23a0d43`.
+
+```stata
+putexcel A33 = "Codes COMBINE in one cell when more than one thing happened to the same variable."
+```
+
+### block:70b7a3dac23a0d43
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L337-L337`. Next: `block:71571b3497b314db`.
+
+```stata
+putexcel A34 = "Example:  -878  +913  ~1257"
+```
+
+### block:71571b3497b314db
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L338-L338`. Next: `block:23779bca87181236`.
+
+```stata
+putexcel A35 = "          [ESTIMATE] people lost a value, [ESTIMATE] gained one, and [ESTIMATE] kept a value that changed."
+```
+
+### block:23779bca87181236
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L340-L340`. Next: `block:fa7be84fdd461d00`.
+
+```stata
+putexcel A37 = "SECTION 1 -- MERGE CHECK: WHAT EACH COLUMN MEANS", bold
+```
+
+### block:fa7be84fdd461d00
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L341-L341`. Next: `block:495d06790f17661d`.
+
+```stata
+putexcel A38 = "Column"  , bold
+```
+
+### block:495d06790f17661d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L342-L342`. Next: `block:c1a510ff218f4146`.
+
+```stata
+putexcel B38 = "Meaning" , bold
+```
+
+### block:c1a510ff218f4146
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L344-L344`. Next: `block:999fa9952252b3bb`.
+
+```stata
+putexcel A39 = "country, year, survey"
+```
+
+### block:999fa9952252b3bb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L345-L345`. Next: `block:71e7044d8baeb197`.
+
+```stata
+putexcel B39 = "The survey, read from the local file's name."
+```
+
+### block:71e7044d8baeb197
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L346-L346`. Next: `block:9df3d8f5d084ab72`.
+
+```stata
+putexcel A40 = "dlw_obs"
+```
+
+### block:9df3d8f5d084ab72
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L347-L347`. Next: `block:3b04e2f172ff8d6f`.
+
+```stata
+putexcel B40 = "Number of people in the DLW file."
+```
+
+### block:3b04e2f172ff8d6f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L348-L348`. Next: `block:a83f331efb9a2008`.
+
+```stata
+putexcel A41 = "local_obs"
+```
+
+### block:a83f331efb9a2008
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L349-L349`. Next: `block:befbccc5d05a922e`.
+
+```stata
+putexcel B41 = "Number of people in the local file."
+```
+
+### block:befbccc5d05a922e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L350-L350`. Next: `block:443e08d749397afc`.
+
+```stata
+putexcel A42 = "matched"
+```
+
+### block:443e08d749397afc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L351-L351`. Next: `block:6ae92fedbbbbd597`.
+
+```stata
+putexcel B42 = "People found in both files, on hhid + pid."
+```
+
+### block:6ae92fedbbbbd597
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L352-L352`. Next: `block:3a21a2e77aa16c97`.
+
+```stata
+putexcel A43 = "dlw_only"
+```
+
+### block:3a21a2e77aa16c97
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L353-L353`. Next: `block:7bc98f2c6e9dd978`.
+
+```stata
+putexcel B43 = "People in DLW that the local file does not cover. Their replaced variables come back blank."
+```
+
+### block:7bc98f2c6e9dd978
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L354-L354`. Next: `block:388f9d4ca42a3c24`.
+
+```stata
+putexcel A44 = "local_only"
+```
+
+### block:388f9d4ca42a3c24
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L355-L355`. Next: `block:a156f67ce9d03cdd`.
+
+```stata
+putexcel B44 = "People in the local file that are not in DLW. These rows are dropped."
+```
+
+### block:a156f67ce9d03cdd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L356-L356`. Next: `block:103a3460e2344a90`.
+
+```stata
+putexcel A45 = "match_rate"
+```
+
+### block:103a3460e2344a90
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L357-L357`. Next: `block:c8f61a5d12b5b360`.
+
+```stata
+putexcel B45 = "matched / (matched + dlw_only). 1.000 is a perfect join. Anything under 0.95 is flagged."
+```
+
+### block:c8f61a5d12b5b360
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L358-L358`. Next: `block:3bf586e04ab88f3b`.
+
+```stata
+putexcel A46 = "id_fixed"
+```
+
+### block:3bf586e04ab88f3b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L359-L359`. Next: `block:d5869aead32ef49e`.
+
+```stata
+putexcel B46 = "1 = a KNOWN id correction was applied to the local file before joining (see the list at the bottom of this sheet)."
+```
+
+### block:d5869aead32ef49e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L360-L360`. Next: `block:fef2093be173b7fb`.
+
+```stata
+putexcel A47 = "vars_carried"
+```
+
+### block:fef2093be173b7fb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L361-L361`. Next: `block:fcab6c811be8550e`.
+
+```stata
+putexcel B47 = "How many of the replaceable variables the local file actually contains."
+```
+
+### block:fcab6c811be8550e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L362-L362`. Next: `block:ef5a414902d0aea9`.
+
+```stata
+putexcel A48 = "vars_missing_from_local"
+```
+
+### block:ef5a414902d0aea9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L363-L363`. Next: `block:6549d971ddc1f453`.
+
+```stata
+putexcel B48 = "Variables that exist in DLW but not in the local file. These keep their DLW values, so an intended correction would NOT land. Should be 0."
+```
+
+### block:6549d971ddc1f453
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L364-L364`. Next: `block:6ac2d304089418e1`.
+
+```stata
+putexcel A49 = "flag"
+```
+
+### block:6ac2d304089418e1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L365-L365`. Next: `block:f88613cf22ba23d8`.
+
+```stata
+putexcel B49 = "OK / PENDING / CHECK IDS / BAD IDS / DLW FAILED."
+```
+
+### block:f88613cf22ba23d8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L366-L366`. Next: `block:35bcc1c443a295b8`.
+
+```stata
+putexcel B50 = "PENDING means DataLibWeb does not carry that survey for this round yet (ISO3 0000 and 0000 CSES). That is not a failure: the local file is built and waiting. Anything else other than OK means do not patch that survey yet."
+```
+
+### block:35bcc1c443a295b8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L368-L368`. Next: `block:6f7b303f42d72947`.
+
+```stata
+putexcel A51 = "SECTION 3 -- DETAIL: WHAT EACH COLUMN MEANS", bold
+```
+
+### block:6f7b303f42d72947
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L369-L369`. Next: `block:e46bf37889c31eff`.
+
+```stata
+putexcel A52 = "Column"  , bold
+```
+
+### block:e46bf37889c31eff
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L370-L370`. Next: `block:c8c250c93195b41a`.
+
+```stata
+putexcel B52 = "Meaning" , bold
+```
+
+### block:c8c250c93195b41a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L372-L372`. Next: `block:d20ce84ea02da501`.
+
+```stata
+putexcel A53 = "dlw_filled"
+```
+
+### block:d20ce84ea02da501
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L373-L373`. Next: `block:3649e6056ba17af1`.
+
+```stata
+putexcel B53 = "How many matched people had a value for this variable in DLW."
+```
+
+### block:3649e6056ba17af1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L374-L374`. Next: `block:3ef8823174cfd2d1`.
+
+```stata
+putexcel A54 = "new_filled"
+```
+
+### block:3ef8823174cfd2d1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L375-L375`. Next: `block:9980eaf9f10653ca`.
+
+```stata
+putexcel B54 = "How many matched people have a value for it in the local file."
+```
+
+### block:9980eaf9f10653ca
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L376-L376`. Next: `block:14400f9aab0f5b77`.
+
+```stata
+putexcel A55 = "lost"
+```
+
+### block:14400f9aab0f5b77
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L377-L377`. Next: `block:9d17530ef29779ae`.
+
+```stata
+putexcel B55 = "Had a value in DLW, blank in the local file."
+```
+
+### block:9d17530ef29779ae
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L378-L378`. Next: `block:13408fa47fe8c05d`.
+
+```stata
+putexcel A56 = "gained"
+```
+
+### block:13408fa47fe8c05d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L379-L379`. Next: `block:b1afbcb5d9359431`.
+
+```stata
+putexcel B56 = "Blank in DLW, has a value in the local file."
+```
+
+### block:b1afbcb5d9359431
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L380-L380`. Next: `block:4f2df99b60db70e5`.
+
+```stata
+putexcel A57 = "changed"
+```
+
+### block:4f2df99b60db70e5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L381-L381`. Next: `block:ab94490ba6129fed`.
+
+```stata
+putexcel B57 = "Has a value in both, but the two values differ."
+```
+
+### block:ab94490ba6129fed
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L382-L382`. Next: `block:762777769e14875f`.
+
+```stata
+putexcel A58 = "lost_pct"
+```
+
+### block:762777769e14875f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L383-L383`. Next: `block:dd4243b107662786`.
+
+```stata
+putexcel B58 = "lost as a share of dlw_filled. 100 means the whole series was blanked."
+```
+
+### block:dd4243b107662786
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L384-L384`. Next: `block:97cf385d4c84bd1a`.
+
+```stata
+putexcel A59 = "status"
+```
+
+### block:97cf385d4c84bd1a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L385-L385`. Next: `block:6d5fb69934195cfe`.
+
+```stata
+putexcel B59 = "One-word version of the summary code: no change / changed only / gained / lost / lost+gained / BLANKED / NEW SERIES."
+```
+
+### block:6d5fb69934195cfe
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L387-L387`. Next: `block:dc91f56b96669b90`.
+
+```stata
+putexcel A61 = "WHAT TO LOOK AT FIRST", bold
+```
+
+### block:dc91f56b96669b90
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L388-L388`. Next: `block:090e55e094d940e2`.
+
+```stata
+putexcel A62 = "1.  Section 1, the flag column. Any survey not marked OK should not be patched until the ids are sorted out."
+```
+
+### block:090e55e094d940e2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L389-L389`. Next: `block:9245c2fec9ac268f`.
+
+```stata
+putexcel A63 = "2.  Section 1, vars_missing_from_local. Should be 0. If not, those variables keep their old DLW values."
+```
+
+### block:9245c2fec9ac268f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L390-L390`. Next: `block:75d9a5585b1725ac`.
+
+```stata
+putexcel A64 = "3.  Section 2, any BLANKED cell. The whole series disappears for that country-year -- confirm it was meant to."
+```
+
+### block:75d9a5585b1725ac
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L391-L391`. Next: `block:d64f8372403b0051`.
+
+```stata
+putexcel A65 = "4.  Section 2, any large ~n. Re-coded categories move published numbers just as much as blanked ones do."
+```
+
+### block:d64f8372403b0051
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L393-L393`. Next: `block:719b9ee2a6aa5820`.
+
+```stata
+putexcel A67 = "THE <REGION>_CODES SHEETS", bold
+```
+
+### block:719b9ee2a6aa5820
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L394-L394`. Next: `block:31753e0b3b03930d`.
+
+```stata
+putexcel A68 = "One extra sheet per region, e.g. EAP_CODES. Each row is one (DLW value, local value) pair,"
+```
+
+### block:31753e0b3b03930d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L395-L395`. Next: `block:cdcd7842bb469a63`.
+
+```stata
+putexcel A69 = "counted on the SAME people. It answers a question the summary grid cannot: are the two files"
+```
+
+### block:cdcd7842bb469a63
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L396-L396`. Next: `block:24eab2076d30e8f5`.
+
+```stata
+putexcel A70 = "using the same code scale? A variable can merge perfectly and still be wrong if the local file"
+```
+Write datasets: `dataset:0a80ba7fb1a68430`
+
+### block:24eab2076d30e8f5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L397-L397`. Next: `block:aa9f8dac5c60c5f5`.
+
+```stata
+putexcel A71 = "numbers its categories differently."
+```
+
+### block:aa9f8dac5c60c5f5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L398-L398`. Next: `block:9c7cda3710c9bff3`.
+
+```stata
+putexcel A72 = "same value    the person has the same code in both. This is what most rows should say."
+```
+
+### block:9c7cda3710c9bff3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L399-L399`. Next: `block:2777d4f213510e67`.
+
+```stata
+putexcel A73 = "both missing  missing in both."
+```
+
+### block:2777d4f213510e67
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L400-L400`. Next: `block:5e64e3d6f50288d9`.
+
+```stata
+putexcel A74 = "BLANKED       had a value in DLW, missing in the local file. Expected where the re-harmonization"
+```
+
+### block:5e64e3d6f50288d9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L401-L401`. Next: `block:d789194f560bd1e0`.
+
+```stata
+putexcel A75 = "              found the question was never asked."
+```
+
+### block:d789194f560bd1e0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L402-L402`. Next: `block:616d7bb055ca3d6b`.
+
+```stata
+putexcel A76 = "newly filled  missing in DLW, now has a value."
+```
+
+### block:616d7bb055ca3d6b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L403-L403`. Next: `block:eb73542ee3864a04`.
+
+```stata
+putexcel A77 = "RECODED       has a value in both and they disagree. A handful is a data revision. A solid block,"
+```
+
+### block:eb73542ee3864a04
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L404-L404`. Next: `block:8fa5aee1474d8d1b`.
+
+```stata
+putexcel A78 = "              where DLW 1 maps to local 2 for everyone, means the SCALES DIFFER -- do not patch"
+```
+
+### block:8fa5aee1474d8d1b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L405-L405`. Next: `block:97a85ca4ea95fff4`.
+
+```stata
+putexcel A79 = "              that variable until it is mapped."
+```
+
+### block:97a85ca4ea95fff4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L407-L407`. Next: `block:9342ea3365472599`.
+
+```stata
+putexcel A81 = "WHERE EACH REGION'S FILES COME FROM", bold
+```
+
+### block:9342ea3365472599
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L408-L408`. Next: `block:59769ffc7a8c6016`.
+
+```stata
+putexcel A82 = "SSA: one ready-made .dta per survey, read straight from the region's shared folder."
+```
+
+### block:59769ffc7a8c6016
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L409-L409`. Next: `block:d8d5d9678c2bba31`.
+
+```stata
+putexcel A83 = "EAP: the region ships numbered ECAPOV module files (_1 household, _2 person, _5 household assets,"
+```
+
+### block:d8d5d9678c2bba31
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L410-L410`. Next: `block:cedd298e3c967154`.
+
+```stata
+putexcel A84 = "     _9 derived). 99-build_eap_local.do merges them into one person-level file per survey, renames"
+```
+
+### block:cedd298e3c967154
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L411-L411`. Next: `block:76af0529e508a8d6`.
+
+```stata
+putexcel A85 = "     the ECAPOV names to GMD names and writes them to 04.Checks...\EAP_data, which is what this"
+```
+
+### block:76af0529e508a8d6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L412-L412`. Next: `block:432028d39fa33262`.
+
+```stata
+putexcel A86 = "     script then reads. Run that build script first whenever EAP sends new files."
+```
+
+### block:432028d39fa33262
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L414-L414`. Next: `block:e4c758c05a0228ad`.
+
+```stata
+putexcel A88 = "KNOWN ID CORRECTIONS APPLIED", bold
+```
+
+### block:e4c758c05a0228ad
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L415-L415`. Next: `block:fe7585b901e656ac`.
+
+```stata
+putexcel A89 = "SSA / ISO3 0000: the file was exported with hhid built as hh*1000 + region, while GMD builds it as"
+```
+
+### block:fe7585b901e656ac
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L416-L416`. Next: `block:7694340a9079e75b`.
+
+```stata
+putexcel A90 = "region*10000 + hh -- the same two parts in reverse order. The id is rebuilt before joining, which takes"
+```
+
+### block:7694340a9079e75b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L417-L417`. Next: `block:01f1ab78c3904333`.
+
+```stata
+putexcel A91 = "the match from 129 of 43,472 rows to all 43,472. Remove the fix once SSA re-exports with the standard id."
+```
+
+### block:01f1ab78c3904333
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L418-L418`. Next: `block:7f7eea2c0b0df1e0`.
+
+```stata
+putexcel A92 = "The fix checks the id's shape first, so a corrected file will NOT be recoded by mistake."
+```
+
+### block:7f7eea2c0b0df1e0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L419-L419`. Next: `block:82c472e45b1c27a6`.
+
+```stata
+putexcel A93 = "EAP: no id corrections needed. All six surveys joined their own modules at 100 percent."
+```
+
+### block:82c472e45b1c27a6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L421-L421`. Next: `block:a96644ac481b4098`.
+
+```stata
+dis as result _n "  README sheet written."
+```
+
+### block:a96644ac481b4098
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L427-L427`. Next: `block:c15f837de6da39b9`.
+
+```stata
+foreach reg of local regions {
+```
+
+### block:c15f837de6da39b9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L429-L429`. Next: `block:da29f451a642b8b4`.
+
+```stata
+local dir "``reg'_dir'"
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:da29f451a642b8b4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L430-L430`. Next: `block:7e252f56a6b89a64`.
+
+```stata
+if "`dir'" == "" {
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:7e252f56a6b89a64
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L431-L431`. Next: `block:39718aae8cbda276`.
+
+```stata
+dis as error _n "  [ `reg' ] no folder set in the edit section -- skipped."
+```
+Enclosing controls: `foreach reg of local regions {` → `if "`dir'" == "" {`
+
+### block:39718aae8cbda276
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L432-L432`. Next: `block:394f5c3118001307`.
+
+```stata
+continue
+```
+Enclosing controls: `foreach reg of local regions {` → `if "`dir'" == "" {`
+
+### block:394f5c3118001307
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L433-L433`. Next: `block:3c47bd2ed1dbf5b7`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:3c47bd2ed1dbf5b7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L435-L435`. Next: `block:1b6061c5f8cc99b8`.
+
+```stata
+local pf : dir "`dir'" files "*.dta"
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:1b6061c5f8cc99b8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L436-L436`. Next: `block:32127613cbea613d`.
+
+```stata
+local nf : word count `pf'
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:32127613cbea613d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L437-L437`. Next: `block:24ea38cd37fc100d`.
+
+```stata
+local nexp = ``reg'_n'
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:24ea38cd37fc100d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L439-L439`. Next: `block:b3e53f94f2be610c`.
+
+```stata
+dis as result _n(2) "##############################################################"
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:b3e53f94f2be610c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L440-L440`. Next: `block:743d326346ee5872`.
+
+```stata
+dis as result "  REGION `reg' -- `nf' file(s)"
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:743d326346ee5872
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L441-L441`. Next: `block:7dae3d74a3e99414`.
+
+```stata
+dis as result "  `dir'"
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:7dae3d74a3e99414
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L442-L442`. Next: `block:0e409129770307f0`.
+
+```stata
+dis as result "##############################################################"
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:0e409129770307f0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L444-L444`. Next: `block:6c580badbe13a1e3`.
+
+```stata
+if `nexp' != . {
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:6c580badbe13a1e3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L445-L445`. Next: `block:2b02a79bfa8a762d`.
+
+```stata

@@ -1,0 +1,1035 @@
+# 01.Programs/03-MPO to PEA.do
+
+Combine actual and projected poverty across MPO vintages
+
+Status: PARTIAL_STATIC. Every lexically active statement is indexed; complete runtime schema and macro expansion are not established.
+
+Source snapshot: numbered source (deployment lookup: lookup/sources/GMI_extended/source_maps/03-41c157.md.md)
+
+## Execution-order blocks
+
+### block:c8e30db6ad8c8671
+
+Evidence: `01.Programs/03-MPO to PEA.do:L14-L14`. Next: `block:dbaf342a312b4fc6`.
+
+```stata
+clear
+```
+
+### block:dbaf342a312b4fc6
+
+Evidence: `01.Programs/03-MPO to PEA.do:L15-L15`. Next: `block:16674f2785d14a94`.
+
+```stata
+tempfile data1 data2 data3 data2017 data2021
+```
+
+### block:16674f2785d14a94
+
+Evidence: `01.Programs/03-MPO to PEA.do:L54-L54`. Next: `block:3568a78abcb7a94c`.
+
+```stata
+use "$fromservers\global_ex_${rnd}.dta" , clear
+```
+Read datasets: `dataset:a15663bfd46d0138`
+
+### block:3568a78abcb7a94c
+
+Evidence: `01.Programs/03-MPO to PEA.do:L55-L55`. Next: `block:337a88decbdd423c`.
+
+```stata
+reshape long y, i( region Code Indicator Label runtime ) j(year)
+```
+Read candidates: `variable:e6b8cdad2c15c9ad`, `variable:620d8e43541e366f`, `variable:235344514890f2d4`, `variable:9fcc0c024a32ae3e`, `variable:6bdb9679a4e973c7`, `variable:d781a4414cf10bb6`, `variable:bb2141245f87e5fa`
+
+### block:337a88decbdd423c
+
+Evidence: `01.Programs/03-MPO to PEA.do:L56-L56`. Next: `block:06cb645ecc1bbcf0`.
+
+```stata
+drop runtime region
+```
+Read candidates: `variable:d781a4414cf10bb6`, `variable:620d8e43541e366f`
+
+### block:06cb645ecc1bbcf0
+
+Evidence: `01.Programs/03-MPO to PEA.do:L57-L57`. Next: `block:db10ba7a0fafa00a`.
+
+```stata
+drop if y==""
+```
+Read candidates: `variable:e6b8cdad2c15c9ad`
+
+### block:db10ba7a0fafa00a
+
+Evidence: `01.Programs/03-MPO to PEA.do:L58-L58`. Next: `block:43c6b6993dc228e9`.
+
+```stata
+destring y, gen(value)
+```
+New: `variable:512e6f2693930a03`
+Read candidates: `variable:e6b8cdad2c15c9ad`
+
+### block:43c6b6993dc228e9
+
+Evidence: `01.Programs/03-MPO to PEA.do:L60-L60`. Next: `block:d15230a86ba26854`.
+
+```stata
+drop if Label=="National poverty line" | Label =="National poverty rate"
+```
+Read candidates: `variable:6bdb9679a4e973c7`
+
+### block:d15230a86ba26854
+
+Evidence: `01.Programs/03-MPO to PEA.do:L62-L62`. Next: `block:463ac1b611ffc10f`.
+
+```stata
+gen povline = 300 if Label=="International poverty rate ($3.00 in 2021 PPP)"
+```
+New: `variable:5a36a7b7e4cedb21`
+Read candidates: `variable:6bdb9679a4e973c7`
+
+### block:463ac1b611ffc10f
+
+Evidence: `01.Programs/03-MPO to PEA.do:L63-L63`. Next: `block:6fc4ac553c4fc0fa`.
+
+```stata
+replace povline = 420 if Label=="Lower middle-income poverty rate ($4.20 in 2021 PPP)"
+```
+Modified: `variable:5a36a7b7e4cedb21`
+Read candidates: `variable:6bdb9679a4e973c7`
+
+### block:6fc4ac553c4fc0fa
+
+Evidence: `01.Programs/03-MPO to PEA.do:L64-L64`. Next: `block:1c60e149e8438a15`.
+
+```stata
+replace povline = 830 if Label=="Upper middle-income poverty rate ($8.30 in 2021 PPP)"
+```
+Modified: `variable:5a36a7b7e4cedb21`
+Read candidates: `variable:6bdb9679a4e973c7`
+
+### block:1c60e149e8438a15
+
+Evidence: `01.Programs/03-MPO to PEA.do:L65-L65`. Next: `block:7991a2e2591f9b0d`.
+
+```stata
+ren Code code
+```
+New: `variable:af030c93b1c3dd07`
+Read candidates: `variable:235344514890f2d4`
+
+### block:7991a2e2591f9b0d
+
+Evidence: `01.Programs/03-MPO to PEA.do:L66-L66`. Next: `block:4752c5a15472a7a0`.
+
+```stata
+drop Label Indicator
+```
+Read candidates: `variable:6bdb9679a4e973c7`, `variable:9fcc0c024a32ae3e`
+
+### block:4752c5a15472a7a0
+
+Evidence: `01.Programs/03-MPO to PEA.do:L68-L68`. Next: `block:e2ac3fa31ad312fb`.
+
+```stata
+isid code year povline
+```
+Read candidates: `variable:af030c93b1c3dd07`, `variable:bb2141245f87e5fa`, `variable:5a36a7b7e4cedb21`
+
+### block:e2ac3fa31ad312fb
+
+Evidence: `01.Programs/03-MPO to PEA.do:L70-L70`. Next: `block:4c54a1d8e012af12`.
+
+```stata
+save `data1', replace
+```
+Write datasets: `dataset:9ecb2df34ae8c5fc`
+
+### block:4c54a1d8e012af12
+
+Evidence: `01.Programs/03-MPO to PEA.do:L76-L76`. Next: `block:25b8067296ff2192`.
+
+```stata
+use "$fromservers\ObservedPoverty2021PPP_${rnd}.dta" , clear
+```
+Read datasets: `dataset:ae4f7bd158ead2a8`
+
+### block:25b8067296ff2192
+
+Evidence: `01.Programs/03-MPO to PEA.do:L78-L78`. Next: `block:a5593b6526bf4841`.
+
+```stata
+duplicates tag countrycode year povline, gen(a)
+```
+
+### block:a5593b6526bf4841
+
+Evidence: `01.Programs/03-MPO to PEA.do:L79-L79`. Next: `block:48b4b6606a243546`.
+
+```stata
+ta a
+```
+Read candidates: `variable:d1e656fea2ce5edc`
+
+### block:48b4b6606a243546
+
+Evidence: `01.Programs/03-MPO to PEA.do:L80-L80`. Next: `block:40dd66cdb3a74d31`.
+
+```stata
+ren countrycode code
+```
+New: `variable:ba934bed7249dc4c`
+Read candidates: `variable:024d41e78c2a0765`
+
+### block:40dd66cdb3a74d31
+
+Evidence: `01.Programs/03-MPO to PEA.do:L81-L81`. Next: `block:060d27175c34fdfd`.
+
+```stata
+drop if code=="ISO3" & surveyname=="HBS"
+```
+Read candidates: `variable:ba934bed7249dc4c`, `variable:56a92be7e790d5f7`
+
+### block:060d27175c34fdfd
+
+Evidence: `01.Programs/03-MPO to PEA.do:L82-L82`. Next: `block:0b8c0135a391e0a0`.
+
+```stata
+drop if code=="ISO3" & type=="C"
+```
+Read candidates: `variable:ba934bed7249dc4c`, `variable:d1389b9e75fa0703`
+
+### block:0b8c0135a391e0a0
+
+Evidence: `01.Programs/03-MPO to PEA.do:L83-L83`. Next: `block:110ad6fe4d2df7ae`.
+
+```stata
+drop if code=="ISO3" & type=="C"
+```
+Read candidates: `variable:ba934bed7249dc4c`, `variable:d1389b9e75fa0703`
+
+### block:110ad6fe4d2df7ae
+
+Evidence: `01.Programs/03-MPO to PEA.do:L84-L84`. Next: `block:db6fc5c36fa9df20`.
+
+```stata
+drop if code=="ISO3" & type=="C"
+```
+Read candidates: `variable:ba934bed7249dc4c`, `variable:d1389b9e75fa0703`
+
+### block:db6fc5c36fa9df20
+
+Evidence: `01.Programs/03-MPO to PEA.do:L85-L85`. Next: `block:c81349d2070a39dc`.
+
+```stata
+isid code year povline
+```
+Read candidates: `variable:ba934bed7249dc4c`, `variable:8fcc071debccd38b`, `variable:d35b5cb11b9459e4`
+
+### block:c81349d2070a39dc
+
+Evidence: `01.Programs/03-MPO to PEA.do:L86-L86`. Next: `block:4feaf1719c2c45ba`.
+
+```stata
+merge 1:1 code year povline using `data1'
+```
+Read datasets: `dataset:9ecb2df34ae8c5fc`
+
+### block:4feaf1719c2c45ba
+
+Evidence: `01.Programs/03-MPO to PEA.do:L87-L87`. Next: `block:27a57d8a26d3004a`.
+
+```stata
+gen esttype = 1 if pov~=.
+```
+New: `variable:c433ddf508802d13`
+Read candidates: `variable:764be4c1d65d9a16`
+
+### block:27a57d8a26d3004a
+
+Evidence: `01.Programs/03-MPO to PEA.do:L88-L88`. Next: `block:2d04b7fde613153c`.
+
+```stata
+replace esttype = 2 if pov==. & _merge==2 & esttype==.
+```
+Modified: `variable:c433ddf508802d13`
+Read candidates: `variable:764be4c1d65d9a16`, `variable:5274ed2030a656a8`, `variable:c433ddf508802d13`
+
+### block:2d04b7fde613153c
+
+Evidence: `01.Programs/03-MPO to PEA.do:L89-L89`. Next: `block:f3dcf460bb7569f4`.
+
+```stata
+replace pov = value if pov==. & _merge==2 & esttype==2
+```
+Modified: `variable:764be4c1d65d9a16`
+Read candidates: `variable:ce4834d649f4dba4`, `variable:764be4c1d65d9a16`, `variable:5274ed2030a656a8`, `variable:c433ddf508802d13`
+
+### block:f3dcf460bb7569f4
+
+Evidence: `01.Programs/03-MPO to PEA.do:L90-L90`. Next: `block:174edc31c6e61aa9`.
+
+```stata
+la def esttype 1 "Actual" 2 "Projected"
+```
+
+### block:174edc31c6e61aa9
+
+Evidence: `01.Programs/03-MPO to PEA.do:L91-L91`. Next: `block:a545219a91ec46f3`.
+
+```stata
+la val esttype esttype
+```
+
+### block:a545219a91ec46f3
+
+Evidence: `01.Programs/03-MPO to PEA.do:L92-L92`. Next: `block:40e592fd244242c9`.
+
+```stata
+ren _merge merge1
+```
+New: `variable:51c892cdf9ec72a0`
+Read candidates: `variable:5274ed2030a656a8`
+
+### block:40e592fd244242c9
+
+Evidence: `01.Programs/03-MPO to PEA.do:L93-L93`. Next: `block:c78cf289e2c4e87c`.
+
+```stata
+save `data1', replace
+```
+Write datasets: `dataset:9ecb2df34ae8c5fc`
+
+### block:c78cf289e2c4e87c
+
+Evidence: `01.Programs/03-MPO to PEA.do:L98-L98`. Next: `block:611cc6b790e197f9`.
+
+```stata
+keep if esttype==1
+```
+Read candidates: `variable:c433ddf508802d13`
+
+### block:611cc6b790e197f9
+
+Evidence: `01.Programs/03-MPO to PEA.do:L99-L99`. Next: `block:45e4eb3045ce5550`.
+
+```stata
+keep code year type comparability
+```
+Read candidates: `variable:ba934bed7249dc4c`, `variable:8fcc071debccd38b`, `variable:d1389b9e75fa0703`, `variable:e56a06b6cd211db7`
+
+### block:45e4eb3045ce5550
+
+Evidence: `01.Programs/03-MPO to PEA.do:L100-L100`. Next: `block:c28a228ce7fd4535`.
+
+```stata
+duplicates drop code year type comparability, force
+```
+
+### block:c28a228ce7fd4535
+
+Evidence: `01.Programs/03-MPO to PEA.do:L101-L101`. Next: `block:860069d02125de97`.
+
+```stata
+bys code (year): egen ymax = max(year)
+```
+New: `variable:614d93e396979d2f`
+Read candidates: `variable:8fcc071debccd38b`
+
+### block:860069d02125de97
+
+Evidence: `01.Programs/03-MPO to PEA.do:L102-L102`. Next: `block:1214d3d8066ecc8a`.
+
+```stata
+gen latest = year==ymax
+```
+New: `variable:82e50e744f33e961`
+Read candidates: `variable:8fcc071debccd38b`, `variable:614d93e396979d2f`
+
+### block:1214d3d8066ecc8a
+
+Evidence: `01.Programs/03-MPO to PEA.do:L103-L103`. Next: `block:1dc297628bf2b6a0`.
+
+```stata
+keep if latest==1
+```
+Read candidates: `variable:82e50e744f33e961`
+
+### block:1dc297628bf2b6a0
+
+Evidence: `01.Programs/03-MPO to PEA.do:L104-L104`. Next: `block:5297e5dd0814d1c3`.
+
+```stata
+keep code comparability type
+```
+Read candidates: `variable:ba934bed7249dc4c`, `variable:e56a06b6cd211db7`, `variable:d1389b9e75fa0703`
+
+### block:5297e5dd0814d1c3
+
+Evidence: `01.Programs/03-MPO to PEA.do:L105-L105`. Next: `block:62101dd7b6370a90`.
+
+```stata
+ren comparability comparability2
+```
+New: `variable:96f87dfb6fb4d531`
+Read candidates: `variable:e56a06b6cd211db7`
+
+### block:62101dd7b6370a90
+
+Evidence: `01.Programs/03-MPO to PEA.do:L106-L106`. Next: `block:2ac993740af76aa0`.
+
+```stata
+ren type type2
+```
+New: `variable:c3d566032f96f781`
+Read candidates: `variable:d1389b9e75fa0703`
+
+### block:2ac993740af76aa0
+
+Evidence: `01.Programs/03-MPO to PEA.do:L107-L107`. Next: `block:4e288a8ed6456e64`.
+
+```stata
+save `data2', replace
+```
+Write datasets: `dataset:eec62961d4b58914`
+
+### block:4e288a8ed6456e64
+
+Evidence: `01.Programs/03-MPO to PEA.do:L109-L109`. Next: `block:fdf559a9434e3034`.
+
+```stata
+use `data1', clear
+```
+Read datasets: `dataset:9ecb2df34ae8c5fc`
+
+### block:fdf559a9434e3034
+
+Evidence: `01.Programs/03-MPO to PEA.do:L110-L110`. Next: `block:f91742dfd819e74f`.
+
+```stata
+merge m:1 code using `data2'
+```
+Read datasets: `dataset:eec62961d4b58914`
+
+### block:f91742dfd819e74f
+
+Evidence: `01.Programs/03-MPO to PEA.do:L111-L111`. Next: `block:1c8b7e52180d3da1`.
+
+```stata
+sort code povline year
+```
+
+### block:1c8b7e52180d3da1
+
+Evidence: `01.Programs/03-MPO to PEA.do:L112-L112`. Next: `block:395f2f922dba0389`.
+
+```stata
+replace type = type2 if type=="" & type2~="" & esttype==2
+```
+Modified: `variable:60095be72e937cad`
+Read candidates: `variable:848be6963ed8eefa`, `variable:60095be72e937cad`, `variable:6f317480171f1325`
+
+### block:395f2f922dba0389
+
+Evidence: `01.Programs/03-MPO to PEA.do:L113-L113`. Next: `block:919c9050f0c672ca`.
+
+```stata
+replace comparability = comparability2 if comparability==. & comparability2~=. & esttype==2
+```
+Modified: `variable:7ddd9e5a68d63a47`
+Read candidates: `variable:6385e92844fc4646`, `variable:7ddd9e5a68d63a47`, `variable:6f317480171f1325`
+
+### block:919c9050f0c672ca
+
+Evidence: `01.Programs/03-MPO to PEA.do:L114-L114`. Next: `block:3ee905c2aa69b70f`.
+
+```stata
+ren surveyname survname
+```
+New: `variable:f897350a757e4923`
+Read candidates: `variable:92ad3231b8dc5f10`
+
+### block:3ee905c2aa69b70f
+
+Evidence: `01.Programs/03-MPO to PEA.do:L115-L115`. Next: `block:b24db8ef75964124`.
+
+```stata
+gen ppp = 2021
+```
+New: `variable:72d3ee67be300bc5`
+
+### block:b24db8ef75964124
+
+Evidence: `01.Programs/03-MPO to PEA.do:L116-L116`. Next: `block:df94c3119b5a32be`.
+
+```stata
+ren type welftype
+```
+New: `variable:0c94b3b1346dce5d`
+Read candidates: `variable:60095be72e937cad`
+
+### block:df94c3119b5a32be
+
+Evidence: `01.Programs/03-MPO to PEA.do:L117-L117`. Next: `block:2cc2cc9820854880`.
+
+```stata
+replace welftype = "CONS" if welftype=="C"
+```
+Modified: `variable:0c94b3b1346dce5d`
+Read candidates: `variable:0c94b3b1346dce5d`
+
+### block:2cc2cc9820854880
+
+Evidence: `01.Programs/03-MPO to PEA.do:L118-L118`. Next: `block:268cc924c6c2260c`.
+
+```stata
+replace welftype = "INC" if welftype=="I"
+```
+Modified: `variable:0c94b3b1346dce5d`
+Read candidates: `variable:0c94b3b1346dce5d`
+
+### block:268cc924c6c2260c
+
+Evidence: `01.Programs/03-MPO to PEA.do:L120-L120`. Next: `block:0a70ba2db20c3492`.
+
+```stata
+gen vintage = "Spring 2026"
+```
+New: `variable:19d86c251485a63e`
+
+### block:0a70ba2db20c3492
+
+Evidence: `01.Programs/03-MPO to PEA.do:L121-L121`. Next: `block:426057c71ab321cb`.
+
+```stata
+keep code year survname povline pov esttype comparability ppp vintage
+```
+Read candidates: `variable:ee0916f3567d0d58`, `variable:25fd4a87448a2592`, `variable:f897350a757e4923`, `variable:7af4671cefc89af2`, `variable:ec7412bb81c018fe`, `variable:6f317480171f1325`, `variable:7ddd9e5a68d63a47`, `variable:72d3ee67be300bc5`, `variable:19d86c251485a63e`
+
+### block:426057c71ab321cb
+
+Evidence: `01.Programs/03-MPO to PEA.do:L122-L122`. Next: `block:6eda24d0d14cac4a`.
+
+```stata
+save `data2021', replace
+```
+Write datasets: `dataset:5e8610d33724736a`
+
+### block:6eda24d0d14cac4a
+
+Evidence: `01.Programs/03-MPO to PEA.do:L128-L128`. Next: `block:4b6900006ffc0665`.
+
+```stata
+use "$fromservers\global_ex_${rndprev}.dta", clear
+```
+Read datasets: `dataset:218b66e72179738c`
+
+### block:4b6900006ffc0665
+
+Evidence: `01.Programs/03-MPO to PEA.do:L129-L129`. Next: `block:b1c71d98db04f5b8`.
+
+```stata
+reshape long y, i( region Code Indicator Label runtime ) j(year)
+```
+Read candidates: `variable:c7dc31ad7b4d8b8b`, `variable:6d7cc14c9b2387a6`, `variable:7cdd714ed25e254a`, `variable:d6380a8ac457f61b`, `variable:68e9b487050dca33`, `variable:02848f96fdc8c7c4`, `variable:344f903d40c74a2c`
+
+### block:b1c71d98db04f5b8
+
+Evidence: `01.Programs/03-MPO to PEA.do:L130-L130`. Next: `block:405aec59e7b06ea1`.
+
+```stata
+drop runtime region
+```
+Read candidates: `variable:02848f96fdc8c7c4`, `variable:6d7cc14c9b2387a6`
+
+### block:405aec59e7b06ea1
+
+Evidence: `01.Programs/03-MPO to PEA.do:L131-L131`. Next: `block:827cf7f534d988ce`.
+
+```stata
+drop if y==""
+```
+Read candidates: `variable:c7dc31ad7b4d8b8b`
+
+### block:827cf7f534d988ce
+
+Evidence: `01.Programs/03-MPO to PEA.do:L132-L132`. Next: `block:2e31489ba4a6d075`.
+
+```stata
+destring y, gen(value)
+```
+New: `variable:b5462649984b60d0`
+Read candidates: `variable:c7dc31ad7b4d8b8b`
+
+### block:2e31489ba4a6d075
+
+Evidence: `01.Programs/03-MPO to PEA.do:L133-L133`. Next: `block:51bb2585461ab6ae`.
+
+```stata
+drop if Label=="National poverty line"
+```
+Read candidates: `variable:68e9b487050dca33`
+
+### block:51bb2585461ab6ae
+
+Evidence: `01.Programs/03-MPO to PEA.do:L137-L137`. Next: `block:432307f05b9c1e09`.
+
+```stata
+gen povline = 300 if Label=="International poverty rate ($3.00 in 2021 PPP)"
+```
+New: `variable:f3260486130b1e97`
+Read candidates: `variable:68e9b487050dca33`
+
+### block:432307f05b9c1e09
+
+Evidence: `01.Programs/03-MPO to PEA.do:L138-L138`. Next: `block:e12399a051dec9e6`.
+
+```stata
+replace povline = 420 if Label=="Lower middle-income poverty rate ($4.20 in 2021 PPP)"
+```
+Modified: `variable:f3260486130b1e97`
+Read candidates: `variable:68e9b487050dca33`
+
+### block:e12399a051dec9e6
+
+Evidence: `01.Programs/03-MPO to PEA.do:L139-L139`. Next: `block:8c3405851fa8e083`.
+
+```stata
+replace povline = 830 if Label=="Upper middle-income poverty rate ($8.30 in 2021 PPP)"
+```
+Modified: `variable:f3260486130b1e97`
+Read candidates: `variable:68e9b487050dca33`
+
+### block:8c3405851fa8e083
+
+Evidence: `01.Programs/03-MPO to PEA.do:L140-L140`. Next: `block:fb036f4b8d125735`.
+
+```stata
+ren Code code
+```
+New: `variable:25a3eaf80f14267f`
+Read candidates: `variable:7cdd714ed25e254a`
+
+### block:fb036f4b8d125735
+
+Evidence: `01.Programs/03-MPO to PEA.do:L141-L141`. Next: `block:d1a08aa252893543`.
+
+```stata
+drop Label Indicator
+```
+Read candidates: `variable:68e9b487050dca33`, `variable:d6380a8ac457f61b`
+
+### block:d1a08aa252893543
+
+Evidence: `01.Programs/03-MPO to PEA.do:L142-L142`. Next: `block:ecae179141306b6a`.
+
+```stata
+isid code year povline
+```
+Read candidates: `variable:25a3eaf80f14267f`, `variable:344f903d40c74a2c`, `variable:f3260486130b1e97`
+
+### block:ecae179141306b6a
+
+Evidence: `01.Programs/03-MPO to PEA.do:L143-L143`. Next: `block:e2f74fa4147adefd`.
+
+```stata
+save `data1', replace
+```
+Write datasets: `dataset:9ecb2df34ae8c5fc`
+
+### block:e2f74fa4147adefd
+
+Evidence: `01.Programs/03-MPO to PEA.do:L145-L145`. Next: `block:44c67f4257a95d38`.
+
+```stata
+use "$fromservers\ObservedPoverty2021PPP_${rndprev}.dta" , clear
+```
+Read datasets: `dataset:70061ae07f850bb3`
+
+### block:44c67f4257a95d38
+
+Evidence: `01.Programs/03-MPO to PEA.do:L146-L146`. Next: `block:c0fcf409ddf63867`.
+
+```stata
+isid countrycode year povline type
+```
+Read candidates: `variable:65ae7ae8a846a2eb`, `variable:f95a9c3211e07d49`, `variable:f237d72e9e8a52e0`, `variable:ac853c2395cdab14`
+
+### block:c0fcf409ddf63867
+
+Evidence: `01.Programs/03-MPO to PEA.do:L148-L148`. Next: `block:53a9e037a8293e02`.
+
+```stata
+ren countrycode code
+```
+New: `variable:1fcfee0a48ad7c26`
+Read candidates: `variable:65ae7ae8a846a2eb`
+
+### block:53a9e037a8293e02
+
+Evidence: `01.Programs/03-MPO to PEA.do:L149-L149`. Next: `block:87b79b1b232d5e86`.
+
+```stata
+drop if code=="ISO3" & surveyname=="HBS"
+```
+Read candidates: `variable:1fcfee0a48ad7c26`, `variable:a65abba794e1e139`
+
+### block:87b79b1b232d5e86
+
+Evidence: `01.Programs/03-MPO to PEA.do:L150-L150`. Next: `block:2f50262cda175f75`.
+
+```stata
+drop if code=="ISO3" & type=="C"
+```
+Read candidates: `variable:1fcfee0a48ad7c26`, `variable:ac853c2395cdab14`
+
+### block:2f50262cda175f75
+
+Evidence: `01.Programs/03-MPO to PEA.do:L151-L151`. Next: `block:792bef529b8eca20`.
+
+```stata
+drop if code=="ISO3" & type=="C"
+```
+Read candidates: `variable:1fcfee0a48ad7c26`, `variable:ac853c2395cdab14`
+
+### block:792bef529b8eca20
+
+Evidence: `01.Programs/03-MPO to PEA.do:L152-L152`. Next: `block:3c0a555be8357544`.
+
+```stata
+drop if code =="ISO3" & type=="C"
+```
+Read candidates: `variable:1fcfee0a48ad7c26`, `variable:ac853c2395cdab14`
+
+### block:3c0a555be8357544
+
+Evidence: `01.Programs/03-MPO to PEA.do:L154-L154`. Next: `block:a9e8c2943691e3cc`.
+
+```stata
+isid code year povline
+```
+Read candidates: `variable:1fcfee0a48ad7c26`, `variable:f95a9c3211e07d49`, `variable:f237d72e9e8a52e0`
+
+### block:a9e8c2943691e3cc
+
+Evidence: `01.Programs/03-MPO to PEA.do:L156-L156`. Next: `block:3f4e2adff02fba39`.
+
+```stata
+merge 1:1 code year povline using `data1'
+```
+Read datasets: `dataset:9ecb2df34ae8c5fc`
+
+### block:3f4e2adff02fba39
+
+Evidence: `01.Programs/03-MPO to PEA.do:L157-L157`. Next: `block:6cb3ac8591c83477`.
+
+```stata
+gen esttype = 1 if pov~=.
+```
+New: `variable:2044ddc246868163`
+Read candidates: `variable:3e7542b6857ac78c`
+
+### block:6cb3ac8591c83477
+
+Evidence: `01.Programs/03-MPO to PEA.do:L158-L158`. Next: `block:70ca455e090d9e56`.
+
+```stata
+replace esttype = 2 if pov==. & _merge==2 & esttype==.
+```
+Modified: `variable:2044ddc246868163`
+Read candidates: `variable:3e7542b6857ac78c`, `variable:dd59a8ed923dc1ee`, `variable:2044ddc246868163`
+
+### block:70ca455e090d9e56
+
+Evidence: `01.Programs/03-MPO to PEA.do:L159-L159`. Next: `block:de3296e3c64a2201`.
+
+```stata
+replace pov = value if pov==. & _merge==2 & esttype==2
+```
+Modified: `variable:3e7542b6857ac78c`
+Read candidates: `variable:d1aeffa216f9fc53`, `variable:3e7542b6857ac78c`, `variable:dd59a8ed923dc1ee`, `variable:2044ddc246868163`
+
+### block:de3296e3c64a2201
+
+Evidence: `01.Programs/03-MPO to PEA.do:L160-L160`. Next: `block:0ac8e1f536294438`.
+
+```stata
+la def esttype 1 "Actual" 2 "Projected"
+```
+
+### block:0ac8e1f536294438
+
+Evidence: `01.Programs/03-MPO to PEA.do:L161-L161`. Next: `block:b54244bd039d5983`.
+
+```stata
+la val esttype esttype
+```
+
+### block:b54244bd039d5983
+
+Evidence: `01.Programs/03-MPO to PEA.do:L162-L162`. Next: `block:342039fcaf066d84`.
+
+```stata
+ren _merge merge1
+```
+New: `variable:22b5de563f411921`
+Read candidates: `variable:dd59a8ed923dc1ee`
+
+### block:342039fcaf066d84
+
+Evidence: `01.Programs/03-MPO to PEA.do:L163-L163`. Next: `block:ca233f1b212b14d6`.
+
+```stata
+save `data1', replace
+```
+Write datasets: `dataset:9ecb2df34ae8c5fc`
+
+### block:ca233f1b212b14d6
+
+Evidence: `01.Programs/03-MPO to PEA.do:L165-L165`. Next: `block:6e240b15ed6fa3af`.
+
+```stata
+keep if esttype==1
+```
+Read candidates: `variable:2044ddc246868163`
+
+### block:6e240b15ed6fa3af
+
+Evidence: `01.Programs/03-MPO to PEA.do:L166-L166`. Next: `block:a3136b775de05797`.
+
+```stata
+keep code year type comparability
+```
+Read candidates: `variable:1fcfee0a48ad7c26`, `variable:f95a9c3211e07d49`, `variable:ac853c2395cdab14`, `variable:36dd3e27e1b32afb`
+
+### block:a3136b775de05797
+
+Evidence: `01.Programs/03-MPO to PEA.do:L167-L167`. Next: `block:3ef136635f1bdb27`.
+
+```stata
+duplicates drop code year type comparability, force
+```
+
+### block:3ef136635f1bdb27
+
+Evidence: `01.Programs/03-MPO to PEA.do:L168-L168`. Next: `block:e03875707ee06979`.
+
+```stata
+bys code (year): egen ymax = max(year)
+```
+New: `variable:d47cdaf180fe2dd1`
+Read candidates: `variable:f95a9c3211e07d49`
+
+### block:e03875707ee06979
+
+Evidence: `01.Programs/03-MPO to PEA.do:L169-L169`. Next: `block:ca0a8d22cf60e27a`.
+
+```stata
+gen latest = year==ymax
+```
+New: `variable:fca038235d6af2c0`
+Read candidates: `variable:f95a9c3211e07d49`, `variable:d47cdaf180fe2dd1`
+
+### block:ca0a8d22cf60e27a
+
+Evidence: `01.Programs/03-MPO to PEA.do:L170-L170`. Next: `block:4ad74dfcede3022f`.
+
+```stata
+keep if latest==1
+```
+Read candidates: `variable:fca038235d6af2c0`
+
+### block:4ad74dfcede3022f
+
+Evidence: `01.Programs/03-MPO to PEA.do:L171-L171`. Next: `block:25c7744038e66d33`.
+
+```stata
+keep code comparability type
+```
+Read candidates: `variable:1fcfee0a48ad7c26`, `variable:36dd3e27e1b32afb`, `variable:ac853c2395cdab14`
+
+### block:25c7744038e66d33
+
+Evidence: `01.Programs/03-MPO to PEA.do:L172-L172`. Next: `block:d30281aecfed2fc3`.
+
+```stata
+ren comparability comparability2
+```
+New: `variable:983c6ba69d63f2ac`
+Read candidates: `variable:36dd3e27e1b32afb`
+
+### block:d30281aecfed2fc3
+
+Evidence: `01.Programs/03-MPO to PEA.do:L173-L173`. Next: `block:f3c61f3414fda921`.
+
+```stata
+ren type type2
+```
+New: `variable:0afa554e1ad63fe6`
+Read candidates: `variable:ac853c2395cdab14`
+
+### block:f3c61f3414fda921
+
+Evidence: `01.Programs/03-MPO to PEA.do:L174-L174`. Next: `block:50a5529260f40fa6`.
+
+```stata
+save `data2', replace
+```
+Write datasets: `dataset:eec62961d4b58914`
+
+### block:50a5529260f40fa6
+
+Evidence: `01.Programs/03-MPO to PEA.do:L176-L176`. Next: `block:1e605882f6ee1fd0`.
+
+```stata
+use `data1', clear
+```
+Read datasets: `dataset:9ecb2df34ae8c5fc`
+
+### block:1e605882f6ee1fd0
+
+Evidence: `01.Programs/03-MPO to PEA.do:L177-L177`. Next: `block:c7a8235df726dc33`.
+
+```stata
+merge m:1 code using `data2'
+```
+Read datasets: `dataset:eec62961d4b58914`
+
+### block:c7a8235df726dc33
+
+Evidence: `01.Programs/03-MPO to PEA.do:L178-L178`. Next: `block:219990d18183f19f`.
+
+```stata
+sort code povline year
+```
+
+### block:219990d18183f19f
+
+Evidence: `01.Programs/03-MPO to PEA.do:L179-L179`. Next: `block:97f6515715191f93`.
+
+```stata
+replace type = type2 if type=="" & type2~="" & esttype==2
+```
+Modified: `variable:d17e1983bcde45cd`
+Read candidates: `variable:84bc7d0ceab769a9`, `variable:d17e1983bcde45cd`, `variable:a682eae29456acfb`
+
+### block:97f6515715191f93
+
+Evidence: `01.Programs/03-MPO to PEA.do:L180-L180`. Next: `block:480f285386fc71f2`.
+
+```stata
+replace comparability = comparability2 if comparability==. & comparability2~=. & esttype==2
+```
+Modified: `variable:e1f0a36a4a850f73`
+Read candidates: `variable:ac6e537f8631c737`, `variable:e1f0a36a4a850f73`, `variable:a682eae29456acfb`
+
+### block:480f285386fc71f2
+
+Evidence: `01.Programs/03-MPO to PEA.do:L181-L181`. Next: `block:42aa95de9c80a6a2`.
+
+```stata
+ren surveyname survname
+```
+New: `variable:d5c50404efdcd663`
+Read candidates: `variable:95a158569bc5d412`
+
+### block:42aa95de9c80a6a2
+
+Evidence: `01.Programs/03-MPO to PEA.do:L182-L182`. Next: `block:d2658cd5a469540c`.
+
+```stata
+gen ppp = 2021
+```
+New: `variable:cecc4c73508d520f`
+
+### block:d2658cd5a469540c
+
+Evidence: `01.Programs/03-MPO to PEA.do:L183-L183`. Next: `block:c3a38eeec89165cc`.
+
+```stata
+ren type welftype
+```
+New: `variable:5598c94838d8ddf5`
+Read candidates: `variable:d17e1983bcde45cd`
+
+### block:c3a38eeec89165cc
+
+Evidence: `01.Programs/03-MPO to PEA.do:L184-L184`. Next: `block:3f07fc01cd6a121b`.
+
+```stata
+replace welftype = "CONS" if welftype=="C"
+```
+Modified: `variable:5598c94838d8ddf5`
+Read candidates: `variable:5598c94838d8ddf5`
+
+### block:3f07fc01cd6a121b
+
+Evidence: `01.Programs/03-MPO to PEA.do:L185-L185`. Next: `block:6d9bfbdd0ea40e2d`.
+
+```stata
+replace welftype = "INC" if welftype=="I"
+```
+Modified: `variable:5598c94838d8ddf5`
+Read candidates: `variable:5598c94838d8ddf5`
+
+### block:6d9bfbdd0ea40e2d
+
+Evidence: `01.Programs/03-MPO to PEA.do:L187-L187`. Next: `block:0a2f25cffdd9a7e0`.
+
+```stata
+gen vintage = "Fall 2025"
+```
+New: `variable:6e459f0f6f5f848c`
+
+### block:0a2f25cffdd9a7e0
+
+Evidence: `01.Programs/03-MPO to PEA.do:L188-L188`. Next: `block:b92819d2df4b06df`.
+
+```stata
+keep code year survname povline pov esttype comparability ppp vintage
+```
+Read candidates: `variable:d1f9b21fcd50a1ea`, `variable:70d806a0435ae0cd`, `variable:d5c50404efdcd663`, `variable:fcec1a14a90cd386`, `variable:7aa03736eadf760a`, `variable:a682eae29456acfb`, `variable:e1f0a36a4a850f73`, `variable:cecc4c73508d520f`, `variable:6e459f0f6f5f848c`
+
+### block:b92819d2df4b06df
+
+Evidence: `01.Programs/03-MPO to PEA.do:L190-L190`. Next: `block:54a91727ec481f3b`.
+
+```stata
+save `data2021_previous', replace
+```
+Write datasets: `dataset:4e08c38364d81492`
+
+### block:54a91727ec481f3b
+
+Evidence: `01.Programs/03-MPO to PEA.do:L192-L192`. Next: `block:b214d8173ebb8091`.
+
+```stata
+append using `data2021'
+```
+Read datasets: `dataset:5e8610d33724736a`
+
+### block:b214d8173ebb8091
+
+Evidence: `01.Programs/03-MPO to PEA.do:L193-L193`. Next: `block:ad3cdd7edbcc4825`.
+
+```stata
+sort ppp code povline year
+```
+
+### block:ad3cdd7edbcc4825
+
+Evidence: `01.Programs/03-MPO to PEA.do:L194-L194`. Next: `block:84492ae42b75fc98`.
+
+```stata
+compress
+```
+
+### block:84492ae42b75fc98
+
+Evidence: `01.Programs/03-MPO to PEA.do:L195-L195`. Next: `end`.
+
+```stata
+save "$pea\MPO_poverty_data", replace
+```
+Write datasets: `dataset:4c2ca41c09e9c649`

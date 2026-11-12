@@ -1,0 +1,302 @@
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L616-L616`. Next: `block:2d911ef844e131f8`.
+
+```stata
+dis "=============================================================="
+```
+
+### block:2d911ef844e131f8
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L617-L617`. Next: `block:19dac034628206a1`.
+
+```stata
+if `n_drops'==0 & `n_binfail'==0 {
+```
+
+### block:19dac034628206a1
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L618-L618`. Next: `block:b9c8fb524198c453`.
+
+```stata
+dis " RESULT: CLEAN - nothing flagged."
+```
+Enclosing controls: `if `n_drops'==0 & `n_binfail'==0 {`
+
+### block:b9c8fb524198c453
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L619-L619`. Next: `block:43191c2695d055de`.
+
+```stata
+}
+```
+
+### block:43191c2695d055de
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L620-L620`. Next: `block:33629f1127686c03`.
+
+```stata
+else {
+```
+
+### block:33629f1127686c03
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L621-L621`. Next: `block:4324e1a925f48b2d`.
+
+```stata
+dis " RESULT: `n_drops' drop event(s), `n_binfail' incomplete series."
+```
+Enclosing controls: `else {`
+
+### block:4324e1a925f48b2d
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L622-L622`. Next: `block:3f60d91a47cde7dc`.
+
+```stata
+}
+```
+
+### block:3f60d91a47cde7dc
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L623-L623`. Next: `block:c891da1b21649b9c`.
+
+```stata
+dis "=============================================================="
+```
+
+### block:c891da1b21649b9c
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L625-L625`. Next: `block:71c66f060d7dc5b7`.
+
+```stata
+log close qcflag
+```
+
+### block:71c66f060d7dc5b7
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L628-L628`. Next: `block:8b983ad4a76d431d`.
+
+```stata
+use `qccollect', clear
+```
+Read datasets: `dataset:3f8e83d7cb5e6088`
+
+### block:8b983ad4a76d431d
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L629-L629`. Next: `block:f6616a72d93e9cb4`.
+
+```stata
+gen str12 qc_section = "A_dropped"
+```
+New: `variable:9ef1d6d598ac3e5b`
+
+### block:f6616a72d93e9cb4
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L630-L630`. Next: `block:e8e70639af624c9d`.
+
+```stata
+if `n_binfail' > 0 {
+```
+
+### block:e8e70639af624c9d
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L631-L631`. Next: `block:c550ba3969988e05`.
+
+```stata
+tempfile qcA
+```
+Enclosing controls: `if `n_binfail' > 0 {`
+
+### block:c550ba3969988e05
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L632-L632`. Next: `block:b8f5ff4fe883ffb1`.
+
+```stata
+save `qcA', replace
+```
+Enclosing controls: `if `n_binfail' > 0 {`
+Write datasets: `dataset:19195d204fba7f6e`
+
+### block:b8f5ff4fe883ffb1
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L633-L633`. Next: `block:4a851f950092f9da`.
+
+```stata
+use `qcbins', clear
+```
+Enclosing controls: `if `n_binfail' > 0 {`
+Read datasets: `dataset:064b6b46d9cb8bd0`
+
+### block:4a851f950092f9da
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L634-L634`. Next: `block:c26cb958a08c3d89`.
+
+```stata
+tostring year, replace
+```
+Enclosing controls: `if `n_binfail' > 0 {`
+Modified: `variable:1c4076a26c3f017e`
+Read candidates: `variable:1c4076a26c3f017e`
+
+### block:c26cb958a08c3d89
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L635-L635`. Next: `block:5b759ab98d2e6201`.
+
+```stata
+rename (code year ppp welftype nbins) (qc_code qc_spell qc_ppp qc_welf qc_nbins)
+```
+Enclosing controls: `if `n_binfail' > 0 {`
+New: `variable:47a6a23cd6485834`, `variable:22938b9680b9bab1`, `variable:d19b0a1ba078c5ec`, `variable:36a78665ba17d152`, `variable:e7abf5ba14ed63ad`
+Read candidates: `variable:5cb26fa480e2bfed`, `variable:1c4076a26c3f017e`, `variable:d72e1759f550b31f`, `variable:f04474016cdef316`, `variable:ec8af207820bb4bd`
+
+### block:5b759ab98d2e6201
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L636-L636`. Next: `block:159ca0d7f382ef83`.
+
+```stata
+gen str12 qc_section = "B_bins_lt100"
+```
+Enclosing controls: `if `n_binfail' > 0 {`
+New: `variable:638ebd340ad9892f`
+
+### block:159ca0d7f382ef83
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L637-L637`. Next: `block:ce008e01f449006d`.
+
+```stata
+append using `qcA'
+```
+Enclosing controls: `if `n_binfail' > 0 {`
+Read datasets: `dataset:19195d204fba7f6e`
+
+### block:ce008e01f449006d
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L638-L638`. Next: `block:384d8a529d3e0aa6`.
+
+```stata
+}
+```
+
+### block:384d8a529d3e0aa6
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L639-L639`. Next: `block:d1e17ccbc70f9210`.
+
+```stata
+export delimited using "$qccsv", replace
+```
+Write datasets: `dataset:d026fafdcd1e36ae`
+
+### block:d1e17ccbc70f9210
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L641-L641`. Next: `block:84b37f0405274663`.
+
+```stata
+noi dis in green "QC log written to: $qclog"
+```
+
+### block:84b37f0405274663
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L642-L642`. Next: `block:123cecfd66126635`.
+
+```stata
+noi dis in green "QC csv written to: $qccsv"
+```
+
+### block:123cecfd66126635
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L645-L645`. Next: `block:77722577814e8666`.
+
+```stata
+use `prosdecomp', clear
+```
+Read datasets: `dataset:a404fd2d1680b9c0`
+
+### block:77722577814e8666
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L646-L646`. Next: `block:28da60cede52159a`.
+
+```stata
+save "${out}\\03.intermediate\\GMI_extended_${rnd}_prosg_decomp", replace
+```
+Write datasets: `dataset:f60ae57952f91282`
+
+### block:28da60cede52159a
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L648-L648`. Next: `block:1f55094345cade68`.
+
+```stata
+frame change decomp_results
+```
+
+### block:1f55094345cade68
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L649-L649`. Next: `block:76aba104ed82ce00`.
+
+```stata
+save "${out}\\03.intermediate\\GMI_extended_${rnd}_decomp1", replace
+```
+Write datasets: `dataset:95a0eaf4ef22f613`
+
+### block:76aba104ed82ce00
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L651-L651`. Next: `block:1ca31fe01bdf4ebb`.
+
+```stata
+frame change decomp_results2
+```
+
+### block:1ca31fe01bdf4ebb
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L652-L652`. Next: `block:2a79a6c46e150e49`.
+
+```stata
+save "${out}\\03.intermediate\\GMI_extended_${rnd}_decomp2", replace
+```
+Write datasets: `dataset:21a89f14bf7eb45c`
+
+### block:2a79a6c46e150e49
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L653-L653`. Next: `block:48b9a4371d86eb08`.
+
+```stata
+s
+```
+
+### block:48b9a4371d86eb08
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L654-L654`. Next: `block:2840b93fe607f75a`.
+
+```stata
+reshape long value, i(decomp spell povline) j(subind)
+```
+Read candidates: `variable:1c8e32590edb6672`, `variable:f7e0e87d6455d0b9`, `variable:f5ed34269cd1e1e3`, `variable:e6518e270b8302f7`, `variable:ee18fb70c087ad78`
+
+### block:2840b93fe607f75a
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L655-L655`. Next: `block:f4222d9c00b2921b`.
+
+```stata
+la def subind 1 "Total change in p.p." 2 "Growth" 3 "Redistribution" 4 "Line"
+```
+
+### block:f4222d9c00b2921b
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L656-L656`. Next: `block:7c4684391032d1a7`.
+
+```stata
+la val subind subind
+```
+
+### block:7c4684391032d1a7
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L657-L657`. Next: `block:b695d4dde924d259`.
+
+```stata
+decomp_results2
+```
+
+### block:b695d4dde924d259
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L658-L658`. Next: `end`.
+
+```stata
+la def subind 1 "Total change in p.p." `rlbl' 4 "Population shift" 5 "Interaction"
+```

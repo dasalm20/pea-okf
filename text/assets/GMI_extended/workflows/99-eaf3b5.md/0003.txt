@@ -1,0 +1,1479 @@
+```stata
+}
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:2ab8f7d962c2533b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L719-L719`. Next: `block:68327b8596e3be3c`.
+
+```stata
+if `dnm' > 0 {
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:68327b8596e3be3c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L720-L720`. Next: `block:73236b2270564bfa`.
+
+```stata
+local rp = 100*`ch'/`dnm'
+```
+Enclosing controls: `forvalues i = 1/`=_N' {` → `if `dnm' > 0 {`
+
+### block:73236b2270564bfa
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L721-L721`. Next: `block:51fd67d37a7012d2`.
+
+```stata
+if `rp' >= `recpct' {
+```
+Enclosing controls: `forvalues i = 1/`=_N' {` → `if `dnm' > 0 {`
+
+### block:51fd67d37a7012d2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L722-L722`. Next: `block:03b1671582f5211f`.
+
+```stata
+local pct = cond(`den'>0, `ch'/`den', .)
+```
+Enclosing controls: `forvalues i = 1/`=_N' {` → `if `dnm' > 0 {` → `if `rp' >= `recpct' {`
+
+### block:03b1671582f5211f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L723-L723`. Next: `block:d83c59a34b1ebcb5`.
+
+```stata
+local rps = string(`rp', "%4.1f")
+```
+Enclosing controls: `forvalues i = 1/`=_N' {` → `if `dnm' > 0 {` → `if `rp' >= `recpct' {`
+
+### block:d83c59a34b1ebcb5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L724-L724`. Next: `block:cba3bdb97b870ba2`.
+
+```stata
+local w5 = cond(`rp' >= `urgrec', "Urgent", "Check")
+```
+Enclosing controls: `forvalues i = 1/`=_N' {` → `if `dnm' > 0 {` → `if `rp' >= `recpct' {`
+
+### block:cba3bdb97b870ba2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L725-L725`. Next: `block:c4d645c8243b2c84`.
+
+```stata
+local c5 = cond(`rp' >= `urgrec', 2, 1)
+```
+Enclosing controls: `forvalues i = 1/`=_N' {` → `if `dnm' > 0 {` → `if `rp' >= `recpct' {`
+
+### block:c4d645c8243b2c84
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L726-L729`. Next: `block:edbe83dd9af297db`.
+
+```stata
+post qc ("`cty'") ("`srv'") (`yr') ("`reg'") ("`v'") ("`w5'") (`ch') (`pct') (`rp') ("Variable <`v'> re-codes `rps' pct of the people who had a value") ("") (5) (`c5')
+```
+Enclosing controls: `forvalues i = 1/`=_N' {` → `if `dnm' > 0 {` → `if `rp' >= `recpct' {`
+
+### block:edbe83dd9af297db
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L730-L730`. Next: `block:29008a344409246d`.
+
+```stata
+}
+```
+Enclosing controls: `forvalues i = 1/`=_N' {` → `if `dnm' > 0 {`
+
+### block:29008a344409246d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L731-L731`. Next: `block:7f68349d6ec53711`.
+
+```stata
+}
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:7f68349d6ec53711
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L732-L732`. Next: `block:782fc113e9775f4d`.
+
+```stata
+}
+```
+
+### block:782fc113e9775f4d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L734-L734`. Next: `block:ac6424e93db02029`.
+
+```stata
+postclose qc
+```
+
+### block:ac6424e93db02029
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L737-L737`. Next: `block:23b4aacc034f9506`.
+
+```stata
+use `QC', clear
+```
+Read datasets: `dataset:2d6b6e6c0cfd28f7`
+
+### block:23b4aacc034f9506
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L739-L739`. Next: `block:614fcea818fff2c9`.
+
+```stata
+gsort -code -impact region acronym year variable test
+```
+
+### block:614fcea818fff2c9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L740-L740`. Next: `block:b688decea61e1af8`.
+
+```stata
+gen int contador = _n
+```
+New: `variable:bb587eed4a93480c`
+
+### block:b688decea61e1af8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L741-L742`. Next: `block:e76634b402fe59b3`.
+
+```stata
+order acronym survey year region contador variable warn impact freq percentage desc iff test code
+```
+
+### block:e76634b402fe59b3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L743-L743`. Next: `block:e00858e4f5610a4e`.
+
+```stata
+format percentage %9.6f
+```
+
+### block:e00858e4f5610a4e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L744-L744`. Next: `block:59982129e3043a1f`.
+
+```stata
+format impact %6.1f
+```
+
+### block:59982129e3043a1f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L746-L746`. Next: `block:1857c01b503b4b64`.
+
+```stata
+label var acronym    "acronym"
+```
+
+### block:1857c01b503b4b64
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L747-L747`. Next: `block:3954290d3d526291`.
+
+```stata
+label var survey     "survey"
+```
+
+### block:3954290d3d526291
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L748-L748`. Next: `block:2836dcd6bbc100e8`.
+
+```stata
+label var year       "year"
+```
+
+### block:2836dcd6bbc100e8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L749-L749`. Next: `block:72e4a75d19a3c070`.
+
+```stata
+label var region     "region"
+```
+
+### block:72e4a75d19a3c070
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L750-L750`. Next: `block:f280ae2bfc00e584`.
+
+```stata
+label var contador   "contador"
+```
+
+### block:f280ae2bfc00e584
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L751-L751`. Next: `block:bcc56157d15336eb`.
+
+```stata
+label var variable   "variable"
+```
+
+### block:bcc56157d15336eb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L752-L752`. Next: `block:bd549306dfd19703`.
+
+```stata
+label var warn       "warn"
+```
+
+### block:bd549306dfd19703
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L753-L753`. Next: `block:b9ab7a5abacca63a`.
+
+```stata
+label var freq       "freq"
+```
+
+### block:b9ab7a5abacca63a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L754-L754`. Next: `block:901d04aee011ff3a`.
+
+```stata
+label var percentage "percentage"
+```
+
+### block:901d04aee011ff3a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L755-L755`. Next: `block:ee60223c76413ffb`.
+
+```stata
+label var impact     "impact (pct)"
+```
+
+### block:ee60223c76413ffb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L756-L756`. Next: `block:b65bb40194a86d88`.
+
+```stata
+label var desc       "desc"
+```
+
+### block:b65bb40194a86d88
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L757-L757`. Next: `block:4515b6a91c739cd7`.
+
+```stata
+label var iff        "iff"
+```
+
+### block:4515b6a91c739cd7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L758-L758`. Next: `block:325ec505e6016d35`.
+
+```stata
+label var test       "test"
+```
+
+### block:325ec505e6016d35
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L759-L759`. Next: `block:0b31ec3ef9b9921a`.
+
+```stata
+label var code       "code"
+```
+
+### block:0b31ec3ef9b9921a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L761-L761`. Next: `block:777df890b53e1ae5`.
+
+```stata
+qui count
+```
+
+### block:777df890b53e1ae5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L762-L762`. Next: `block:0c6191890d03cd02`.
+
+```stata
+local nqc = r(N)
+```
+
+### block:0c6191890d03cd02
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L763-L763`. Next: `block:6b150befdb7bf78e`.
+
+```stata
+qui count if warn=="Urgent"
+```
+Read candidates: `variable:3391520f708c8647`
+
+### block:6b150befdb7bf78e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L764-L764`. Next: `block:753ab3efa60a9d86`.
+
+```stata
+local nurg = r(N)
+```
+
+### block:753ab3efa60a9d86
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L765-L765`. Next: `block:22c1ec17dc5726fe`.
+
+```stata
+tempfile SHQ
+```
+
+### block:22c1ec17dc5726fe
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L766-L766`. Next: `block:7537b1f09310f4a8`.
+
+```stata
+qui save `SHQ'
+```
+Write datasets: `dataset:4e9ad02461e77015`
+
+### block:7537b1f09310f4a8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L767-L767`. Next: `block:23f9231b9cf716b9`.
+
+```stata
+di as text "  qcheck : `nqc' findings, `nurg' Urgent"
+```
+
+### block:23f9231b9cf716b9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L773-L773`. Next: `block:500f6fc123b8b000`.
+
+```stata
+putexcel set "`outfile'", sheet("READ ME FIRST") replace
+```
+Write datasets: `dataset:9ef7e59cc8fd9235`
+
+### block:500f6fc123b8b000
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L775-L775`. Next: `block:662394a89e01fb6b`.
+
+```stata
+putexcel A1 = "LOCAL RE-HARMONIZATION -- QUALITY CHECK", bold
+```
+
+### block:662394a89e01fb6b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L776-L776`. Next: `block:a5a4fb0da24cce6a`.
+
+```stata
+putexcel A2 = "Round `rnd'.  Run `c(current_date)' `c(current_time)'."
+```
+
+### block:a5a4fb0da24cce6a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L778-L778`. Next: `block:a8ecbca2d14302ad`.
+
+```stata
+putexcel A4 = "WHAT THIS IS", bold
+```
+
+### block:a8ecbca2d14302ad
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L779-L779`. Next: `block:f295a5becd51906d`.
+
+```stata
+putexcel A5 = "Regions re-harmonize survey files and send them to us. Before they replace what"
+```
+
+### block:f295a5becd51906d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L780-L780`. Next: `block:22da2530ab9c5b5b`.
+
+```stata
+putexcel A6 = "is in DataLibWeb, every file is joined to DLW person by person and what moved is"
+```
+
+### block:22da2530ab9c5b5b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L781-L781`. Next: `block:3134a3fceac9aaea`.
+
+```stata
+putexcel A7 = "recorded."
+```
+
+### block:3134a3fceac9aaea
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L782-L782`. Next: `block:74b125731da3569b`.
+
+```stata
+putexcel A8 = "THE CODES ARE JUDGED AGAINST THE GMD GUIDELINES, NOT AGAINST DLW. A survey may"
+```
+
+### block:74b125731da3569b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L783-L783`. Next: `block:50efd1a9fed7ec33`.
+
+```stata
+putexcel A9 = "legitimately use only 2 of 4 allowed categories, because that is what the"
+```
+
+### block:50efd1a9fed7ec33
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L784-L784`. Next: `block:0c5dfa02582f1e8a`.
+
+```stata
+putexcel A10 = "questionnaire asked, and DLW will then only ever show those 2. That is fine. What"
+```
+
+### block:0c5dfa02582f1e8a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L785-L785`. Next: `block:355f83bfa7740ca9`.
+
+```stata
+putexcel A11 = "is not fine is a code OUTSIDE the allowed set. The allowed sets come from the"
+```
+
+### block:355f83bfa7740ca9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L786-L786`. Next: `block:c213d5ecd6ad1b1e`.
+
+```stata
+putexcel A12 = "guidelines tables 4.1, 5.x, 6.x and 7.x, written into section 5 of this script."
+```
+
+### block:c213d5ecd6ad1b1e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L788-L788`. Next: `block:602e4ba945f7c0f1`.
+
+```stata
+putexcel A14 = "SHEET: QCHECK  -- START HERE", bold
+```
+
+### block:602e4ba945f7c0f1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L789-L789`. Next: `block:7e5703d0304d0d29`.
+
+```stata
+putexcel A15 = "One row per DETECTED ERROR, in the same shape as the qcheck output the team"
+```
+
+### block:7e5703d0304d0d29
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L790-L790`. Next: `block:d97df09dcbba6fa8`.
+
+```stata
+putexcel A16 = "already uses. Urgent rows are shaded and sorted to the top."
+```
+
+### block:d97df09dcbba6fa8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L791-L791`. Next: `block:fa388534a91faba9`.
+
+```stata
+putexcel B17 = "warn   Urgent, Check or Note. code is the same thing as a number: 2, 1, 0."
+```
+
+### block:fa388534a91faba9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L792-L792`. Next: `block:8326f31890d9fd56`.
+
+```stata
+putexcel B18 = "freq   observations failing that test. percentage is freq over matched rows."
+```
+
+### block:8326f31890d9fd56
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L793-L793`. Next: `block:f6078828b9cfdf74`.
+
+```stata
+putexcel B19 = "iff    the Stata condition that reproduces it. Paste it and run."
+```
+
+### block:f6078828b9cfdf74
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L794-L794`. Next: `block:d58ddae4cec340a0`.
+
+```stata
+putexcel B20 = "test   stable test number, so the same test keeps the same id across rounds."
+```
+
+### block:d58ddae4cec340a0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L795-L795`. Next: `block:9da0233e717e8176`.
+
+```stata
+putexcel A21 = "THE TESTS"
+```
+
+### block:9da0233e717e8176
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L796-L796`. Next: `block:c5d8adcfdf3b133d`.
+
+```stata
+putexcel B21 = "1  a code outside the GMD guidelines                 Urgent"
+```
+
+### block:c5d8adcfdf3b133d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L797-L797`. Next: `block:1288732c548f6235`.
+
+```stata
+putexcel B22 = "2  every observation is missing                      Urgent"
+```
+
+### block:1288732c548f6235
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L798-L798`. Next: `block:9f1fe57de321173a`.
+
+```stata
+putexcel B23 = "3  the variable holds only one value                 Check"
+```
+
+### block:9f1fe57de321173a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L799-L799`. Next: `block:309de10879eab861`.
+
+```stata
+putexcel B24 = "4  lost more than `losspct' pct of its values               Check"
+```
+
+### block:309de10879eab861
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L800-L800`. Next: `block:61998b38cc77dbd6`.
+
+```stata
+putexcel B25 = "5  more than `recpct' pct of people re-coded                Check"
+```
+
+### block:61998b38cc77dbd6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L801-L801`. Next: `block:de7c001bbc5340be`.
+
+```stata
+putexcel B26 = "6  a category share moved by `bigpp' points or more         Check"
+```
+
+### block:de7c001bbc5340be
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L802-L802`. Next: `block:1b2749a55546d642`.
+
+```stata
+putexcel B27 = "7  the region did not deliver the variable           Note"
+```
+
+### block:1b2749a55546d642
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L803-L803`. Next: `block:03b28677ee45970c`.
+
+```stata
+putexcel A29 = "The two sheets after it are the supporting detail behind these rows."
+```
+
+### block:03b28677ee45970c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L805-L805`. Next: `block:ab5031442a2ee8db`.
+
+```stata
+putexcel A31 = "SHEET: WHAT CHANGED", bold
+```
+
+### block:ab5031442a2ee8db
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L806-L806`. Next: `block:2898ad7580706632`.
+
+```stata
+putexcel A11 = "One row per country-year and variable. Eight columns. No colour: this sheet only"
+```
+
+### block:2898ad7580706632
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L807-L807`. Next: `block:a079c66a32487afa`.
+
+```stata
+putexcel A12 = "says WHETHER something changed, not whether it matters."
+```
+
+### block:a079c66a32487afa
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L808-L808`. Next: `block:1cee8293e76874e0`.
+
+```stata
+putexcel A37 = "what happened"
+```
+
+### block:1cee8293e76874e0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L809-L809`. Next: `block:1828d8a054701537`.
+
+```stata
+putexcel B37 = "unchanged, gained, lost, recoded, BLANKED, NEW SERIES, mixed, not delivered."
+```
+
+### block:1828d8a054701537
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L810-L810`. Next: `block:436c0e83f6b1ad13`.
+
+```stata
+putexcel A38 = "local file vs DLW"
+```
+
+### block:436c0e83f6b1ad13
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L811-L811`. Next: `block:67115f8e8efcfe50`.
+
+```stata
+putexcel B38 = "the same thing in numbers, e.g. [ESTIMATE] lost, [ESTIMATE] gained, [ESTIMATE] recoded."
+```
+
+### block:67115f8e8efcfe50
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L812-L812`. Next: `block:dffaaa431d7c5165`.
+
+```stata
+putexcel A39 = "codes in the local file"
+```
+
+### block:dffaaa431d7c5165
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L813-L813`. Next: `block:a60b580405447070`.
+
+```stata
+putexcel B39 = "the category numbers the local file actually uses."
+```
+
+### block:a60b580405447070
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L814-L814`. Next: `block:df7baf008df99955`.
+
+```stata
+putexcel A40 = "codes in DLW"
+```
+
+### block:df7baf008df99955
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L815-L815`. Next: `block:a454eb560cbd1cb7`.
+
+```stata
+putexcel B40 = "the category numbers DLW uses. For reference only, NOT the standard."
+```
+
+### block:a454eb560cbd1cb7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L816-L816`. Next: `block:88baf52cbd053635`.
+
+```stata
+putexcel A41 = "codes allowed by the guidelines"
+```
+
+### block:88baf52cbd053635
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L817-L817`. Next: `block:33743f7aadc77493`.
+
+```stata
+putexcel B41 = "the standard. not checked means that variable has no codebook entry yet."
+```
+
+### block:33743f7aadc77493
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L818-L818`. Next: `block:f0c27436f571f50c`.
+
+```stata
+putexcel A42 = "CODES OUTSIDE THE GUIDELINES"
+```
+
+### block:f0c27436f571f50c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L819-L819`. Next: `block:0383b6f40253d597`.
+
+```stata
+putexcel B42 = "THE COLUMN TO FILTER ON. Lists any code the guidelines do not allow, and says"
+```
+
+### block:0383b6f40253d597
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L820-L820`. Next: `block:ce38081798304130`.
+
+```stata
+putexcel B43 = "whether it came from the local file or from DLW. Blank means every code is legal."
+```
+
+### block:ce38081798304130
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L821-L821`. Next: `block:da94e1c320232692`.
+
+```stata
+putexcel B44 = "These rows are sorted to the top of the sheet."
+```
+
+### block:da94e1c320232692
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L823-L823`. Next: `block:9ce5a04b0a0df10f`.
+
+```stata
+putexcel A46 = "SHEET 2: DEGREE OF CHANGE", bold
+```
+
+### block:9ce5a04b0a0df10f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L824-L824`. Next: `block:b100820077714111`.
+
+```stata
+putexcel A47 = "One row per CATEGORY of each variable. This is where the judgement is, so this"
+```
+
+### block:b100820077714111
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L825-L825`. Next: `block:2db69e2eddce1d9b`.
+
+```stata
+putexcel A48 = "is where the colour is. Shaded rows are sorted to the top."
+```
+
+### block:2db69e2eddce1d9b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L826-L826`. Next: `block:c95f8ea04a4319e9`.
+
+```stata
+putexcel A49 = "code vs GMD guidelines"
+```
+
+### block:c95f8ea04a4319e9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L827-L827`. Next: `block:d4130296864e916f`.
+
+```stata
+putexcel B49 = "allowed = the guidelines permit this number."
+```
+
+### block:d4130296864e916f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L828-L828`. Next: `block:d10b612dcbe4378f`.
+
+```stata
+putexcel B50 = "OUTSIDE GUIDELINES = they do not. If the guidelines give 4 categories and the"
+```
+
+### block:d10b612dcbe4378f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L829-L829`. Next: `block:0ddd4822e5a2a354`.
+
+```stata
+putexcel B51 = "file uses a 5th, this is where it appears."
+```
+
+### block:0ddd4822e5a2a354
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L830-L830`. Next: `block:73f0f2c3a04ccb9c`.
+
+```stata
+putexcel B52 = "not checked = no codebook entry for that variable yet."
+```
+
+### block:73f0f2c3a04ccb9c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L831-L831`. Next: `block:77af02fbad1acaed`.
+
+```stata
+putexcel A53 = "which file uses this code"
+```
+
+### block:77af02fbad1acaed
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L832-L832`. Next: `block:0f03294fc80e5262`.
+
+```stata
+putexcel B53 = "both, local only, or DLW only. A category only one side uses is NOT by itself a"
+```
+
+### block:0f03294fc80e5262
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L833-L833`. Next: `block:88787a7a25fae93d`.
+
+```stata
+putexcel B54 = "problem: a survey can legitimately fill only some of the allowed categories."
+```
+
+### block:88787a7a25fae93d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L834-L834`. Next: `block:947401778ddd73dc`.
+
+```stata
+putexcel A55 = "change, percentage points"
+```
+
+### block:947401778ddd73dc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L835-L835`. Next: `block:969f135e7edcf9b0`.
+
+```stata
+putexcel B55 = "the share of the sample in that category, after minus before. The number to read."
+```
+
+### block:969f135e7edcf9b0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L836-L836`. Next: `block:3da6ef57385835f3`.
+
+```stata
+putexcel A56 = "flag"
+```
+
+### block:3da6ef57385835f3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L837-L837`. Next: `block:7a9a1c3b6638fbe6`.
+
+```stata
+putexcel B56 = "CODE OUTSIDE GUIDELINES = the code is not in the allowed set."
+```
+
+### block:7a9a1c3b6638fbe6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L838-L838`. Next: `block:205f1eff149a4806`.
+
+```stata
+putexcel B57 = "BIG SHIFT = the share moved by `bigpp' points or more."
+```
+
+### block:205f1eff149a4806
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L839-L839`. Next: `block:3d95d6a9af6ed17b`.
+
+```stata
+putexcel B58 = "disappeared = the category had people and now has none."
+```
+
+### block:3d95d6a9af6ed17b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L840-L840`. Next: `block:21a88b44faffd696`.
+
+```stata
+putexcel B59 = "new = the category was empty and now has people."
+```
+
+### block:21a88b44faffd696
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L841-L841`. Next: `block:40e2755c16e18c31`.
+
+```stata
+putexcel A60 = "in words"
+```
+
+### block:40e2755c16e18c31
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L842-L842`. Next: `block:4b76fa039c853ff6`.
+
+```stata
+putexcel B60 = "the row as a sentence, for pasting into an email."
+```
+
+### block:4b76fa039c853ff6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L844-L844`. Next: `block:3a0b4f772588d223`.
+
+```stata
+putexcel A64 = "WORKED EXAMPLES", bold
+```
+
+### block:3a0b4f772588d223
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L845-L845`. Next: `block:b9243a6928845cf8`.
+
+```stata
+putexcel A65 = "ISO3 0000 electricity. Sheet 1 shows codes in DLW as 0 1 and codes in the local"
+```
+
+### block:b9243a6928845cf8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L846-L846`. Next: `block:0b6f029c6a95d434`.
+
+```stata
+putexcel A66 = "file as 3 4. Sheet 2 shades four rows: Yes drops 96 points to zero while code 3"
+```
+
+### block:0b6f029c6a95d434
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L847-L847`. Next: `block:1a507a72e518c381`.
+
+```stata
+putexcel A67 = "picks up the same 96. Nothing happened to the households. EAP sent an electricity"
+```
+
+### block:1a507a72e518c381
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L848-L848`. Next: `block:7ddb76826a9ea47b`.
+
+```stata
+putexcel A68 = "SOURCE code where GMD expects a yes/no."
+```
+
+### block:7ddb76826a9ea47b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L849-L849`. Next: `block:3543dfbe43150ff3`.
+
+```stata
+putexcel A69 = "ISO3 0000 educat4. Sheet 2 shows No education going from 5 pct to 22 pct and"
+```
+
+### block:3543dfbe43150ff3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L850-L850`. Next: `block:87c771d332ccced0`.
+
+```stata
+putexcel A70 = "Tertiary from 21 pct to 0. That one traced back to a mapping error in the"
+```
+
+### block:87c771d332ccced0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L851-L851`. Next: `block:f50b6e59d17fd344`.
+
+```stata
+putexcel A71 = "region's own do-file. Note its CODES are legal, 1 to 4: only the counts moved."
+```
+
+### block:f50b6e59d17fd344
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L852-L852`. Next: `block:b2e364fd70a21bfb`.
+
+```stata
+putexcel A72 = "That is why both tests are needed, not just the code check."
+```
+
+### block:b2e364fd70a21bfb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L854-L854`. Next: `block:02d88aba60869ca8`.
+
+```stata
+putexcel A73 = "WHAT A SHADED ROW DOES NOT MEAN", bold
+```
+
+### block:02d88aba60869ca8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L855-L855`. Next: `block:bbc45da5ccb16d0d`.
+
+```stata
+putexcel A74 = "Not every flag is an error. Some blanked variables are intentional: the"
+```
+
+### block:bbc45da5ccb16d0d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L856-L856`. Next: `block:494f22fa3fd5e6e8`.
+
+```stata
+putexcel A75 = "re-harmonization found the question was never asked, so the value should be"
+```
+
+### block:494f22fa3fd5e6e8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L857-L857`. Next: `block:287edf473d1198e2`.
+
+```stata
+putexcel A76 = "missing. The point is that each one is a decision somebody has confirmed,"
+```
+
+### block:287edf473d1198e2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L858-L858`. Next: `block:60fe0a75def3d917`.
+
+```stata
+putexcel A77 = "rather than a surprise after publication. A code OUTSIDE GUIDELINES is different:"
+```
+
+### block:60fe0a75def3d917
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L859-L859`. Next: `block:0f648c61c16cbfca`.
+
+```stata
+putexcel A78 = "that one is almost always a mistake in the region's do-file."
+```
+
+### block:0f648c61c16cbfca
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L860-L860`. Next: `block:60c13a98f69d77df`.
+
+```stata
+putexcel A79 = "A category nobody is in is NOT a problem. A survey can legitimately fill only 2 of"
+```
+
+### block:60c13a98f69d77df
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L861-L861`. Next: `block:c06a81a55844193e`.
+
+```stata
+putexcel A80 = "the 4 allowed categories, because that is what the questionnaire asked."
+```
+
+### block:c06a81a55844193e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L863-L863`. Next: `block:5bcca3cd7920f37b`.
+
+```stata
+putexcel A83 = "COUNTS IN THIS RUN", bold
+```
+
+### block:5bcca3cd7920f37b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L864-L864`. Next: `block:b72d30de47941db0`.
+
+```stata
+putexcel A84 = "rows in sheet 1"
+```
+
+### block:b72d30de47941db0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L865-L865`. Next: `block:a04f269d093e27e8`.
+
+```stata
+putexcel B84 = `nrows1'
+```
+
+### block:a04f269d093e27e8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L866-L866`. Next: `block:cd257049ed3ea782`.
+
+```stata
+putexcel A85 = "rows in sheet 2"
+```
+
+### block:cd257049ed3ea782
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L867-L867`. Next: `block:45f7d324b18fae46`.
+
+```stata
+putexcel B85 = `nrows2'
+```
+
+### block:45f7d324b18fae46
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L868-L868`. Next: `block:adea68343600b2f1`.
+
+```stata
+putexcel A86 = "of those shaded"
+```
+
+### block:adea68343600b2f1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L869-L869`. Next: `block:9d6f03672c564e21`.
+
+```stata
+putexcel B86 = `nflag2'
+```
+
+### block:9d6f03672c564e21
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L870-L870`. Next: `block:5adf56e0a8b1a291`.
+
+```stata
+putexcel A87 = "on a code outside the guidelines"
+```
+
+### block:5adf56e0a8b1a291
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L871-L871`. Next: `block:6f2b9744bc3b9f2c`.
+
+```stata
+putexcel B87 = `nnotin'
+```
+
+### block:6f2b9744bc3b9f2c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L872-L872`. Next: `block:834133c0d335419e`.
+
+```stata
+putexcel A88 = "variables in sheet 1 with an illegal code"
+```
+
+### block:834133c0d335419e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L873-L873`. Next: `block:c8283448ab0fa470`.
+
+```stata
+putexcel B88 = `nbad1'
+```
+
+### block:c8283448ab0fa470
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L876-L876`. Next: `block:23850c4f2eedd274`.
+
+```stata
+use `SHQ', clear
+```
+Read datasets: `dataset:4e9ad02461e77015`
+
+### block:23850c4f2eedd274
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L877-L877`. Next: `block:dc3f59ed63f728b7`.
+
+```stata
+export excel using "`outfile'", sheet("QCHECK", modify) firstrow(varlabels)
+```
+Write datasets: `dataset:9ef7e59cc8fd9235`
+
+### block:dc3f59ed63f728b7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L878-L878`. Next: `block:e28cb6041f25b29a`.
+
+```stata
+putexcel set "`outfile'", sheet("QCHECK") modify
+```
+Write datasets: `dataset:9ef7e59cc8fd9235`
+
+### block:e28cb6041f25b29a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L879-L879`. Next: `block:a55a163ca9cf0884`.
+
+```stata
+putexcel A1:N1, overwritefmt bold fpattern(solid, "217 217 217")
+```
+
+### block:a55a163ca9cf0884
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L880-L880`. Next: `block:87870529e74929d9`.
+
+```stata
+qui count if warn=="Urgent"
+```
+Read candidates: `variable:972c3fafa45abef1`
+
+### block:87870529e74929d9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L881-L881`. Next: `block:4b265345cfe5b05e`.
+
+```stata
+if r(N) > 0 {
+```
+
+### block:4b265345cfe5b05e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L882-L882`. Next: `block:f2baefb0094bb7f3`.
+
+```stata
+local lr = 1 + r(N)
+```
+Enclosing controls: `if r(N) > 0 {`
+
+### block:f2baefb0094bb7f3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L883-L884`. Next: `block:6c9cff85564964d7`.
+
+```stata
+putexcel A2:N`lr', overwritefmt fpattern(solid, "255 199 206") font("Calibri", 11, "156 0 6")
+```
+Enclosing controls: `if r(N) > 0 {`
+
+### block:6c9cff85564964d7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L885-L885`. Next: `block:bc99cca8a0be942e`.
+
+```stata
+}
+```
+
+### block:bc99cca8a0be942e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L888-L888`. Next: `block:047c69c0dad7c199`.
+
+```stata
+use `SH1', clear
+```
+Read datasets: `dataset:83cd18514934b8ac`
+
+### block:047c69c0dad7c199
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L889-L889`. Next: `block:5b175f9fd82205b5`.
+
+```stata
+export excel using "`outfile'", sheet("WHAT CHANGED", modify) firstrow(varlabels)
+```
+Write datasets: `dataset:9ef7e59cc8fd9235`
+
+### block:5b175f9fd82205b5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L890-L890`. Next: `block:cd957a6ed9af5c8b`.
+
+```stata
+putexcel set "`outfile'", sheet("WHAT CHANGED") modify
+```
+Write datasets: `dataset:9ef7e59cc8fd9235`
+
+### block:cd957a6ed9af5c8b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L891-L891`. Next: `block:ffe584218a309fea`.
+
+```stata
+putexcel A1:J1, overwritefmt bold fpattern(solid, "217 217 217")
+```
+
+### block:ffe584218a309fea
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L894-L894`. Next: `block:89a28cc7913e85d3`.
+
+```stata
+use `SH2', clear
+```
+Read datasets: `dataset:a301b2348c3f3416`
+
+### block:89a28cc7913e85d3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L895-L895`. Next: `block:04fd1f103a4397e3`.
+
+```stata
+export excel using "`outfile'", sheet("DEGREE OF CHANGE", modify) firstrow(varlabels)
+```
+Write datasets: `dataset:9ef7e59cc8fd9235`
+
+### block:04fd1f103a4397e3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L897-L897`. Next: `block:bce5eeb2c61d1f1e`.
+
+```stata
+putexcel set "`outfile'", sheet("DEGREE OF CHANGE") modify
+```
+Write datasets: `dataset:9ef7e59cc8fd9235`
+
+### block:bce5eeb2c61d1f1e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L898-L898`. Next: `block:e00028da36ba91c6`.
+
+```stata
+putexcel A1:P1, overwritefmt bold fpattern(solid, "217 217 217")
+```
+
+### block:e00028da36ba91c6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L902-L902`. Next: `block:91e31aab32940ea6`.
+
+```stata
+if `nflag2' > 0 {
+```
+
+### block:91e31aab32940ea6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L903-L903`. Next: `block:c528206d959b2b2a`.
+
+```stata
+local lastrow = 1 + `nflag2'
+```
+Enclosing controls: `if `nflag2' > 0 {`
+
+### block:c528206d959b2b2a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L904-L905`. Next: `block:23b0075760ad3d43`.
+
+```stata
+putexcel A2:P`lastrow', overwritefmt fpattern(solid, "255 199 206") font("Calibri", 11, "156 0 6")
+```
+Enclosing controls: `if `nflag2' > 0 {`
+
+### block:23b0075760ad3d43
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L906-L906`. Next: `block:7e75505991cb75b1`.
+
+```stata
+}
+```
+
+### block:7e75505991cb75b1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L912-L912`. Next: `block:a1705f389efffed2`.
+
+```stata
+use `SH1', clear
+```
+Read datasets: `dataset:83cd18514934b8ac`
+
+### block:a1705f389efffed2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L913-L913`. Next: `block:d417f188b16e549a`.
+
+```stata
+di as result _n(2) "{hline 78}"
+```
+
+### block:d417f188b16e549a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L914-L914`. Next: `block:da990c04ed9b2929`.
+
+```stata
+di as result "  SHEET 1 -- what happened, by region"
+```
+
+### block:da990c04ed9b2929
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L915-L915`. Next: `block:b4aded0312bc38a9`.
+
+```stata
+di as result "{hline 78}"
+```
+
+### block:b4aded0312bc38a9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L916-L916`. Next: `block:801b5d8379b675a0`.
+
+```stata
+tab whathappened region
+```
+Read candidates: `variable:7dc6871910734bf7`, `variable:e70f5f63dec7e940`
+
+### block:801b5d8379b675a0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L918-L918`. Next: `block:4b0093b726bba610`.
+
+```stata
+use `SH2', clear
+```
+Read datasets: `dataset:a301b2348c3f3416`
+
+### block:4b0093b726bba610
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L919-L919`. Next: `block:bbc0916f012a4e33`.
+
+```stata
+di as result _n(2) "{hline 78}"
+```
+
+### block:bbc0916f012a4e33
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L920-L920`. Next: `block:45724d194ffbb2f8`.
+
+```stata
+di as result "  CODES OUTSIDE THE GMD GUIDELINES"
+```
+
+### block:45724d194ffbb2f8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L921-L921`. Next: `block:eeb91f65d640f12e`.
+
+```stata
+di as result "  Judged against the guidelines, not against DLW."
+```
+
+### block:eeb91f65d640f12e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L922-L922`. Next: `block:8a8f0e45ec545e68`.
+
+```stata
+di as result "{hline 78}"
+```
+
+### block:8a8f0e45ec545e68
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L923-L923`. Next: `block:dc9345f407b1c3b3`.
+
+```stata
+qui count if code_vs_guidelines=="OUTSIDE GUIDELINES"
+```
+Read candidates: `variable:60e16c894f42fa1b`
+
+### block:dc9345f407b1c3b3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L924-L924`. Next: `block:3c0f5e56e16d62dd`.
+
+```stata
+if r(N) == 0 di as text "  none."
+```
+
+### block:3c0f5e56e16d62dd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L925-L926`. Next: `block:554e5ac53c206bd9`.
+
+```stata
+else list region country year variable value codes_allowed used_by pct_local if code_vs_guidelines=="OUTSIDE GUIDELINES", noobs sep(0) abbrev(16)
+```
+
+### block:554e5ac53c206bd9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L928-L928`. Next: `block:4a6f366abd30f540`.
+
+```stata
+di as result _n(2) "{hline 78}"
+```
+
+### block:4a6f366abd30f540
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L929-L929`. Next: `block:f39a754a8fabb8b8`.
+
+```stata
+di as result "  BIGGEST MOVES IN THE SHARE OF THE SAMPLE"
+```
+
+### block:f39a754a8fabb8b8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L930-L930`. Next: `block:65a9d497e3ff171d`.
+
+```stata
+di as result "{hline 78}"
+```
+
+### block:65a9d497e3ff171d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L931-L931`. Next: `block:907ce6201846d564`.
+
+```stata
+gen double _abs = abs(pp_change)
+```
+New: `variable:d069f69b4ef4c2b5`
+Read candidates: `variable:57009c0c8c1d28fd`
+
+### block:907ce6201846d564
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L932-L932`. Next: `block:89aea507f570c39b`.
+
+```stata
+gsort -_abs
+```
+
+### block:89aea507f570c39b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L933-L933`. Next: `block:7ecf8a28d2ffaa18`.
+
+```stata
+list region country year reads_as pp_change if flag!="" in 1/30, noobs sep(0) abbrev(20)
+```
+
+### block:7ecf8a28d2ffaa18
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L935-L935`. Next: `block:b7a6918e636820dd`.
+
+```stata
+di as result _n(2) "{hline 78}"
+```
+
+### block:b7a6918e636820dd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L936-L936`. Next: `block:7a5dabdd63a2598f`.
+
+```stata
+di as result "  DONE"
+```
+
+### block:7a5dabdd63a2598f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L937-L937`. Next: `block:f5baeb3c25c38e0e`.
+
+```stata
+di as result "{hline 78}"
+```
+
+### block:f5baeb3c25c38e0e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L938-L938`. Next: `block:117c41efae52dd86`.
+
+```stata
+di as text "  workbook: `outfile'"
+```
+
+### block:117c41efae52dd86
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L939-L939`. Next: `block:2440c71f58871d6f`.
+
+```stata
+di as text "  sheets  : READ ME FIRST | QCHECK | WHAT CHANGED | DEGREE OF CHANGE"
+```
+
+### block:2440c71f58871d6f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L940-L940`. Next: `block:cb5de564891762bf`.
+
+```stata
+di as text _n "  Sheet 1 is the inventory, eight columns, no colour."
+```
+
+### block:cb5de564891762bf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L941-L941`. Next: `block:33c35493d8f1682c`.
+
+```stata
+di as text "  Sheet 2 is where to look: shaded rows are at the top."
+```
+
+### block:33c35493d8f1682c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L942-L942`. Next: `end`.
+
+```stata
+di as result "{hline 78}" _n
+```

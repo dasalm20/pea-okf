@@ -1,0 +1,313 @@
+id	seed	seed_line	kind	original	status	normalized_or_corrected	review_note
+C001	AUDIT_SCOPE.md	39	explicit	Stata/plus/p/pea_figures.ado:21,100–113,154–444	VERIFIED	Stata/plus/p/pea_figures.ado:L21-L21; Stata/plus/p/pea_figures.ado:L100-L113; Stata/plus/p/pea_figures.ado:L154-L444	Cited construct located in the pinned source; no execution implied.
+C002	AUDIT_SCOPE.md	40	explicit	Stata/plus/p/pea_tables.ado:20,95–112,151–356	VERIFIED	Stata/plus/p/pea_tables.ado:L20-L20; Stata/plus/p/pea_tables.ado:L95-L112; Stata/plus/p/pea_tables.ado:L151-L356	Cited construct located in the pinned source; no execution implied.
+C003	AUDIT_SCOPE.md	41	explicit	Stata/plus/p/pea_core.ado:20,95–112,135–257	VERIFIED	Stata/plus/p/pea_core.ado:L20-L20; Stata/plus/p/pea_core.ado:L95-L112; Stata/plus/p/pea_core.ado:L135-L257	Cited construct located in the pinned source; no execution implied.
+C004	DATA_LINEAGE.md	9	explicit	pea_figures.ado:154–444	VERIFIED	Stata/plus/p/pea_figures.ado:L154-L444	Cited construct located in the pinned source; no execution implied.
+C005	DATA_LINEAGE.md	9	explicit	pea_tables.ado:151–356	VERIFIED	Stata/plus/p/pea_tables.ado:L151-L356	Cited construct located in the pinned source; no execution implied.
+C006	DATA_LINEAGE.md	9	explicit	pea_core.ado:153–257	VERIFIED	Stata/plus/p/pea_core.ado:L153-L257	Cited construct located in the pinned source; no execution implied.
+C007	DATA_LINEAGE.md	10	explicit	pea_figure1.ado:119–146	VERIFIED	Stata/plus/p/pea_figure1.ado:L119-L146	Cited construct located in the pinned source; no execution implied.
+C008	DATA_LINEAGE.md	11	explicit	pea_figures.ado:143	VERIFIED	Stata/plus/p/pea_figures.ado:L143-L143	Cited construct located in the pinned source; no execution implied.
+C009	DATA_LINEAGE.md	11	explicit	pea_tables.ado:135	VERIFIED	Stata/plus/p/pea_tables.ado:L135-L135	Cited construct located in the pinned source; no execution implied.
+C010	DATA_LINEAGE.md	11	explicit	pea_core.ado:135	VERIFIED	Stata/plus/p/pea_core.ado:L135-L135	Cited construct located in the pinned source; no execution implied.
+C011	DATA_LINEAGE.md	12	explicit	pea_dataupdate.ado:342–446	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L342-L446	Cited construct located in the pinned source; no execution implied.
+C012	DATA_LINEAGE.md	13	explicit	pea_dataupdate.ado:451–514	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L451-L514	Cited construct located in the pinned source; no execution implied.
+C013	DATA_LINEAGE.md	13	explicit	pea_figure2.ado:119–163	VERIFIED	Stata/plus/p/pea_figure2.ado:L119-L163	Cited construct located in the pinned source; no execution implied.
+C014	DATA_LINEAGE.md	14	explicit	pea_dataupdate.ado:314–337	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L314-L337	Cited construct located in the pinned source; no execution implied.
+C015	DATA_LINEAGE.md	14	explicit	pea_figure6.ado:141–164	VERIFIED	Stata/plus/p/pea_figure6.ado:L141-L164	Cited construct located in the pinned source; no execution implied.
+C016	DATA_LINEAGE.md	15	explicit	pea_dataupdate.ado:186–203	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L186-L203	Cited construct located in the pinned source; no execution implied.
+C017	DATA_LINEAGE.md	15	explicit	pea_figure2.ado:135–146	VERIFIED	Stata/plus/p/pea_figure2.ado:L135-L146	Cited construct located in the pinned source; no execution implied.
+C018	DATA_LINEAGE.md	16	explicit	pea_dataupdate.ado:516–623	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L516-L623	Cited construct located in the pinned source; no execution implied.
+C019	DATA_LINEAGE.md	17	explicit	pea_dataupdate.ado:625–704	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L625-L704	Cited construct located in the pinned source; no execution implied.
+C020	DATA_LINEAGE.md	18	explicit	pea_dataupdate.ado:267–299,329–337	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L267-L299; Stata/plus/p/pea_dataupdate.ado:L329-L337	Cited construct located in the pinned source; no execution implied.
+C021	DATA_LINEAGE.md	19	explicit	pea_dataupdate.ado:148–183	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L148-L183	Cited construct located in the pinned source; no execution implied.
+C022	DATA_LINEAGE.md	19	explicit	pea_figure15.ado:66–82	VERIFIED	Stata/plus/p/pea_figure15.ado:L66-L82	Cited construct located in the pinned source; no execution implied.
+C023	DATA_LINEAGE.md	20	explicit	pea_dataupdate.ado:413–446	UNRESOLVED	Stata/plus/p/pea_dataupdate.ado:L413-L446	Original persisted-cache/producer claim is unsupported. See lineage discrepancies L01 or L05; corrected lineage has separate evidence.
+C024	DATA_LINEAGE.md	21	explicit	pea_dataupdate.ado:120–128	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L120-L128	Cited construct located in the pinned source; no execution implied.
+C025	DATA_LINEAGE.md	21	explicit	pea_figure14.ado:79–128	VERIFIED	Stata/plus/p/pea_figure14.ado:L79-L128	Cited construct located in the pinned source; no execution implied.
+C026	DATA_LINEAGE.md	22	explicit	pea_dataupdate.ado:708–798	UNRESOLVED	Stata/plus/p/pea_dataupdate.ado:L708-L798	Original persisted-cache/producer claim is unsupported. See lineage discrepancies L01 or L05; corrected lineage has separate evidence.
+C027	DATA_LINEAGE.md	22	explicit	pea_tableC1.ado:284–613	UNRESOLVED	Stata/plus/p/pea_tableC1.ado:L284-L613	Original persisted-cache/producer claim is unsupported. See lineage discrepancies L01 or L05; corrected lineage has separate evidence.
+C028	DATA_LINEAGE.md	23	explicit	pea_dataupdate.ado:141–145	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L141-L145	Cited construct located in the pinned source; no execution implied.
+C029	DATA_LINEAGE.md	23	explicit	_pea_mpm.ado:70–80	VERIFIED	Stata/plus/_/_pea_mpm.ado:L70-L80	Cited construct located in the pinned source; no execution implied.
+C030	DATA_LINEAGE.md	24	explicit	pea_dataupdate.ado:241–251	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L241-L251	Cited construct located in the pinned source; no execution implied.
+C031	DATA_LINEAGE.md	24	explicit	pea_table1.ado:226–244	VERIFIED	Stata/plus/p/pea_table1.ado:L226-L244	Cited construct located in the pinned source; no execution implied.
+C032	DATA_LINEAGE.md	25	explicit	pea_dataupdate.ado:254–264	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L254-L264	Cited construct located in the pinned source; no execution implied.
+C033	DATA_LINEAGE.md	25	explicit	pea_figure15.ado:39–103	VERIFIED	Stata/plus/p/pea_figure15.ado:L39-L103	Cited construct located in the pinned source; no execution implied.
+C034	DATA_LINEAGE.md	26	explicit	pea_dataupdate.ado:207–215	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L207-L215	Cited construct located in the pinned source; no execution implied.
+C035	DATA_LINEAGE.md	26	explicit	pea_figureC1.ado:167–176	VERIFIED	Stata/plus/p/pea_figureC1.ado:L167-L176	Cited construct located in the pinned source; no execution implied.
+C036	DATA_LINEAGE.md	27	explicit	pea_dataupdate.ado:223–238	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L223-L238	Cited construct located in the pinned source; no execution implied.
+C037	DATA_LINEAGE.md	27	explicit	pea_figureC1.ado:177–190	VERIFIED	Stata/plus/p/pea_figureC1.ado:L177-L190	Cited construct located in the pinned source; no execution implied.
+C038	DATA_LINEAGE.md	28	explicit	pea_table16.ado:47–145	VERIFIED	Stata/plus/p/pea_table16.ado:L47-L145	Cited construct located in the pinned source; no execution implied.
+C039	DATA_LINEAGE.md	29	explicit	pea_table9.ado:27–30,86–178	VERIFIED	Stata/plus/p/pea_table9.ado:L27-L30; Stata/plus/p/pea_table9.ado:L86-L178	Cited construct located in the pinned source; no execution implied.
+C040	DATA_LINEAGE.md	35	explicit	pea_figure1.ado:21–23,119–146,222–293	VERIFIED	Stata/plus/p/pea_figure1.ado:L21-L23; Stata/plus/p/pea_figure1.ado:L119-L146; Stata/plus/p/pea_figure1.ado:L222-L293	Cited construct located in the pinned source; no execution implied.
+C041	DATA_LINEAGE.md	36	explicit	pea_figure2.ado:112–163,237–291	VERIFIED	Stata/plus/p/pea_figure2.ado:L112-L163; Stata/plus/p/pea_figure2.ado:L237-L291	Cited construct located in the pinned source; no execution implied.
+C042	DATA_LINEAGE.md	37	explicit	pea_figure3a.ado:140–200,254–286	VERIFIED	Stata/plus/p/pea_figure3a.ado:L140-L200; Stata/plus/p/pea_figure3a.ado:L254-L286	Cited construct located in the pinned source; no execution implied.
+C043	DATA_LINEAGE.md	38	explicit	pea_figure3b.ado:134–186,241–283	VERIFIED	Stata/plus/p/pea_figure3b.ado:L134-L186; Stata/plus/p/pea_figure3b.ado:L241-L283	Cited construct located in the pinned source; no execution implied.
+C044	DATA_LINEAGE.md	39	explicit	pea_figure4.ado:147–213,237–311	VERIFIED	Stata/plus/p/pea_figure4.ado:L147-L213; Stata/plus/p/pea_figure4.ado:L237-L311	Cited construct located in the pinned source; no execution implied.
+C045	DATA_LINEAGE.md	40	explicit	pea_figure5a.ado:147–229,261–295	VERIFIED	Stata/plus/p/pea_figure5a.ado:L147-L229; Stata/plus/p/pea_figure5a.ado:L261-L295	Cited construct located in the pinned source; no execution implied.
+C046	DATA_LINEAGE.md	41	explicit	pea_figure5b.ado:73–75,156–240,272–305	VERIFIED	Stata/plus/p/pea_figure5b.ado:L73-L75; Stata/plus/p/pea_figure5b.ado:L156-L240; Stata/plus/p/pea_figure5b.ado:L272-L305	Cited construct located in the pinned source; no execution implied.
+C047	DATA_LINEAGE.md	42	explicit	pea_figure6.ado:141–190,243–269	VERIFIED	Stata/plus/p/pea_figure6.ado:L141-L190; Stata/plus/p/pea_figure6.ado:L243-L269	Cited construct located in the pinned source; no execution implied.
+C048	DATA_LINEAGE.md	43	explicit	pea_figure7a.ado:103–137,153–176	VERIFIED	Stata/plus/p/pea_figure7a.ado:L103-L137; Stata/plus/p/pea_figure7a.ado:L153-L176	Cited construct located in the pinned source; no execution implied.
+C049	DATA_LINEAGE.md	44	explicit	pea_figure7b.ado:105–135,152–173	VERIFIED	Stata/plus/p/pea_figure7b.ado:L105-L135; Stata/plus/p/pea_figure7b.ado:L152-L173	Cited construct located in the pinned source; no execution implied.
+C050	DATA_LINEAGE.md	45	explicit	pea_figure8.ado:47–57,103–207	VERIFIED	Stata/plus/p/pea_figure8.ado:L47-L57; Stata/plus/p/pea_figure8.ado:L103-L207	Cited construct located in the pinned source; no execution implied.
+C051	DATA_LINEAGE.md	46	explicit	pea_figure9a.ado:109–167,208–287	VERIFIED	Stata/plus/p/pea_figure9a.ado:L109-L167; Stata/plus/p/pea_figure9a.ado:L208-L287	Cited construct located in the pinned source; no execution implied.
+C052	DATA_LINEAGE.md	47	explicit	pea_figure9b.ado:105–164,229–304	VERIFIED	Stata/plus/p/pea_figure9b.ado:L105-L164; Stata/plus/p/pea_figure9b.ado:L229-L304	Cited construct located in the pinned source; no execution implied.
+C053	DATA_LINEAGE.md	48	explicit	pea_figure9c.ado:105–161,174–236	VERIFIED	Stata/plus/p/pea_figure9c.ado:L105-L161; Stata/plus/p/pea_figure9c.ado:L174-L236	Cited construct located in the pinned source; no execution implied.
+C054	DATA_LINEAGE.md	49	explicit	pea_figure9d.ado:80–120,123–182	VERIFIED	Stata/plus/p/pea_figure9d.ado:L80-L120; Stata/plus/p/pea_figure9d.ado:L123-L182	Cited construct located in the pinned source; no execution implied.
+C055	DATA_LINEAGE.md	50	explicit	pea_figure10a.ado:66–119,198–230	VERIFIED	Stata/plus/p/pea_figure10a.ado:L66-L119; Stata/plus/p/pea_figure10a.ado:L198-L230	Cited construct located in the pinned source; no execution implied.
+C056	DATA_LINEAGE.md	51	explicit	pea_figure10b.ado:86–147,247–272	VERIFIED	Stata/plus/p/pea_figure10b.ado:L86-L147; Stata/plus/p/pea_figure10b.ado:L247-L272	Cited construct located in the pinned source; no execution implied.
+C057	DATA_LINEAGE.md	52	explicit	pea_figure10c.ado:93–152,218–276	VERIFIED	Stata/plus/p/pea_figure10c.ado:L93-L152; Stata/plus/p/pea_figure10c.ado:L218-L276	Cited construct located in the pinned source; no execution implied.
+C058	DATA_LINEAGE.md	53	explicit	pea_figure10d.ado:86–168,192–217	VERIFIED	Stata/plus/p/pea_figure10d.ado:L86-L168; Stata/plus/p/pea_figure10d.ado:L192-L217	Cited construct located in the pinned source; no execution implied.
+C059	DATA_LINEAGE.md	54	explicit	pea_figure12.ado:124–212,252–258	VERIFIED	Stata/plus/p/pea_figure12.ado:L124-L212; Stata/plus/p/pea_figure12.ado:L252-L258	Cited construct located in the pinned source; no execution implied.
+C060	DATA_LINEAGE.md	55	explicit	pea_figure13.ado:48–124,139–220	VERIFIED	Stata/plus/p/pea_figure13.ado:L48-L124; Stata/plus/p/pea_figure13.ado:L139-L220	Cited construct located in the pinned source; no execution implied.
+C061	DATA_LINEAGE.md	56	explicit	pea_figure14.ado:71–146,149–336	VERIFIED	Stata/plus/p/pea_figure14.ado:L71-L146; Stata/plus/p/pea_figure14.ado:L149-L336	Cited construct located in the pinned source; no execution implied.
+C062	DATA_LINEAGE.md	57	explicit	pea_figure15.ado:37–103,104–141	VERIFIED	Stata/plus/p/pea_figure15.ado:L37-L103; Stata/plus/p/pea_figure15.ado:L104-L141	Cited construct located in the pinned source; no execution implied.
+C063	DATA_LINEAGE.md	58	explicit	pea_figure16.ado:69–220,261–326	VERIFIED	Stata/plus/p/pea_figure16.ado:L69-L220; Stata/plus/p/pea_figure16.ado:L261-L326	Cited construct located in the pinned source; no execution implied.
+C064	DATA_LINEAGE.md	59	explicit	pea_figureC1.ado:83–190,248–342	VERIFIED	Stata/plus/p/pea_figureC1.ado:L83-L190; Stata/plus/p/pea_figureC1.ado:L248-L342	Cited construct located in the pinned source; no execution implied.
+C065	DATA_LINEAGE.md	60	explicit	pea_table1.ado:112–290,366–398	VERIFIED	Stata/plus/p/pea_table1.ado:L112-L290; Stata/plus/p/pea_table1.ado:L366-L398	Cited construct located in the pinned source; no execution implied.
+C066	DATA_LINEAGE.md	61	explicit	pea_table1_std.ado:154–242,384–434	VERIFIED	Stata/plus/p/pea_table1_std.ado:L154-L242; Stata/plus/p/pea_table1_std.ado:L384-L434	Cited construct located in the pinned source; no execution implied.
+C067	DATA_LINEAGE.md	62	explicit	pea_table2.ado:124–237	VERIFIED	Stata/plus/p/pea_table2.ado:L124-L237	Cited construct located in the pinned source; no execution implied.
+C068	DATA_LINEAGE.md	63	explicit	pea_table3.ado:104–362	VERIFIED	Stata/plus/p/pea_table3.ado:L104-L362	Cited construct located in the pinned source; no execution implied.
+C069	DATA_LINEAGE.md	64	explicit	pea_table4.ado:95–397	VERIFIED	Stata/plus/p/pea_table4.ado:L95-L397	Cited construct located in the pinned source; no execution implied.
+C070	DATA_LINEAGE.md	65	explicit	pea_table5.ado:44–179,211–234	VERIFIED	Stata/plus/p/pea_table5.ado:L44-L179; Stata/plus/p/pea_table5.ado:L211-L234	Cited construct located in the pinned source; no execution implied.
+C071	DATA_LINEAGE.md	66	explicit	pea_table6.ado:47–188	VERIFIED	Stata/plus/p/pea_table6.ado:L47-L188	Cited construct located in the pinned source; no execution implied.
+C072	DATA_LINEAGE.md	67	explicit	pea_table7.ado:115–222	VERIFIED	Stata/plus/p/pea_table7.ado:L115-L222	Cited construct located in the pinned source; no execution implied.
+C073	DATA_LINEAGE.md	68	explicit	pea_table8.ado:103–215	VERIFIED	Stata/plus/p/pea_table8.ado:L103-L215	Cited construct located in the pinned source; no execution implied.
+C074	DATA_LINEAGE.md	69	explicit	pea_table9.ado:27–178	VERIFIED	Stata/plus/p/pea_table9.ado:L27-L178	Cited construct located in the pinned source; no execution implied.
+C075	DATA_LINEAGE.md	70	explicit	pea_table10.ado:53–353	VERIFIED	Stata/plus/p/pea_table10.ado:L53-L353	Cited construct located in the pinned source; no execution implied.
+C076	DATA_LINEAGE.md	71	explicit	pea_table11.ado:113–254	VERIFIED	Stata/plus/p/pea_table11.ado:L113-L254	Cited construct located in the pinned source; no execution implied.
+C077	DATA_LINEAGE.md	72	explicit	pea_table12.ado:137–253	VERIFIED	Stata/plus/p/pea_table12.ado:L137-L253	Cited construct located in the pinned source; no execution implied.
+C078	DATA_LINEAGE.md	73	explicit	pea_table13a.ado:155–272	VERIFIED	Stata/plus/p/pea_table13a.ado:L155-L272	Cited construct located in the pinned source; no execution implied.
+C079	DATA_LINEAGE.md	74	explicit	pea_table13b.ado:89–93,158–280	VERIFIED	Stata/plus/p/pea_table13b.ado:L89-L93; Stata/plus/p/pea_table13b.ado:L158-L280	Cited construct located in the pinned source; no execution implied.
+C080	DATA_LINEAGE.md	75	explicit	pea_table14.ado:104–315	VERIFIED	Stata/plus/p/pea_table14.ado:L104-L315	Cited construct located in the pinned source; no execution implied.
+C081	DATA_LINEAGE.md	76	explicit	pea_table15.ado:36–96	VERIFIED	Stata/plus/p/pea_table15.ado:L36-L96	Cited construct located in the pinned source; no execution implied.
+C082	DATA_LINEAGE.md	77	explicit	pea_table16.ado:47–145	VERIFIED	Stata/plus/p/pea_table16.ado:L47-L145	Cited construct located in the pinned source; no execution implied.
+C083	DATA_LINEAGE.md	78	explicit	pea_tableA2.ado:128–268	VERIFIED	Stata/plus/p/pea_tableA2.ado:L128-L268	Cited construct located in the pinned source; no execution implied.
+C084	DATA_LINEAGE.md	79	explicit	pea_table_A2_std.ado:116–170,250–265	VERIFIED	Stata/plus/p/pea_table_A2_std.ado:L116-L170; Stata/plus/p/pea_table_A2_std.ado:L250-L265	Cited construct located in the pinned source; no execution implied.
+C085	DATA_LINEAGE.md	80	explicit	pea_tableC1.ado:145–766	VERIFIED	Stata/plus/p/pea_tableC1.ado:L145-L766	Cited construct located in the pinned source; no execution implied.
+C086	FUNCTIONS.md	11	explicit	Stata/plus/p/pea_figure8.ado:19–22	VERIFIED	Stata/plus/p/pea_figure8.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C087	FUNCTIONS.md	12	implicit	lines 187–207	VERIFIED	Stata/plus/p/pea_figure8.ado:L187-L207	Cited construct located in the pinned source; no execution implied.
+C088	FUNCTIONS.md	15	implicit	lines 37–57, 84–99, 103–138, 172–185	VERIFIED	Stata/plus/p/pea_figure8.ado:L37-L57; Stata/plus/p/pea_figure8.ado:L84-L99; Stata/plus/p/pea_figure8.ado:L103-L138; Stata/plus/p/pea_figure8.ado:L172-L185	Cited construct located in the pinned source; no execution implied.
+C089	FUNCTIONS.md	20	explicit	pea_figures.ado:297–308	VERIFIED	Stata/plus/p/pea_figures.ado:L297-L308	Cited construct located in the pinned source; no execution implied.
+C090	FUNCTIONS.md	24	explicit	Stata/plus/p/pea_figure9a.ado:19–22	VERIFIED	Stata/plus/p/pea_figure9a.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C091	FUNCTIONS.md	25	implicit	lines 208–287	VERIFIED	Stata/plus/p/pea_figure9a.ado:L208-L287	Cited construct located in the pinned source; no execution implied.
+C092	FUNCTIONS.md	27	implicit	lines 52–60	VERIFIED	Stata/plus/p/pea_figure9a.ado:L52-L60	Cited construct located in the pinned source; no execution implied.
+C093	FUNCTIONS.md	28	implicit	lines 77–85, 109–167	VERIFIED	Stata/plus/p/pea_figure9a.ado:L77-L85; Stata/plus/p/pea_figure9a.ado:L109-L167	Cited construct located in the pinned source; no execution implied.
+C094	FUNCTIONS.md	29	implicit	lines 190–200	VERIFIED	Stata/plus/p/pea_figure9a.ado:L190-L200	Cited construct located in the pinned source; no execution implied.
+C095	FUNCTIONS.md	35	explicit	Stata/plus/p/pea_figure9b.ado:19–22	VERIFIED	Stata/plus/p/pea_figure9b.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C096	FUNCTIONS.md	36	implicit	lines 229–304	VERIFIED	Stata/plus/p/pea_figure9b.ado:L229-L304	Cited construct located in the pinned source; no execution implied.
+C097	FUNCTIONS.md	38	implicit	lines 73–103, 122–164	VERIFIED	Stata/plus/p/pea_figure9b.ado:L73-L103; Stata/plus/p/pea_figure9b.ado:L122-L164	Cited construct located in the pinned source; no execution implied.
+C098	FUNCTIONS.md	43	explicit	pea_figures.ado:323–334	VERIFIED	Stata/plus/p/pea_figures.ado:L323-L334	Cited construct located in the pinned source; no execution implied.
+C099	FUNCTIONS.md	47	explicit	Stata/plus/p/pea_figure9c.ado:19–22	VERIFIED	Stata/plus/p/pea_figure9c.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C100	FUNCTIONS.md	48	implicit	lines 174–236	VERIFIED	Stata/plus/p/pea_figure9c.ado:L174-L236	Cited construct located in the pinned source; no execution implied.
+C101	FUNCTIONS.md	49	implicit	lines 73–145	VERIFIED	Stata/plus/p/pea_figure9c.ado:L73-L145	Cited construct located in the pinned source; no execution implied.
+C102	FUNCTIONS.md	56	explicit	Stata/plus/p/pea_figure9d.ado:19–22	VERIFIED	Stata/plus/p/pea_figure9d.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C103	FUNCTIONS.md	57	implicit	lines 123–182	VERIFIED	Stata/plus/p/pea_figure9d.ado:L123-L182	Cited construct located in the pinned source; no execution implied.
+C104	FUNCTIONS.md	60	implicit	lines 47–65, 80–120	VERIFIED	Stata/plus/p/pea_figure9d.ado:L47-L65; Stata/plus/p/pea_figure9d.ado:L80-L120	Cited construct located in the pinned source; no execution implied.
+C105	FUNCTIONS.md	62	explicit	pea_figures.ado:349–360	VERIFIED	Stata/plus/p/pea_figures.ado:L349-L360	Cited construct located in the pinned source; no execution implied.
+C106	FUNCTIONS.md	67	explicit	Stata/plus/p/pea_figure10a.ado:19–22	VERIFIED	Stata/plus/p/pea_figure10a.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C107	FUNCTIONS.md	68	implicit	lines 198–230	VERIFIED	Stata/plus/p/pea_figure10a.ado:L198-L230	Cited construct located in the pinned source; no execution implied.
+C108	FUNCTIONS.md	70	implicit	lines 66–119	VERIFIED	Stata/plus/p/pea_figure10a.ado:L66-L119	Cited construct located in the pinned source; no execution implied.
+C109	FUNCTIONS.md	71	implicit	lines 121–177	VERIFIED	Stata/plus/p/pea_figure10a.ado:L121-L177	Cited construct located in the pinned source; no execution implied.
+C110	FUNCTIONS.md	74	explicit	pea_figures.ado:362–373	VERIFIED	Stata/plus/p/pea_figures.ado:L362-L373	Cited construct located in the pinned source; no execution implied.
+C111	FUNCTIONS.md	78	explicit	Stata/plus/p/pea_figure10b.ado:19–22	VERIFIED	Stata/plus/p/pea_figure10b.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C112	FUNCTIONS.md	79	implicit	lines 247–272	VERIFIED	Stata/plus/p/pea_figure10b.ado:L247-L272	Cited construct located in the pinned source; no execution implied.
+C113	FUNCTIONS.md	81	implicit	lines 54–84, 86–147, 149–233	VERIFIED	Stata/plus/p/pea_figure10b.ado:L54-L84; Stata/plus/p/pea_figure10b.ado:L86-L147; Stata/plus/p/pea_figure10b.ado:L149-L233	Cited construct located in the pinned source; no execution implied.
+C114	FUNCTIONS.md	84	explicit	pea_figures.ado:375–386	VERIFIED	Stata/plus/p/pea_figures.ado:L375-L386	Cited construct located in the pinned source; no execution implied.
+C115	FUNCTIONS.md	88	explicit	Stata/plus/p/pea_figure10c.ado:19–22	VERIFIED	Stata/plus/p/pea_figure10c.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C116	FUNCTIONS.md	89	implicit	lines 218–276	VERIFIED	Stata/plus/p/pea_figure10c.ado:L218-L276	Cited construct located in the pinned source; no execution implied.
+C117	FUNCTIONS.md	91	implicit	lines 93–152	VERIFIED	Stata/plus/p/pea_figure10c.ado:L93-L152	Cited construct located in the pinned source; no execution implied.
+C118	FUNCTIONS.md	93	implicit	line 127	VERIFIED	Stata/plus/p/pea_figure10c.ado:L127-L127	Cited construct located in the pinned source; no execution implied.
+C119	FUNCTIONS.md	94	explicit	pea_figures.ado:388–399	VERIFIED	Stata/plus/p/pea_figures.ado:L388-L399	Cited construct located in the pinned source; no execution implied.
+C120	FUNCTIONS.md	98	explicit	Stata/plus/p/pea_figure10d.ado:19–22	VERIFIED	Stata/plus/p/pea_figure10d.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C121	FUNCTIONS.md	99	implicit	lines 131–217	VERIFIED	Stata/plus/p/pea_figure10d.ado:L131-L217	Cited construct located in the pinned source; no execution implied.
+C122	FUNCTIONS.md	103	explicit	pea_figures.ado:401–412	VERIFIED	Stata/plus/p/pea_figures.ado:L401-L412	Cited construct located in the pinned source; no execution implied.
+C123	FUNCTIONS.md	107	explicit	Stata/plus/p/pea_figure12.ado:20–23	VERIFIED	Stata/plus/p/pea_figure12.ado:L20-L23	Cited construct located in the pinned source; no execution implied.
+C124	FUNCTIONS.md	108	implicit	lines 183–258	VERIFIED	Stata/plus/p/pea_figure12.ado:L183-L258	Cited construct located in the pinned source; no execution implied.
+C125	FUNCTIONS.md	110	implicit	lines 62–117, 124–178	VERIFIED	Stata/plus/p/pea_figure12.ado:L62-L117; Stata/plus/p/pea_figure12.ado:L124-L178	Cited construct located in the pinned source; no execution implied.
+C126	FUNCTIONS.md	112	implicit	line 212	VERIFIED	Stata/plus/p/pea_figure12.ado:L212-L212	Cited construct located in the pinned source; no execution implied.
+C127	FUNCTIONS.md	112	implicit	line 198	VERIFIED	Stata/plus/p/pea_figure12.ado:L198-L198	Cited construct located in the pinned source; no execution implied.
+C128	FUNCTIONS.md	113	implicit	lines 208–211	VERIFIED	Stata/plus/p/pea_figure12.ado:L208-L211	Cited construct located in the pinned source; no execution implied.
+C129	FUNCTIONS.md	115	explicit	pea_figures.ado:416–427	VERIFIED	Stata/plus/p/pea_figures.ado:L416-L427	Cited construct located in the pinned source; no execution implied.
+C130	FUNCTIONS.md	119	explicit	Stata/plus/p/pea_figure13.ado:19–22	VERIFIED	Stata/plus/p/pea_figure13.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C131	FUNCTIONS.md	120	implicit	lines 139–220	VERIFIED	Stata/plus/p/pea_figure13.ado:L139-L220	Cited construct located in the pinned source; no execution implied.
+C132	FUNCTIONS.md	122	implicit	lines 48–124	VERIFIED	Stata/plus/p/pea_figure13.ado:L48-L124	Cited construct located in the pinned source; no execution implied.
+C133	FUNCTIONS.md	124	implicit	line 181	VERIFIED	Stata/plus/p/pea_figure13.ado:L181-L181	Cited construct located in the pinned source; no execution implied.
+C134	FUNCTIONS.md	125	explicit	pea_figures.ado:429–440	VERIFIED	Stata/plus/p/pea_figures.ado:L429-L440	Cited construct located in the pinned source; no execution implied.
+C135	FUNCTIONS.md	129	explicit	Stata/plus/p/pea_figure14.ado:19–22	VERIFIED	Stata/plus/p/pea_figure14.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C136	FUNCTIONS.md	130	implicit	lines 149–241	VERIFIED	Stata/plus/p/pea_figure14.ado:L149-L241	Cited construct located in the pinned source; no execution implied.
+C137	FUNCTIONS.md	134	explicit	Stata/plus/_/_pea_mpm.ado:24–25,216–359,396	VERIFIED	Stata/plus/_/_pea_mpm.ado:L24-L25; Stata/plus/_/_pea_mpm.ado:L216-L359; Stata/plus/_/_pea_mpm.ado:L396-L396	Cited construct located in the pinned source; no execution implied.
+C138	FUNCTIONS.md	135	explicit	pea_figure14.ado:120–128	VERIFIED	Stata/plus/p/pea_figure14.ado:L120-L128	Cited construct located in the pinned source; no execution implied.
+C139	FUNCTIONS.md	140	explicit	pea_figure14.ado:243–309	VERIFIED	Stata/plus/p/pea_figure14.ado:L243-L309	Cited construct located in the pinned source; no execution implied.
+C140	FUNCTIONS.md	148	explicit	pea_figure14.ado:312–336	VERIFIED	Stata/plus/p/pea_figure14.ado:L312-L336	Cited construct located in the pinned source; no execution implied.
+C141	FUNCTIONS.md	152	explicit	pea_figures.ado:442–459	VERIFIED	Stata/plus/p/pea_figures.ado:L442-L459	Cited construct located in the pinned source; no execution implied.
+C142	FUNCTIONS.md	152	implicit	line 444	VERIFIED	Stata/plus/p/pea_figures.ado:L444-L444	Cited construct located in the pinned source; no execution implied.
+C143	FUNCTIONS.md	156	explicit	Stata/plus/p/pea_figure15.ado:19–22	VERIFIED	Stata/plus/p/pea_figure15.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C144	FUNCTIONS.md	157	implicit	lines 104–141	VERIFIED	Stata/plus/p/pea_figure15.ado:L104-L141	Cited construct located in the pinned source; no execution implied.
+C145	FUNCTIONS.md	158	explicit	pea_dataupdate.ado:254–264	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L254-L264	Cited construct located in the pinned source; no execution implied.
+C146	FUNCTIONS.md	159	explicit	pea_figure15.ado:37	VERIFIED	Stata/plus/p/pea_figure15.ado:L37-L37	Cited construct located in the pinned source; no execution implied.
+C147	FUNCTIONS.md	161	implicit	lines 55–103	VERIFIED	Stata/plus/p/pea_figure15.ado:L55-L103	Cited construct located in the pinned source; no execution implied.
+C148	FUNCTIONS.md	163	explicit	pea_figures.ado:461–472	VERIFIED	Stata/plus/p/pea_figures.ado:L461-L472	Cited construct located in the pinned source; no execution implied.
+C149	FUNCTIONS.md	167	explicit	Stata/plus/p/pea_figure16.ado:18–21	VERIFIED	Stata/plus/p/pea_figure16.ado:L18-L21	Cited construct located in the pinned source; no execution implied.
+C150	FUNCTIONS.md	168	implicit	lines 261–293	VERIFIED	Stata/plus/p/pea_figure16.ado:L261-L293	Cited construct located in the pinned source; no execution implied.
+C151	FUNCTIONS.md	170	implicit	lines 69–179, 212–220	VERIFIED	Stata/plus/p/pea_figure16.ado:L69-L179; Stata/plus/p/pea_figure16.ado:L212-L220	Cited construct located in the pinned source; no execution implied.
+C152	FUNCTIONS.md	176	explicit	pea_figure16.ado:181–220,295–326	VERIFIED	Stata/plus/p/pea_figure16.ado:L181-L220; Stata/plus/p/pea_figure16.ado:L295-L326	Cited construct located in the pinned source; no execution implied.
+C153	FUNCTIONS.md	178	implicit	lines 29–32	VERIFIED	Stata/plus/p/pea_figure16.ado:L29-L32	Cited construct located in the pinned source; no execution implied.
+C154	FUNCTIONS.md	179	implicit	lines 295–312	VERIFIED	Stata/plus/p/pea_figure16.ado:L295-L312	Cited construct located in the pinned source; no execution implied.
+C155	FUNCTIONS.md	180	explicit	pea_figures.ado:479–492	VERIFIED	Stata/plus/p/pea_figures.ado:L479-L492	Cited construct located in the pinned source; no execution implied.
+C156	FUNCTIONS.md	181	implicit	lines 286 and 319	VERIFIED	Stata/plus/p/pea_figure16.ado:L286-L286; Stata/plus/p/pea_figure16.ado:L319-L319	Cited construct located in the pinned source; no execution implied.
+C157	FUNCTIONS.md	182	explicit	pea_figures.ado:474–492	VERIFIED	Stata/plus/p/pea_figures.ado:L474-L492	Cited construct located in the pinned source; no execution implied.
+C158	FUNCTIONS.md	186	explicit	Stata/plus/p/pea_figureC1.ado:20–23	VERIFIED	Stata/plus/p/pea_figureC1.ado:L20-L23	Cited construct located in the pinned source; no execution implied.
+C159	FUNCTIONS.md	187	implicit	lines 248–342	VERIFIED	Stata/plus/p/pea_figureC1.ado:L248-L342	Cited construct located in the pinned source; no execution implied.
+C160	FUNCTIONS.md	189	implicit	lines 83–95, 134–190, 234–322	VERIFIED	Stata/plus/p/pea_figureC1.ado:L83-L95; Stata/plus/p/pea_figureC1.ado:L134-L190; Stata/plus/p/pea_figureC1.ado:L234-L322	Cited construct located in the pinned source; no execution implied.
+C161	FUNCTIONS.md	191	explicit	pea_core.ado:151–162	VERIFIED	Stata/plus/p/pea_core.ado:L151-L162	Cited construct located in the pinned source; no execution implied.
+C162	FUNCTIONS.md	191	implicit	lines 42–64	VERIFIED	Stata/plus/p/pea_figureC1.ado:L42-L64	Cited construct located in the pinned source; no execution implied.
+C163	FUNCTIONS.md	192	implicit	lines 150–155	VERIFIED	Stata/plus/p/pea_figureC1.ado:L150-L155	Cited construct located in the pinned source; no execution implied.
+C164	FUNCTIONS.md	193	explicit	pea_dataupdate.ado:207–215	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L207-L215	Cited construct located in the pinned source; no execution implied.
+C165	FUNCTIONS.md	204	explicit	Stata/plus/p/pea_table1.ado:19–22	VERIFIED	Stata/plus/p/pea_table1.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C166	FUNCTIONS.md	205	implicit	lines 366–398	VERIFIED	Stata/plus/p/pea_table1.ado:L366-L398	Cited construct located in the pinned source; no execution implied.
+C167	FUNCTIONS.md	208	implicit	lines 112–224	VERIFIED	Stata/plus/p/pea_table1.ado:L112-L224	Cited construct located in the pinned source; no execution implied.
+C168	FUNCTIONS.md	208	implicit	lines 226–244	VERIFIED	Stata/plus/p/pea_table1.ado:L226-L244	Cited construct located in the pinned source; no execution implied.
+C169	FUNCTIONS.md	208	implicit	lines 246–290	VERIFIED	Stata/plus/p/pea_table1.ado:L246-L290	Cited construct located in the pinned source; no execution implied.
+C170	FUNCTIONS.md	209	implicit	lines 366–397	VERIFIED	Stata/plus/p/pea_table1.ado:L366-L397	Cited construct located in the pinned source; no execution implied.
+C171	FUNCTIONS.md	215	explicit	Stata/plus/p/pea_table1_std.ado:19–22	VERIFIED	Stata/plus/p/pea_table1_std.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C172	FUNCTIONS.md	216	implicit	lines 384–434	VERIFIED	Stata/plus/p/pea_table1_std.ado:L384-L434	Cited construct located in the pinned source; no execution implied.
+C173	FUNCTIONS.md	219	implicit	line 428	VERIFIED	Stata/plus/p/pea_table1_std.ado:L428-L428	Cited construct located in the pinned source; no execution implied.
+C174	FUNCTIONS.md	223	explicit	Stata/plus/p/pea_table2.ado:19–22	VERIFIED	Stata/plus/p/pea_table2.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C175	FUNCTIONS.md	224	implicit	lines 225–237	VERIFIED	Stata/plus/p/pea_table2.ado:L225-L237	Cited construct located in the pinned source; no execution implied.
+C176	FUNCTIONS.md	226	implicit	lines 124–223	VERIFIED	Stata/plus/p/pea_table2.ado:L124-L223	Cited construct located in the pinned source; no execution implied.
+C177	FUNCTIONS.md	232	explicit	Stata/plus/p/pea_table3.ado:19–22	VERIFIED	Stata/plus/p/pea_table3.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C178	FUNCTIONS.md	234	implicit	lines 141–228	VERIFIED	Stata/plus/p/pea_table3.ado:L141-L228	Cited construct located in the pinned source; no execution implied.
+C179	FUNCTIONS.md	235	implicit	lines 231–276	VERIFIED	Stata/plus/p/pea_table3.ado:L231-L276	Cited construct located in the pinned source; no execution implied.
+C180	FUNCTIONS.md	236	implicit	lines 279–362	VERIFIED	Stata/plus/p/pea_table3.ado:L279-L362	Cited construct located in the pinned source; no execution implied.
+C181	FUNCTIONS.md	238	implicit	lines 104–120	VERIFIED	Stata/plus/p/pea_table3.ado:L104-L120	Cited construct located in the pinned source; no execution implied.
+C182	FUNCTIONS.md	239	explicit	pea_tables.ado:176–194	VERIFIED	Stata/plus/p/pea_tables.ado:L176-L194	Cited construct located in the pinned source; no execution implied.
+C183	FUNCTIONS.md	243	explicit	Stata/plus/p/pea_table4.ado:19–22	VERIFIED	Stata/plus/p/pea_table4.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C184	FUNCTIONS.md	244	implicit	lines 350–397	VERIFIED	Stata/plus/p/pea_table4.ado:L350-L397	Cited construct located in the pinned source; no execution implied.
+C185	FUNCTIONS.md	246	implicit	lines 95–347	VERIFIED	Stata/plus/p/pea_table4.ado:L95-L347	Cited construct located in the pinned source; no execution implied.
+C186	FUNCTIONS.md	252	explicit	Stata/plus/p/pea_table5.ado:19–22	VERIFIED	Stata/plus/p/pea_table5.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C187	FUNCTIONS.md	253	implicit	lines 211–234	VERIFIED	Stata/plus/p/pea_table5.ado:L211-L234	Cited construct located in the pinned source; no execution implied.
+C188	FUNCTIONS.md	255	implicit	lines 44–179	VERIFIED	Stata/plus/p/pea_table5.ado:L44-L179	Cited construct located in the pinned source; no execution implied.
+C189	FUNCTIONS.md	257	explicit	pea_core.ado:177–188	VERIFIED	Stata/plus/p/pea_core.ado:L177-L188	Cited construct located in the pinned source; no execution implied.
+C190	FUNCTIONS.md	262	explicit	Stata/plus/p/pea_table6.ado:19–22	VERIFIED	Stata/plus/p/pea_table6.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C191	FUNCTIONS.md	263	implicit	lines 147–188	VERIFIED	Stata/plus/p/pea_table6.ado:L147-L188	Cited construct located in the pinned source; no execution implied.
+C192	FUNCTIONS.md	271	explicit	Stata/plus/p/pea_table7.ado:19–22	VERIFIED	Stata/plus/p/pea_table7.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C193	FUNCTIONS.md	272	implicit	lines 211–222	VERIFIED	Stata/plus/p/pea_table7.ado:L211-L222	Cited construct located in the pinned source; no execution implied.
+C194	FUNCTIONS.md	274	implicit	lines 43–59, 115–206	VERIFIED	Stata/plus/p/pea_table7.ado:L43-L59; Stata/plus/p/pea_table7.ado:L115-L206	Cited construct located in the pinned source; no execution implied.
+C195	FUNCTIONS.md	279	explicit	Stata/plus/p/pea_table8.ado:19–22	VERIFIED	Stata/plus/p/pea_table8.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C196	FUNCTIONS.md	280	implicit	lines 160–215	VERIFIED	Stata/plus/p/pea_table8.ado:L160-L215	Cited construct located in the pinned source; no execution implied.
+C197	FUNCTIONS.md	282	implicit	lines 103–143	VERIFIED	Stata/plus/p/pea_table8.ado:L103-L143	Cited construct located in the pinned source; no execution implied.
+C198	FUNCTIONS.md	287	explicit	Stata/plus/p/pea_table9.ado:19–22	VERIFIED	Stata/plus/p/pea_table9.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C199	FUNCTIONS.md	288	implicit	lines 147–178	VERIFIED	Stata/plus/p/pea_table9.ado:L147-L178	Cited construct located in the pinned source; no execution implied.
+C200	FUNCTIONS.md	290	implicit	lines 27–30, 62–119	VERIFIED	Stata/plus/p/pea_table9.ado:L27-L30; Stata/plus/p/pea_table9.ado:L62-L119	Cited construct located in the pinned source; no execution implied.
+C201	FUNCTIONS.md	291	implicit	lines 128–130	VERIFIED	Stata/plus/p/pea_table9.ado:L128-L130	Cited construct located in the pinned source; no execution implied.
+C202	FUNCTIONS.md	296	explicit	Stata/plus/p/pea_table10.ado:19–22	VERIFIED	Stata/plus/p/pea_table10.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C203	FUNCTIONS.md	297	implicit	lines 335–353	VERIFIED	Stata/plus/p/pea_table10.ado:L335-L353	Cited construct located in the pinned source; no execution implied.
+C204	FUNCTIONS.md	300	implicit	lines 53–124, 126–326	VERIFIED	Stata/plus/p/pea_table10.ado:L53-L124; Stata/plus/p/pea_table10.ado:L126-L326	Cited construct located in the pinned source; no execution implied.
+C205	FUNCTIONS.md	306	explicit	Stata/plus/p/pea_table11.ado:19–22	VERIFIED	Stata/plus/p/pea_table11.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C206	FUNCTIONS.md	307	implicit	lines 217–254	VERIFIED	Stata/plus/p/pea_table11.ado:L217-L254	Cited construct located in the pinned source; no execution implied.
+C207	FUNCTIONS.md	309	implicit	lines 113–190	VERIFIED	Stata/plus/p/pea_table11.ado:L113-L190	Cited construct located in the pinned source; no execution implied.
+C208	FUNCTIONS.md	310	implicit	lines 192–195	VERIFIED	Stata/plus/p/pea_table11.ado:L192-L195	Cited construct located in the pinned source; no execution implied.
+C209	FUNCTIONS.md	311	explicit	pea.ado:109–110	VERIFIED	Stata/plus/p/pea.ado:L109-L110	Cited construct located in the pinned source; no execution implied.
+C210	FUNCTIONS.md	315	explicit	Stata/plus/p/pea_table12.ado:19–22	VERIFIED	Stata/plus/p/pea_table12.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C211	FUNCTIONS.md	316	implicit	lines 227–253	VERIFIED	Stata/plus/p/pea_table12.ado:L227-L253	Cited construct located in the pinned source; no execution implied.
+C212	FUNCTIONS.md	318	implicit	lines 137–192	VERIFIED	Stata/plus/p/pea_table12.ado:L137-L192	Cited construct located in the pinned source; no execution implied.
+C213	FUNCTIONS.md	320	implicit	lines 87–90	VERIFIED	Stata/plus/p/pea_table12.ado:L87-L90	Cited construct located in the pinned source; no execution implied.
+C214	FUNCTIONS.md	324	explicit	Stata/plus/p/pea_table13a.ado:19–22	VERIFIED	Stata/plus/p/pea_table13a.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C215	FUNCTIONS.md	325	implicit	lines 262–272	VERIFIED	Stata/plus/p/pea_table13a.ado:L262-L272	Cited construct located in the pinned source; no execution implied.
+C216	FUNCTIONS.md	327	implicit	lines 155–228	VERIFIED	Stata/plus/p/pea_table13a.ado:L155-L228	Cited construct located in the pinned source; no execution implied.
+C217	FUNCTIONS.md	333	explicit	Stata/plus/p/pea_table13b.ado:19–22	VERIFIED	Stata/plus/p/pea_table13b.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C218	FUNCTIONS.md	334	implicit	lines 270–280	VERIFIED	Stata/plus/p/pea_table13b.ado:L270-L280	Cited construct located in the pinned source; no execution implied.
+C219	FUNCTIONS.md	336	implicit	lines 89–93, 158–234	VERIFIED	Stata/plus/p/pea_table13b.ado:L89-L93; Stata/plus/p/pea_table13b.ado:L158-L234	Cited construct located in the pinned source; no execution implied.
+C220	FUNCTIONS.md	341	explicit	Stata/plus/p/pea_table14.ado:19–22	VERIFIED	Stata/plus/p/pea_table14.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C221	FUNCTIONS.md	342	implicit	lines 242–315	VERIFIED	Stata/plus/p/pea_table14.ado:L242-L315	Cited construct located in the pinned source; no execution implied.
+C222	FUNCTIONS.md	344	implicit	lines 104–240	VERIFIED	Stata/plus/p/pea_table14.ado:L104-L240	Cited construct located in the pinned source; no execution implied.
+C223	FUNCTIONS.md	345	implicit	line 239	VERIFIED	Stata/plus/p/pea_table14.ado:L239-L239	Cited construct located in the pinned source; no execution implied.
+C224	FUNCTIONS.md	351	explicit	Stata/plus/p/pea_table15.ado:19–22	VERIFIED	Stata/plus/p/pea_table15.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C225	FUNCTIONS.md	352	implicit	lines 88–96	VERIFIED	Stata/plus/p/pea_table15.ado:L88-L96	Cited construct located in the pinned source; no execution implied.
+C226	FUNCTIONS.md	354	implicit	lines 36–87	VERIFIED	Stata/plus/p/pea_table15.ado:L36-L87	Cited construct located in the pinned source; no execution implied.
+C227	FUNCTIONS.md	359	explicit	Stata/plus/p/pea_table16.ado:19–22	VERIFIED	Stata/plus/p/pea_table16.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C228	FUNCTIONS.md	360	implicit	lines 130–145	VERIFIED	Stata/plus/p/pea_table16.ado:L130-L145	Cited construct located in the pinned source; no execution implied.
+C229	FUNCTIONS.md	361	implicit	lines 47–61	VERIFIED	Stata/plus/p/pea_table16.ado:L47-L61	Cited construct located in the pinned source; no execution implied.
+C230	FUNCTIONS.md	363	implicit	lines 63–115	VERIFIED	Stata/plus/p/pea_table16.ado:L63-L115	Cited construct located in the pinned source; no execution implied.
+C231	FUNCTIONS.md	368	explicit	Stata/plus/p/pea_tableA2.ado:19–22	VERIFIED	Stata/plus/p/pea_tableA2.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C232	FUNCTIONS.md	369	implicit	lines 258–268	VERIFIED	Stata/plus/p/pea_tableA2.ado:L258-L268	Cited construct located in the pinned source; no execution implied.
+C233	FUNCTIONS.md	371	implicit	lines 128–256	VERIFIED	Stata/plus/p/pea_tableA2.ado:L128-L256	Cited construct located in the pinned source; no execution implied.
+C234	FUNCTIONS.md	373	implicit	line 57	VERIFIED	Stata/plus/p/pea_tableA2.ado:L57-L57	Cited construct located in the pinned source; no execution implied.
+C235	FUNCTIONS.md	377	explicit	Stata/plus/p/pea_table_A2_std.ado:19–22	VERIFIED	Stata/plus/p/pea_table_A2_std.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C236	FUNCTIONS.md	378	implicit	lines 250–265	VERIFIED	Stata/plus/p/pea_table_A2_std.ado:L250-L265	Cited construct located in the pinned source; no execution implied.
+C237	FUNCTIONS.md	381	implicit	line 149	VERIFIED	Stata/plus/p/pea_table_A2_std.ado:L149-L149	Cited construct located in the pinned source; no execution implied.
+C238	FUNCTIONS.md	386	explicit	Stata/plus/p/pea_tableC1.ado:19–22	VERIFIED	Stata/plus/p/pea_tableC1.ado:L19-L22	Cited construct located in the pinned source; no execution implied.
+C239	FUNCTIONS.md	387	implicit	lines 716–745	VERIFIED	Stata/plus/p/pea_tableC1.ado:L716-L745	Cited construct located in the pinned source; no execution implied.
+C240	FUNCTIONS.md	387	implicit	lines 747–766	VERIFIED	Stata/plus/p/pea_tableC1.ado:L747-L766	Cited construct located in the pinned source; no execution implied.
+C241	FUNCTIONS.md	389	implicit	lines 145–282, 615–679	VERIFIED	Stata/plus/p/pea_tableC1.ado:L145-L282; Stata/plus/p/pea_tableC1.ado:L615-L679	Cited construct located in the pinned source; no execution implied.
+C242	FUNCTIONS.md	390	implicit	lines 284–613	VERIFIED	Stata/plus/p/pea_tableC1.ado:L284-L613	Cited construct located in the pinned source; no execution implied.
+C243	FUNCTIONS.md	414	explicit	Stata/plus/p/pea.ado:67–69,115–117,141–151,174–190,207–208	VERIFIED	Stata/plus/p/pea.ado:L67-L69; Stata/plus/p/pea.ado:L115-L117; Stata/plus/p/pea.ado:L141-L151; Stata/plus/p/pea.ado:L174-L190; Stata/plus/p/pea.ado:L207-L208	Cited construct located in the pinned source; no execution implied.
+C244	FUNCTIONS.md	420	explicit	pea_figures.ado:349–360	VERIFIED	Stata/plus/p/pea_figures.ado:L349-L360	Cited construct located in the pinned source; no execution implied.
+C245	FUNCTIONS.md	421	explicit	pea.ado:109–110	VERIFIED	Stata/plus/p/pea.ado:L109-L110	Cited construct located in the pinned source; no execution implied.
+C246	FUNCTIONS.md	422	explicit	Stata/plus/s/sedecomposition.ado:5	VERIFIED	Stata/plus/s/sedecomposition.ado:L5-L5	Cited construct located in the pinned source; no execution implied.
+C247	ISSUES.md	11	explicit	pea_dataupdate.ado:58	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L58-L58	Cited construct located in the pinned source; no execution implied.
+C248	ISSUES.md	12	explicit	pea_dataupdate.ado:207–215	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L207-L215	Cited construct located in the pinned source; no execution implied.
+C249	ISSUES.md	13	explicit	pea_dataupdate.ado:295–299	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L295-L299	Cited construct located in the pinned source; no execution implied.
+C250	ISSUES.md	14	explicit	pea_figureC1.ado:42–64	VERIFIED	Stata/plus/p/pea_figureC1.ado:L42-L64	Cited construct located in the pinned source; no execution implied.
+C251	ISSUES.md	14	explicit	pea_core.ado:151–162	VERIFIED	Stata/plus/p/pea_core.ado:L151-L162	Cited construct located in the pinned source; no execution implied.
+C252	ISSUES.md	15	explicit	pea_figureC1.ado:148–155	VERIFIED	Stata/plus/p/pea_figureC1.ado:L148-L155	Cited construct located in the pinned source; no execution implied.
+C253	ISSUES.md	16	explicit	pea_figure12.ado:162–178,198,204–212	VERIFIED	Stata/plus/p/pea_figure12.ado:L162-L178; Stata/plus/p/pea_figure12.ado:L198-L198; Stata/plus/p/pea_figure12.ado:L204-L212	Cited construct located in the pinned source; no execution implied.
+C254	ISSUES.md	17	explicit	pea_table11.ado:22,192–195	VERIFIED	Stata/plus/p/pea_table11.ado:L22-L22; Stata/plus/p/pea_table11.ado:L192-L195	Cited construct located in the pinned source; no execution implied.
+C255	ISSUES.md	18	explicit	pea_table14.ado:239	VERIFIED	Stata/plus/p/pea_table14.ado:L239-L239	Cited construct located in the pinned source; no execution implied.
+C256	ISSUES.md	19	explicit	pea_table1_std.ado:428	VERIFIED	Stata/plus/p/pea_table1_std.ado:L428-L428	Cited construct located in the pinned source; no execution implied.
+C257	ISSUES.md	19	explicit	pea_table_A2_std.ado:149	VERIFIED	Stata/plus/p/pea_table_A2_std.ado:L149-L149	Cited construct located in the pinned source; no execution implied.
+C258	ISSUES.md	20	explicit	pea.ado:67–69,115–117,141–151,174–190,207–208	VERIFIED	Stata/plus/p/pea.ado:L67-L69; Stata/plus/p/pea.ado:L115-L117; Stata/plus/p/pea.ado:L141-L151; Stata/plus/p/pea.ado:L174-L190; Stata/plus/p/pea.ado:L207-L208	Cited construct located in the pinned source; no execution implied.
+C259	ISSUES.md	21	explicit	pea_figures.ado:21,100–113,154–444	VERIFIED	Stata/plus/p/pea_figures.ado:L21-L21; Stata/plus/p/pea_figures.ado:L100-L113; Stata/plus/p/pea_figures.ado:L154-L444	Cited construct located in the pinned source; no execution implied.
+C260	ISSUES.md	22	explicit	pea_figure2.ado:119–163	VERIFIED	Stata/plus/p/pea_figure2.ado:L119-L163	Cited construct located in the pinned source; no execution implied.
+C261	ISSUES.md	22	explicit	pea_figure10b.ado:106–147	VERIFIED	Stata/plus/p/pea_figure10b.ado:L106-L147	Cited construct located in the pinned source; no execution implied.
+C262	ISSUES.md	22	explicit	pea_figure10d.ado:106–124	VERIFIED	Stata/plus/p/pea_figure10d.ado:L106-L124	Cited construct located in the pinned source; no execution implied.
+C263	ISSUES.md	23	explicit	sedecomposition.ado:48–108	VERIFIED	Stata/plus/s/sedecomposition.ado:L48-L108	Cited construct located in the pinned source; no execution implied.
+C264	ISSUES.md	24	explicit	sedecomposition.ado:44,73	VERIFIED	Stata/plus/s/sedecomposition.ado:L44-L44; Stata/plus/s/sedecomposition.ado:L73-L73	Cited construct located in the pinned source; no execution implied.
+C265	ISSUES.md	25	explicit	pea_figure14.ado:79–128	VERIFIED	Stata/plus/p/pea_figure14.ado:L79-L128	Cited construct located in the pinned source; no execution implied.
+C266	ISSUES.md	25	explicit	pea_dataupdate.ado:120–128	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L120-L128	Cited construct located in the pinned source; no execution implied.
+C267	ISSUES.md	26	explicit	pea_table6.ado:122–177	VERIFIED	Stata/plus/p/pea_table6.ado:L122-L177	Cited construct located in the pinned source; no execution implied.
+C268	ISSUES.md	27	explicit	pea_dataupdate.ado:756–798	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L756-L798	Cited construct located in the pinned source; no execution implied.
+C269	ISSUES.md	28	explicit	pea_tableC1.ado:356–393	VERIFIED	Stata/plus/p/pea_tableC1.ado:L356-L393	Cited construct located in the pinned source; no execution implied.
+C270	ISSUES.md	29	explicit	pea_table1.ado:131–133	VERIFIED	Stata/plus/p/pea_table1.ado:L131-L133	Cited construct located in the pinned source; no execution implied.
+C271	ISSUES.md	29	explicit	pea_table1_std.ado:154–158	VERIFIED	Stata/plus/p/pea_table1_std.ado:L154-L158	Cited construct located in the pinned source; no execution implied.
+C272	ISSUES.md	29	explicit	pea_table7.ado:115–124	VERIFIED	Stata/plus/p/pea_table7.ado:L115-L124	Cited construct located in the pinned source; no execution implied.
+C273	ISSUES.md	29	explicit	pea_tableC1.ado:163–165,395–418	VERIFIED	Stata/plus/p/pea_tableC1.ado:L163-L165; Stata/plus/p/pea_tableC1.ado:L395-L418	Cited construct located in the pinned source; no execution implied.
+C274	ISSUES.md	30	explicit	pea_table3.ado:104–120	VERIFIED	Stata/plus/p/pea_table3.ado:L104-L120	Cited construct located in the pinned source; no execution implied.
+C275	ISSUES.md	31	explicit	pea_figure7a.ado:84–86	VERIFIED	Stata/plus/p/pea_figure7a.ado:L84-L86	Cited construct located in the pinned source; no execution implied.
+C276	ISSUES.md	31	explicit	pea_figure7b.ado:84–86	VERIFIED	Stata/plus/p/pea_figure7b.ado:L84-L86	Cited construct located in the pinned source; no execution implied.
+C277	ISSUES.md	31	explicit	pea_table7.ado:43–59	VERIFIED	Stata/plus/p/pea_table7.ado:L43-L59	Cited construct located in the pinned source; no execution implied.
+C278	ISSUES.md	32	explicit	pea_table9.ado:128–130	VERIFIED	Stata/plus/p/pea_table9.ado:L128-L130	Cited construct located in the pinned source; no execution implied.
+C279	ISSUES.md	33	explicit	pea_figure15.ado:55–82	VERIFIED	Stata/plus/p/pea_figure15.ado:L55-L82	Cited construct located in the pinned source; no execution implied.
+C280	ISSUES.md	34	explicit	pea_figure16.ado:295–312	VERIFIED	Stata/plus/p/pea_figure16.ado:L295-L312	Cited construct located in the pinned source; no execution implied.
+C281	ISSUES.md	35	explicit	pea_table10.ado:121–122	VERIFIED	Stata/plus/p/pea_table10.ado:L121-L122	Cited construct located in the pinned source; no execution implied.
+C282	ISSUES.md	36	explicit	pea_tableC1.ado:615–679	VERIFIED	Stata/plus/p/pea_tableC1.ado:L615-L679	Cited construct located in the pinned source; no execution implied.
+C283	ISSUES.md	38	explicit	pea_figure12.ado:208–211	VERIFIED	Stata/plus/p/pea_figure12.ado:L208-L211	Cited construct located in the pinned source; no execution implied.
+C284	ISSUES.md	38	explicit	pea_figure13.ado:181	VERIFIED	Stata/plus/p/pea_figure13.ado:L181-L181	Cited construct located in the pinned source; no execution implied.
+C285	ISSUES.md	39	explicit	pea_figure6.ado:162–164,243–262	VERIFIED	Stata/plus/p/pea_figure6.ado:L162-L164; Stata/plus/p/pea_figure6.ado:L243-L262	Cited construct located in the pinned source; no execution implied.
+C286	ISSUES.md	40	explicit	pea_figure10d.ado:106–119	VERIFIED	Stata/plus/p/pea_figure10d.ado:L106-L119	Cited construct located in the pinned source; no execution implied.
+C287	ISSUES.md	41	explicit	pea_table10.ado:163,267,297–298	VERIFIED	Stata/plus/p/pea_table10.ado:L163-L163; Stata/plus/p/pea_table10.ado:L267-L267; Stata/plus/p/pea_table10.ado:L297-L298	Cited construct located in the pinned source; no execution implied.
+C288	ISSUES.md	42	explicit	pea_figure16.ado:280–326	VERIFIED	Stata/plus/p/pea_figure16.ado:L280-L326	Cited construct located in the pinned source; no execution implied.
+C289	ISSUES.md	42	explicit	pea_figures.ado:479–492	VERIFIED	Stata/plus/p/pea_figures.ado:L479-L492	Cited construct located in the pinned source; no execution implied.
+C290	ISSUES.md	42	explicit	pea_figureC1.ado:324	VERIFIED	Stata/plus/p/pea_figureC1.ado:L324-L324	Cited construct located in the pinned source; no execution implied.
+C291	ISSUES.md	42	explicit	pea_core.ado:151–162	VERIFIED	Stata/plus/p/pea_core.ado:L151-L162	Cited construct located in the pinned source; no execution implied.
+C292	ISSUES.md	42	explicit	pea_tableC1.ado:716	DRIFTED	Stata/plus/p/pea_tableC1.ado:L732-L732	Worksheet literal is elsewhere; original single line does not contain the cited construct.
+C293	ISSUES.md	42	explicit	pea_table5.ado:211	DRIFTED	Stata/plus/p/pea_table5.ado:L219-L219	Worksheet literal is elsewhere; original single line does not contain the cited construct.
+C294	ISSUES.md	42	explicit	pea_core.ado:166–188	VERIFIED	Stata/plus/p/pea_core.ado:L166-L188	Cited construct located in the pinned source; no execution implied.
+C295	ISSUES.md	43	explicit	pea_dataupdate.ado:74–115,329–337	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L74-L115; Stata/plus/p/pea_dataupdate.ado:L329-L337	Cited construct located in the pinned source; no execution implied.
+C296	ISSUES.md	44	explicit	pea_figure14.ado:123	VERIFIED	Stata/plus/p/pea_figure14.ado:L123-L123	Cited construct located in the pinned source; no execution implied.
+C297	ISSUES.md	44	explicit	_pea_mpm.ado:24–25	VERIFIED	Stata/plus/_/_pea_mpm.ado:L24-L25	Cited construct located in the pinned source; no execution implied.
+C298	ISSUES.md	46	explicit	pea_table3.ado:231–276	VERIFIED	Stata/plus/p/pea_table3.ado:L231-L276	Cited construct located in the pinned source; no execution implied.
+C299	ISSUES.md	46	explicit	pea_tables.ado:176–194	VERIFIED	Stata/plus/p/pea_tables.ado:L176-L194	Cited construct located in the pinned source; no execution implied.
+C300	ISSUES.md	48	explicit	pea.ado:133–208	VERIFIED	Stata/plus/p/pea.ado:L133-L208	Cited construct located in the pinned source; no execution implied.
+C301	VARIABLES.md	31	explicit	sedecomposition.ado:44,73	VERIFIED	Stata/plus/s/sedecomposition.ado:L44-L44; Stata/plus/s/sedecomposition.ado:L73-L73	Cited construct located in the pinned source; no execution implied.
+C302	VARIABLES.md	32	explicit	_pea_mpm.ado:247–359	VERIFIED	Stata/plus/_/_pea_mpm.ado:L247-L359	Cited construct located in the pinned source; no execution implied.
+C303	VARIABLES.md	33	explicit	_pea_mpm.ado:24–25	VERIFIED	Stata/plus/_/_pea_mpm.ado:L24-L25	Cited construct located in the pinned source; no execution implied.
+C304	VARIABLES.md	35	explicit	pea_dataupdate.ado:413–446	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L413-L446	Cited construct located in the pinned source; no execution implied.
+C305	VARIABLES.md	39	explicit	pea_dataupdate.ado:241–251	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L241-L251	Cited construct located in the pinned source; no execution implied.
+C306	VARIABLES.md	44	explicit	pea_dataupdate.ado:314–337	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L314-L337	Cited construct located in the pinned source; no execution implied.
+C307	VARIABLES.md	45	explicit	pea_dataupdate.ado:451–514	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L451-L514	Cited construct located in the pinned source; no execution implied.
+C308	VARIABLES.md	47	explicit	pea_dataupdate.ado:148–183	VERIFIED	Stata/plus/p/pea_dataupdate.ado:L148-L183	Cited construct located in the pinned source; no execution implied.
+C309	VARIABLES.md	51	explicit	Stata/plus/s/sedecomposition.ado:5–149	VERIFIED	Stata/plus/s/sedecomposition.ado:L5-L149	Cited construct located in the pinned source; no execution implied.
+C310	WORKFLOW.md	51	explicit	pea_figures.ado:21,100–113,154–444	VERIFIED	Stata/plus/p/pea_figures.ado:L21-L21; Stata/plus/p/pea_figures.ado:L100-L113; Stata/plus/p/pea_figures.ado:L154-L444	Cited construct located in the pinned source; no execution implied.
+C311	WORKFLOW.md	51	explicit	pea_tables.ado:20,95–112,151–356	VERIFIED	Stata/plus/p/pea_tables.ado:L20-L20; Stata/plus/p/pea_tables.ado:L95-L112; Stata/plus/p/pea_tables.ado:L151-L356	Cited construct located in the pinned source; no execution implied.
+C312	WORKFLOW.md	51	explicit	pea_core.ado:20,95–112,135–257	VERIFIED	Stata/plus/p/pea_core.ado:L20-L20; Stata/plus/p/pea_core.ado:L95-L112; Stata/plus/p/pea_core.ado:L135-L257	Cited construct located in the pinned source; no execution implied.

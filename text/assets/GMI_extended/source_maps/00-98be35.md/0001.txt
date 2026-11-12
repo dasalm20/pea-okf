@@ -1,0 +1,368 @@
+# 01.Programs/00-Master.do
+
+Sanitized source projection; applicability placeholders are not executable values. Original SHA256: 71bb7c71ef39ec2ce2e8baa628e396450d16cbd43545297877651a77bcf6b0ba
+
+```stata
+0001 | *===============================================================
+0002 | * 00-Master.do
+0003 | * GMI_extended pipeline -- global setup
+0004 | *
+0005 | * Run this FIRST, every session, before any other do-file.
+0006 | * Then run 00b-Pull_API_data.do      (caches API/DLW lookups to 02.Input\api\)
+0007 | * Then run 00c-Fetch_server_data.do  (copies network server files to 02.Input\FromServers\)
+0008 | * Then run 01aa / 01ab / 01b / 01c / 02 / 03 as needed -- their own
+0009 | * global-setup blocks get commented out once this is confirmed working.
+0010 | *
+0011 | * NOTE ON $gmiroot (was $root):
+0012 | *   The repo root global is called $gmiroot, NOT $root. The dlw
+0013 | *   command overwrites a global named "root" with its own data path,
+0014 | *   so any reference to $root AFTER a dlw call resolves to
+0015 | *   \\wbgfscifs01\GPWG-GMD\... instead of this repo. Every folder
+0016 | *   global below is built from $gmiroot at load time, so they are
+0017 | *   fixed before any dlw call runs. Do not reintroduce $root.
+0018 | *===============================================================
+0019 | clear all
+0020 | set varabbrev off
+0021 | set max_memory ., permanently
+0022 | 
+0023 | 
+0024 | *###############################################################
+0025 | *##                                                            ##
+0026 | *##                    EDIT THIS SECTION                       ##
+0027 | *##       These are the ONLY 3 things that change per round.   ##
+0028 | *##       Nothing below this section needs to be touched.      ##
+0029 | *##                                                            ##
+0030 | *###############################################################
+0031 | 
+0032 | global rnd      SM26                                          // current round code
+0033 | global gmiroot  "C:\Users\wb570371\Documents\PEA\GMI_extended" // repo root folder
+0034 | global cpiver   v15                                           // price framework version (bump to v16 when released)
+0035 | 
+0036 | *###############################################################
+0037 | *##                  END OF EDITABLE SECTION                   ##
+0038 | *###############################################################
+0039 | 
+0040 | 
+0041 | *###############################################################
+0042 | *##                                                            ##
+0043 | *##                     MANUAL INPUTS                          ##
+0044 | *##   Not pulled automatically by 00b-Pull_API_data.do.        ##
+0045 | *##   Confirm these are present and current in 02.Input        ##
+0046 | *##   before running the pipeline.                             ##
+0047 | *##                                                            ##
+0048 | *###############################################################
+0049 | *
+0050 | *   world_1000bin.dta
+0051 | *     1000-bin global welfare distribution data, used for the
+0052 | *     ISO3/ISO3/ISO3 GIC build in PIP_to_GIC_and_Decomposition_data.do.
+0053 | *     Not available via the PIP API -- request each round from DEC
+0054 | *     (currently Nishant, or whoever is running GMI that round) and
+0055 | *     place it directly in 02.Input\world_1000bin.dta.
+0056 | *
+0057 | *   new.txt
+0058 | *     Present in 02.Input but not referenced by any of the 8
+0059 | *     GMI_extended do-files as of this writing -- confirm whether
+0060 | *     still needed before the next round.
+0061 | *
+0062 | *   NOTE: CLASS_incg_region.dta and PIP_all_GDP.dta are NOT manual --
+0063 | *   00b-Pull_API_data.do pulls and builds both automatically
+0064 | *   (Sections E and F).
+0065 | *
+0066 | *###############################################################
+0067 | 
+0068 | 
+0069 | *================================================================
+0070 | * DO NOT EDIT BELOW THIS LINE
+0071 | * Everything from here on is derived from the 3 globals above.
+0072 | *================================================================
+0073 | 
+0074 | *----------------------------------------------------------------
+0075 | * DO NOT EDIT -- Previous round (calendar order: AM25, SM26, AM26, SM27, ...)
+0076 | *   previous(SM26) = AM25   |   previous(AM26) = SM26   |   previous(SM27) = AM26
+0077 | *----------------------------------------------------------------
+0078 | local pfx = substr("$rnd", 1, 2)
+0079 | local yy  = real(substr("$rnd", 3, .))
+0080 | 
+0081 | if "`pfx'" == "SM" {
+0082 |     local rndprev = "AM" + string(`yy' - 1)
+0083 | }
+0084 | else {
+0085 |     local rndprev = "SM" + string(`yy')
+0086 | }
+0087 | global rndprev `rndprev'
+0088 | 
+0089 | * long form, e.g. SM26 -> SM2026, AM25 -> AM2025 (used by 03-MPO_to_PEA.do)
+0090 | local yyyy = 2000 + `yy'
+0091 | global rnd1 = "`pfx'" + string(`yyyy')
+0092 | 
+0093 | *----------------------------------------------------------------
+0094 | * DO NOT EDIT -- Folder structure (local machine)
+0095 | *   <gmiroot>\01.Programs
+0096 | *   <gmiroot>\02.Input  (\api, \FromServers)
+0097 | *   <gmiroot>\03.Output
+0098 | *       \01.intermediate   -- working/QC files, not dashboard inputs
+0099 | *       \02.PEA_dashboard  -- ONLY the final files peaApp consumes
+0100 | *       \03.Other          -- everything else (graphs, scratch tempfiles, logs)
+0101 | *   <gmiroot>\04.Checks_Add_reharmonization_results
+0102 | *                          -- diagnostics for the locally re-harmonized
+0103 | *                             regional survey files (SSA, EAP, ...)
+0104 | *----------------------------------------------------------------
+0105 | global prog        "$gmiroot\01.Programs"
+0106 | global input       "$gmiroot\02.Input"
+0107 | global inputapi    "$input\api"               // cached non-DLW API pulls live here (00b)
+0108 | global fromservers "$input\FromServers"       // raw copies of network server files (00c)
+0109 | global outroot     "$gmiroot\03.Output"
+0110 | global interm      "$outroot\01.intermediate"
+0111 | global pea         "$outroot\02.PEA_dashboard"
+0112 | global other       "$outroot\03.Other"
+0113 | global checks      "$gmiroot\04.Checks_Add_reharmonization_results"
+0114 | 
+0115 | * NOTE: Dashboard_data\WLD_GMI_*.dta (seen in the old folder tree) uses a
+0116 | * different naming convention than anything the 8 GMI_extended do-files
+0117 | * produce -- looks like a separate pipeline, out of scope here.
+0118 | 
+0119 | * create the full folder structure if it doesn't already exist
+0120 | * (parent folders first -- mkdir doesn't create nested paths on its own)
+0121 | cap mkdir "$prog"
+0122 | cap mkdir "$input"
+0123 | cap mkdir "$inputapi"
+0124 | cap mkdir "$fromservers"
+0125 | cap mkdir "$outroot"
+0126 | cap mkdir "$interm"
+0127 | cap mkdir "$pea"
+0128 | cap mkdir "$other"
+0129 | cap mkdir "$checks"
+0130 | 
+0131 | *###############################################################
+0132 | *##                                                            ##
+0133 | *##              PREFLIGHT -- CHECK MANUAL INPUTS               ##
+0134 | *##   These are NOT pulled by 00b/00c -- they must already be   ##
+0135 | *##   in place before running the pipeline. Checked every time  ##
+0136 | *##   this file runs so a missing file is caught immediately,   ##
+0137 | *##   rather than surfacing later as a cryptic "file not found" ##
+0138 | *##   deep inside one of the 01xx/02/03 do-files.                ##
+0139 | *##                                                            ##
+0140 | *###############################################################
+0141 | 
+0142 | local manualmissing 0
+0143 | 
+0144 | cap confirm file "$input\world_1000bin.dta"
+0145 | if _rc {
+0146 |     dis as error "  [ MISSING ]  02.Input\world_1000bin.dta -- request this round's copy from DEC (Nishant, or whoever is running GMI) before running the pipeline."
+0147 |     local ++manualmissing
+0148 | }
+0149 | else {
+0150 |     dis as result "  [ OK      ]  02.Input\world_1000bin.dta found."
+0151 | }
+0152 | 
+0153 | cap confirm file "$input\new.txt"
+0154 | if _rc {
+0155 |     dis as text "  [ ????    ]  02.Input\new.txt not found -- purpose still unconfirmed (see MANUAL INPUTS note above), not currently referenced by any of the 9 do-files, so this is a notice, not an error."
+0156 | }
+0157 | else {
+0158 |     dis as text "  [ OK      ]  02.Input\new.txt found."
+0159 | }
+0160 | 
+0161 | if `manualmissing' > 0 {
+0162 |     dis as error _n "  RESULT: `manualmissing' required manual input(s) missing -- see [MISSING] lines above. Fix before running the pipeline for real."
+0163 | }
+0164 | 
+0165 | *----------------------------------------------------------------
+0166 | * DO NOT EDIT -- Network paths (DLW / repo / GMI spells / MPO)
+0167 | *----------------------------------------------------------------
+0168 | global path        "\\wbgfscifs01\GTSD\03.projects_corp\04.GPWG\04.GPWG_${rnd}\04.GPWG_${rnd}_QA"
+0169 | global reposource  "${path}\01.programs\02.dofile\repo\"
+0170 | global repotxt     "repo(use ${rnd}all) reporoot(${reposource})"
+0171 | 
+0172 | global gmispell    "\\wbgfscifs01\GTSD\03.projects_corp\06.GMI\06.GMI_${rnd}\06.GMI_${rnd}_QA\03.output\01.data\GMI_SPspell_all.dta"
+0173 | 
+0174 | global mpopath_cur  "\\wbgfscifs01\GTSD\03.projects_corp\02.MPO\02.MPO_${rnd}\02.MPO_${rnd}_QA"
+0175 | global mpopath_prev "\\wbgfscifs01\GTSD\03.projects_corp\02.MPO\02.MPO_${rndprev}\02.MPO_${rndprev}_QA"
+0176 | 
+0177 | *----------------------------------------------------------------
+0178 | * DO NOT EDIT -- Survey price framework
+0179 | *   Pulled live via DLW (excluded from the API-cache pattern in 00b)
+0180 | *   pull command (run at the top of any do-file needing a fresh copy):
+0181 | *     dlw, country(Support) year(2005) type(GMDRAW) surveyid($cpiversion) ///
+0182 | *         filename(Survey_price_framework.dta) files
+0183 | *----------------------------------------------------------------
+0184 | global cpiversion "Support_2005_CPI_${cpiver}_M"
+0185 | global pfw "$input\Survey_price_framework.dta"
+0186 | 
+0187 | *----------------------------------------------------------------
+0188 | * DO NOT EDIT -- PIP API parameters (used by 00b-Pull_API_data.do)
+0189 | *----------------------------------------------------------------
+0190 | global piptxt "server(prod) version(20260324_2021_01_02_PROD)"
+0191 | 
+0192 | *----------------------------------------------------------------
+0193 | * DO NOT EDIT -- Poverty lines / PPP / winsorize floors
+0194 | *   (full 9-line lists -- used by 01aa/01ab/01b/01c/02)
+0195 | *----------------------------------------------------------------
+0196 | global ppplist 2017 2021
+0197 | global pppmax  2021
+0198 | 
+0199 | global floor2021 0.28
+0200 | global gap2021   28
+0201 | global floor2017 0.25
+0202 | global gap2017   25
+0203 | global floor2011 0.22
+0204 | global gap2011   22
+0205 | 
+0206 | global plines2021 300 420 830 450 630 1245 600 840 1660
+0207 | global plines2017 215 365 685 322 547 1027 430 730 1370
+0208 | global plines2011 190 320 550
+0209 | 
+0210 | *----------------------------------------------------------------
+0211 | * DO NOT EDIT -- PIP-only line split (used by 00b-Pull_API_data.do only)
+0212 | *   NOTE: the PIP pull treats the headline line (300 / 215) separately
+0213 | *   from the other 8 lines, so these use distinct global names from
+0214 | *   plines2021/plines2017 above to avoid overwriting the full 9-line list.
+0215 | *----------------------------------------------------------------
+0216 | global line2021 300
+0217 | global line2017 215
+0218 | global pipextra2021 420 830 450 630 1245 600 840 1660
+0219 | global pipextra2017 365 685 322 547 1027 430 730 1370
+0220 | 
+0221 | *----------------------------------------------------------------
+0222 | * DO NOT EDIT -- GMD variables the per-survey dlw pulls rely on
+0223 | *   $gmd_req  : no cap guard anywhere in 01aa/01ab/01b -- a survey
+0224 | *               missing one of these errors or drops all its rows
+0225 | *   $gmd_ppp  : one cpi/icp pair per $ppplist vintage
+0226 | *   $gmd_opt  : every use is wrapped in cap des / cap su, so a survey
+0227 | *               without them simply skips that indicator block.
+0228 | *               THIS is the list the locally re-harmonized regional
+0229 | *               files are allowed to replace -- nothing else.
+0230 | *----------------------------------------------------------------
+0231 | global gmd_req  welfare weight weight_p hhid pid code year age
+0232 | 
+0233 | global gmd_ppp  cpi2017 icp2017 cpi2021 icp2021
+0234 | 
+0235 | global gmd_opt  urban male educat4 school relationharm marital ///
+0236 |                 lstatus industrycat4 industrycat10 empstat ///
+0237 |                 lstatus_year industrycat4_year industrycat10_year empstat_year ///
+0238 |                 imp_wat_rec imp_san_rec electricity ///
+0239 |                 tv car cellphone computer fridge
+0240 | 
+0241 | global gmd_all  $gmd_req $gmd_ppp $gmd_opt
+0242 | 
+0243 | dis as result "00-Master.do loaded.  Round: $rnd   Previous: $rndprev   CPI version: $cpiversion"
+0244 | 
+0245 | 
+0246 | *###############################################################
+0247 | *##                                                            ##
+0248 | *##              OPTIONAL: RUN THE FULL PIPELINE               ##
+0249 | *##                                                            ##
+0250 | *##   Runs 00b -> 00c -> 01aa -> 01ab -> 01b -> 01c -> 02 -> 03 ##
+0251 | *##   in order. Each file is wrapped in `cap` so one failure    ##
+0252 | *##   does NOT stop the batch -- every remaining file still     ##
+0253 | *##   runs, and a pass/fail summary prints at the end (same     ##
+0254 | *##   style as the summaries in 00b/00c). This is meant for     ##
+0255 | *##   unattended test runs, where seeing every failure in one   ##
+0256 | *##   pass is more useful than stopping at the first one.       ##
+0257 | *##                                                            ##
+0258 | *##   All 8 files are expected to sit in $prog (01.Programs).  ##
+0259 | *##   Set $runall = 1 below to run them automatically right     ##
+0260 | *##   after this file loads its globals; leave at 0 to keep     ##
+0261 | *##   running each do-file by hand, one at a time, as before.   ##
+0262 | *##                                                            ##
+0263 | *###############################################################
+0264 | 
+0265 | global runall 0   // 1 = auto-run the full pipeline after this file; 0 = globals only
+0266 | 
+0267 | if $runall == 1 {
+0268 | 
+0269 |     dis as text _n "Running full GMI_extended pipeline (round $rnd) ..."
+0270 | 
+0271 |     local fileA "00b-Pull_API_data"
+0272 |     local fileB "00c-Fetch_server_data"
+0273 |     local fileC "01aa-GMI_extended_indicators"
+0274 |     local fileD "01ab-GMI_extended_indicators_labor_ind"
+0275 |     local fileE "01b-GMI_extended_indicators_spells"
+0276 |     local fileF "01c-GMI_extended_spells_pov_elasticity"
+0277 |     local fileG "02-GMI_format"
+0278 |     local fileH "03-MPO_to_PEA"
+0279 | 
+0280 |     local statusA "NOT RUN"
+0281 |     local statusB "NOT RUN"
+0282 |     local statusC "NOT RUN"
+0283 |     local statusD "NOT RUN"
+0284 |     local statusE "NOT RUN"
+0285 |     local statusF "NOT RUN"
+0286 |     local statusG "NOT RUN"
+0287 |     local statusH "NOT RUN"
+0288 | 
+0289 |     local rcA .
+0290 |     local rcB .
+0291 |     local rcC .
+0292 |     local rcD .
+0293 |     local rcE .
+0294 |     local rcF .
+0295 |     local rcG .
+0296 |     local rcH .
+0297 | 
+0298 |     foreach s in A B C D E F G H {
+0299 |         local f    "`file`s''"
+0300 |         local path "$prog\`f'.do"
+0301 | 
+0302 |         dis as result _n "=============================================================="
+0303 |         dis as result "  RUNNING: `f'.do"
+0304 |         dis as result "=============================================================="
+0305 | 
+0306 |         cap confirm file "`path'"
+0307 |         if _rc {
+0308 |             dis as error "  [ MISSING ]  `path' not found -- skipping."
+0309 |             local status`s' "MISSING"
+0310 |             continue
+0311 |         }
+0312 | 
+0313 |         cap noisily do "`path'"
+0314 |         if _rc == 0 {
+0315 |             local status`s' "OK"
+0316 |         }
+0317 |         else {
+0318 |             local rc`s' = _rc
+0319 |             dis as error "  [ FAILED ]  `f'.do  (rc=`rc`s'')"
+0320 |             local status`s' "FAILED"
+0321 |         }
+0322 |     }
+0323 | 
+0324 |     *============================================================
+0325 |     * PIPELINE RUN SUMMARY
+0326 |     *============================================================
+0327 |     local w 66
+0328 |     dis as text _n _dup(`w') "-"
+0329 |     dis as text "  GMI EXTENDED PIPELINE -- FULL RUN SUMMARY"
+0330 |     dis as text "  Round: $rnd" _col(30) "Run: `c(current_date)' `c(current_time)'"
+0331 |     dis as text _dup(`w') "-"
+0332 | 
+0333 |     local nfail 0
+0334 |     foreach s in A B C D E F G H {
+0335 |         local f    "`file`s''"
+0336 |         local stat "`status`s''"
+0337 |         if "`stat'" == "OK" {
+0338 |             dis as result "  [ OK      ]  `f'.do"
+0339 |         }
+0340 |         else if "`stat'" == "FAILED" {
+0341 |             dis as error "  [ FAILED  ]  `f'.do  (rc=`rc`s'')"
+0342 |             local ++nfail
+0343 |         }
+0344 |         else if "`stat'" == "MISSING" {
+0345 |             dis as error "  [ MISSING ]  `f'.do"
+0346 |             local ++nfail
+0347 |         }
+0348 |         else {
+0349 |             dis as text "  [ ????    ]  `f'.do"
+0350 |             local ++nfail
+0351 |         }
+0352 |     }
+0353 | 
+0354 |     dis as text _dup(`w') "-"
+0355 |     if `nfail' == 0 {
+0356 |         dis as result "  RESULT: all 8 do-files ran successfully."
+0357 |     }
+0358 |     else {
+0359 |         dis as error "  RESULT: `nfail' of 8 do-file(s) FAILED or MISSING -- see [FAILED]/[MISSING] lines above."
+0360 |     }
+0361 |     dis as text _dup(`w') "-"
+0362 | }
+```

@@ -1,0 +1,70 @@
+{
+  "$schema": "EVIDENCE_REF_206ae48f6cae3f8701b1",
+  "title": "GMI knowledge base record",
+  "type": "object",
+  "required": [
+    "id",
+    "record_type",
+    "name",
+    "source_refs",
+    "evidence_status",
+    "related_entity_ids",
+    "explanation"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "record_type": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "file",
+          "start_line",
+          "end_line"
+        ],
+        "properties": {
+          "file": {
+            "type": "string"
+          },
+          "start_line": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "end_line": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "evidence_status": {
+      "enum": [
+        "VERIFIED_STATIC",
+        "VERIFIED_RUNTIME",
+        "INFERRED",
+        "UNVERIFIED",
+        "EXTERNAL_DEPENDENCY"
+      ]
+    },
+    "related_entity_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "explanation": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

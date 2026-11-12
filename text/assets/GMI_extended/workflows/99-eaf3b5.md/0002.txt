@@ -1,0 +1,1939 @@
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L377-L377`. Next: `block:6b556617d4dfb9e9`.
+
+```stata
+label var outside_guidelines "CODES OUTSIDE THE GUIDELINES"
+```
+
+### block:6b556617d4dfb9e9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L379-L379`. Next: `block:3ea6f31af9b03f4a`.
+
+```stata
+qui count
+```
+
+### block:3ea6f31af9b03f4a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L380-L380`. Next: `block:0321394407e55b8e`.
+
+```stata
+local nrows1 = r(N)
+```
+
+### block:0321394407e55b8e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L381-L381`. Next: `block:ae27d0a5dfd746a8`.
+
+```stata
+tempfile SH1
+```
+
+### block:ae27d0a5dfd746a8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L382-L382`. Next: `block:9787a13d943d0b74`.
+
+```stata
+qui save `SH1'
+```
+Write datasets: `dataset:83cd18514934b8ac`
+
+### block:9787a13d943d0b74
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L383-L383`. Next: `block:5230c58395623189`.
+
+```stata
+di as text _n "  sheet 1: `nrows1' rows, `nbad1' with codes outside the guidelines"
+```
+
+### block:5230c58395623189
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L390-L390`. Next: `block:87ce454ea443fd4f`.
+
+```stata
+use "`qadir'/qa_code.dta", clear
+```
+Read datasets: `dataset:f094031b33e00318`
+
+### block:87ce454ea443fd4f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L392-L392`. Next: `block:8ba15e69f664c4a5`.
+
+```stata
+preserve
+```
+
+### block:8ba15e69f664c4a5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L393-L393`. Next: `block:617abb537f66f9aa`.
+
+```stata
+collapse (sum) n = nrows, by(region country year variable d_value d_label)
+```
+Read candidates: `variable:7a272bddabb45bea`, `variable:b981b7eb83a85b40`, `variable:7929d1fe6f0882e7`, `variable:0440ca8ad083805a`, `variable:316ea882b95b3663`, `variable:3b0371ff92c5fa11`, `variable:188ab3b3e86deb72`, `variable:c219535504441111`
+
+### block:617abb537f66f9aa
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L394-L394`. Next: `block:26ec434128cced29`.
+
+```stata
+rename d_value value
+```
+New: `variable:52e54e53b743cea2`
+Read candidates: `variable:188ab3b3e86deb72`
+
+### block:26ec434128cced29
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L395-L395`. Next: `block:5ef9f4aa1f4da2a8`.
+
+```stata
+rename d_label label_txt
+```
+New: `variable:52351647e8ef1d2d`
+Read candidates: `variable:c219535504441111`
+
+### block:5ef9f4aa1f4da2a8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L396-L396`. Next: `block:0d89440f0976a6ce`.
+
+```stata
+rename n n_dlw
+```
+New: `variable:8760aacbc3747855`
+Read candidates: `variable:7a272bddabb45bea`
+
+### block:0d89440f0976a6ce
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L397-L397`. Next: `block:c207702366b695b8`.
+
+```stata
+tempfile MD
+```
+
+### block:c207702366b695b8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L398-L398`. Next: `block:94543dd7fce167d1`.
+
+```stata
+qui save `MD'
+```
+Write datasets: `dataset:5e24a10bbb0787e6`
+
+### block:94543dd7fce167d1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L399-L399`. Next: `block:6dba4359d4bc0e3a`.
+
+```stata
+restore
+```
+
+### block:6dba4359d4bc0e3a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L401-L401`. Next: `block:30886134592a4ec9`.
+
+```stata
+collapse (sum) n = nrows, by(region country year variable p_value)
+```
+Read candidates: `variable:7a272bddabb45bea`, `variable:b981b7eb83a85b40`, `variable:7929d1fe6f0882e7`, `variable:0440ca8ad083805a`, `variable:316ea882b95b3663`, `variable:3b0371ff92c5fa11`, `variable:5be12ce0869110d7`
+
+### block:30886134592a4ec9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L402-L402`. Next: `block:065073dee866a486`.
+
+```stata
+rename p_value value
+```
+New: `variable:52e54e53b743cea2`
+Read candidates: `variable:5be12ce0869110d7`
+
+### block:065073dee866a486
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L403-L403`. Next: `block:7f1216122d28542c`.
+
+```stata
+rename n n_local
+```
+New: `variable:578dc9f12b3329e3`
+Read candidates: `variable:7a272bddabb45bea`
+
+### block:7f1216122d28542c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L404-L404`. Next: `block:13f2128c2779d73e`.
+
+```stata
+merge 1:1 region country year variable value using `MD', gen(_mm)
+```
+Read datasets: `dataset:5e24a10bbb0787e6`
+
+### block:13f2128c2779d73e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L405-L405`. Next: `block:b6170bf3a68c4e52`.
+
+```stata
+drop _mm
+```
+Read candidates: `variable:53b62d7fd187419f`
+
+### block:b6170bf3a68c4e52
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L406-L406`. Next: `block:6bdf0d46e4c6c986`.
+
+```stata
+replace n_dlw   = 0 if missing(n_dlw)
+```
+Modified: `variable:8760aacbc3747855`
+Read candidates: `variable:8760aacbc3747855`
+
+### block:6bdf0d46e4c6c986
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L407-L407`. Next: `block:8f617fe2e974f2c0`.
+
+```stata
+replace n_local = 0 if missing(n_local)
+```
+Modified: `variable:578dc9f12b3329e3`
+Read candidates: `variable:578dc9f12b3329e3`
+
+### block:8f617fe2e974f2c0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L410-L410`. Next: `block:e4de106cf16a8a0c`.
+
+```stata
+gsort region country year variable value -label_txt
+```
+
+### block:e4de106cf16a8a0c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L411-L411`. Next: `block:f8487ca80ded7702`.
+
+```stata
+by region country year variable value: replace label_txt = label_txt[1] if missing(label_txt)
+```
+Modified: `variable:52351647e8ef1d2d`
+Read candidates: `variable:52351647e8ef1d2d`, `variable:7929d1fe6f0882e7`, `variable:0440ca8ad083805a`, `variable:316ea882b95b3663`, `variable:3b0371ff92c5fa11`, `variable:52e54e53b743cea2`
+
+### block:f8487ca80ded7702
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L412-L412`. Next: `block:554c44bc8de5c3cf`.
+
+```stata
+replace label_txt = "missing" if value == -99
+```
+Modified: `variable:52351647e8ef1d2d`
+Read candidates: `variable:52e54e53b743cea2`
+
+### block:554c44bc8de5c3cf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L413-L413`. Next: `block:3ac5b7406640ec8b`.
+
+```stata
+replace label_txt = strtrim(string(value, "%6.0f")) if missing(label_txt) | label_txt==""
+```
+Modified: `variable:52351647e8ef1d2d`
+Read candidates: `variable:52e54e53b743cea2`, `variable:52351647e8ef1d2d`
+
+### block:3ac5b7406640ec8b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L416-L417`. Next: `block:15d54c8b65021aa0`.
+
+```stata
+merge 1:1 region country year variable value using `CODES_LONG', keepusing(in_dlw in_loc code_ok _checked) gen(_mz)
+```
+Read datasets: `dataset:7ced9b7963292c75`
+
+### block:15d54c8b65021aa0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L418-L418`. Next: `block:29cca6ae27adc83f`.
+
+```stata
+drop _mz
+```
+Read candidates: `variable:62e29e7cd832a741`
+
+### block:29cca6ae27adc83f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L419-L419`. Next: `block:b05763cabb6b61c1`.
+
+```stata
+foreach v in in_dlw in_loc code_ok _checked {
+```
+
+### block:b05763cabb6b61c1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L420-L420`. Next: `block:799a3a22d52171ba`.
+
+```stata
+qui replace `v' = 0 if missing(`v')
+```
+Enclosing controls: `foreach v in in_dlw in_loc code_ok _checked {`
+Modified: `variable:a3a16882b4bca5f3`
+Read candidates: `variable:00fbd895a5820108`
+
+### block:799a3a22d52171ba
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L421-L421`. Next: `block:283f8224c091df68`.
+
+```stata
+}
+```
+
+### block:283f8224c091df68
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L426-L426`. Next: `block:997442c7ad089f8b`.
+
+```stata
+gen str24 code_vs_guidelines = "allowed"
+```
+New: `variable:cd04c5bf4832360e`
+
+### block:997442c7ad089f8b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L427-L427`. Next: `block:d8972968594bb3c7`.
+
+```stata
+replace code_vs_guidelines = "OUTSIDE GUIDELINES" if _checked==1 & code_ok==0
+```
+Modified: `variable:cd04c5bf4832360e`
+Read candidates: `variable:9966b6d42f14f870`, `variable:1ca8114d150ba4e4`
+
+### block:d8972968594bb3c7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L428-L428`. Next: `block:e745879adcd4f8ae`.
+
+```stata
+replace code_vs_guidelines = "not checked"        if _checked==0
+```
+Modified: `variable:cd04c5bf4832360e`
+Read candidates: `variable:9966b6d42f14f870`
+
+### block:e745879adcd4f8ae
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L429-L429`. Next: `block:6241d52c5b17ffbe`.
+
+```stata
+replace code_vs_guidelines = "n/a (missing)"      if value == -99
+```
+Modified: `variable:cd04c5bf4832360e`
+Read candidates: `variable:52e54e53b743cea2`
+
+### block:6241d52c5b17ffbe
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L431-L431`. Next: `block:dad93f0664882cf0`.
+
+```stata
+gen str12 used_by = ""
+```
+New: `variable:1177bc3863a0dc31`
+
+### block:dad93f0664882cf0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L432-L432`. Next: `block:ac8a4b1575d5c7c0`.
+
+```stata
+replace used_by = "both"      if in_dlw==1 & in_loc==1
+```
+Modified: `variable:1177bc3863a0dc31`
+Read candidates: `variable:4faf5c16ccf96175`, `variable:ec69ec2ca2a327b3`
+
+### block:ac8a4b1575d5c7c0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L433-L433`. Next: `block:d6ce202d90b08846`.
+
+```stata
+replace used_by = "local only" if in_dlw==0 & in_loc==1
+```
+Modified: `variable:1177bc3863a0dc31`
+Read candidates: `variable:4faf5c16ccf96175`, `variable:ec69ec2ca2a327b3`
+
+### block:d6ce202d90b08846
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L434-L434`. Next: `block:068e1d3e98101140`.
+
+```stata
+replace used_by = "DLW only"   if in_dlw==1 & in_loc==0
+```
+Modified: `variable:1177bc3863a0dc31`
+Read candidates: `variable:4faf5c16ccf96175`, `variable:ec69ec2ca2a327b3`
+
+### block:068e1d3e98101140
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L437-L437`. Next: `block:8225cfeb87f2be44`.
+
+```stata
+bysort region country year variable: egen double tot_dlw   = total(n_dlw)
+```
+New: `variable:977025e9ac5ed164`
+Read candidates: `variable:8760aacbc3747855`, `variable:7929d1fe6f0882e7`, `variable:0440ca8ad083805a`, `variable:316ea882b95b3663`, `variable:3b0371ff92c5fa11`
+
+### block:8225cfeb87f2be44
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L438-L438`. Next: `block:bf1634e7aaaff9e3`.
+
+```stata
+bysort region country year variable: egen double tot_local = total(n_local)
+```
+New: `variable:25597efa018b2dff`
+Read candidates: `variable:578dc9f12b3329e3`, `variable:7929d1fe6f0882e7`, `variable:0440ca8ad083805a`, `variable:316ea882b95b3663`, `variable:3b0371ff92c5fa11`
+
+### block:bf1634e7aaaff9e3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L439-L439`. Next: `block:23806ac739efc164`.
+
+```stata
+gen double pct_dlw   = cond(tot_dlw  >0, 100*n_dlw  /tot_dlw,   .)
+```
+New: `variable:d1f9e2aa942b65a6`
+Read candidates: `variable:977025e9ac5ed164`, `variable:8760aacbc3747855`
+
+### block:23806ac739efc164
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L440-L440`. Next: `block:eb1075ffdc8b8c2e`.
+
+```stata
+gen double pct_local = cond(tot_local>0, 100*n_local/tot_local, .)
+```
+New: `variable:c685815ee9586d1d`
+Read candidates: `variable:25597efa018b2dff`, `variable:578dc9f12b3329e3`
+
+### block:eb1075ffdc8b8c2e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L441-L441`. Next: `block:2f77d6dc0d551656`.
+
+```stata
+gen double pp_change = pct_local - pct_dlw
+```
+New: `variable:ad3aa97623a39f58`
+Read candidates: `variable:c685815ee9586d1d`, `variable:d1f9e2aa942b65a6`
+
+### block:2f77d6dc0d551656
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L442-L442`. Next: `block:27990ba968dcdad5`.
+
+```stata
+format pct_dlw pct_local pp_change %6.1f
+```
+
+### block:27990ba968dcdad5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L445-L445`. Next: `block:ccf32f29fea8c702`.
+
+```stata
+gen str16 flag = ""
+```
+New: `variable:e9797bfa45964862`
+
+### block:ccf32f29fea8c702
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L446-L446`. Next: `block:13ac5f7dda5625ac`.
+
+```stata
+replace flag = "BIG SHIFT"   if abs(pp_change) >= `bigpp' & !missing(pp_change)
+```
+Modified: `variable:e9797bfa45964862`
+Read candidates: `variable:ad3aa97623a39f58`
+
+### block:13ac5f7dda5625ac
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L447-L447`. Next: `block:3e8a98c4d8ed2070`.
+
+```stata
+replace flag = "disappeared" if pct_dlw >= 1 & pct_local == 0
+```
+Modified: `variable:e9797bfa45964862`
+Read candidates: `variable:d1f9e2aa942b65a6`, `variable:c685815ee9586d1d`
+
+### block:3e8a98c4d8ed2070
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L448-L448`. Next: `block:3270c3258c9d463a`.
+
+```stata
+replace flag = "new"         if pct_dlw == 0 & pct_local >= 1
+```
+Modified: `variable:e9797bfa45964862`
+Read candidates: `variable:d1f9e2aa942b65a6`, `variable:c685815ee9586d1d`
+
+### block:3270c3258c9d463a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L449-L449`. Next: `block:c41bb9bdb114e2b2`.
+
+```stata
+replace flag = "CODE OUTSIDE GUIDELINES" if code_vs_guidelines == "OUTSIDE GUIDELINES"
+```
+Modified: `variable:e9797bfa45964862`
+Read candidates: `variable:cd04c5bf4832360e`
+
+### block:c41bb9bdb114e2b2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L451-L451`. Next: `block:0a6f977a496f6254`.
+
+```stata
+if `minpct' > 0 {
+```
+
+### block:0a6f977a496f6254
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L452-L452`. Next: `block:75767257850929bd`.
+
+```stata
+qui drop if pct_dlw < `minpct' & pct_local < `minpct' & flag==""
+```
+Enclosing controls: `if `minpct' > 0 {`
+Read candidates: `variable:d1f9e2aa942b65a6`, `variable:c685815ee9586d1d`, `variable:e9797bfa45964862`
+
+### block:75767257850929bd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L453-L453`. Next: `block:bc65db5c2eb9f880`.
+
+```stata
+}
+```
+
+### block:bc65db5c2eb9f880
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L455-L457`. Next: `block:608b0adbddab5d11`.
+
+```stata
+gen str120 reads_as = variable + ", " + label_txt + ": " + strtrim(string(pct_dlw, "%5.1f")) + " pct -> " + strtrim(string(pct_local, "%5.1f")) + " pct"
+```
+New: `variable:860f1f0028da96bd`
+Read candidates: `variable:3b0371ff92c5fa11`, `variable:52351647e8ef1d2d`, `variable:d1f9e2aa942b65a6`, `variable:c685815ee9586d1d`
+
+### block:608b0adbddab5d11
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L461-L461`. Next: `block:95992789721e5175`.
+
+```stata
+gen byte _ok = (flag == "")
+```
+New: `variable:e26553ceb07163a3`
+Read candidates: `variable:e9797bfa45964862`
+
+### block:95992789721e5175
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L462-L462`. Next: `block:56fd187d7c1e3ef3`.
+
+```stata
+gsort _ok region country year variable value
+```
+
+### block:56fd187d7c1e3ef3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L463-L463`. Next: `block:ffa04ab5171d69c2`.
+
+```stata
+qui count if _ok == 0
+```
+Read candidates: `variable:e26553ceb07163a3`
+
+### block:ffa04ab5171d69c2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L464-L464`. Next: `block:6b05e7ee393742c7`.
+
+```stata
+local nflag2 = r(N)
+```
+
+### block:6b05e7ee393742c7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L465-L465`. Next: `block:08387fc1de6e4636`.
+
+```stata
+drop _ok in_dlw in_loc tot_dlw tot_local code_ok _checked
+```
+Read candidates: `variable:e26553ceb07163a3`, `variable:4faf5c16ccf96175`, `variable:ec69ec2ca2a327b3`, `variable:977025e9ac5ed164`, `variable:25597efa018b2dff`, `variable:1ca8114d150ba4e4`, `variable:9966b6d42f14f870`
+
+### block:08387fc1de6e4636
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L467-L467`. Next: `block:304a959126f0c2ea`.
+
+```stata
+merge m:1 variable using `CBTEXT', gen(_m3) keep(master match)
+```
+Read datasets: `dataset:e5fd4d24190383dc`
+
+### block:304a959126f0c2ea
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L468-L468`. Next: `block:ffad95bde8ccea46`.
+
+```stata
+drop _m3
+```
+Read candidates: `variable:8f732aa9130dc51e`
+
+### block:ffad95bde8ccea46
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L469-L469`. Next: `block:ab0a28e141d0f613`.
+
+```stata
+replace codes_allowed = "not checked" if missing(codes_allowed) | codes_allowed==""
+```
+Modified: `variable:dc749afff8212153`
+Read candidates: `variable:dc749afff8212153`
+
+### block:ab0a28e141d0f613
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L471-L472`. Next: `block:b0d456b18e58c37f`.
+
+```stata
+keep  country year region variable value label_txt code_vs_guidelines codes_allowed used_by n_dlw pct_dlw n_local pct_local pp_change flag reads_as
+```
+Read candidates: `variable:0440ca8ad083805a`, `variable:316ea882b95b3663`, `variable:7929d1fe6f0882e7`, `variable:3b0371ff92c5fa11`, `variable:52e54e53b743cea2`, `variable:52351647e8ef1d2d`, `variable:cd04c5bf4832360e`, `variable:dc749afff8212153`, `variable:1177bc3863a0dc31`, `variable:8760aacbc3747855`, `variable:d1f9e2aa942b65a6`, `variable:578dc9f12b3329e3`, `variable:c685815ee9586d1d`, `variable:ad3aa97623a39f58`, `variable:e9797bfa45964862`, `variable:860f1f0028da96bd`
+
+### block:b0d456b18e58c37f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L473-L474`. Next: `block:6bb448b0a0a2492e`.
+
+```stata
+order country year region variable value label_txt code_vs_guidelines codes_allowed used_by n_dlw pct_dlw n_local pct_local pp_change flag reads_as
+```
+
+### block:6bb448b0a0a2492e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L476-L476`. Next: `block:e3960a2df16169f7`.
+
+```stata
+label var country     "country"
+```
+
+### block:e3960a2df16169f7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L477-L477`. Next: `block:e1887b7a40b73581`.
+
+```stata
+label var year        "year"
+```
+
+### block:e1887b7a40b73581
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L478-L478`. Next: `block:89451aee93dfb1ce`.
+
+```stata
+label var region      "region"
+```
+
+### block:89451aee93dfb1ce
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L479-L479`. Next: `block:fc4f52e02f5ec01c`.
+
+```stata
+label var variable    "GMD variable"
+```
+
+### block:fc4f52e02f5ec01c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L480-L480`. Next: `block:684fe7086c3dae0f`.
+
+```stata
+label var value       "category code"
+```
+
+### block:684fe7086c3dae0f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L481-L481`. Next: `block:f23f5b9e1f8ca453`.
+
+```stata
+label var label_txt   "category"
+```
+
+### block:f23f5b9e1f8ca453
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L482-L482`. Next: `block:9ae5c3ee22459174`.
+
+```stata
+label var code_vs_guidelines "code vs GMD guidelines"
+```
+
+### block:9ae5c3ee22459174
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L483-L483`. Next: `block:2a3c628d86bfd700`.
+
+```stata
+label var codes_allowed      "codes allowed by the guidelines"
+```
+
+### block:2a3c628d86bfd700
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L484-L484`. Next: `block:cca5c6042e0ea30b`.
+
+```stata
+label var used_by            "which file uses this code"
+```
+
+### block:cca5c6042e0ea30b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L485-L485`. Next: `block:6fbe69edfce83cde`.
+
+```stata
+label var n_dlw       "people, DLW"
+```
+
+### block:6fbe69edfce83cde
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L486-L486`. Next: `block:6f740154c54016d5`.
+
+```stata
+label var pct_dlw     "pct of sample, DLW"
+```
+
+### block:6f740154c54016d5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L487-L487`. Next: `block:6ecb3e578b1906ef`.
+
+```stata
+label var n_local     "people, local file"
+```
+
+### block:6ecb3e578b1906ef
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L488-L488`. Next: `block:4890786da8fabdf6`.
+
+```stata
+label var pct_local   "pct of sample, local file"
+```
+
+### block:4890786da8fabdf6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L489-L489`. Next: `block:eaee64a3f7a50221`.
+
+```stata
+label var pp_change   "change, percentage points"
+```
+
+### block:eaee64a3f7a50221
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L490-L490`. Next: `block:f7e423c9506f4016`.
+
+```stata
+label var flag        "flag"
+```
+
+### block:f7e423c9506f4016
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L491-L491`. Next: `block:1cccf429b56d54fa`.
+
+```stata
+label var reads_as    "in words"
+```
+
+### block:1cccf429b56d54fa
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L493-L493`. Next: `block:2c2a8a202801d107`.
+
+```stata
+qui count
+```
+
+### block:2c2a8a202801d107
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L494-L494`. Next: `block:695cc27b36c058ed`.
+
+```stata
+local nrows2 = r(N)
+```
+
+### block:695cc27b36c058ed
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L495-L495`. Next: `block:372312b51b61f2b1`.
+
+```stata
+qui count if code_vs_guidelines == "OUTSIDE GUIDELINES"
+```
+Read candidates: `variable:cd04c5bf4832360e`
+
+### block:372312b51b61f2b1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L496-L496`. Next: `block:b0ac29740544d8d7`.
+
+```stata
+local nnotin = r(N)
+```
+
+### block:b0ac29740544d8d7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L497-L497`. Next: `block:99da1302d7173d44`.
+
+```stata
+tempfile SH2
+```
+
+### block:99da1302d7173d44
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L498-L498`. Next: `block:060ec5e19ce95fed`.
+
+```stata
+qui save `SH2'
+```
+Write datasets: `dataset:a301b2348c3f3416`
+
+### block:060ec5e19ce95fed
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L499-L499`. Next: `block:99e5f5d9b561fc9b`.
+
+```stata
+di as text "  sheet 2: `nrows2' rows, `nflag2' shaded, `nnotin' on a code the guidelines do not allow"
+```
+
+### block:99e5f5d9b561fc9b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L535-L535`. Next: `block:c700cc0cc1d385db`.
+
+```stata
+tempfile QC
+```
+
+### block:c700cc0cc1d385db
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L536-L536`. Next: `block:2bff8f05b54f0555`.
+
+```stata
+capture postclose qc
+```
+
+### block:2bff8f05b54f0555
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L537-L539`. Next: `block:8dc98e1e9453764a`.
+
+```stata
+postfile qc str8 acronym str24 survey int year str8 region str32 variable str10 warn double freq double percentage double impact str200 desc str244 iff int test byte code using `QC', replace
+```
+Write datasets: `dataset:2d6b6e6c0cfd28f7`
+
+### block:8dc98e1e9453764a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L542-L542`. Next: `block:b8373a6de4f12717`.
+
+```stata
+use "`qadir'/qa_surv.dta", clear
+```
+Read datasets: `dataset:c315b2e149e5aca7`
+
+### block:b8373a6de4f12717
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L543-L543`. Next: `block:f61b0d947fa5f274`.
+
+```stata
+keep region country year survey matched
+```
+Read candidates: `variable:d57a969f1ffe62ee`, `variable:5f39de9ad0fe0e26`, `variable:193e1595c231fb7f`, `variable:557cf5b6f8caa7f5`, `variable:7b7ba6f5158e8f3e`
+
+### block:f61b0d947fa5f274
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L544-L544`. Next: `block:b3c4504c4e07608b`.
+
+```stata
+tempfile SURV
+```
+
+### block:b3c4504c4e07608b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L545-L545`. Next: `block:3721db72d751c45e`.
+
+```stata
+qui save `SURV'
+```
+Write datasets: `dataset:757b61bf25b0bccd`
+
+### block:3721db72d751c45e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L550-L550`. Next: `block:b820d6c89cc347e7`.
+
+```stata
+use `CODES_LONG', clear
+```
+Read datasets: `dataset:7ced9b7963292c75`
+
+### block:b820d6c89cc347e7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L551-L551`. Next: `block:7caa5b886c5452e3`.
+
+```stata
+merge m:1 region country year using `SURV', gen(_ms) keep(master match)
+```
+Read datasets: `dataset:757b61bf25b0bccd`
+
+### block:7caa5b886c5452e3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L552-L552`. Next: `block:6a41cd8022c8bd81`.
+
+```stata
+drop _ms
+```
+Read candidates: `variable:f2912b74b00d2a08`
+
+### block:6a41cd8022c8bd81
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L553-L553`. Next: `block:7a2e615ecf226d14`.
+
+```stata
+merge m:1 variable using `CBTEXT', gen(_mt) keep(master match)
+```
+Read datasets: `dataset:e5fd4d24190383dc`
+
+### block:7a2e615ecf226d14
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L554-L554`. Next: `block:15324891b6b0261d`.
+
+```stata
+drop _mt
+```
+Read candidates: `variable:a5e4497c8921914b`
+
+### block:15324891b6b0261d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L555-L555`. Next: `block:3049c79ce010fc55`.
+
+```stata
+replace codes_allowed = "" if missing(codes_allowed)
+```
+Modified: `variable:1f52597c86e2501f`
+Read candidates: `variable:1f52597c86e2501f`
+
+### block:3049c79ce010fc55
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L558-L558`. Next: `block:930130203e65aeda`.
+
+```stata
+gen str244 allowlist = subinstr(strtrim(codes_allowed), " ", ",", .)
+```
+New: `variable:3c26441840319716`
+Read candidates: `variable:1f52597c86e2501f`
+
+### block:930130203e65aeda
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L561-L561`. Next: `block:b85604b798e2bf66`.
+
+```stata
+preserve
+```
+
+### block:b85604b798e2bf66
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L562-L562`. Next: `block:48f3e9930e098844`.
+
+```stata
+keep if _checked==1 & code_ok==0 & n_loc > 0
+```
+Read candidates: `variable:64236d1846576699`, `variable:bd8d9124896ce503`, `variable:63e998b862cbce25`
+
+### block:48f3e9930e098844
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L563-L563`. Next: `block:6fc78d200d686c84`.
+
+```stata
+bysort region country year variable: egen double _f = total(n_loc)
+```
+New: `variable:23ac34ce81267e86`
+Read candidates: `variable:63e998b862cbce25`, `variable:fbafb5ed31708531`, `variable:f10e971de83ff58d`, `variable:724359790977432e`, `variable:3f32b6c1fb3137dd`
+
+### block:6fc78d200d686c84
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L564-L564`. Next: `block:bd799cea3df58cd9`.
+
+```stata
+by region country year variable: keep if _n == 1
+```
+
+### block:bd799cea3df58cd9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L565-L565`. Next: `block:da4345ed28c7eff7`.
+
+```stata
+forvalues i = 1/`=_N' {
+```
+
+### block:da4345ed28c7eff7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L566-L566`. Next: `block:08c9db0f9649d18a`.
+
+```stata
+local reg = region[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:08c9db0f9649d18a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L567-L567`. Next: `block:69d804447275064c`.
+
+```stata
+local cty = country[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:69d804447275064c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L568-L568`. Next: `block:f77e19074efa6783`.
+
+```stata
+local yr  = year[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:f77e19074efa6783
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L569-L569`. Next: `block:c1bba5aec17d9269`.
+
+```stata
+local srv = survey[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:c1bba5aec17d9269
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L570-L570`. Next: `block:96ada7bf80957e7f`.
+
+```stata
+local v   = variable[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:96ada7bf80957e7f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L571-L571`. Next: `block:0a480090c7a3f3d4`.
+
+```stata
+local al  = allowlist[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:0a480090c7a3f3d4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L572-L572`. Next: `block:e5fd3ce664d24127`.
+
+```stata
+local f   = _f[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:e5fd3ce664d24127
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L573-L573`. Next: `block:8576f45c609b7742`.
+
+```stata
+local den = matched[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:8576f45c609b7742
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L574-L574`. Next: `block:e61f6107a852d6d6`.
+
+```stata
+local pct = cond(`den'>0, `f'/`den', .)
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:e61f6107a852d6d6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L575-L578`. Next: `block:70ee519a5be4a436`.
+
+```stata
+post qc ("`cty'") ("`srv'") (`yr') ("`reg'") ("`v'") ("Urgent") (`f') (`pct') (`=100*`pct'') ("Variable <`v'> has values outside the GMD guidelines (allowed: `al')") ("!inlist(`v',`al',.)") (1) (2)
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:70ee519a5be4a436
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L579-L579`. Next: `block:1e4517b2e3960231`.
+
+```stata
+}
+```
+
+### block:1e4517b2e3960231
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L580-L580`. Next: `block:d2ff9470ba6289bf`.
+
+```stata
+restore
+```
+
+### block:d2ff9470ba6289bf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L583-L583`. Next: `block:9f7e50206370c883`.
+
+```stata
+preserve
+```
+
+### block:9f7e50206370c883
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L584-L584`. Next: `block:ce1cdf6c239fb37b`.
+
+```stata
+keep if n_loc > 0
+```
+Read candidates: `variable:63e998b862cbce25`
+
+### block:ce1cdf6c239fb37b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L585-L585`. Next: `block:688b0f903c4c1d4a`.
+
+```stata
+bysort region country year variable: gen byte _nv = _N
+```
+New: `variable:09e63a389ff3f9bf`
+Read candidates: `variable:fbafb5ed31708531`, `variable:f10e971de83ff58d`, `variable:724359790977432e`, `variable:3f32b6c1fb3137dd`
+
+### block:688b0f903c4c1d4a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L586-L586`. Next: `block:4af195517f19730b`.
+
+```stata
+bysort region country year variable: egen double _f = total(n_loc)
+```
+New: `variable:23ac34ce81267e86`
+Read candidates: `variable:63e998b862cbce25`, `variable:fbafb5ed31708531`, `variable:f10e971de83ff58d`, `variable:724359790977432e`, `variable:3f32b6c1fb3137dd`
+
+### block:4af195517f19730b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L587-L587`. Next: `block:be5c1eb9d8c8f535`.
+
+```stata
+by region country year variable: keep if _n == 1
+```
+
+### block:be5c1eb9d8c8f535
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L588-L588`. Next: `block:030fbdf1ac017890`.
+
+```stata
+keep if _nv == 1
+```
+Read candidates: `variable:09e63a389ff3f9bf`
+
+### block:030fbdf1ac017890
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L589-L589`. Next: `block:f821e6074c67443e`.
+
+```stata
+forvalues i = 1/`=_N' {
+```
+
+### block:f821e6074c67443e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L590-L590`. Next: `block:0126a12da33aa52f`.
+
+```stata
+local reg = region[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:0126a12da33aa52f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L591-L591`. Next: `block:097b3a2e7bf85e78`.
+
+```stata
+local cty = country[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:097b3a2e7bf85e78
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L592-L592`. Next: `block:b30d95aaec79cd44`.
+
+```stata
+local yr  = year[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:b30d95aaec79cd44
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L593-L593`. Next: `block:4327cda8bf5e5d50`.
+
+```stata
+local srv = survey[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:4327cda8bf5e5d50
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L594-L594`. Next: `block:82209757864283d5`.
+
+```stata
+local v   = variable[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:82209757864283d5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L595-L595`. Next: `block:b56af459ac94ed5f`.
+
+```stata
+local f   = _f[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:b56af459ac94ed5f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L596-L596`. Next: `block:b0e6159ea31b31a2`.
+
+```stata
+local den = matched[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:b0e6159ea31b31a2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L597-L597`. Next: `block:bff31ac4ac602911`.
+
+```stata
+local pct = cond(`den'>0, `f'/`den', .)
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:bff31ac4ac602911
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L598-L601`. Next: `block:9970d8c9ef90257b`.
+
+```stata
+post qc ("`cty'") ("`srv'") (`yr') ("`reg'") ("`v'") ("Check") (`f') (`pct') (100) ("Variable <`v'> only has one value in the local file") ("sd`v'==0") (3) (1)
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:9970d8c9ef90257b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L602-L602`. Next: `block:274c42ee34744bad`.
+
+```stata
+}
+```
+
+### block:274c42ee34744bad
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L603-L603`. Next: `block:fee25b2ceaba4cd7`.
+
+```stata
+restore
+```
+
+### block:fee25b2ceaba4cd7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L606-L606`. Next: `block:4d3743d06a81adfd`.
+
+```stata
+use "`qadir'/qa_code.dta", clear
+```
+Read datasets: `dataset:f094031b33e00318`
+
+### block:4d3743d06a81adfd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L607-L607`. Next: `block:551b6d623a02deb8`.
+
+```stata
+preserve
+```
+
+### block:551b6d623a02deb8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L608-L608`. Next: `block:58c10800a3f87fbd`.
+
+```stata
+collapse (sum) n = nrows, by(region country year variable d_value d_label)
+```
+Read candidates: `variable:18975d4a21b737d8`, `variable:26dd2126d1ddccb2`, `variable:b6737f90bc04c8fc`, `variable:d4f32b7ca8448553`, `variable:b2a506260826d74b`, `variable:2559fda2fa7332a1`, `variable:18e981cfed5b2e8f`, `variable:f652acd8c3345442`
+
+### block:58c10800a3f87fbd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L609-L609`. Next: `block:28e73562fe6befcf`.
+
+```stata
+rename d_value value
+```
+New: `variable:8e4aeded356213fe`
+Read candidates: `variable:18e981cfed5b2e8f`
+
+### block:28e73562fe6befcf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L610-L610`. Next: `block:b2caf71ca540bf0a`.
+
+```stata
+rename d_label lab
+```
+New: `variable:1df15e20b7469189`
+Read candidates: `variable:f652acd8c3345442`
+
+### block:b2caf71ca540bf0a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L611-L611`. Next: `block:005e0aa50a18220c`.
+
+```stata
+rename n nd
+```
+New: `variable:6053c3a8e4f911e3`
+Read candidates: `variable:18975d4a21b737d8`
+
+### block:005e0aa50a18220c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L612-L612`. Next: `block:0cfaf8d89be1c8c6`.
+
+```stata
+tempfile Q6D
+```
+
+### block:0cfaf8d89be1c8c6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L613-L613`. Next: `block:1c293baef6483df4`.
+
+```stata
+qui save `Q6D'
+```
+Write datasets: `dataset:8a91c885734f1e4a`
+
+### block:1c293baef6483df4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L614-L614`. Next: `block:e50b9e3b644e5c1e`.
+
+```stata
+restore
+```
+
+### block:e50b9e3b644e5c1e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L615-L615`. Next: `block:523a2148c014817c`.
+
+```stata
+collapse (sum) n = nrows, by(region country year variable p_value)
+```
+Read candidates: `variable:18975d4a21b737d8`, `variable:26dd2126d1ddccb2`, `variable:b6737f90bc04c8fc`, `variable:d4f32b7ca8448553`, `variable:b2a506260826d74b`, `variable:2559fda2fa7332a1`, `variable:405af8dd32e70983`
+
+### block:523a2148c014817c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L616-L616`. Next: `block:1baf225e15663335`.
+
+```stata
+rename p_value value
+```
+New: `variable:8e4aeded356213fe`
+Read candidates: `variable:405af8dd32e70983`
+
+### block:1baf225e15663335
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L617-L617`. Next: `block:0f3422b9282286e8`.
+
+```stata
+rename n nl
+```
+New: `variable:2097c463fec8589d`
+Read candidates: `variable:18975d4a21b737d8`
+
+### block:0f3422b9282286e8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L618-L618`. Next: `block:c51b4479aa6df582`.
+
+```stata
+merge 1:1 region country year variable value using `Q6D', gen(_m6)
+```
+Read datasets: `dataset:8a91c885734f1e4a`
+
+### block:c51b4479aa6df582
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L619-L619`. Next: `block:2814a60f02d2e780`.
+
+```stata
+drop _m6
+```
+Read candidates: `variable:c762a5cd7e0f8e72`
+
+### block:2814a60f02d2e780
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L620-L620`. Next: `block:d88e46b831e10140`.
+
+```stata
+replace nd = 0 if missing(nd)
+```
+Modified: `variable:6053c3a8e4f911e3`
+Read candidates: `variable:6053c3a8e4f911e3`
+
+### block:d88e46b831e10140
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L621-L621`. Next: `block:ee893499091169bd`.
+
+```stata
+replace nl = 0 if missing(nl)
+```
+Modified: `variable:2097c463fec8589d`
+Read candidates: `variable:2097c463fec8589d`
+
+### block:ee893499091169bd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L622-L622`. Next: `block:ce81d621f0fa086d`.
+
+```stata
+gsort region country year variable value -lab
+```
+
+### block:ce81d621f0fa086d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L623-L623`. Next: `block:1f85495885d45ef9`.
+
+```stata
+by region country year variable value: replace lab = lab[1] if missing(lab)
+```
+Modified: `variable:1df15e20b7469189`
+Read candidates: `variable:1df15e20b7469189`, `variable:b6737f90bc04c8fc`, `variable:d4f32b7ca8448553`, `variable:b2a506260826d74b`, `variable:2559fda2fa7332a1`, `variable:8e4aeded356213fe`
+
+### block:1f85495885d45ef9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L624-L624`. Next: `block:3477e72093373caa`.
+
+```stata
+replace lab = "missing" if value == -99
+```
+Modified: `variable:1df15e20b7469189`
+Read candidates: `variable:8e4aeded356213fe`
+
+### block:3477e72093373caa
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L625-L625`. Next: `block:e30daf446af224c6`.
+
+```stata
+replace lab = strtrim(string(value, "%6.0f")) if missing(lab) | lab==""
+```
+Modified: `variable:1df15e20b7469189`
+Read candidates: `variable:8e4aeded356213fe`, `variable:1df15e20b7469189`
+
+### block:e30daf446af224c6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L627-L627`. Next: `block:3f6ac1aad855e7cc`.
+
+```stata
+bysort region country year variable: egen double _td = total(nd)
+```
+New: `variable:635e2b9b7b309d2a`
+Read candidates: `variable:6053c3a8e4f911e3`, `variable:b6737f90bc04c8fc`, `variable:d4f32b7ca8448553`, `variable:b2a506260826d74b`, `variable:2559fda2fa7332a1`
+
+### block:3f6ac1aad855e7cc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L628-L628`. Next: `block:704db4ccd849ae0c`.
+
+```stata
+bysort region country year variable: egen double _tl = total(nl)
+```
+New: `variable:b8ecf25cfaed5920`
+Read candidates: `variable:2097c463fec8589d`, `variable:b6737f90bc04c8fc`, `variable:d4f32b7ca8448553`, `variable:b2a506260826d74b`, `variable:2559fda2fa7332a1`
+
+### block:704db4ccd849ae0c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L629-L629`. Next: `block:47086274cada2f6a`.
+
+```stata
+gen double pd = cond(_td>0, 100*nd/_td, .)
+```
+New: `variable:d70492c482cfe0b9`
+Read candidates: `variable:635e2b9b7b309d2a`, `variable:6053c3a8e4f911e3`
+
+### block:47086274cada2f6a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L630-L630`. Next: `block:9f374ad85a058880`.
+
+```stata
+gen double pl = cond(_tl>0, 100*nl/_tl, .)
+```
+New: `variable:1ee26d83e48f7ca3`
+Read candidates: `variable:b8ecf25cfaed5920`, `variable:2097c463fec8589d`
+
+### block:9f374ad85a058880
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L631-L631`. Next: `block:0d046c80f6081d3f`.
+
+```stata
+gen double dpp = pl - pd
+```
+New: `variable:65917fa78a44f622`
+Read candidates: `variable:1ee26d83e48f7ca3`, `variable:d70492c482cfe0b9`
+
+### block:0d046c80f6081d3f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L632-L632`. Next: `block:3d6b1988e5b921f7`.
+
+```stata
+keep if abs(dpp) >= `bigpp' & !missing(dpp)
+```
+Read candidates: `variable:65917fa78a44f622`
+
+### block:3d6b1988e5b921f7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L634-L634`. Next: `block:cfd34118f142838b`.
+
+```stata
+merge m:1 region country year using `SURV', gen(_ms6) keep(master match)
+```
+Read datasets: `dataset:757b61bf25b0bccd`
+
+### block:cfd34118f142838b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L635-L635`. Next: `block:0ba663681311077c`.
+
+```stata
+drop _ms6
+```
+Read candidates: `variable:f621fc043ef1c566`
+
+### block:0ba663681311077c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L637-L637`. Next: `block:3586d8a24a20544f`.
+
+```stata
+forvalues i = 1/`=_N' {
+```
+
+### block:3586d8a24a20544f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L638-L638`. Next: `block:8fb6eef9b71f8abf`.
+
+```stata
+local reg = region[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:8fb6eef9b71f8abf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L639-L639`. Next: `block:f063410087645972`.
+
+```stata
+local cty = country[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:f063410087645972
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L640-L640`. Next: `block:07257e8a4dd52b7b`.
+
+```stata
+local yr  = year[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:07257e8a4dd52b7b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L641-L641`. Next: `block:be3047754acd2c1d`.
+
+```stata
+local srv = survey[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:be3047754acd2c1d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L642-L642`. Next: `block:bdf61f3be36de516`.
+
+```stata
+local v   = variable[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:bdf61f3be36de516
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L643-L643`. Next: `block:8c06e3116e7896cb`.
+
+```stata
+local vl  = value[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:8c06e3116e7896cb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L644-L644`. Next: `block:297102a844bc0e06`.
+
+```stata
+local lb  = lab[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:297102a844bc0e06
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L648-L648`. Next: `block:15192f1356d90f0c`.
+
+```stata
+local f   = abs(nl[`i'] - nd[`i'])
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:15192f1356d90f0c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L649-L649`. Next: `block:352692d79470cb72`.
+
+```stata
+local den = matched[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:352692d79470cb72
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L650-L650`. Next: `block:86125c36000614fc`.
+
+```stata
+local pct = cond(`den'>0, `f'/`den', .)
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:86125c36000614fc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L651-L651`. Next: `block:3acffaff6e1e68ff`.
+
+```stata
+local a   = string(pd[`i'], "%4.1f")
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:3acffaff6e1e68ff
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L652-L652`. Next: `block:6d7e38fe1b4b4207`.
+
+```stata
+local b   = string(pl[`i'], "%4.1f")
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:6d7e38fe1b4b4207
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L653-L653`. Next: `block:e85cf875e7576359`.
+
+```stata
+local mv  = abs(dpp[`i'])
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:e85cf875e7576359
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L654-L654`. Next: `block:41bd4bdaedac37f2`.
+
+```stata
+local cond = cond(`vl'==-99, "mi(`v')", "`v'==`vl'")
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:41bd4bdaedac37f2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L655-L655`. Next: `block:4db4e8a026218b97`.
+
+```stata
+local w6 = cond(`mv' >= `urgpp', "Urgent", "Check")
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:4db4e8a026218b97
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L656-L656`. Next: `block:904a8dd5a47eb29a`.
+
+```stata
+local c6 = cond(`mv' >= `urgpp', 2, 1)
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:904a8dd5a47eb29a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L657-L660`. Next: `block:c02760abbeb9d8b5`.
+
+```stata
+post qc ("`cty'") ("`srv'") (`yr') ("`reg'") ("`v'") ("`w6'") (`f') (`pct') (`mv') ("Variable <`v'> category `vl' (`lb') moves from `a' pct to `b' pct of the sample") ("`cond'") (6) (`c6')
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:c02760abbeb9d8b5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L661-L661`. Next: `block:f1f8ccc8ffe01f9e`.
+
+```stata
+}
+```
+
+### block:f1f8ccc8ffe01f9e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L666-L666`. Next: `block:331836886aa9f295`.
+
+```stata
+use "`qadir'/qa_var.dta", clear
+```
+Read datasets: `dataset:14ca0af0a6fbba61`
+
+### block:331836886aa9f295
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L667-L667`. Next: `block:5e9c7d6295c926da`.
+
+```stata
+merge m:1 region country year using `SURV', gen(_mv) keep(master match)
+```
+Read datasets: `dataset:757b61bf25b0bccd`
+
+### block:5e9c7d6295c926da
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L668-L668`. Next: `block:1dfa087f69a2f37c`.
+
+```stata
+drop _mv
+```
+Read candidates: `variable:08c5701145a4a2ee`
+
+### block:1dfa087f69a2f37c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L670-L670`. Next: `block:c5c09368a25693a1`.
+
+```stata
+forvalues i = 1/`=_N' {
+```
+
+### block:c5c09368a25693a1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L671-L671`. Next: `block:3a7805f49ab2ac7a`.
+
+```stata
+local reg = region[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:3a7805f49ab2ac7a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L672-L672`. Next: `block:cf2a675ac4d61625`.
+
+```stata
+local cty = country[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:cf2a675ac4d61625
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L673-L673`. Next: `block:e40f2ed960c1e867`.
+
+```stata
+local yr  = year[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:e40f2ed960c1e867
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L674-L674`. Next: `block:bd102ccab47b531c`.
+
+```stata
+local srv = survey[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:bd102ccab47b531c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L675-L675`. Next: `block:7ce386f58b208323`.
+
+```stata
+local v   = variable[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:7ce386f58b208323
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L676-L676`. Next: `block:9d0dbf7c683f1c60`.
+
+```stata
+local den = matched[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:9d0dbf7c683f1c60
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L678-L678`. Next: `block:d24207d4d8903ff3`.
+
+```stata
+local carr = carried[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:d24207d4d8903ff3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L679-L679`. Next: `block:057c6e217f04045e`.
+
+```stata
+local dnm  = dlw_filled[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:057c6e217f04045e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L680-L680`. Next: `block:f7bfb008b8830583`.
+
+```stata
+local pnm  = new_filled[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:f7bfb008b8830583
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L681-L681`. Next: `block:d0b86db9f14b46f6`.
+
+```stata
+local lo   = lost[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:d0b86db9f14b46f6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L682-L682`. Next: `block:d53d23e2e6750882`.
+
+```stata
+local ch   = changed[`i']
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:d53d23e2e6750882
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L685-L685`. Next: `block:4361dfc75f4dc017`.
+
+```stata
+if `carr' == 0 {
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:4361dfc75f4dc017
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L686-L689`. Next: `block:9b4e5099c0a7e7d7`.
+
+```stata
+post qc ("`cty'") ("`srv'") (`yr') ("`reg'") ("`v'") ("Note") (.) (.) (.) ("Variable <`v'> was not delivered in the local file, DLW values are kept") ("") (7) (0)
+```
+Enclosing controls: `forvalues i = 1/`=_N' {` → `if `carr' == 0 {`
+
+### block:9b4e5099c0a7e7d7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L690-L690`. Next: `block:1e08ffa8206bc8d2`.
+
+```stata
+continue
+```
+Enclosing controls: `forvalues i = 1/`=_N' {` → `if `carr' == 0 {`
+
+### block:1e08ffa8206bc8d2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L691-L691`. Next: `block:7df0effaa9bbe726`.
+
+```stata
+}
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:7df0effaa9bbe726
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L694-L694`. Next: `block:ab7203e4db907e92`.
+
+```stata
+if `pnm' == 0 & `dnm' > 0 {
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:ab7203e4db907e92
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L695-L695`. Next: `block:331b1215bb4a3250`.
+
+```stata
+local pct = cond(`den'>0, `den'/`den', .)
+```
+Enclosing controls: `forvalues i = 1/`=_N' {` → `if `pnm' == 0 & `dnm' > 0 {`
+
+### block:331b1215bb4a3250
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L696-L699`. Next: `block:b93f9c2ef6c856e6`.
+
+```stata
+post qc ("`cty'") ("`srv'") (`yr') ("`reg'") ("`v'") ("Urgent") (`den') (`pct') (100) ("All observations are missing values, DLW had `dnm'") ("mi(`v')") (2) (2)
+```
+Enclosing controls: `forvalues i = 1/`=_N' {` → `if `pnm' == 0 & `dnm' > 0 {`
+
+### block:b93f9c2ef6c856e6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L700-L700`. Next: `block:ab13186d59d0cd0d`.
+
+```stata
+continue
+```
+Enclosing controls: `forvalues i = 1/`=_N' {` → `if `pnm' == 0 & `dnm' > 0 {`
+
+### block:ab13186d59d0cd0d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L701-L701`. Next: `block:cb8192b26ebadff4`.
+
+```stata
+}
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:cb8192b26ebadff4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L704-L704`. Next: `block:cef4ba146674dfdd`.
+
+```stata
+if `dnm' > 0 {
+```
+Enclosing controls: `forvalues i = 1/`=_N' {`
+
+### block:cef4ba146674dfdd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L705-L705`. Next: `block:c8e01a85860036e4`.
+
+```stata
+local lp = 100*`lo'/`dnm'
+```
+Enclosing controls: `forvalues i = 1/`=_N' {` → `if `dnm' > 0 {`
+
+### block:c8e01a85860036e4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L706-L706`. Next: `block:7aa7d230b07393b5`.
+
+```stata
+if `lp' >= `losspct' {
+```
+Enclosing controls: `forvalues i = 1/`=_N' {` → `if `dnm' > 0 {`
+
+### block:7aa7d230b07393b5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L707-L707`. Next: `block:4f6da93961daee78`.
+
+```stata
+local pct = cond(`den'>0, `lo'/`den', .)
+```
+Enclosing controls: `forvalues i = 1/`=_N' {` → `if `dnm' > 0 {` → `if `lp' >= `losspct' {`
+
+### block:4f6da93961daee78
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L708-L708`. Next: `block:4f530f3dfe377348`.
+
+```stata
+local lps = string(`lp', "%4.1f")
+```
+Enclosing controls: `forvalues i = 1/`=_N' {` → `if `dnm' > 0 {` → `if `lp' >= `losspct' {`
+
+### block:4f530f3dfe377348
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L709-L709`. Next: `block:b83d9692f44c435c`.
+
+```stata
+local w4 = cond(`lp' >= `urgloss', "Urgent", "Check")
+```
+Enclosing controls: `forvalues i = 1/`=_N' {` → `if `dnm' > 0 {` → `if `lp' >= `losspct' {`
+
+### block:b83d9692f44c435c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L710-L710`. Next: `block:f75d2cf74885f74c`.
+
+```stata
+local c4 = cond(`lp' >= `urgloss', 2, 1)
+```
+Enclosing controls: `forvalues i = 1/`=_N' {` → `if `dnm' > 0 {` → `if `lp' >= `losspct' {`
+
+### block:f75d2cf74885f74c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L711-L714`. Next: `block:71a5d6b981af731a`.
+
+```stata
+post qc ("`cty'") ("`srv'") (`yr') ("`reg'") ("`v'") ("`w4'") (`lo') (`pct') (`lp') ("Variable <`v'> lost `lps' pct of the values DLW had") ("mi(`v')") (4) (`c4')
+```
+Enclosing controls: `forvalues i = 1/`=_N' {` → `if `dnm' > 0 {` → `if `lp' >= `losspct' {`
+
+### block:71a5d6b981af731a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L715-L715`. Next: `block:fcd21d5b1d19f87d`.
+
+```stata
+}
+```
+Enclosing controls: `forvalues i = 1/`=_N' {` → `if `dnm' > 0 {`
+
+### block:fcd21d5b1d19f87d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-qa_summary.do:L716-L716`. Next: `block:2ab8f7d962c2533b`.
+

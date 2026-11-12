@@ -1,0 +1,231 @@
+# 01.Programs/archive/Update CLASS.do
+
+Legacy region/income classification preparation
+
+Status: PARTIAL_STATIC. Every lexically active statement is indexed; complete runtime schema and macro expansion are not established.
+
+Source snapshot: numbered source (deployment lookup: lookup/sources/GMI_extended/source_maps/archive-Update_CLASS-a74011.md.md)
+
+## Execution-order blocks
+
+### block:a619db58497069b3
+
+Evidence: `01.Programs/archive/Update CLASS.do:L1-L1`. Next: `block:5dee907c347db896`.
+
+```stata
+tempfile inc_group
+```
+
+### block:5dee907c347db896
+
+Evidence: `01.Programs/archive/Update CLASS.do:L2-L2`. Next: `block:11575d0fae1e4c90`.
+
+```stata
+use c:\ado\personal\pea\CLASS_pip.dta , clear
+```
+Read datasets: `dataset:6794d60b21a0e2dd`
+
+### block:11575d0fae1e4c90
+
+Evidence: `01.Programs/archive/Update CLASS.do:L4-L4`. Next: `block:52f04cf4705ecdae`.
+
+```stata
+clonevar region_pip = region
+```
+New: `variable:7e58ed70dbdcd638`
+Read candidates: `variable:74e617da139056a5`
+
+### block:52f04cf4705ecdae
+
+Evidence: `01.Programs/archive/Update CLASS.do:L6-L6`. Next: `block:1c357b2bba872699`.
+
+```stata
+ren regionssa_code region_SSA
+```
+New: `variable:42316b0c99e1e99a`
+Read candidates: `variable:2ac1dc5cb8f6cc04`
+
+### block:1c357b2bba872699
+
+Evidence: `01.Programs/archive/Update CLASS.do:L7-L7`. Next: `block:b623005a3cb1190b`.
+
+```stata
+ren incgroup incgroup_historical
+```
+New: `variable:57e2cf313f79d8bf`
+Read candidates: `variable:2677e7549a9cc036`
+
+### block:b623005a3cb1190b
+
+Evidence: `01.Programs/archive/Update CLASS.do:L8-L8`. Next: `block:dfdee96da7eb1539`.
+
+```stata
+bys code (year_data): gen incgroup_current = incgroup_historical[_N]
+```
+New: `variable:958993d3bda06e63`
+Read candidates: `variable:57e2cf313f79d8bf`, `variable:8b766cd0fb422a74`
+
+### block:dfdee96da7eb1539
+
+Evidence: `01.Programs/archive/Update CLASS.do:L9-L9`. Next: `block:4612aa6f939d772d`.
+
+```stata
+bys code (year_data): gen ida_current = ida[_N]
+```
+New: `variable:47b4cd90408922db`
+Read candidates: `variable:816c2a735c67b4b8`, `variable:8b766cd0fb422a74`
+
+### block:4612aa6f939d772d
+
+Evidence: `01.Programs/archive/Update CLASS.do:L10-L10`. Next: `block:fe5167411fcc4de6`.
+
+```stata
+bys code (year_data): gen fcv_current = fcv[_N]
+```
+New: `variable:75b888271032e43a`
+Read candidates: `variable:a251d11c9ce7a298`, `variable:8b766cd0fb422a74`
+
+### block:fe5167411fcc4de6
+
+Evidence: `01.Programs/archive/Update CLASS.do:L12-L12`. Next: `block:f4f34d1af95c1c5f`.
+
+```stata
+ren ida ida_historical
+```
+New: `variable:bf898dd33ae4dcc1`
+Read candidates: `variable:816c2a735c67b4b8`
+
+### block:f4f34d1af95c1c5f
+
+Evidence: `01.Programs/archive/Update CLASS.do:L13-L13`. Next: `block:a9a6cb25c67b7e54`.
+
+```stata
+ren fcv fcv_historical
+```
+New: `variable:521a029d98ed8823`
+Read candidates: `variable:a251d11c9ce7a298`
+
+### block:a9a6cb25c67b7e54
+
+Evidence: `01.Programs/archive/Update CLASS.do:L14-L14`. Next: `block:ca378f3fbb12ba67`.
+
+```stata
+drop ida_code fcv_code incgroup_code
+```
+Read candidates: `variable:e1bba641e2c8857a`, `variable:d4fae00d35f2dcc4`, `variable:3f8f394b2bc2a602`
+
+### block:ca378f3fbb12ba67
+
+Evidence: `01.Programs/archive/Update CLASS.do:L15-L15`. Next: `block:cd5767b74091f038`.
+
+```stata
+rename (year_data economy) (year country_name)
+```
+New: `variable:6731414839b70617`, `variable:a982b38b23b5cd0f`
+Read candidates: `variable:8b766cd0fb422a74`, `variable:fd1d78907cfab24e`
+
+### block:cd5767b74091f038
+
+Evidence: `01.Programs/archive/Update CLASS.do:L17-L17`. Next: `block:682708f0e47559d6`.
+
+```stata
+keep code year incgroup_historical incgroup_current region_pip region region_SSA country_name
+```
+Read candidates: `variable:f6ce2b648dec7052`, `variable:6731414839b70617`, `variable:57e2cf313f79d8bf`, `variable:958993d3bda06e63`, `variable:7e58ed70dbdcd638`, `variable:74e617da139056a5`, `variable:42316b0c99e1e99a`, `variable:a982b38b23b5cd0f`
+
+### block:682708f0e47559d6
+
+Evidence: `01.Programs/archive/Update CLASS.do:L18-L18`. Next: `block:7181061e2a037d0a`.
+
+```stata
+foreach i in incgroup_current incgroup_historical {
+```
+
+### block:7181061e2a037d0a
+
+Evidence: `01.Programs/archive/Update CLASS.do:L19-L19`. Next: `block:2e6b94c0fe31c275`.
+
+```stata
+replace `i' = subinstr(`i', " ", "-", .)
+```
+Enclosing controls: `foreach i in incgroup_current incgroup_historical {`
+Modified: `variable:5450577e2aab1d58`
+
+### block:2e6b94c0fe31c275
+
+Evidence: `01.Programs/archive/Update CLASS.do:L20-L20`. Next: `block:90918409f6edabaa`.
+
+```stata
+replace `i' = subinstr(`i', "income", "income countries", .)
+```
+Enclosing controls: `foreach i in incgroup_current incgroup_historical {`
+Modified: `variable:5450577e2aab1d58`
+
+### block:90918409f6edabaa
+
+Evidence: `01.Programs/archive/Update CLASS.do:L21-L21`. Next: `block:93fa9c5da8061f50`.
+
+```stata
+}
+```
+
+### block:93fa9c5da8061f50
+
+Evidence: `01.Programs/archive/Update CLASS.do:L22-L22`. Next: `block:fd78925b4eaa98b7`.
+
+```stata
+save	`inc_group'
+```
+Write datasets: `dataset:59f8eb4ca8e58a1a`
+
+### block:fd78925b4eaa98b7
+
+Evidence: `01.Programs/archive/Update CLASS.do:L24-L24`. Next: `block:e3f444df5251df96`.
+
+```stata
+keep if year == 0000
+```
+Read candidates: `variable:6731414839b70617`
+
+### block:e3f444df5251df96
+
+Evidence: `01.Programs/archive/Update CLASS.do:L25-L25`. Next: `block:f535848c51462c2a`.
+
+```stata
+replace year = 2025
+```
+Modified: `variable:6731414839b70617`
+
+### block:f535848c51462c2a
+
+Evidence: `01.Programs/archive/Update CLASS.do:L26-L26`. Next: `block:264bc6b645ecd575`.
+
+```stata
+append using `inc_group'
+```
+Read datasets: `dataset:59f8eb4ca8e58a1a`
+
+### block:264bc6b645ecd575
+
+Evidence: `01.Programs/archive/Update CLASS.do:L27-L27`. Next: `block:3b26df946ae1f25a`.
+
+```stata
+char _dta[version] $S_DATE
+```
+
+### block:3b26df946ae1f25a
+
+Evidence: `01.Programs/archive/Update CLASS.do:L28-L28`. Next: `block:f9a1ecdd1d7e0d3b`.
+
+```stata
+s
+```
+
+### block:f9a1ecdd1d7e0d3b
+
+Evidence: `01.Programs/archive/Update CLASS.do:L29-L29`. Next: `end`.
+
+```stata
+save "c:\ado\personal\pea/CLASS_incg_region.dta", replace
+```
+Write datasets: `dataset:0a619ae899b87ad4`

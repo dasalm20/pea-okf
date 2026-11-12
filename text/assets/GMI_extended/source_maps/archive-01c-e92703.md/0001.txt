@@ -1,0 +1,185 @@
+# 01.Programs/archive/01c-GMI extended spells pov elasticity.do
+
+Sanitized source projection; applicability placeholders are not executable values. Original SHA256: 55a3615f610be9d0890ccc635094a34481df54c913dbe909fff4ede679db34f3
+
+```stata
+0001 | //GMI extended indicators - poverty elasticity
+0002 | //Running in the server, so paths will be different.
+0003 | clear
+0004 | tempfile pfw pip1 pip2 datagic dataall dataall2 prosdecomp
+0005 | save `datagic', replace emptyok
+0006 | save `prosdecomp', replace emptyok
+0007 | save `dataall', replace emptyok
+0008 | save `dataall2', replace emptyok
+0009 | 
+0010 | set varabbrev off
+0011 | 
+0012 | global rnd SM26
+0013 | global path \\wbgfscifs01\GTSD\03.projects_corp\04.GPWG\04.GPWG_${rnd}\04.GPWG_${rnd}_QA
+0014 | global reposource "${path}\01.programs\02.dofile\repo\"
+0015 | *global out \\wbgfscifs01\GPWG-GMD\Datalib\Minh\GMI\\${rnd}\
+0016 | global out D:\daylan\test\GMI\out\
+0017 | global pea "${out}\04.output\PEA_Dashboard\"
+0018 | 
+0019 | global ppplist 2017 2021
+0020 | global pppmax 2021
+0021 | 
+0022 | global floor2021 0.28
+0023 | global gap2021 28
+0024 | global floor2017 0.25
+0025 | global gap2017 25
+0026 | global floor2011 0.22
+0027 | global gap2011 22
+0028 | 
+0029 | global plines2021 300 420 830 450 630 1245 600 840 1660
+0030 | global plines2017 215 365 685 322 547 1027 430 730 1370
+0031 | global plines2011 190 320 550
+0032 | global cpiversion Support_2005_CPI_V15_M
+0033 | 
+0034 | global pfw "D:\daylan\test\GMI\Survey_price_framework.dta"
+0035 | global repotxt repo(use ${rnd}all) reporoot(${reposource})
+0036 | 
+0037 | //pfw
+0038 | dlw, country(support) year(2005) type(gmdraw) surveyid(${cpiversion}) filename(Survey_price_framework.dta) files
+0039 | keep code year rep_year datatype display_cp survname
+0040 | gen		welfare_type = 1 if datatype == "CONS" | datatype == "C" | datatype == "c"
+0041 | replace welfare_type = 2 if datatype == "INC" | datatype == "I" | datatype == "i"			
+0042 | save `pfw', replace 
+0043 | 
+0044 | //PIP and GDP
+0045 | use D:\daylan\test\GMI\pip2021.dta, clear
+0046 | isid country_code year survey_acronym welfare_type
+0047 | keep country_code year survey_acronym welfare_type fgt0_*
+0048 | reshape long fgt0_, i(country_code year survey_acronym welfare_type) j(povline)
+0049 | gen ppp = 2021
+0050 | save `pip1', replace
+0051 | 
+0052 | use D:\daylan\test\GMI\pip2017.dta, clear
+0053 | isid country_code year survey_acronym welfare_type
+0054 | keep country_code year survey_acronym welfare_type fgt0_*
+0055 | reshape long fgt0_, i(country_code year survey_acronym welfare_type) j(povline)
+0056 | gen ppp = 2017
+0057 | append using `pip1'
+0058 | ren country_code code
+0059 | merge m:1 code year using D:\daylan\test\GMI\PIP_all_GDP.dta, keepus(gdppc)
+0060 | drop if _merge==2
+0061 | drop _merge
+0062 | gen welftype = "CONS" if welfare_type==1
+0063 | replace welftype = "INC" if welfare_type==2
+0064 | ren survey_acronym survname
+0065 | ren year rep_year
+0066 | merge m:1 code rep_year welfare_type survname using `pfw', nogen
+0067 | drop if display_cp == 0 | display_cp == .
+0068 | save `pip1', replace
+0069 | 
+0070 | //GMI spells
+0071 | tempfile data1 data2
+0072 | use \\wbgfscifs01\GTSD\03.projects_corp\04.GPWG\04.GPWG_${rnd}\04.GPWG_${rnd}_QA\01.programs\02.dofile\repo\repo_${rnd}all.dta , clear
+0073 | gen year = years
+0074 | destring year, replace
+0075 | ren country countrycode
+0076 | keep if module=="ALL"
+0077 | save `data1', replace
+0078 | 
+0079 | use "\\wbgfscifs01\GTSD\03.projects_corp\06.GMI\06.GMI_${rnd}\06.GMI_${rnd}_QA\03.output\01.data\GMI_SPspell_all.dta" , clear
+0080 | drop if datamod=="bin"
+0081 | drop if countrycode=="ISO3"|countrycode=="ISO3"|countrycode=="ISO3"|countrycode=="ISO3"
+0082 | ren surveyname survname
+0083 | merge m:m countrycode year survname using `data1', keepus(module)
+0084 | drop if _merge==2
+0085 | 
+0086 | bys countrycode period welftype (year): gen seq = _N
+0087 | bys countrycode period welftype (year): gen seq1 = _n
+0088 | drop if seq==1
+0089 | drop seq _merge ref rep region welvar datamod filename 
+0090 | replace module="MIS" if module==""
+0091 | 
+0092 | reshape wide year survname module, i(countrycode period welftype) j(seq1)
+0093 | gen type = 0
+0094 | replace type = 1 if module1=="ALL" & module2=="ALL"
+0095 | drop if countrycode=="ISO3" & year1==0000
+0096 | //ISO32006 Urban |         30   - 99.55 rural
+0097 | local nobs = _N
+0098 | save `data1', replace
+0099 | 
+0100 | keep countrycode welftype period year1 survname1 module1
+0101 | ren year1 year
+0102 | ren survname1 survname
+0103 | ren module1 module
+0104 | save `data2', replace
+0105 | 
+0106 | use `data1', clear
+0107 | keep countrycode welftype period year2 survname2 module2
+0108 | ren year2 year
+0109 | ren survname2 survname
+0110 | ren module2 module
+0111 | append using `data2'
+0112 | ren countrycode code
+0113 | save `data2', replace
+0114 | 
+0115 | joinby code year survname welftype using `pip1'
+0116 | 
+0117 | sort ppp code  welftype povline period year
+0118 | bys ppp code  welftype povline period (year): gen x = _N
+0119 | ta x
+0120 | drop if x==1
+0121 | drop x
+0122 | bys ppp code  welftype povline period (year): gen ch_fgt0 = ln(fgt0_[2]/fgt0_[1])
+0123 | bys ppp code  welftype povline period (year): gen ch_gdppc = ln(gdppc[2]/gdppc[1])
+0124 | bys ppp code  welftype povline period (year): gen ch_year = year[2]-year[1]
+0125 | bys ppp code  welftype povline period (year): gen gr_fgt0 = ((fgt0_[2]/fgt0_[1])^(1/(year[2]-year[1])) -1)*100
+0126 | bys ppp code  welftype povline period (year): gen gr_gdppc = ((gdppc[2]/gdppc[1])^(1/(year[2]-year[1])) -1)*100
+0127 | gen double pov_elasticity = ch_fgt0/ch_gdppc
+0128 | gen double pov_elasticity2 = gr_fgt0/gr_gdppc
+0129 | save "${out}\\03.intermediate\\GMI_extended_${rnd}_pov_elas_raw", replace
+0130 | 
+0131 | *drop if pov_elasticity==.
+0132 | keep code welftype period povline ppp ch_fgt0 ch_gdppc ch_year pov_elasticity gr_fgt0 gr_gdppc pov_elasticity2
+0133 | duplicates drop _all, force
+0134 | la var ch_fgt0 		"Change in poverty rate (difference in log)"
+0135 | la var ch_gdppc 	"Change in GDP per capita (difference in log)"
+0136 | la var pov_elasticity 	   	"GPD-poverty elasticity (annualized)"
+0137 | 
+0138 | la var gr_fgt0 		"Change in poverty rate (annualized growth)"
+0139 | la var gr_gdppc 	"Change in GDP per capita (annualized growth)"
+0140 | la var pov_elasticity2 	   	"GPD-poverty elasticity (annualized growth)"
+0141 | 
+0142 | save "${out}\\03.intermediate\\GMI_extended_${rnd}_pov_elas_fmt", replace
+0143 | save "${pea}\GMI_extended_pov_elas_fmt", replace
+0144 | 
+0145 | //regression analysis
+0146 | tempfile data10
+0147 | use D:\daylan\test\GMI\CLASS_incg_region.dta, clear
+0148 | su year, meanonly
+0149 | local ymax = r(max)
+0150 | keep if year==`ymax'
+0151 | save `data10', replace
+0152 | 
+0153 | use "${out}\\03.intermediate\\GMI_extended_${rnd}_pov_elas_fmt", clear
+0154 | merge m:1 code using `data10', keepus(region region_pip region_SSA incgroup_current)
+0155 | drop if _merge==2
+0156 | drop _merge
+0157 | 
+0158 | gen lnline = ln(povline)
+0159 | encode welftype, gen(type)
+0160 | encode region, gen(region2) 
+0161 | encode region_pip, gen(region_pip2) 
+0162 | encode incgroup_current, gen(incgroup_current2)
+0163 | 
+0164 | //all lines
+0165 | reg ch_fgt0 ch_gdppc lnline i.type i.region2 i.incgroup_current2 if  ppp==2021
+0166 | 
+0167 | bys region2: reg ch_fgt0 ch_gdppc lnline i.type  if  ppp==2021
+0168 | 
+0169 | bys incgroup_current2: reg ch_fgt0 ch_gdppc lnline i.type  if  ppp==2021
+0170 | 
+0171 | //300
+0172 | reg ch_fgt0 ch_gdppc  i.type i.region2 i.incgroup_current2 if  ppp==2021 & povline==300
+0173 | 
+0174 | bys region2: reg ch_fgt0 ch_gdppc  i.type  if  ppp==2021 & povline==300
+0175 | 
+0176 | bys incgroup_current2: reg ch_fgt0 ch_gdppc  i.type  if  ppp==2021 & povline==300
+0177 | 
+0178 | 
+0179 | s
+```

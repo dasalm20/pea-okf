@@ -1,0 +1,948 @@
+# 04.Checks_Add_reharmonization_results/code/99-qa_summary.do
+
+Sanitized source projection; applicability placeholders are not executable values. Original SHA256: 93227b9a8aed562ed672fc38fdd5e0932527e29194d67196d6e8e831ca6f4d2c
+
+```stata
+0001 | *===============================================================
+0002 | * 99-qa_summary.do
+0003 | *
+0004 | * The quality check in two sheets.
+0005 | *
+0006 | *   SHEET 1  WHAT CHANGED
+0007 | *     One row per country-year and variable. Eight columns, no
+0008 | *     colour. It answers one question: did this variable change,
+0009 | *     and do the two files use the same category codes.
+0010 | *
+0011 | *   SHEET 2  DEGREE OF CHANGE
+0012 | *     One row per CATEGORY. This is where the judgement happens, so
+0013 | *     this is where the colour is. A row is shaded when the category
+0014 | *     moved a lot, or when the local file uses a code GMD does not.
+0015 | *
+0016 | * DLW GMD IS THE STANDARD. A code the local file uses that GMD does
+0017 | * not is a problem with the local file, full stop.
+0018 | *
+0019 | * INPUT
+0020 | *   The .dta files 99-gmdpatch_diagnostics.do leaves in
+0021 | *   $checks\_qa_data. Run that first. This script never touches
+0022 | *   DataLibWeb, so it rebuilds in seconds.
+0023 | *
+0024 | * Writes ONE Excel workbook and nothing else.
+0025 | *===============================================================
+0026 | 
+0027 | clear all
+0028 | set more off
+0029 | set varabbrev off
+0030 | 
+0031 | *===============================================================
+0032 | *  EDIT THIS SECTION
+0033 | *===============================================================
+0034 | 
+0035 | *--- 1. The checks folder, for both input and output.
+0036 | local checksdir "$checks"
+0037 | if "`checksdir'" == "" {
+0038 |     local checksdir "C:\Users\wb570371\Documents\PEA\GMI_extended\04.Checks_Add_reharmonization_results"
+0039 |     di as error "  NOTE: $checks was empty -- path set inside this script."
+0040 | }
+0041 | 
+0042 | local qadir   "`checksdir'\_qa_data"
+0043 | local outfile "`checksdir'\qa_summary_${rnd}.xlsx"
+0044 | 
+0045 | *--- 2. A category is shaded on sheet 2 when its share of the sample
+0046 | *       moves by at least this many percentage points.
+0047 | local bigpp 5
+0048 | 
+0049 | *--- 3. Ignore categories smaller than this share on BOTH sides, to
+0050 | *       keep sheet 2 readable. 0 keeps everything.
+0051 | local minpct 0.1
+0052 | 
+0053 | *--- 3b. QCHECK thresholds.
+0054 | *       losspct: a variable is flagged when it loses this pct of the
+0055 | *                values DLW had.
+0056 | *       recpct : flagged when this pct of the people who had a value
+0057 | *                end up on a different one.
+0058 | local losspct 25
+0059 | local recpct  10
+0060 | 
+0061 | *       And the point at which a Check becomes Urgent. A re-code that
+0062 | *       moves two thirds of a survey is not the same finding as one
+0063 | *       that moves five percent, and the sheet should not call them
+0064 | *       the same thing.
+0065 | local urgloss 50
+0066 | local urgrec  50
+0067 | local urgpp   20
+0068 | 
+0069 | *--- 4. Round label for the headers
+0070 | local rnd "$rnd"
+0071 | if "`rnd'" == "" local rnd "SM26"
+0072 | 
+0073 | *--- 5. THE GMD CODEBOOK -- the standard the codes are judged against.
+0074 | *       Taken from the GMD harmonization guidelines, tables 4.1
+0075 | *       (Demography and Education), 5.x (Labor), 6.x (Utilities) and
+0076 | *       7.x (Assets and Dwellings).
+0077 | *
+0078 | *       DLW is NOT the standard. A survey may legitimately use only 2
+0079 | *       of 4 categories because that is what the questionnaire asked,
+0080 | *       and DLW will then only ever show those 2. What matters is
+0081 | *       whether a code falls OUTSIDE the allowed range.
+0082 | *
+0083 | *       A variable with no line here is simply not checked.
+0084 | *       Add a line to extend the check. One line per variable:
+0085 | *           local cb_<varname> "<allowed codes, space separated>"
+0086 | 
+0087 | *    Demography and education, guidelines table 4.1
+0088 | local cb_male               "0 1"
+0089 | local cb_relationharm       "1 2 3 4 5 6"
+0090 | local cb_marital            "1 2 3 4 5"
+0091 | local cb_educat7            "1 2 3 4 5 6 7"
+0092 | local cb_educat5            "1 2 3 4 5"
+0093 | local cb_educat4            "1 2 3 4"
+0094 | local cb_literacy           "0 1"
+0095 | local cb_everattend         "0 1"
+0096 | local cb_primarycomp        "0 1"
+0097 | local cb_school             "0 1"
+0098 | 
+0099 | *    Labor, guidelines tables 5.1, 5.2, 5.6, 5.7
+0100 | local cb_lstatus            "1 2 3"
+0101 | local cb_lstatus_year       "1 2 3"
+0102 | local cb_nlfreason          "1 2 3 4 5"
+0103 | local cb_nlfreason_year     "1 2 3 4 5"
+0104 | local cb_empstat            "1 2 3 4 5"
+0105 | local cb_empstat_year       "1 2 3 4 5"
+0106 | local cb_ocusec             "1 2 3 4"
+0107 | local cb_ocusec_year        "1 2 3 4"
+0108 | local cb_industrycat10      "1 2 3 4 5 6 7 8 9 10"
+0109 | local cb_industrycat10_year "1 2 3 4 5 6 7 8 9 10"
+0110 | local cb_industrycat4       "1 2 3 4"
+0111 | local cb_industrycat4_year  "1 2 3 4"
+0112 | local cb_occup              "1 2 3 4 5 6 7 8 9 10 99"
+0113 | local cb_occup_year         "1 2 3 4 5 6 7 8 9 10 99"
+0114 | local cb_contract           "0 1"
+0115 | local cb_healthins          "0 1"
+0116 | local cb_socialsec          "0 1"
+0117 | local cb_union              "0 1"
+0118 | 
+0119 | *    Utilities, guidelines tables 6.1 and 6.2
+0120 | local cb_imp_wat_rec        "0 1"
+0121 | local cb_imp_san_rec        "0 1"
+0122 | local cb_piped              "0 1"
+0123 | local cb_piped_to_prem      "0 1"
+0124 | local cb_sewer              "0 1"
+0125 | local cb_open_def           "0 1"
+0126 | local cb_central_acc        "0 1"
+0127 | local cb_electricity        "0 1"
+0128 | local cb_water_source       "1 2 3 4 5 6 7 8 9 10 11 12 13 14"
+0129 | local cb_sanitation_source  "1 2 3 4 5 6 7 8 9 10 11 12 13 14"
+0130 | local cb_toilet_acc         "0 1 2 3"
+0131 | local cb_elec_acc           "1 2 3 4"
+0132 | local cb_cooksource         "1 2 3 4 5 9 10"
+0133 | local cb_lightsource        "1 2 3 4 9 10"
+0134 | local cb_electyp            "1 2 3 4 10"
+0135 | 
+0136 | *    Assets and dwellings, guidelines tables 7.1 and 7.2
+0137 | local cb_tv                 "0 1"
+0138 | local cb_tv_cable           "0 1"
+0139 | local cb_car                "0 1"
+0140 | local cb_cellphone          "0 1"
+0141 | local cb_landphone          "0 1"
+0142 | local cb_phone              "0 1"
+0143 | local cb_computer           "0 1"
+0144 | local cb_etablet            "0 1"
+0145 | local cb_radio              "0 1"
+0146 | local cb_video              "0 1"
+0147 | local cb_fridge             "0 1"
+0148 | local cb_sewmach            "0 1"
+0149 | local cb_washmach           "0 1"
+0150 | local cb_stove              "0 1"
+0151 | local cb_ac                 "0 1"
+0152 | local cb_bcycle             "0 1"
+0153 | local cb_mcycle             "0 1"
+0154 | local cb_kitchen            "0 1"
+0155 | local cb_bath               "0 1"
+0156 | local cb_internet           "1 2 3 4"
+0157 | 
+0158 | *    NOT in the guidelines tables we have. Standard GMD coding, but
+0159 | *    confirm before relying on it.
+0160 | local cb_urban              "0 1"
+0161 | 
+0162 | *    TWO NOTES ON THE GUIDELINES DOCUMENT ITSELF
+0163 | *    1. educat4 is 1 No education, 2 Primary, 3 Secondary, 4 Tertiary.
+0164 | *       CONFIRMED, and that is what cb_educat4 is set to above.
+0165 | *       The printed table 4.1 lists 1 Incomplete secondary, 2 General
+0166 | *       Secondary, 3 Special Secondary, 4 Tertiary, 5 None or
+0167 | *       incomplete primary. Those are the EDLEV labels, pasted into
+0168 | *       the educat4 row by mistake. Do not copy them back in. Worth
+0169 | *       correcting in the guidelines document.
+0170 | *    2. nlfreason reads 1 Student, 2 Housewife, 3 Retired, 4 Disabled,
+0171 | *       5 Other in table 5.1, while some regional files use 9 for
+0172 | *       Other. 9 is NOT allowed above, so it will be flagged. If 9 is
+0173 | *       in fact accepted, add it to cb_nlfreason.
+0174 | 
+0175 | *    The variables the codebook covers. Add new names here too.
+0176 | local cbvars "male relationharm marital educat7 educat5 educat4 literacy everattend primarycomp school lstatus lstatus_year nlfreason nlfreason_year empstat empstat_year ocusec ocusec_year industrycat10 industrycat10_year industrycat4 industrycat4_year occup occup_year contract healthins socialsec union imp_wat_rec imp_san_rec piped piped_to_prem sewer open_def central_acc electricity water_source sanitation_source toilet_acc elec_acc cooksource lightsource electyp tv tv_cable car cellphone landphone phone computer etablet radio video fridge sewmach washmach stove ac bcycle mcycle kitchen bath internet urban"
+0177 | 
+0178 | *===============================================================
+0179 | *  END OF EDIT SECTION
+0180 | *===============================================================
+0181 | 
+0182 | *---------------------------------------------------------------
+0183 | * Turn the codebook into a lookup table
+0184 | *---------------------------------------------------------------
+0185 | tempfile CBOOK
+0186 | capture postclose cbk
+0187 | postfile cbk str24 variable double code using `CBOOK', replace
+0188 | foreach v of local cbvars {
+0189 |     local allowed "`cb_`v''"
+0190 |     foreach c of local allowed {
+0191 |         post cbk ("`v'") (`c')
+0192 |     }
+0193 | }
+0194 | postclose cbk
+0195 | 
+0196 | *--- one row per variable with the allowed list as text
+0197 | use `CBOOK', clear
+0198 | sort variable code
+0199 | gen str8 _c = strtrim(string(code, "%6.0f"))
+0200 | by variable: gen str244 codes_allowed = ""
+0201 | by variable: replace codes_allowed = cond(_n==1, "", codes_allowed[_n-1]) + " " + _c
+0202 | by variable: keep if _n == _N
+0203 | replace codes_allowed = strtrim(codes_allowed)
+0204 | keep variable codes_allowed
+0205 | tempfile CBTEXT
+0206 | qui save `CBTEXT'
+0207 | 
+0208 | 
+0209 | foreach f in qa_var qa_code {
+0210 |     capture confirm file "`qadir'/`f'.dta"
+0211 |     if _rc {
+0212 |         di as error "  `qadir'/`f'.dta not found."
+0213 |         di as error "  Run 99-gmdpatch_diagnostics.do first: it writes the raw results"
+0214 |         di as error "  this script summarises."
+0215 |         exit 601
+0216 |     }
+0217 | }
+0218 | 
+0219 | di as result _n(2) "{hline 78}"
+0220 | di as result "  QUALITY CHECK SUMMARY"
+0221 | di as result "{hline 78}"
+0222 | di as text "  input : `qadir'"
+0223 | di as text "  output: `outfile'"
+0224 | 
+0225 | 
+0226 | *===============================================================
+0227 | * WHICH CODES DOES EACH SIDE USE?
+0228 | *   Built once, used by both sheets.
+0229 | *   -99 is the missing marker, not a category code.
+0230 | *===============================================================
+0231 | use "`qadir'/qa_code.dta", clear
+0232 | 
+0233 | preserve
+0234 |     keep if d_value != -99
+0235 |     collapse (sum) n_dlw = nrows, by(region country year variable d_value)
+0236 |     rename d_value value
+0237 |     gen byte in_dlw = 1
+0238 |     tempfile CD
+0239 |     qui save `CD'
+0240 | restore
+0241 | 
+0242 | preserve
+0243 |     keep if p_value != -99
+0244 |     collapse (sum) n_loc = nrows, by(region country year variable p_value)
+0245 |     rename p_value value
+0246 |     gen byte in_loc = 1
+0247 |     tempfile CL
+0248 |     qui save `CL'
+0249 | restore
+0250 | 
+0251 | use `CD', clear
+0252 | merge 1:1 region country year variable value using `CL', gen(_mc)
+0253 | drop _mc
+0254 | foreach v in in_dlw in_loc n_dlw n_loc {
+0255 |     qui replace `v' = 0 if missing(`v')
+0256 | }
+0257 | 
+0258 | *--- is this code one the GMD guidelines allow?
+0259 | *    A variable with no codebook entry is simply not checked.
+0260 | gen byte _checked = 0
+0261 | foreach v of local cbvars {
+0262 |     qui replace _checked = 1 if variable == "`v'"
+0263 | }
+0264 | *    CODES_LONG calls the column value, CBOOK calls it code, so the
+0265 | *    rename is only for the join and is undone straight after.
+0266 | rename value code
+0267 | merge m:1 variable code using `CBOOK', gen(_mcb) keep(master match)
+0268 | gen byte code_ok = (_mcb == 3)
+0269 | drop _mcb
+0270 | rename code value
+0271 | tempfile CODES_LONG
+0272 | qui save `CODES_LONG'
+0273 | 
+0274 | *--- one row per variable: the two code lists, as text
+0275 | use `CODES_LONG', clear
+0276 | gen str8 _c = strtrim(string(value, "%6.0f"))
+0277 | sort region country year variable value
+0278 | by region country year variable: gen str244 codes_local = ""
+0279 | by region country year variable: gen str244 codes_dlw   = ""
+0280 | by region country year variable: replace codes_local = ///
+0281 |     cond(_n==1, "", codes_local[_n-1]) + cond(in_loc==1, " " + _c, "")
+0282 | by region country year variable: replace codes_dlw = ///
+0283 |     cond(_n==1, "", codes_dlw[_n-1]) + cond(in_dlw==1, " " + _c, "")
+0284 | by region country year variable: gen str244 bad_local = ""
+0285 | by region country year variable: gen str244 bad_dlw   = ""
+0286 | by region country year variable: replace bad_local = ///
+0287 |     cond(_n==1, "", bad_local[_n-1]) + cond(in_loc==1 & _checked==1 & code_ok==0, " " + _c, "")
+0288 | by region country year variable: replace bad_dlw = ///
+0289 |     cond(_n==1, "", bad_dlw[_n-1]) + cond(in_dlw==1 & _checked==1 & code_ok==0, " " + _c, "")
+0290 | by region country year variable: keep if _n == _N
+0291 | 
+0292 | replace codes_local = strtrim(codes_local)
+0293 | replace codes_dlw   = strtrim(codes_dlw)
+0294 | replace bad_local   = strtrim(bad_local)
+0295 | replace bad_dlw     = strtrim(bad_dlw)
+0296 | 
+0297 | *--- the single column to filter on
+0298 | gen str60 outside_guidelines = ""
+0299 | replace outside_guidelines = "local: " + bad_local                      if bad_local!="" & bad_dlw==""
+0300 | replace outside_guidelines = "DLW: " + bad_dlw                          if bad_local=="" & bad_dlw!=""
+0301 | replace outside_guidelines = "local: " + bad_local + " | DLW: " + bad_dlw if bad_local!="" & bad_dlw!=""
+0302 | 
+0303 | keep region country year variable codes_local codes_dlw outside_guidelines
+0304 | tempfile CODELIST
+0305 | qui save `CODELIST'
+0306 | 
+0307 | 
+0308 | *===============================================================
+0309 | * SHEET 1 -- WHAT CHANGED
+0310 | *   Eight columns. Nothing else.
+0311 | *===============================================================
+0312 | use "`qadir'/qa_var.dta", clear
+0313 | merge 1:1 region country year variable using `CODELIST', gen(_m1) keep(master match)
+0314 | drop _m1
+0315 | merge m:1 variable using `CBTEXT', gen(_m2) keep(master match)
+0316 | drop _m2
+0317 | replace codes_allowed = "not checked" if missing(codes_allowed) | codes_allowed==""
+0318 | replace outside_guidelines = "" if missing(outside_guidelines)
+0319 | 
+0320 | *--- what happened, in one or two words
+0321 | gen str18 whathappened = ""
+0322 | replace whathappened = "not delivered" if carried == 0
+0323 | replace whathappened = "unchanged"     if carried == 1 & lost==0 & gained==0 & changed==0
+0324 | replace whathappened = "BLANKED"       if carried == 1 & lost>0 & lost==dlw_filled & dlw_filled>0 & new_filled==0
+0325 | replace whathappened = "NEW SERIES"    if carried == 1 & dlw_filled==0 & new_filled>0
+0326 | 
+0327 | gen byte _l = (carried==1 & lost>0)
+0328 | gen byte _g = (carried==1 & gained>0)
+0329 | gen byte _r = (carried==1 & changed>0)
+0330 | replace whathappened = "lost"             if whathappened=="" & _l & !_g & !_r
+0331 | replace whathappened = "gained"           if whathappened=="" & !_l & _g & !_r
+0332 | replace whathappened = "recoded"          if whathappened=="" & !_l & !_g & _r
+0333 | replace whathappened = "lost + recoded"   if whathappened=="" & _l & !_g & _r
+0334 | replace whathappened = "gained + recoded" if whathappened=="" & !_l & _g & _r
+0335 | replace whathappened = "mixed"            if whathappened==""
+0336 | 
+0337 | *--- the comparison itself, written out so nobody has to read five
+0338 | *    number columns to understand one row
+0339 | gen str90 localvsdlw = ""
+0340 | replace localvsdlw = "variable not in the local file"       if carried==0
+0341 | replace localvsdlw = "identical for every person"           if whathappened=="unchanged"
+0342 | 
+0343 | gen str90 _bits = ""
+0344 | replace _bits = _bits + string(lost,    "%12.0fc") + " lost"    if _l
+0345 | replace _bits = _bits + cond(_bits!="", ", ", "") + string(gained,  "%12.0fc") + " gained"  if _g
+0346 | replace _bits = _bits + cond(_bits!="", ", ", "") + string(changed, "%12.0fc") + " recoded" if _r
+0347 | replace _bits = subinstr(_bits, "  ", "", .)
+0348 | replace localvsdlw = _bits if localvsdlw=="" & _bits!=""
+0349 | replace localvsdlw = "all " + strtrim(string(lost, "%12.0fc")) + " values removed" ///
+0350 |     if whathappened=="BLANKED"
+0351 | replace localvsdlw = strtrim(string(new_filled, "%12.0fc")) + " values added, DLW had none" ///
+0352 |     if whathappened=="NEW SERIES"
+0353 | replace localvsdlw = "no overlap to compare" if localvsdlw==""
+0354 | drop _bits _l _g _r
+0355 | 
+0356 | keep  country year region variable whathappened localvsdlw ///
+0357 |       codes_local codes_dlw codes_allowed outside_guidelines
+0358 | order country year region variable whathappened localvsdlw ///
+0359 |       codes_local codes_dlw codes_allowed outside_guidelines
+0360 | 
+0361 | *--- rows that break the guidelines first
+0362 | gen byte _ok1 = (outside_guidelines == "")
+0363 | gsort _ok1 region country year variable
+0364 | qui count if _ok1 == 0
+0365 | local nbad1 = r(N)
+0366 | drop _ok1
+0367 | 
+0368 | label var country      "country"
+0369 | label var year         "year"
+0370 | label var region       "region"
+0371 | label var variable     "GMD variable"
+0372 | label var whathappened "what happened"
+0373 | label var localvsdlw   "local file vs DLW"
+0374 | label var codes_local  "codes in the local file"
+0375 | label var codes_dlw    "codes in DLW"
+0376 | label var codes_allowed      "codes allowed by the guidelines"
+0377 | label var outside_guidelines "CODES OUTSIDE THE GUIDELINES"
+0378 | 
+0379 | qui count
+0380 | local nrows1 = r(N)
+0381 | tempfile SH1
+0382 | qui save `SH1'
+0383 | di as text _n "  sheet 1: `nrows1' rows, `nbad1' with codes outside the guidelines"
+0384 | 
+0385 | 
+0386 | *===============================================================
+0387 | * SHEET 2 -- DEGREE OF CHANGE
+0388 | *   One row per category. The colour lives here.
+0389 | *===============================================================
+0390 | use "`qadir'/qa_code.dta", clear
+0391 | 
+0392 | preserve
+0393 |     collapse (sum) n = nrows, by(region country year variable d_value d_label)
+0394 |     rename d_value value
+0395 |     rename d_label label_txt
+0396 |     rename n n_dlw
+0397 |     tempfile MD
+0398 |     qui save `MD'
+0399 | restore
+0400 | 
+0401 | collapse (sum) n = nrows, by(region country year variable p_value)
+0402 | rename p_value value
+0403 | rename n n_local
+0404 | merge 1:1 region country year variable value using `MD', gen(_mm)
+0405 | drop _mm
+0406 | replace n_dlw   = 0 if missing(n_dlw)
+0407 | replace n_local = 0 if missing(n_local)
+0408 | 
+0409 | *--- a label for every row
+0410 | gsort region country year variable value -label_txt
+0411 | by region country year variable value: replace label_txt = label_txt[1] if missing(label_txt)
+0412 | replace label_txt = "missing" if value == -99
+0413 | replace label_txt = strtrim(string(value, "%6.0f")) if missing(label_txt) | label_txt==""
+0414 | 
+0415 | *--- IS THIS CODE ONE THAT DLW USES?  DLW GMD is the standard.
+0416 | merge 1:1 region country year variable value using `CODES_LONG', ///
+0417 |     keepusing(in_dlw in_loc code_ok _checked) gen(_mz)
+0418 | drop _mz
+0419 | foreach v in in_dlw in_loc code_ok _checked {
+0420 |     qui replace `v' = 0 if missing(`v')
+0421 | }
+0422 | 
+0423 | *--- judged against the GUIDELINES, not against DLW. A survey may use
+0424 | *    only 2 of 4 allowed categories because that is what was asked;
+0425 | *    that is fine. A code OUTSIDE the allowed set is not.
+0426 | gen str24 code_vs_guidelines = "allowed"
+0427 | replace code_vs_guidelines = "OUTSIDE GUIDELINES" if _checked==1 & code_ok==0
+0428 | replace code_vs_guidelines = "not checked"        if _checked==0
+0429 | replace code_vs_guidelines = "n/a (missing)"      if value == -99
+0430 | 
+0431 | gen str12 used_by = ""
+0432 | replace used_by = "both"      if in_dlw==1 & in_loc==1
+0433 | replace used_by = "local only" if in_dlw==0 & in_loc==1
+0434 | replace used_by = "DLW only"   if in_dlw==1 & in_loc==0
+0435 | 
+0436 | *--- shares of the matched sample
+0437 | bysort region country year variable: egen double tot_dlw   = total(n_dlw)
+0438 | bysort region country year variable: egen double tot_local = total(n_local)
+0439 | gen double pct_dlw   = cond(tot_dlw  >0, 100*n_dlw  /tot_dlw,   .)
+0440 | gen double pct_local = cond(tot_local>0, 100*n_local/tot_local, .)
+0441 | gen double pp_change = pct_local - pct_dlw
+0442 | format pct_dlw pct_local pp_change %6.1f
+0443 | 
+0444 | *--- what is worth shading
+0445 | gen str16 flag = ""
+0446 | replace flag = "BIG SHIFT"   if abs(pp_change) >= `bigpp' & !missing(pp_change)
+0447 | replace flag = "disappeared" if pct_dlw >= 1 & pct_local == 0
+0448 | replace flag = "new"         if pct_dlw == 0 & pct_local >= 1
+0449 | replace flag = "CODE OUTSIDE GUIDELINES" if code_vs_guidelines == "OUTSIDE GUIDELINES"
+0450 | 
+0451 | if `minpct' > 0 {
+0452 |     qui drop if pct_dlw < `minpct' & pct_local < `minpct' & flag==""
+0453 | }
+0454 | 
+0455 | gen str120 reads_as = variable + ", " + label_txt + ": " + ///
+0456 |     strtrim(string(pct_dlw, "%5.1f")) + " pct -> " + ///
+0457 |     strtrim(string(pct_local, "%5.1f")) + " pct"
+0458 | 
+0459 | *--- flagged rows first, so the shading is one block and the
+0460 | *    problems are the first thing on screen
+0461 | gen byte _ok = (flag == "")
+0462 | gsort _ok region country year variable value
+0463 | qui count if _ok == 0
+0464 | local nflag2 = r(N)
+0465 | drop _ok in_dlw in_loc tot_dlw tot_local code_ok _checked
+0466 | 
+0467 | merge m:1 variable using `CBTEXT', gen(_m3) keep(master match)
+0468 | drop _m3
+0469 | replace codes_allowed = "not checked" if missing(codes_allowed) | codes_allowed==""
+0470 | 
+0471 | keep  country year region variable value label_txt code_vs_guidelines ///
+0472 |       codes_allowed used_by n_dlw pct_dlw n_local pct_local pp_change flag reads_as
+0473 | order country year region variable value label_txt code_vs_guidelines ///
+0474 |       codes_allowed used_by n_dlw pct_dlw n_local pct_local pp_change flag reads_as
+0475 | 
+0476 | label var country     "country"
+0477 | label var year        "year"
+0478 | label var region      "region"
+0479 | label var variable    "GMD variable"
+0480 | label var value       "category code"
+0481 | label var label_txt   "category"
+0482 | label var code_vs_guidelines "code vs GMD guidelines"
+0483 | label var codes_allowed      "codes allowed by the guidelines"
+0484 | label var used_by            "which file uses this code"
+0485 | label var n_dlw       "people, DLW"
+0486 | label var pct_dlw     "pct of sample, DLW"
+0487 | label var n_local     "people, local file"
+0488 | label var pct_local   "pct of sample, local file"
+0489 | label var pp_change   "change, percentage points"
+0490 | label var flag        "flag"
+0491 | label var reads_as    "in words"
+0492 | 
+0493 | qui count
+0494 | local nrows2 = r(N)
+0495 | qui count if code_vs_guidelines == "OUTSIDE GUIDELINES"
+0496 | local nnotin = r(N)
+0497 | tempfile SH2
+0498 | qui save `SH2'
+0499 | di as text "  sheet 2: `nrows2' rows, `nflag2' shaded, `nnotin' on a code the guidelines do not allow"
+0500 | 
+0501 | 
+0502 | *===============================================================
+0503 | * SHEET: QCHECK
+0504 | *   One row per DETECTED ERROR, in the same shape as the MPO/HFPS
+0505 | *   qcheck output, so it reads the way the team already expects.
+0506 | *
+0507 | *   acronym     country code
+0508 | *   survey      survey name
+0509 | *   year        survey year
+0510 | *   region      region that sent the file
+0511 | *   contador    row counter
+0512 | *   variable    the GMD variable
+0513 | *   warn        Urgent / Check / Note
+0514 | *   freq        observations failing the test
+0515 | *   percentage  freq as a share of matched observations
+0516 | *   impact      the size of the problem, as a percent. For a re-code
+0517 | *               it is the share of people re-coded, for a lost series
+0518 | *               the share of values lost, for a category shift the
+0519 | *               move in percentage points. This is what decides
+0520 | *               whether a test reads Check or Urgent.
+0521 | *   desc        what is wrong, in words
+0522 | *   iff         the Stata condition that reproduces it. Paste and run.
+0523 | *   test        stable test number, so the same test keeps the same id
+0524 | *   code        severity as a number: 2 Urgent, 1 Check, 0 Note
+0525 | *
+0526 | *   THE TESTS
+0527 | *     1  a code outside the GMD guidelines                 Urgent
+0528 | *     2  every observation is missing                      Urgent
+0529 | *     3  the variable holds only one value                 Check
+0530 | *     4  lost values            Check from `losspct' pct, Urgent from `urgloss'
+0531 | *     5  people re-coded        Check from `recpct' pct, Urgent from `urgrec'
+0532 | *     6  a category share moved Check from `bigpp' points, Urgent from `urgpp'
+0533 | *     7  the region did not deliver the variable           Note
+0534 | *===============================================================
+0535 | tempfile QC
+0536 | capture postclose qc
+0537 | postfile qc str8 acronym str24 survey int year str8 region ///
+0538 |     str32 variable str10 warn double freq double percentage double impact ///
+0539 |     str200 desc str244 iff int test byte code using `QC', replace
+0540 | 
+0541 | *--- matched rows per survey, the denominator
+0542 | use "`qadir'/qa_surv.dta", clear
+0543 | keep region country year survey matched
+0544 | tempfile SURV
+0545 | qui save `SURV'
+0546 | 
+0547 | *===============================================================
+0548 | * tests 1, 3 and 6 come from the per-category data
+0549 | *===============================================================
+0550 | use `CODES_LONG', clear
+0551 | merge m:1 region country year using `SURV', gen(_ms) keep(master match)
+0552 | drop _ms
+0553 | merge m:1 variable using `CBTEXT', gen(_mt) keep(master match)
+0554 | drop _mt
+0555 | replace codes_allowed = "" if missing(codes_allowed)
+0556 | 
+0557 | *--- an inlist() condition from the allowed codes
+0558 | gen str244 allowlist = subinstr(strtrim(codes_allowed), " ", ",", .)
+0559 | 
+0560 | *--- test 1: people sitting on a code the guidelines do not allow
+0561 | preserve
+0562 |     keep if _checked==1 & code_ok==0 & n_loc > 0
+0563 |     bysort region country year variable: egen double _f = total(n_loc)
+0564 |     by region country year variable: keep if _n == 1
+0565 |     forvalues i = 1/`=_N' {
+0566 |         local reg = region[`i']
+0567 |         local cty = country[`i']
+0568 |         local yr  = year[`i']
+0569 |         local srv = survey[`i']
+0570 |         local v   = variable[`i']
+0571 |         local al  = allowlist[`i']
+0572 |         local f   = _f[`i']
+0573 |         local den = matched[`i']
+0574 |         local pct = cond(`den'>0, `f'/`den', .)
+0575 |         post qc ("`cty'") ("`srv'") (`yr') ("`reg'") ("`v'") ("Urgent") ///
+0576 |             (`f') (`pct') (`=100*`pct'') ///
+0577 |             ("Variable <`v'> has values outside the GMD guidelines (allowed: `al')") ///
+0578 |             ("!inlist(`v',`al',.)") (1) (2)
+0579 |     }
+0580 | restore
+0581 | 
+0582 | *--- test 3: the local file puts everyone on a single value
+0583 | preserve
+0584 |     keep if n_loc > 0
+0585 |     bysort region country year variable: gen byte _nv = _N
+0586 |     bysort region country year variable: egen double _f = total(n_loc)
+0587 |     by region country year variable: keep if _n == 1
+0588 |     keep if _nv == 1
+0589 |     forvalues i = 1/`=_N' {
+0590 |         local reg = region[`i']
+0591 |         local cty = country[`i']
+0592 |         local yr  = year[`i']
+0593 |         local srv = survey[`i']
+0594 |         local v   = variable[`i']
+0595 |         local f   = _f[`i']
+0596 |         local den = matched[`i']
+0597 |         local pct = cond(`den'>0, `f'/`den', .)
+0598 |         post qc ("`cty'") ("`srv'") (`yr') ("`reg'") ("`v'") ("Check") ///
+0599 |             (`f') (`pct') (100) ///
+0600 |             ("Variable <`v'> only has one value in the local file") ///
+0601 |             ("sd`v'==0") (3) (1)
+0602 |     }
+0603 | restore
+0604 | 
+0605 | *--- test 6: a category share moved by bigpp points or more
+0606 | use "`qadir'/qa_code.dta", clear
+0607 | preserve
+0608 |     collapse (sum) n = nrows, by(region country year variable d_value d_label)
+0609 |     rename d_value value
+0610 |     rename d_label lab
+0611 |     rename n nd
+0612 |     tempfile Q6D
+0613 |     qui save `Q6D'
+0614 | restore
+0615 | collapse (sum) n = nrows, by(region country year variable p_value)
+0616 | rename p_value value
+0617 | rename n nl
+0618 | merge 1:1 region country year variable value using `Q6D', gen(_m6)
+0619 | drop _m6
+0620 | replace nd = 0 if missing(nd)
+0621 | replace nl = 0 if missing(nl)
+0622 | gsort region country year variable value -lab
+0623 | by region country year variable value: replace lab = lab[1] if missing(lab)
+0624 | replace lab = "missing" if value == -99
+0625 | replace lab = strtrim(string(value, "%6.0f")) if missing(lab) | lab==""
+0626 | 
+0627 | bysort region country year variable: egen double _td = total(nd)
+0628 | bysort region country year variable: egen double _tl = total(nl)
+0629 | gen double pd = cond(_td>0, 100*nd/_td, .)
+0630 | gen double pl = cond(_tl>0, 100*nl/_tl, .)
+0631 | gen double dpp = pl - pd
+0632 | keep if abs(dpp) >= `bigpp' & !missing(dpp)
+0633 | 
+0634 | merge m:1 region country year using `SURV', gen(_ms6) keep(master match)
+0635 | drop _ms6
+0636 | 
+0637 | forvalues i = 1/`=_N' {
+0638 |     local reg = region[`i']
+0639 |     local cty = country[`i']
+0640 |     local yr  = year[`i']
+0641 |     local srv = survey[`i']
+0642 |     local v   = variable[`i']
+0643 |     local vl  = value[`i']
+0644 |     local lb  = lab[`i']
+0645 |     *    freq is how many people moved INTO or OUT OF the category.
+0646 |     *    Using the local count alone made a category that emptied out
+0647 |     *    read as freq 0, which is the opposite of what happened.
+0648 |     local f   = abs(nl[`i'] - nd[`i'])
+0649 |     local den = matched[`i']
+0650 |     local pct = cond(`den'>0, `f'/`den', .)
+0651 |     local a   = string(pd[`i'], "%4.1f")
+0652 |     local b   = string(pl[`i'], "%4.1f")
+0653 |     local mv  = abs(dpp[`i'])
+0654 |     local cond = cond(`vl'==-99, "mi(`v')", "`v'==`vl'")
+0655 |     local w6 = cond(`mv' >= `urgpp', "Urgent", "Check")
+0656 |     local c6 = cond(`mv' >= `urgpp', 2, 1)
+0657 |     post qc ("`cty'") ("`srv'") (`yr') ("`reg'") ("`v'") ("`w6'") ///
+0658 |         (`f') (`pct') (`mv') ///
+0659 |         ("Variable <`v'> category `vl' (`lb') moves from `a' pct to `b' pct of the sample") ///
+0660 |         ("`cond'") (6) (`c6')
+0661 | }
+0662 | 
+0663 | *===============================================================
+0664 | * tests 2, 4, 5 and 7 come from the per-variable data
+0665 | *===============================================================
+0666 | use "`qadir'/qa_var.dta", clear
+0667 | merge m:1 region country year using `SURV', gen(_mv) keep(master match)
+0668 | drop _mv
+0669 | 
+0670 | forvalues i = 1/`=_N' {
+0671 |     local reg = region[`i']
+0672 |     local cty = country[`i']
+0673 |     local yr  = year[`i']
+0674 |     local srv = survey[`i']
+0675 |     local v   = variable[`i']
+0676 |     local den = matched[`i']
+0677 | 
+0678 |     local carr = carried[`i']
+0679 |     local dnm  = dlw_filled[`i']
+0680 |     local pnm  = new_filled[`i']
+0681 |     local lo   = lost[`i']
+0682 |     local ch   = changed[`i']
+0683 | 
+0684 |     *--- test 7: not delivered
+0685 |     if `carr' == 0 {
+0686 |         post qc ("`cty'") ("`srv'") (`yr') ("`reg'") ("`v'") ("Note") ///
+0687 |             (.) (.) (.) ///
+0688 |             ("Variable <`v'> was not delivered in the local file, DLW values are kept") ///
+0689 |             ("") (7) (0)
+0690 |         continue
+0691 |     }
+0692 | 
+0693 |     *--- test 2: every observation missing
+0694 |     if `pnm' == 0 & `dnm' > 0 {
+0695 |         local pct = cond(`den'>0, `den'/`den', .)
+0696 |         post qc ("`cty'") ("`srv'") (`yr') ("`reg'") ("`v'") ("Urgent") ///
+0697 |             (`den') (`pct') (100) ///
+0698 |             ("All observations are missing values, DLW had `dnm'") ///
+0699 |             ("mi(`v')") (2) (2)
+0700 |         continue
+0701 |     }
+0702 | 
+0703 |     *--- test 4: lost a lot of its values
+0704 |     if `dnm' > 0 {
+0705 |         local lp = 100*`lo'/`dnm'
+0706 |         if `lp' >= `losspct' {
+0707 |             local pct = cond(`den'>0, `lo'/`den', .)
+0708 |             local lps = string(`lp', "%4.1f")
+0709 |             local w4 = cond(`lp' >= `urgloss', "Urgent", "Check")
+0710 |             local c4 = cond(`lp' >= `urgloss', 2, 1)
+0711 |             post qc ("`cty'") ("`srv'") (`yr') ("`reg'") ("`v'") ("`w4'") ///
+0712 |                 (`lo') (`pct') (`lp') ///
+0713 |                 ("Variable <`v'> lost `lps' pct of the values DLW had") ///
+0714 |                 ("mi(`v')") (4) (`c4')
+0715 |         }
+0716 |     }
+0717 | 
+0718 |     *--- test 5: a lot of people re-coded
+0719 |     if `dnm' > 0 {
+0720 |         local rp = 100*`ch'/`dnm'
+0721 |         if `rp' >= `recpct' {
+0722 |             local pct = cond(`den'>0, `ch'/`den', .)
+0723 |             local rps = string(`rp', "%4.1f")
+0724 |             local w5 = cond(`rp' >= `urgrec', "Urgent", "Check")
+0725 |             local c5 = cond(`rp' >= `urgrec', 2, 1)
+0726 |             post qc ("`cty'") ("`srv'") (`yr') ("`reg'") ("`v'") ("`w5'") ///
+0727 |                 (`ch') (`pct') (`rp') ///
+0728 |                 ("Variable <`v'> re-codes `rps' pct of the people who had a value") ///
+0729 |                 ("") (5) (`c5')
+0730 |         }
+0731 |     }
+0732 | }
+0733 | 
+0734 | postclose qc
+0735 | 
+0736 | *--- order worst first, then number the rows
+0737 | use `QC', clear
+0738 | *--- worst first, and biggest first within each severity
+0739 | gsort -code -impact region acronym year variable test
+0740 | gen int contador = _n
+0741 | order acronym survey year region contador variable warn impact freq percentage ///
+0742 |       desc iff test code
+0743 | format percentage %9.6f
+0744 | format impact %6.1f
+0745 | 
+0746 | label var acronym    "acronym"
+0747 | label var survey     "survey"
+0748 | label var year       "year"
+0749 | label var region     "region"
+0750 | label var contador   "contador"
+0751 | label var variable   "variable"
+0752 | label var warn       "warn"
+0753 | label var freq       "freq"
+0754 | label var percentage "percentage"
+0755 | label var impact     "impact (pct)"
+0756 | label var desc       "desc"
+0757 | label var iff        "iff"
+0758 | label var test       "test"
+0759 | label var code       "code"
+0760 | 
+0761 | qui count
+0762 | local nqc = r(N)
+0763 | qui count if warn=="Urgent"
+0764 | local nurg = r(N)
+0765 | tempfile SHQ
+0766 | qui save `SHQ'
+0767 | di as text "  qcheck : `nqc' findings, `nurg' Urgent"
+0768 | 
+0769 | 
+0770 | *===============================================================
+0771 | * WRITE THE WORKBOOK
+0772 | *===============================================================
+0773 | putexcel set "`outfile'", sheet("READ ME FIRST") replace
+0774 | 
+0775 | putexcel A1 = "LOCAL RE-HARMONIZATION -- QUALITY CHECK", bold
+0776 | putexcel A2 = "Round `rnd'.  Run `c(current_date)' `c(current_time)'."
+0777 | 
+0778 | putexcel A4 = "WHAT THIS IS", bold
+0779 | putexcel A5 = "Regions re-harmonize survey files and send them to us. Before they replace what"
+0780 | putexcel A6 = "is in DataLibWeb, every file is joined to DLW person by person and what moved is"
+0781 | putexcel A7 = "recorded."
+0782 | putexcel A8 = "THE CODES ARE JUDGED AGAINST THE GMD GUIDELINES, NOT AGAINST DLW. A survey may"
+0783 | putexcel A9 = "legitimately use only 2 of 4 allowed categories, because that is what the"
+0784 | putexcel A10 = "questionnaire asked, and DLW will then only ever show those 2. That is fine. What"
+0785 | putexcel A11 = "is not fine is a code OUTSIDE the allowed set. The allowed sets come from the"
+0786 | putexcel A12 = "guidelines tables 4.1, 5.x, 6.x and 7.x, written into section 5 of this script."
+0787 | 
+0788 | putexcel A14 = "SHEET: QCHECK  -- START HERE", bold
+0789 | putexcel A15 = "One row per DETECTED ERROR, in the same shape as the qcheck output the team"
+0790 | putexcel A16 = "already uses. Urgent rows are shaded and sorted to the top."
+0791 | putexcel B17 = "warn   Urgent, Check or Note. code is the same thing as a number: 2, 1, 0."
+0792 | putexcel B18 = "freq   observations failing that test. percentage is freq over matched rows."
+0793 | putexcel B19 = "iff    the Stata condition that reproduces it. Paste it and run."
+0794 | putexcel B20 = "test   stable test number, so the same test keeps the same id across rounds."
+0795 | putexcel A21 = "THE TESTS"
+0796 | putexcel B21 = "1  a code outside the GMD guidelines                 Urgent"
+0797 | putexcel B22 = "2  every observation is missing                      Urgent"
+0798 | putexcel B23 = "3  the variable holds only one value                 Check"
+0799 | putexcel B24 = "4  lost more than `losspct' pct of its values               Check"
+0800 | putexcel B25 = "5  more than `recpct' pct of people re-coded                Check"
+0801 | putexcel B26 = "6  a category share moved by `bigpp' points or more         Check"
+0802 | putexcel B27 = "7  the region did not deliver the variable           Note"
+0803 | putexcel A29 = "The two sheets after it are the supporting detail behind these rows."
+0804 | 
+0805 | putexcel A31 = "SHEET: WHAT CHANGED", bold
+0806 | putexcel A11 = "One row per country-year and variable. Eight columns. No colour: this sheet only"
+0807 | putexcel A12 = "says WHETHER something changed, not whether it matters."
+0808 | putexcel A37 = "what happened"
+0809 | putexcel B37 = "unchanged, gained, lost, recoded, BLANKED, NEW SERIES, mixed, not delivered."
+0810 | putexcel A38 = "local file vs DLW"
+0811 | putexcel B38 = "the same thing in numbers, e.g. [ESTIMATE] lost, [ESTIMATE] gained, [ESTIMATE] recoded."
+0812 | putexcel A39 = "codes in the local file"
+0813 | putexcel B39 = "the category numbers the local file actually uses."
+0814 | putexcel A40 = "codes in DLW"
+0815 | putexcel B40 = "the category numbers DLW uses. For reference only, NOT the standard."
+0816 | putexcel A41 = "codes allowed by the guidelines"
+0817 | putexcel B41 = "the standard. not checked means that variable has no codebook entry yet."
+0818 | putexcel A42 = "CODES OUTSIDE THE GUIDELINES"
+0819 | putexcel B42 = "THE COLUMN TO FILTER ON. Lists any code the guidelines do not allow, and says"
+0820 | putexcel B43 = "whether it came from the local file or from DLW. Blank means every code is legal."
+0821 | putexcel B44 = "These rows are sorted to the top of the sheet."
+0822 | 
+0823 | putexcel A46 = "SHEET 2: DEGREE OF CHANGE", bold
+0824 | putexcel A47 = "One row per CATEGORY of each variable. This is where the judgement is, so this"
+0825 | putexcel A48 = "is where the colour is. Shaded rows are sorted to the top."
+0826 | putexcel A49 = "code vs GMD guidelines"
+0827 | putexcel B49 = "allowed = the guidelines permit this number."
+0828 | putexcel B50 = "OUTSIDE GUIDELINES = they do not. If the guidelines give 4 categories and the"
+0829 | putexcel B51 = "file uses a 5th, this is where it appears."
+0830 | putexcel B52 = "not checked = no codebook entry for that variable yet."
+0831 | putexcel A53 = "which file uses this code"
+0832 | putexcel B53 = "both, local only, or DLW only. A category only one side uses is NOT by itself a"
+0833 | putexcel B54 = "problem: a survey can legitimately fill only some of the allowed categories."
+0834 | putexcel A55 = "change, percentage points"
+0835 | putexcel B55 = "the share of the sample in that category, after minus before. The number to read."
+0836 | putexcel A56 = "flag"
+0837 | putexcel B56 = "CODE OUTSIDE GUIDELINES = the code is not in the allowed set."
+0838 | putexcel B57 = "BIG SHIFT = the share moved by `bigpp' points or more."
+0839 | putexcel B58 = "disappeared = the category had people and now has none."
+0840 | putexcel B59 = "new = the category was empty and now has people."
+0841 | putexcel A60 = "in words"
+0842 | putexcel B60 = "the row as a sentence, for pasting into an email."
+0843 | 
+0844 | putexcel A64 = "WORKED EXAMPLES", bold
+0845 | putexcel A65 = "ISO3 0000 electricity. Sheet 1 shows codes in DLW as 0 1 and codes in the local"
+0846 | putexcel A66 = "file as 3 4. Sheet 2 shades four rows: Yes drops 96 points to zero while code 3"
+0847 | putexcel A67 = "picks up the same 96. Nothing happened to the households. EAP sent an electricity"
+0848 | putexcel A68 = "SOURCE code where GMD expects a yes/no."
+0849 | putexcel A69 = "ISO3 0000 educat4. Sheet 2 shows No education going from 5 pct to 22 pct and"
+0850 | putexcel A70 = "Tertiary from 21 pct to 0. That one traced back to a mapping error in the"
+0851 | putexcel A71 = "region's own do-file. Note its CODES are legal, 1 to 4: only the counts moved."
+0852 | putexcel A72 = "That is why both tests are needed, not just the code check."
+0853 | 
+0854 | putexcel A73 = "WHAT A SHADED ROW DOES NOT MEAN", bold
+0855 | putexcel A74 = "Not every flag is an error. Some blanked variables are intentional: the"
+0856 | putexcel A75 = "re-harmonization found the question was never asked, so the value should be"
+0857 | putexcel A76 = "missing. The point is that each one is a decision somebody has confirmed,"
+0858 | putexcel A77 = "rather than a surprise after publication. A code OUTSIDE GUIDELINES is different:"
+0859 | putexcel A78 = "that one is almost always a mistake in the region's do-file."
+0860 | putexcel A79 = "A category nobody is in is NOT a problem. A survey can legitimately fill only 2 of"
+0861 | putexcel A80 = "the 4 allowed categories, because that is what the questionnaire asked."
+0862 | 
+0863 | putexcel A83 = "COUNTS IN THIS RUN", bold
+0864 | putexcel A84 = "rows in sheet 1"
+0865 | putexcel B84 = `nrows1'
+0866 | putexcel A85 = "rows in sheet 2"
+0867 | putexcel B85 = `nrows2'
+0868 | putexcel A86 = "of those shaded"
+0869 | putexcel B86 = `nflag2'
+0870 | putexcel A87 = "on a code outside the guidelines"
+0871 | putexcel B87 = `nnotin'
+0872 | putexcel A88 = "variables in sheet 1 with an illegal code"
+0873 | putexcel B88 = `nbad1'
+0874 | 
+0875 | *--- the qcheck sheet, first
+0876 | use `SHQ', clear
+0877 | export excel using "`outfile'", sheet("QCHECK", modify) firstrow(varlabels)
+0878 | putexcel set "`outfile'", sheet("QCHECK") modify
+0879 | putexcel A1:N1, overwritefmt bold fpattern(solid, "217 217 217")
+0880 | qui count if warn=="Urgent"
+0881 | if r(N) > 0 {
+0882 |     local lr = 1 + r(N)
+0883 |     putexcel A2:N`lr', overwritefmt fpattern(solid, "255 199 206") ///
+0884 |         font("Calibri", 11, "156 0 6")
+0885 | }
+0886 | 
+0887 | *--- sheet 1, plain
+0888 | use `SH1', clear
+0889 | export excel using "`outfile'", sheet("WHAT CHANGED", modify) firstrow(varlabels)
+0890 | putexcel set "`outfile'", sheet("WHAT CHANGED") modify
+0891 | putexcel A1:J1, overwritefmt bold fpattern(solid, "217 217 217")
+0892 | 
+0893 | *--- sheet 2, with the colour
+0894 | use `SH2', clear
+0895 | export excel using "`outfile'", sheet("DEGREE OF CHANGE", modify) firstrow(varlabels)
+0896 | 
+0897 | putexcel set "`outfile'", sheet("DEGREE OF CHANGE") modify
+0898 | putexcel A1:P1, overwritefmt bold fpattern(solid, "217 217 217")
+0899 | 
+0900 | *    Flagged rows were sorted to the top, so this is one block and
+0901 | *    one call, not one call per row.
+0902 | if `nflag2' > 0 {
+0903 |     local lastrow = 1 + `nflag2'
+0904 |     putexcel A2:P`lastrow', overwritefmt fpattern(solid, "255 199 206") ///
+0905 |         font("Calibri", 11, "156 0 6")
+0906 | }
+0907 | 
+0908 | 
+0909 | *===============================================================
+0910 | * SCREEN READOUT
+0911 | *===============================================================
+0912 | use `SH1', clear
+0913 | di as result _n(2) "{hline 78}"
+0914 | di as result "  SHEET 1 -- what happened, by region"
+0915 | di as result "{hline 78}"
+0916 | tab whathappened region
+0917 | 
+0918 | use `SH2', clear
+0919 | di as result _n(2) "{hline 78}"
+0920 | di as result "  CODES OUTSIDE THE GMD GUIDELINES"
+0921 | di as result "  Judged against the guidelines, not against DLW."
+0922 | di as result "{hline 78}"
+0923 | qui count if code_vs_guidelines=="OUTSIDE GUIDELINES"
+0924 | if r(N) == 0 di as text "  none."
+0925 | else list region country year variable value codes_allowed used_by pct_local ///
+0926 |     if code_vs_guidelines=="OUTSIDE GUIDELINES", noobs sep(0) abbrev(16)
+0927 | 
+0928 | di as result _n(2) "{hline 78}"
+0929 | di as result "  BIGGEST MOVES IN THE SHARE OF THE SAMPLE"
+0930 | di as result "{hline 78}"
+0931 | gen double _abs = abs(pp_change)
+0932 | gsort -_abs
+0933 | list region country year reads_as pp_change if flag!="" in 1/30, noobs sep(0) abbrev(20)
+0934 | 
+0935 | di as result _n(2) "{hline 78}"
+0936 | di as result "  DONE"
+0937 | di as result "{hline 78}"
+0938 | di as text "  workbook: `outfile'"
+0939 | di as text "  sheets  : READ ME FIRST | QCHECK | WHAT CHANGED | DEGREE OF CHANGE"
+0940 | di as text _n "  Sheet 1 is the inventory, eight columns, no colour."
+0941 | di as text "  Sheet 2 is where to look: shaded rows are at the top."
+0942 | di as result "{hline 78}" _n
+```

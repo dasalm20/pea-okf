@@ -1,0 +1,616 @@
+# 01.Programs/01ab-GMI extended indicators labor ind.do
+
+Sanitized source projection; applicability placeholders are not executable values. Original SHA256: f3ad94e7dc1b956df8df6280fe4334de0cd751baeba049e73a5d2b7575aa6dbd
+
+```stata
+0001 | //======================================================================
+0002 | // 01ab-GMI_extended_indicators_labor_ind.do
+0003 | // GMI extended indicators - LABOR / INDUSTRY breakdown, individual level
+0004 | //
+0005 | // Builds poverty x labor-force-status x industry x employment-status
+0006 | // cross-tabs (working/non-working, industry sector, employment status)
+0007 | // for each subgroup category, one survey at a time, using DataLibWeb (dlw).
+0008 | // Same resume/checkpoint design as 01aa, but the subgroup set here is
+0009 | // labor-market indicators rather than demographics.
+0010 | //
+0011 | // Globals/paths only were changed in this pass -- see 00-Master.do.
+0012 | // No analysis logic, subgroup definitions, or loop structure were touched.
+0013 | //======================================================================
+0014 | 
+0015 | //GMI extended indicators - labor individual
+0016 | //Running in the server, so paths will be different.
+0017 | clear
+0018 | macro drop resume nobs
+0019 | set max_memory ., permanently
+0020 | 
+0021 | // Checkpoint index into the survey list (data1) to resume from after a
+0022 | // crash/interruption -- NOT an input/output path, left untouched.
+0023 | local resume $resume_ab
+0024 | 
+0025 | cap confirm integer number `resume'
+0026 | if _rc {
+0027 | 	dis as error "local resume is not a valid number: |`resume'|"
+0028 | 	exit 198
+0029 | }
+0030 | 
+0031 | // Accumulator file that collects results across every survey/subgroup loop
+0032 | // iteration below -- moved from the personal scratch drive to $other.
+0033 | local dataall "$other\_tmp_dataall_indlabor_${rnd}.dta"
+0034 | 
+0035 | set varabbrev off
+0036 | 
+0037 | //===============================================================
+0038 | // Globals now come from 00-Master.do -- run that first, every
+0039 | // session, before this file. Original hardcoded block commented
+0040 | // out below for reference (per-line // instead of /* */, so it
+0041 | // can't run into a downstream unrelated /* or */ and swallow more
+0042 | // than intended).
+0043 | //===============================================================
+0044 | //global rnd SM26
+0045 | //global path \\wbgfscifs01\GTSD\03.projects_corp\04.GPWG\04.GPWG_${rnd}\04.GPWG_${rnd}_QA
+0046 | //global reposource "${path}\01.programs\02.dofile\repo\"
+0047 | //global out D:\daylan\test\GMI\out\
+0048 | //
+0049 | //global ppplist 2017 2021
+0050 | //global pppmax 2021
+0051 | //
+0052 | //global floor2021 0.28
+0053 | //global gap2021 28
+0054 | //global floor2017 0.25
+0055 | //global gap2017 25
+0056 | //global floor2011 0.22
+0057 | //global gap2011 22
+0058 | //
+0059 | //global plines2021 300 420 830 450 630 1245 600 840 1660
+0060 | //global plines2017 215 365 685 322 547 1027 430 730 1370
+0061 | //global plines2011 190 320 550
+0062 | //global cpiversion Support_2005_CPI_V15_M
+0063 | //
+0064 | //global pfw "D:\daylan\test\GMI\Survey_price_framework.dta"
+0065 | //global repotxt repo(use ${rnd}all) reporoot(${reposource})
+0066 | 
+0067 | if `resume'==1 {
+0068 | 	save `"`dataall'"', replace emptyok
+0069 | }
+0070 | 
+0071 | //subnat data
+0072 | // Already inactive in the original file (author's own comment block) --
+0073 | // left untouched, not part of this globals-only pass.
+0074 | /*
+0075 | tempfile datasub1
+0076 | import excel using "\\wbgfscifs01\GPWG-GMD\Datalib\Minh\Subnational ${rnd}\02.input\Subnational list - ${rnd}.xlsx" , first clear sheet("List")
+0077 | 
+0078 | drop if level==""
+0079 | split surveyid,parse("_")
+0080 | ren surveyid3 survname
+0081 | drop surveyid1 surveyid2 surveyid4- surveyid8
+0082 | 
+0083 | drop if code=="ISO3"
+0084 | drop if code=="ISO3" & survname=="EU-SILC"
+0085 | drop if code=="ISO3" & survname=="EU-SILC"
+0086 | drop if code=="ISO3" & survname=="EU-SILC"
+0087 | drop if code=="ISO3" & survname=="EU-SILC"
+0088 | drop if code=="ISO3" & survname=="EU-SILC"
+0089 | *replace level = "subnatid2" if code=="ISO3" & year==0000
+0090 | drop if code=="ISO3" & survname=="PNAD" & year>=0000 & year<=0000
+0091 | 
+0092 | //remove in the v12 data CPI - SM2025
+0093 | drop if code=="ISO3" & survname=="EPH" & year==0000
+0094 | drop if code=="ISO3" & survname=="NSS-SCH1" & year==0000
+0095 | 
+0096 | //Not yet in
+0097 | keep if mod=="ALL"
+0098 | duplicates tag surveyid, gen(a)
+0099 | drop if code=="ISO3" & a==1 & level=="national"
+0100 | drop if a==1 & lowest=="" & code~="ISO3"
+0101 | gen country = code
+0102 | save `datasub1', replace
+0103 | */
+0104 | // Calling the input
+0105 | // Master survey list for the round: one row per country/year/survey/module
+0106 | // combination. This drives the resume index and the forv loop below.
+0107 | tempfile data1
+0108 | use "$fromservers\repo_${rnd}all.dta" , clear
+0109 | gen year = years
+0110 | destring year, replace
+0111 | 
+0112 | // Exclude modules/surveys/country-year combinations not in scope for this
+0113 | // round (ASPIRE, labor, group aggregates; known problem surveys).
+0114 | drop if module=="ASPIRE" | module=="L"|module=="GROUP"
+0115 | *keep if module=="GPWG"|module=="BIN"
+0116 | drop if survname=="EU-SILC" & module=="BIN"
+0117 | drop if country=="ISO3"
+0118 | 
+0119 | drop if country=="ISO3" & survname=="EU-SILC"
+0120 | drop if country=="ISO3" & survname=="PNAD" & year>=0000 & year<=0000
+0121 | //remove in the v12 data CPI - SM2025
+0122 | drop if country=="ISO3" & survname=="EPH" & year==0000
+0123 | drop if country=="ISO3" & survname=="NSS-SCH1" & year==0000
+0124 | 
+0125 | //Not yet in
+0126 | 
+0127 | drop  if country=="ISO3" & year==0000 // No AGE VARIABLE
+0128 | 
+0129 | 
+0130 | keep if module=="ALL"
+0131 | 
+0132 | //bring in correct subnatid
+0133 | // Already inactive in the original file -- left untouched.
+0134 | /*
+0135 | //easy with country year survname
+0136 | merge 1:1 country year survname using `datasub1', keepus(level)
+0137 | *merge 1:1 surveyid using `datasub1', keepus(level)
+0138 | drop if _merge==2
+0139 | drop _merge
+0140 | */
+0141 | // No subnational-id merge is active here (unlike 01aa) -- every
+0142 | // observation is simply tagged "national".
+0143 | cap gen level ="national"
+0144 | replace level = "national" if level==""
+0145 | *keep if country=="ISO3"
+0146 | 
+0147 | 
+0148 | 
+0149 | 
+0150 | // Total number of country/year/survey/module rows to loop over.
+0151 | local nobs = _N
+0152 | save `data1', replace
+0153 | 
+0154 | // If resuming mid-run, purge any partial results for survey keys at or
+0155 | // past the resume index from the existing accumulator before re-adding them,
+0156 | // so a partially-processed survey isn't double-counted.
+0157 | if `resume' > 1 {
+0158 | 	tempfile purgekeys
+0159 | 	use `data1', clear
+0160 | 	keep in `resume'/`=_N'
+0161 | 	keep country year surveyid
+0162 | 	ren country code
+0163 | 	duplicates drop
+0164 | 	save `purgekeys', replace
+0165 | 	local npurge = _N
+0166 | 	noi dis in red "Resuming at index `resume': purging `npurge' survey key(s)"
+0167 | 
+0168 | 	use `"`dataall'"', clear
+0169 | 	cap confirm variable surveyid
+0170 | 	if _rc==0 {
+0171 | 		merge m:1 code year surveyid using `purgekeys', keep(master) nogen
+0172 | 	}
+0173 | 	save `"`dataall'"', replace
+0174 | }
+0175 | 
+0176 | //======================================================================
+0177 | // MAIN LOOP -- one iteration per survey (country/year/surveyid/module)
+0178 | // from `resume' to `nobs'. Pulls the survey microdata via dlw, builds
+0179 | // labor-market subgroup indicators, computes poverty status by line,
+0180 | // cross-tabs poverty x labor indicators, then aggregates by subgroup.
+0181 | //======================================================================
+0182 | forv i=`resume'(1)`nobs' {
+0183 | *forv i=1(1)2 {
+0184 |     use `data1', clear
+0185 | 	local code = country[`i']
+0186 | 	local year = year[`i']
+0187 | 	local surveyid = surveyid[`i']
+0188 | 	local survname = survname[`i']
+0189 | 	local mod = module[`i']
+0190 | 	local lvlvar = level[`i']
+0191 | 
+0192 | 	//load merged subnatid data
+0193 | 	// Already inactive in the original file -- left untouched.
+0194 | 	/*
+0195 | 	qui {
+0196 | 		*import excel using "${out}\\02.input\\Subnat merged - ${rnd}.xlsx", sheet(Merged) clear first
+0197 | 		import excel using "\\wbgfscifs01\GPWG-GMD\Datalib\Minh\Subnational ${rnd}\02.input\Subnat merged - ${rnd}.xlsx"  , sheet(Merged) clear first
+0198 | 		*keep if code=="`code'" & year==`year' & survname=="`survname'" & lvlvar=="`lvlvar'"
+0199 | 		keep if code=="`code'"
+0200 | 		local matacode = 0
+0201 | 		if _N > 0 {
+0202 | 			local matacode = 1
+0203 | 			putmata runcode = (coderun), replace
+0204 | 		}
+0205 | 	}
+0206 | 	*/
+0207 | 	local matacode 0
+0208 | 
+0209 | 	// Pull the individual-level microdata for this country/year/survey via
+0210 | 	// DataLibWeb. If the pull fails (cap), the whole iteration is skipped.
+0211 | 	*dis "dlw, country(`code') year(`year') type(gmd) surveyid(`survname') mod(`mod') files $repotxt"
+0212 | 	cap dlw, country(`code') year(`year') type(gmd) surveyid(`survname') mod(`mod') files $repotxt
+0213 | 	qui if _rc==0 {
+0214 | 		noi dis in white "`i'-`code'-`year'-`surveyid'-`lvlvar'-`mod'"
+0215 | 
+0216 | 		*local oklist _all_
+0217 | 		//FIX some subnatid issues
+0218 | 		// Normalize the subnational-level variable so it can be used as a
+0219 | 		// by() grouping variable later (string, trimmed) -- if the survey
+0220 | 		// is national only, skip straight to _all_.
+0221 | 		if "`lvlvar'"=="national" local oklist _all_
+0222 | 		qui else {
+0223 | 			cap confirm numeric variable `lvlvar'
+0224 | 			if _rc==0 {
+0225 | 				tempvar xvar
+0226 | 				cap decode `lvlvar', gen(`xvar')
+0227 | 				if _rc~=0 tostring `lvlvar', gen(`xvar')
+0228 | 				cap drop `lvlvar'
+0229 | 				rename `xvar' `lvlvar'
+0230 | 			}
+0231 | 			replace `lvlvar' = trim(`lvlvar')
+0232 | 			local oklist `lvlvar'
+0233 | 		}
+0234 | 
+0235 | 		if `matacode'==1 {
+0236 | 			mata: st_local("nr", strofreal(rows(runcode)))
+0237 | 			forv i0=1(1)`nr' {
+0238 | 				mata: st_local("runline", runcode[`i0'])
+0239 | 				`runline'
+0240 | 			}
+0241 | 		}
+0242 | 
+0243 | 		//Weight
+0244 | 		// GPWG module surveys use `weight`; ALL-module surveys prefer the
+0245 | 		// person-level weight `weight_p` when present, else fall back.
+0246 | 		if "`mod'"=="GPWG" local wgt weight
+0247 | 		if "`mod'"=="ALL" {
+0248 | 			cap des weight_p
+0249 | 			if _rc==0 local wgt weight_p
+0250 | 			else local wgt weight
+0251 | 		}
+0252 | 		*qui
+0253 | 		qui {
+0254 | 			drop if welfare==.
+0255 | 			drop if `wgt'==.
+0256 | 			cap des age
+0257 | 			count
+0258 | 			if r(N)>0 {
+0259 | 				//---create differet subgroups---
+0260 | 				// Base "everyone" category, used as the top-level by() group.
+0261 | 				gen _all_ = "Total"
+0262 | 				gen _total = 1
+0263 | 				//urban/rural
+0264 | 				local urbvar
+0265 | 				cap des urban
+0266 | 				qui if _rc==0 {
+0267 | 					ta urban
+0268 | 					if r(N)>0 {
+0269 | 						cap decode urban, gen(_urban_)
+0270 | 						if _rc~=0 tostring urban, gen(_urban_)
+0271 | 						replace _urban_ = trim(_urban_)
+0272 | 						local urbvar _urban_
+0273 | 					}
+0274 | 				} //urban
+0275 | 
+0276 | 				//gender
+0277 | 				local gendervar
+0278 | 				cap des male
+0279 | 				qui if _rc==0 {
+0280 | 					ta male
+0281 | 					if r(N)>0 {
+0282 | 						cap decode male, gen(_male_)
+0283 | 						if _rc~=0 tostring male, gen(_male_)
+0284 | 						replace _male_ = trim(_male_)
+0285 | 						local gendervar _male_
+0286 | 					}
+0287 | 				} //gender
+0288 | 
+0289 | 				//define age groups
+0290 | 				// 3 working-age bands: Youth 15-24, Prime 25-54, Older 55-64.
+0291 | 				// ISO3 is skipped here (age not populated in earlier years).
+0292 | 				local agevar
+0293 | 				cap des age
+0294 | 				qui if _rc==0 {
+0295 | 					//special countries age is empty
+0296 | 					if "`=upper("`code'")'" == "ISO3" {
+0297 | 						//skip for now
+0298 | 					}
+0299 | 					else { //other countries and ISO3 before 0000
+0300 | 						su age
+0301 | 						if r(N)>0 {
+0302 | 							gen _agegr1_ = "Youth (15-24)" if age>=15 & age<=24
+0303 | 							replace _agegr1_ = "Prime (25-54)" if age>=25 & age<=54
+0304 | 							replace _agegr1_ = "Older (55-64)" if age>=55 & age<=64
+0305 | 							local agevar _agegr1_
+0306 | 						} //rn
+0307 | 					} //non-ISO3
+0308 | 				} //age
+0309 | 
+0310 | 				//educat4
+0311 | 				// Education attainment among adults (age>=15): none/primary/
+0312 | 				// secondary/tertiary/missing.
+0313 | 				local eduvar
+0314 | 				cap des educat4
+0315 | 				qui if _rc==0 {
+0316 | 					ta educat4
+0317 | 					if r(N)>0 {
+0318 | 						gen _educat = "No education" if educat4==1 & age>=15 & !missing(age)
+0319 | 						replace _educat = "Primary" if educat4==2 & age>=15 & !missing(age)
+0320 | 						replace _educat = "Secondary" if educat4==3 & age>=15 & !missing(age)
+0321 | 						replace _educat = "Tertiary" if educat4==4 & age>=15 & !missing(age)
+0322 | 						replace _educat = "MISSING" if missing(educat4) & age>=15 & !missing(age)
+0323 | 						local eduvar _educat
+0324 | 					}
+0325 | 				} //educat4
+0326 | 
+0327 | 				//subnat
+0328 | 				//combine 2 reference calls (7-day, 1-year, other recalls)
+0329 | 				// Some surveys collect labor variables under two recall
+0330 | 				// periods; fill the primary variable from the "_year" variant
+0331 | 				// wherever the primary is missing.
+0332 | 				cap replace lstatus = lstatus_year if missing(lstatus) & !missing(lstatus_year)
+0333 | 				cap replace industrycat4 = industrycat4_year if missing(industrycat4) & !missing(industrycat4_year)
+0334 | 				cap replace industrycat10 = industrycat10_year if missing(industrycat10) & !missing(industrycat10_year)
+0335 | 				cap replace empstat = empstat_year if missing(empstat) & !missing(empstat_year)
+0336 | 
+0337 | 				//Columns
+0338 | 				// Labor force status (working age 15-64): working / not
+0339 | 				// working / missing status. `lstatus_indok` gates the
+0340 | 				// industry/employment-status blocks below, since those are
+0341 | 				// only meaningful conditional on lstatus being available.
+0342 | 				local lstatus_list
+0343 | 				local lstatus_indok = 0
+0344 | 				cap des lstatus
+0345 | 				if _rc==0 {
+0346 | 					cap su lstatus,d
+0347 | 					if r(N)>0 {
+0348 | 						gen _working_ind = lstatus==1 if age>=15 & age<=64 & !missing(lstatus)
+0349 | 						gen _notworking_ind = (lstatus==2|lstatus==3) if age>=15 & age<=64. & !missing(lstatus)
+0350 | 						gen _misslfs_ind = missing(lstatus) if age>=15 & age<=64
+0351 | 						local lstatus_indok = 1
+0352 | 						local lstatus_list _working_ind _notworking_ind _misslfs_ind
+0353 | 					}
+0354 | 				} //lstatus
+0355 | 
+0356 | 				// Industry sector (4-category), among those working
+0357 | 				// (lstatus==1): agriculture/industry/services/other, plus
+0358 | 				// combined non-agriculture indicators and a missing flag.
+0359 | 				local industrycat4_list
+0360 | 				local ind4_ok = 0
+0361 | 				cap des industrycat4
+0362 | 				if _rc==0 {
+0363 | 					cap su industrycat4,d
+0364 | 					if r(N)>0 & `lstatus_indok'==1 {
+0365 | 						local ind4_ok = 1
+0366 | 						gen _industry_nonagr_ind = industrycat4>=2 & industrycat4<=4 if age>=15 & age<=64 & !missing(industrycat4) & lstatus==1
+0367 | 						gen _industry_nonagr_ind3 = industrycat4>=2 & industrycat4<=3 if age>=15 & age<=64 & !missing(industrycat4) & lstatus==1
+0368 | 						forv x=1(1)4 {
+0369 | 							gen _industry_ind`x' = industrycat4==`x' if age>=15 & age<=64 & !missing(industrycat4) & lstatus==1
+0370 | 						}
+0371 | 						gen _industry_ind_m = missing(industrycat4) if age>=15 & age<=64 & lstatus==1
+0372 | 						local industrycat4_list _industry_ind1 _industry_ind2 _industry_ind3 _industry_ind4 _industry_nonagr_ind _industry_nonagr_ind3 _industry_ind_m
+0373 | 					}
+0374 | 				} //industrycat4
+0375 | 
+0376 | 				// Industry sector (10-category, finer breakdown), same
+0377 | 				// working-age/working-status conditioning as above.
+0378 | 				local industrycat10_list
+0379 | 				cap des industrycat10
+0380 | 				if _rc==0 {
+0381 | 					cap su industrycat10,d
+0382 | 					if r(N)>0 & `lstatus_indok'==1 {
+0383 | 						forv x=1(1)10 {
+0384 | 							cap gen _industry10_ind`x' = industrycat10==`x' if age>=15 & age<=64 & !missing(industrycat10) & lstatus==1
+0385 | 							if _rc==0 local industrycat10_list "`industrycat10_list' _industry10_ind`x'"
+0386 | 						}
+0387 | 						gen _industry10_ind_m = missing(industrycat10) if age>=15 & age<=64 & lstatus==1
+0388 | 						local industrycat10_list "`industrycat10_list' _industry10_ind_m"
+0389 | 					}
+0390 | 				} //industrycat10
+0391 | 
+0392 | 				// Employment status (5-category: e.g. wage employee,
+0393 | 				// employer, self-employed, unpaid family worker, other),
+0394 | 				// among those working.
+0395 | 				local emps_ok = 0
+0396 | 				local empstat_list
+0397 | 				cap des empstat
+0398 | 				if _rc==0 {
+0399 | 					cap su empstat,d
+0400 | 					if r(N)>0 & `lstatus_indok'==1 {
+0401 | 						local emps_ok = 1
+0402 | 						forv x=1(1)5 {
+0403 | 							gen _empstat_ind`x' = empstat==`x' if age>=15 & age<=64 & !missing(empstat) & lstatus==1
+0404 | 						}
+0405 | 						gen _empstat_ind_m = missing(empstat) if age>=15 & age<=64 & lstatus==1
+0406 | 						local empstat_list _empstat_ind1 _empstat_ind2 _empstat_ind3 _empstat_ind4 _empstat_ind5 _empstat_ind_m
+0407 | 					}
+0408 | 				} //empstat
+0409 | 			} //age r(N)>0
+0410 | 
+0411 | 			//---end create differet subgroups---
+0412 | 
+0413 | 			// For each PPP vintage (2017, 2021): compute daily welfare in
+0414 | 			// that vintage's prices, winsorize at the vintage floor, then
+0415 | 			// for each poverty line in that vintage build a poverty
+0416 | 			// indicator and cross-tab it against labor status, industry,
+0417 | 			// and employment status (share of poor/non-poor working in
+0418 | 			// each category) -- exactly mirroring 01aa's poverty loop, but
+0419 | 			// with labor/industry/employment cross-tabs instead of
+0420 | 			// demographic cross-tabs.
+0421 | 			local byind
+0422 | 			foreach ppp1 of global ppplist {
+0423 | 				cap confirm variable cpi`ppp1'
+0424 | 
+0425 | 				gen double __a`ppp1' = welfare/cpi`ppp1'/icp`ppp1'/365
+0426 | 				drop if __a`ppp1'<0
+0427 | 				//winsorize
+0428 | 				replace __a`ppp1' = ${floor`ppp1'} if __a`ppp1' < ${floor`ppp1'}
+0429 | 
+0430 | 				foreach num of numlist ${plines`ppp1'} {
+0431 | 					gen double poor`num' = __a`ppp1' < `=`num'/100' if __a`ppp1' ~=.
+0432 | 					local byind "`byind' poor`num'"
+0433 | 
+0434 | 					//lstatus
+0435 | 					if `lstatus_indok'==1 {
+0436 | 						//Share of poor working (%)
+0437 | 						gen poor`num'_wrk  = lstatus==1 if age>=15 & age<=64 & !missing(lstatus) & poor`num'==1
+0438 | 						//Share of non-poor working (%)
+0439 | 						gen nonpoor`num'_wrk  = lstatus==1 if age>=15 & age<=64 & !missing(lstatus) & poor`num'==0
+0440 | 						local byind "`byind' poor`num'_wrk nonpoor`num'_wrk"
+0441 | 					}
+0442 | 
+0443 | 					//industry cat4
+0444 | 					if `ind4_ok'==1 {
+0445 | 						forv l=1(1)4 {
+0446 | 							//Share of poor working in ind l (%)
+0447 | 							gen poor`num'_wrki4_`l'  = industrycat4==`l' if age>=15 & age<=64 & !missing(industrycat4) & poor`num'==1 & lstatus==1
+0448 | 
+0449 | 							//Share of non-poor working in ind l (%)
+0450 | 							gen nonpoor`num'_wrki4_`l' = industrycat4==`l' if age>=15 & age<=64 & !missing(industrycat4) & poor`num'==0 & lstatus==1
+0451 | 							local byind "`byind' poor`num'_wrki4_`l' nonpoor`num'_wrki4_`l'"
+0452 | 						}
+0453 | 						gen poor`num'_nonagr  = industrycat4>=2 & industrycat4<=4 if age>=15 & age<=64 & !missing(industrycat4) & poor`num'==1 & lstatus==1
+0454 | 						gen poor`num'_nonagr3 = industrycat4>=2 & industrycat4<=3 if age>=15 & age<=64 & !missing(industrycat4) & poor`num'==1 & lstatus==1
+0455 | 						local byind "`byind' poor`num'_nonagr poor`num'_nonagr3"
+0456 | 					}
+0457 | 
+0458 | 					//employment status
+0459 | 					if `emps_ok'==1 {
+0460 | 						forv l=1(1)5 {
+0461 | 							//Share of poor working in empstatus l (%)
+0462 | 							gen poor`num'_wrkemp_`l'  = empstat==`l' if age>=15 & age<=64 & !missing(empstat) & poor`num'==1 & lstatus==1
+0463 | 							//Share of non-poor working in ind l (%)
+0464 | 							gen nonpoor`num'_wrkemp_`l' = empstat==`l' if age>=15 & age<=64 & !missing(empstat) & poor`num'==0 & lstatus==1
+0465 | 							local byind "`byind' poor`num'_wrkemp_`l' nonpoor`num'_wrkemp_`l'"
+0466 | 						}
+0467 | 					}
+0468 | 				} //num
+0469 | 				*gen prosgap`ppp1' = ${gap`ppp1'}/__a`ppp1'
+0470 | 			} //ppplist
+0471 | 
+0472 | 			//b40 and quintiles
+0473 | 			// Already inactive in the original file -- left untouched.
+0474 | 			/*
+0475 | 			cap drop tmp
+0476 | 			_ebin __a${pppmax} [aw=`wgt'], gen(tmp) nq(5)
+0477 | 			gen poor_b40 = tmp <=2 if tmp~=.
+0478 | 			forv s=1(1)5 {
+0479 | 				gen poor_d`s' = tmp ==`s' if tmp~=.
+0480 | 			}
+0481 | 			drop tmp
+0482 | 			*/
+0483 | 			// Quintiles
+0484 | 			// Welfare quintiles (Q1 poorest ... Q5 richest) at the max PPP
+0485 | 			// vintage, weighted by the survey weight.
+0486 | 			_ebin __a${pppmax} [aw=`wgt'], nquantiles(5) gen(__quintile)
+0487 | 			gen quintiles = "Q1 (poorest 20%)" if __quintile==1
+0488 | 			replace quintiles = "Q2" if __quintile==2
+0489 | 			replace quintiles = "Q3" if __quintile==3
+0490 | 			replace quintiles = "Q4" if __quintile==4
+0491 | 			replace quintiles = "Q5 (richest 20%)" if __quintile==5
+0492 | 
+0493 | 			// Labor/industry/employment-status indicator lists, deduplicated.
+0494 | 			local demolist `lstatus_list' `industrycat4_list' `industrycat10_list' `empstat_list'
+0495 | 			local demolist : list uniq demolist
+0496 | 
+0497 | 			// Full list of subgroup categories to aggregate by (level below).
+0498 | 			local oklist2 _all_ `oklist' `urbvar' quintiles `gendervar' `agevar' `eduvar'
+0499 | 			local oklist2 : list uniq oklist2
+0500 | 
+0501 | 			//sample for calculation
+0502 | 			// Restrict to working-age population for all the aggregation below.
+0503 | 			keep if age >= 15 & age <= 64
+0504 | 
+0505 | 			//weight - sum (number of individuals)
+0506 | 			gen double h = `wgt'
+0507 | 			// Already inactive in the original file -- left untouched.
+0508 | 			/*
+0509 | 			gen b40 = `wgt' if poor_b40==1
+0510 | 			gen t60 = `wgt' if poor_b40==0
+0511 | 			forv s=1(1)5 {
+0512 | 				gen d_`s' = `wgt' if poor_d`s'==1
+0513 | 			}
+0514 | 
+0515 | 			//inequality - gini theil
+0516 | 			clonevar b1= __a${pppmax}
+0517 | 			clonevar b2= __a${pppmax}
+0518 | 			*/
+0519 | 			gen _count=1
+0520 | 		} //qui
+0521 | 
+0522 | 		tempfile data2
+0523 | 		save `data2', replace
+0524 | 
+0525 | 		//======================================================
+0526 | 		// AGGREGATION -- collapse to means/sums by each subgroup
+0527 | 		// category (oklist2), append into the running accumulator.
+0528 | 		//======================================================
+0529 | 		//subgroup estimates
+0530 | 		foreach lvl of local oklist2 {
+0531 | 		    use `data2', clear
+0532 | 			qui ta `lvl'
+0533 | 			qui if r(N)>0 {
+0534 | 				noi dis in yellow "`i'-1-`code'-`year'-`surveyid'-`mod' - `lvlvar' - `lvl'"
+0535 | 				cap replace `lvl'="Out of sample" if `lvl'==""
+0536 | 				cap replace `lvl'="Out of sample" if `lvl'==".-"
+0537 | 				*cap drop if `lvl'==".-"
+0538 | 				*groupfunction  [aw=`wvar'] if `touse', mean(`vars`var'') by(`row')
+0539 | 
+0540 | 				// Collapse: mean of poverty/labor indicators, raw sum of
+0541 | 				// counts/weights, count of surveys, grouped by this
+0542 | 				// subgroup's categories.
+0543 | 				groupfunction  [aw=`wgt'], mean(`byind' `demolist' ) rawsum(_count h) count(year) by(`lvl')
+0544 | 
+0545 | 				*gcollapse (mean) a poor* gap* prosgap* mean* (rawsum) _count h  (count) year (gini) min (p10) p10 = a (p20) p20 = a (p80) p80 = a (p90) p90 = a [aw=`wgt'], by(_id)
+0546 | 
+0547 | 				ren _count count
+0548 | 				ren year nohh
+0549 | 				ren h noind
+0550 | 				egen double totalhh = total(nohh)
+0551 | 				egen double totalind = total(noind)
+0552 | 
+0553 | 				gen sh_hh = nohh/totalhh
+0554 | 				gen sh_pop = noind/totalind
+0555 | 
+0556 | 				// Tag this collapsed result with which subgroup/level it
+0557 | 				// came from, then append into the accumulator and re-save
+0558 | 				// after every survey/subgroup so a crash loses minimal work.
+0559 | 				gen byvar = "`lvl'"
+0560 | 				gen lvlvar = "`lvlvar'"
+0561 | 				ren `lvl' level
+0562 | 				tostring level, replace
+0563 | 				gen code = "`code'"
+0564 | 				gen surveyid = "`surveyid'"
+0565 | 				gen year = `year'
+0566 | 				gen mod = "`mod'"
+0567 | 				*drop  d_* total_d_* b40 t60 totalb40 totalt60
+0568 | 
+0569 | 				append using `"`dataall'"'
+0570 | 				save `"`dataall'"', replace
+0571 | 				save "$interm\GMI_extended_${rnd}_ind_labor_sub", replace
+0572 | 			} //have obs
+0573 | 		} //lvl
+0574 | 	} //dlw
+0575 | } //count
+0576 | 
+0577 | cap use `"`dataall'"', clear
+0578 | cap use `"`dataall'"'
+0579 | /*
+0580 | //use `dataall', clear
+0581 | // NOTE: `s` is a bare interactive Stata command (opens the Data Editor in
+0582 | // Stata's interactive session) -- left as-is from the original file, not
+0583 | // a global/path, but flagging since it will pause an unattended batch run.
+0584 | s
+0585 | order code year surveyid lvlvar byvar level count
+0586 | sort code year surveyid lvlvar byvar level
+0587 | s
+0588 | 
+0589 | //===============================================================
+0590 | // FLAGGED -- trailing Subnational merge block (below).
+0591 | // Same issue as originally found in 01aa: it reads
+0592 | //   "${out}\Subnational_2017ICP_${rnd}_rev"
+0593 | // which is not one of this pipeline's declared inputs (00b/00c),
+0594 | // and "$out" no longer exists as a global under the new folder
+0595 | // structure (replaced by $interm/$pea/$other -- see 00-Master.do).
+0596 | // Left in place, NOT commented out or repointed, pending your
+0597 | // confirmation of what this block is meant to do and which file
+0598 | // it should actually read (this touches logic/inputs beyond a
+0599 | // pure global rename, so flagging rather than guessing).
+0600 | //===============================================================
+0601 | use "${out}\\Subnational_2017ICP_${rnd}_rev", clear
+0602 | replace survname="ECH-S2" if survname=="ECH" & year==0000
+0603 | replace level = "National" if level=="1" & byvar=="_all_"
+0604 | merge m:1 code year survname using $pfw , keepus(rep_year ref_year reg_pcn survey_coverage datatype comparability link)
+0605 | drop if _m==2
+0606 | drop _m
+0607 | order reg_pcn code year surveyid survname /*welfaretype*/ byvar level link survey_coverage datatype comparability poor* nohh noind totalhh totalind sh_hh sh_pop  sh_d_* mean* gini theil
+0608 | sort code year surveyid byvar level
+0609 | br
+0610 | */
+```

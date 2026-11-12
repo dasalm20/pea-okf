@@ -1,0 +1,448 @@
+# 01.Programs/archive/Get PIP for PEA.do
+
+Legacy direct PIP extraction at eighteen poverty lines
+
+Status: PARTIAL_STATIC. Every lexically active statement is indexed; complete runtime schema and macro expansion are not established.
+
+Source snapshot: numbered source (deployment lookup: lookup/sources/GMI_extended/source_maps/archive-Get_PIP_for_PEA-ba02e3.md.md)
+
+## Execution-order blocks
+
+### block:8dcd508d33f68475
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L4-L4`. Next: `block:ec349b85f74f5cad`.
+
+```stata
+clear
+```
+
+### block:ec349b85f74f5cad
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L5-L5`. Next: `block:64a041a90ff5a516`.
+
+```stata
+global rnd SM26
+```
+
+### block:64a041a90ff5a516
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L6-L6`. Next: `block:34f63f35c47cfffc`.
+
+```stata
+global rnd1 SM2026
+```
+
+### block:34f63f35c47cfffc
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L7-L7`. Next: `block:d07f823de515467b`.
+
+```stata
+global path \\wbgfscifs01\GTSD\03.projects_corp\04.GPWG\04.GPWG_${rnd}\04.GPWG_${rnd}_QA
+```
+
+### block:d07f823de515467b
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L8-L8`. Next: `block:6ac9a3d36cafc0b2`.
+
+```stata
+global reposource "${path}\01.programs\02.dofile\repo\"
+```
+
+### block:6ac9a3d36cafc0b2
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L10-L10`. Next: `block:b1f33269bea5059f`.
+
+```stata
+global out  D:\daylan\test\GMI\out\
+```
+
+### block:b1f33269bea5059f
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L11-L11`. Next: `block:6e6bf40ba639b370`.
+
+```stata
+global pwf "D:\daylan\test\GMI\Survey_price_framework.dta"
+```
+
+### block:6e6bf40ba639b370
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L13-L13`. Next: `block:d8f5234dcbb03d43`.
+
+```stata
+clear
+```
+
+### block:d8f5234dcbb03d43
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L14-L14`. Next: `block:468799f698c5d81f`.
+
+```stata
+tempfile dataall
+```
+
+### block:468799f698c5d81f
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L15-L15`. Next: `block:fef360536d8f5b85`.
+
+```stata
+save `dataall', replace emptyok
+```
+Write datasets: `dataset:65f842f01e2dcbc4`
+
+### block:fef360536d8f5b85
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L17-L17`. Next: `block:0459ced68503cc8d`.
+
+```stata
+global plines2021  420 830 450 630 1245 600 840 1660
+```
+
+### block:0459ced68503cc8d
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L18-L18`. Next: `block:e4b256fefa7c63e5`.
+
+```stata
+global plines2017  365 685 322 547 1027 430 730 1370
+```
+
+### block:e4b256fefa7c63e5
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L19-L19`. Next: `block:aca73417d3b1fd49`.
+
+```stata
+global line2021 300
+```
+
+### block:aca73417d3b1fd49
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L20-L20`. Next: `block:e505eba73b1d6f53`.
+
+```stata
+global line2017 215
+```
+
+### block:e505eba73b1d6f53
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L21-L21`. Next: `block:b83c3e8df3b2ad1b`.
+
+```stata
+global ppplist 2017 2021
+```
+
+### block:b83c3e8df3b2ad1b
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L22-L22`. Next: `block:ea2792f695ab3c06`.
+
+```stata
+global piptxt server(prod) version(20260324_2021_01_02_PROD)
+```
+
+### block:ea2792f695ab3c06
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L24-L24`. Next: `block:201b45327c4499af`.
+
+```stata
+foreach ppp1 of global ppplist {
+```
+
+### block:201b45327c4499af
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L25-L25`. Next: `block:d36b2a52c18a3c23`.
+
+```stata
+local num1 = `=${line`ppp1'}/100'
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+
+### block:d36b2a52c18a3c23
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L27-L27`. Next: `block:8ee34ae3ca1ea38a`.
+
+```stata
+pip, country(all) ppp_year(`ppp1') povline(`num1') ${piptxt} clear
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+Read datasets: `dataset:9f3cebfd107f0a48`
+
+### block:8ee34ae3ca1ea38a
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L29-L29`. Next: `block:beb6f08349e61613`.
+
+```stata
+drop if country_code=="ISO3" & (reporting_level=="urban"|reporting_level=="rural")
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+Read candidates: `variable:3642fdd37e6bacca`, `variable:1e92dfd36ccae690`
+
+### block:beb6f08349e61613
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L30-L30`. Next: `block:c0f82c77d8349ee0`.
+
+```stata
+drop if country_code=="ISO3" & (reporting_level=="urban"|reporting_level=="rural")
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+Read candidates: `variable:3642fdd37e6bacca`, `variable:1e92dfd36ccae690`
+
+### block:c0f82c77d8349ee0
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L31-L31`. Next: `block:97eacf706d0087b8`.
+
+```stata
+drop if country_code=="ISO3" & (reporting_level=="urban"|reporting_level=="rural")
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+Read candidates: `variable:3642fdd37e6bacca`, `variable:1e92dfd36ccae690`
+
+### block:97eacf706d0087b8
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L32-L32`. Next: `block:25ace95f7096bde1`.
+
+```stata
+ren ppp icp
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+New: `variable:e1a693249c0b805c`
+Read candidates: `variable:fe529fb8e4778131`
+
+### block:25ace95f7096bde1
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L33-L33`. Next: `block:8c43eec36fda880f`.
+
+```stata
+ren headcount fgt0_${line`ppp1'}
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+New: `variable:4a6f75793366e530`
+Read candidates: `variable:6a29522546d1b218`
+
+### block:8c43eec36fda880f
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L34-L34`. Next: `block:4a66a4a87ded47fd`.
+
+```stata
+ren poverty_gap fgt1_${line`ppp1'}
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+New: `variable:712466d5b2d415c0`
+Read candidates: `variable:ae135885159f7d6c`
+
+### block:4a66a4a87ded47fd
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L35-L35`. Next: `block:52e711b00f2d5388`.
+
+```stata
+ren poverty_severity fgt2_${line`ppp1'}
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+New: `variable:bae980fa3f334956`
+Read candidates: `variable:3cbaa3032179df06`
+
+### block:52e711b00f2d5388
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L36-L36`. Next: `block:ad7c1815fabcce74`.
+
+```stata
+gen ppp = `ppp1'
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+New: `variable:fe529fb8e4778131`
+
+### block:ad7c1815fabcce74
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L37-L37`. Next: `block:24f61c811564ea43`.
+
+```stata
+drop poverty_line
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+Read candidates: `variable:184344f378c10ab1`
+
+### block:24f61c811564ea43
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L38-L38`. Next: `block:d00fb75a1b4dfaf4`.
+
+```stata
+save "c:/temp/pip`ppp1'", replace
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+Write datasets: `dataset:4f97ccb9abd3a461`
+
+### block:d00fb75a1b4dfaf4
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L39-L39`. Next: `block:f79567e36ea0f521`.
+
+```stata
+save "${out}\\03.intermediate\pip`ppp1'", replace
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+Write datasets: `dataset:6497d0c305fb3777`
+
+### block:f79567e36ea0f521
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L41-L41`. Next: `block:e3f2d236a29ee5c6`.
+
+```stata
+foreach num of numlist ${plines`ppp1'} {
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+
+### block:e3f2d236a29ee5c6
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L42-L42`. Next: `block:57b2cfdb2ad211eb`.
+
+```stata
+pip, country(all) ppp_year(`ppp1') povline(`=`num'/100') ${piptxt} clear
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `foreach num of numlist ${plines`ppp1'} {`
+Read datasets: `dataset:9235d472ab15fd40`
+
+### block:57b2cfdb2ad211eb
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L43-L43`. Next: `block:339f5edc9d675b56`.
+
+```stata
+drop if country_code=="ISO3" & (reporting_level=="urban"|reporting_level=="rural")
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `foreach num of numlist ${plines`ppp1'} {`
+Read candidates: `variable:6a4e8adf1d7d91f6`, `variable:4aa0df8d83c2fd61`
+
+### block:339f5edc9d675b56
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L44-L44`. Next: `block:105f07987a12bf3c`.
+
+```stata
+drop if country_code=="ISO3" & (reporting_level=="urban"|reporting_level=="rural")
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `foreach num of numlist ${plines`ppp1'} {`
+Read candidates: `variable:6a4e8adf1d7d91f6`, `variable:4aa0df8d83c2fd61`
+
+### block:105f07987a12bf3c
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L45-L45`. Next: `block:48b19d0cfd886709`.
+
+```stata
+drop if country_code=="ISO3" & (reporting_level=="urban"|reporting_level=="rural")
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `foreach num of numlist ${plines`ppp1'} {`
+Read candidates: `variable:6a4e8adf1d7d91f6`, `variable:4aa0df8d83c2fd61`
+
+### block:48b19d0cfd886709
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L46-L46`. Next: `block:80b75df6dcf6f4ca`.
+
+```stata
+ren ppp icp
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `foreach num of numlist ${plines`ppp1'} {`
+New: `variable:39ea3035492245f9`
+Read candidates: `variable:ba0403c9eb883c85`
+
+### block:80b75df6dcf6f4ca
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L47-L47`. Next: `block:0d732bf3dd1961f5`.
+
+```stata
+ren headcount fgt0_`num'
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `foreach num of numlist ${plines`ppp1'} {`
+New: `variable:c1b45ad3fc57179c`
+Read candidates: `variable:c6a6a4c569e996d9`
+
+### block:0d732bf3dd1961f5
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L48-L48`. Next: `block:228e9c91b4c7df20`.
+
+```stata
+ren poverty_gap fgt1_`num'
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `foreach num of numlist ${plines`ppp1'} {`
+New: `variable:f333fd5af2c69b4e`
+Read candidates: `variable:0ff9804ba0f2437e`
+
+### block:228e9c91b4c7df20
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L49-L49`. Next: `block:89174977f3962dc2`.
+
+```stata
+ren poverty_severity fgt2_`num'
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `foreach num of numlist ${plines`ppp1'} {`
+New: `variable:6c6a7950419913a2`
+Read candidates: `variable:fc029330da15c843`
+
+### block:89174977f3962dc2
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L50-L50`. Next: `block:102ed8a0d966256e`.
+
+```stata
+gen ppp = `ppp1'
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `foreach num of numlist ${plines`ppp1'} {`
+New: `variable:ba0403c9eb883c85`
+
+### block:102ed8a0d966256e
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L51-L51`. Next: `block:f90ab6ab6510d356`.
+
+```stata
+merge 1:1 country_code year survey_acronym welfare_type using "c:/temp/pip`ppp1'", keepus(fgt*)
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `foreach num of numlist ${plines`ppp1'} {`
+Read datasets: `dataset:4f97ccb9abd3a461`
+
+### block:f90ab6ab6510d356
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L52-L52`. Next: `block:80db8ad1c413d286`.
+
+```stata
+drop _merge
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `foreach num of numlist ${plines`ppp1'} {`
+Read candidates: `variable:eb2db1dc9f615de0`
+
+### block:80db8ad1c413d286
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L53-L53`. Next: `block:b8def6a5f1b9cf87`.
+
+```stata
+order country_code year survey_acronym welfare_type
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `foreach num of numlist ${plines`ppp1'} {`
+
+### block:b8def6a5f1b9cf87
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L54-L54`. Next: `block:d2aa7b39fb7f232e`.
+
+```stata
+save "c:/temp/pip`ppp1'", replace
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `foreach num of numlist ${plines`ppp1'} {`
+Write datasets: `dataset:4f97ccb9abd3a461`
+
+### block:d2aa7b39fb7f232e
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L55-L55`. Next: `block:9c88b419d7c2e5aa`.
+
+```stata
+save "${out}\\03.intermediate\pip`ppp1'", replace
+```
+Enclosing controls: `foreach ppp1 of global ppplist {` → `foreach num of numlist ${plines`ppp1'} {`
+Write datasets: `dataset:6497d0c305fb3777`
+
+### block:9c88b419d7c2e5aa
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L56-L56`. Next: `block:9c37cb510d06681d`.
+
+```stata
+}
+```
+Enclosing controls: `foreach ppp1 of global ppplist {`
+
+### block:9c37cb510d06681d
+
+Evidence: `01.Programs/archive/Get PIP for PEA.do:L57-L57`. Next: `end`.
+
+```stata
+}
+```

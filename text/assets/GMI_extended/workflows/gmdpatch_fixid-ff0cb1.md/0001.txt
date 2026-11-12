@@ -1,0 +1,1177 @@
+# 04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do
+
+Repository documentation/configuration
+
+Status: PARTIAL_STATIC. Every lexically active statement is indexed; complete runtime schema and macro expansion are not established.
+
+Source snapshot: numbered source (deployment lookup: lookup/sources/GMI_extended/source_maps/gmdpatch_fixid-ff0cb1.md.md)
+
+## Execution-order blocks
+
+### block:8012f3e77208bf9d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L35-L35`. Next: `block:f6e2e049b63a9d0f`.
+
+```stata
+global gmdpatch_fixid_version "2"
+```
+
+### block:f6e2e049b63a9d0f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L37-L37`. Next: `block:b8a6bb803ddedb2a`.
+
+```stata
+capture program drop _gmdpatch_fixid
+```
+
+### block:b8a6bb803ddedb2a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L38-L38`. Next: `block:5a06fa28e2fc7b49`.
+
+```stata
+program define _gmdpatch_fixid
+```
+
+### block:5a06fa28e2fc7b49
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L39-L39`. Next: `block:0b1ef66d0e6eb1bd`.
+
+```stata
+args reg code year survname side
+```
+
+### block:0b1ef66d0e6eb1bd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L41-L41`. Next: `block:76129f948235dd30`.
+
+```stata
+if "`side'" == "" local side "local"
+```
+
+### block:76129f948235dd30
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L42-L42`. Next: `block:36fd706ef603bb7c`.
+
+```stata
+local side = lower("`side'")
+```
+
+### block:36fd706ef603bb7c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L53-L53`. Next: `block:f26ef84903753395`.
+
+```stata
+if "`reg'"=="SSA" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {
+```
+
+### block:f26ef84903753395
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L54-L54`. Next: `block:5f18ef1340f15fbe`.
+
+```stata
+capture confirm numeric variable hhid
+```
+Enclosing controls: `if "`reg'"=="SSA" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {`
+
+### block:5f18ef1340f15fbe
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L55-L55`. Next: `block:8a72991c0ccfdfe0`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `if "`reg'"=="SSA" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {`
+
+### block:8a72991c0ccfdfe0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L56-L56`. Next: `block:e0c702c1f606db16`.
+
+```stata
+noi dis as error "  ISO3 0000: hhid is not numeric -- fix NOT applied."
+```
+Enclosing controls: `if "`reg'"=="SSA" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `if _rc {`
+
+### block:e0c702c1f606db16
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L57-L57`. Next: `block:f739a22a967e027e`.
+
+```stata
+}
+```
+Enclosing controls: `if "`reg'"=="SSA" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {`
+
+### block:f739a22a967e027e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L58-L58`. Next: `block:7a90c27b5040c088`.
+
+```stata
+else {
+```
+Enclosing controls: `if "`reg'"=="SSA" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {`
+
+### block:7a90c27b5040c088
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L59-L59`. Next: `block:ccda28f6dc57f10d`.
+
+```stata
+tempvar rg hh
+```
+Enclosing controls: `if "`reg'"=="SSA" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+
+### block:ccda28f6dc57f10d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L60-L60`. Next: `block:ec169eef063e660a`.
+
+```stata
+qui gen long `rg' = mod(hhid, 1000)
+```
+Enclosing controls: `if "`reg'"=="SSA" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+New: `variable:b43ab55583a8e8b7`
+Read candidates: `variable:b28cbefc584f571a`, `variable:ca291ccd3d95e96c`
+
+### block:ec169eef063e660a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L61-L61`. Next: `block:b31620feafad2de8`.
+
+```stata
+qui gen long `hh' = floor(hhid/1000)
+```
+Enclosing controls: `if "`reg'"=="SSA" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+New: `variable:dbd2612ed1b00f5c`
+Read candidates: `variable:b28cbefc584f571a`, `variable:ca291ccd3d95e96c`
+
+### block:b31620feafad2de8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L62-L62`. Next: `block:85c3ad954875a28c`.
+
+```stata
+capture assert inrange(`rg',1,12) & inrange(`hh',1,1256)
+```
+Enclosing controls: `if "`reg'"=="SSA" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+
+### block:85c3ad954875a28c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L63-L63`. Next: `block:ef4208da89ea936e`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `if "`reg'"=="SSA" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+
+### block:ef4208da89ea936e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L64-L64`. Next: `block:2fb23c9333c87f51`.
+
+```stata
+noi dis as error "  ISO3 0000: hhid is not in the expected shape -- fix NOT applied."
+```
+Enclosing controls: `if "`reg'"=="SSA" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {` → `if _rc {`
+
+### block:2fb23c9333c87f51
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L65-L65`. Next: `block:cfdbb346424d00b9`.
+
+```stata
+}
+```
+Enclosing controls: `if "`reg'"=="SSA" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+
+### block:cfdbb346424d00b9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L66-L66`. Next: `block:fc04fad44d8abff6`.
+
+```stata
+else {
+```
+Enclosing controls: `if "`reg'"=="SSA" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+
+### block:fc04fad44d8abff6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L67-L67`. Next: `block:acb659779b31ef17`.
+
+```stata
+qui replace hhid = `rg'*10000 + `hh'
+```
+Enclosing controls: `if "`reg'"=="SSA" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {` → `else {`
+Modified: `variable:b28cbefc584f571a`
+Read candidates: `variable:ca291ccd3d95e96c`
+
+### block:acb659779b31ef17
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L68-L68`. Next: `block:e406bdbc2cbc6ea4`.
+
+```stata
+noi dis in yellow "  ISO3 0000: hhid rebuilt (hh*1000+region -> region*10000+hh)"
+```
+Enclosing controls: `if "`reg'"=="SSA" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {` → `else {`
+
+### block:e406bdbc2cbc6ea4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L69-L69`. Next: `block:45da35c20b1e6a36`.
+
+```stata
+}
+```
+Enclosing controls: `if "`reg'"=="SSA" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+
+### block:45da35c20b1e6a36
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L70-L70`. Next: `block:4198a58eeb189848`.
+
+```stata
+}
+```
+Enclosing controls: `if "`reg'"=="SSA" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {`
+
+### block:4198a58eeb189848
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L71-L71`. Next: `block:7aa6cf9312f19a42`.
+
+```stata
+}
+```
+
+### block:7aa6cf9312f19a42
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L83-L83`. Next: `block:5fcf60487ee2e000`.
+
+```stata
+if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {
+```
+
+### block:5fcf60487ee2e000
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L84-L84`. Next: `block:fa11bac7d216dba1`.
+
+```stata
+capture confirm string variable pid
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {`
+
+### block:fa11bac7d216dba1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L85-L85`. Next: `block:c29148c4b377bc50`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {`
+
+### block:c29148c4b377bc50
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L86-L86`. Next: `block:5d4d8434d9e1cabf`.
+
+```stata
+noi dis as error "  ISO3 0000: pid is not a string -- fix NOT applied."
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `if _rc {`
+
+### block:5d4d8434d9e1cabf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L87-L87`. Next: `block:a1c765bbf914ef11`.
+
+```stata
+}
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {`
+
+### block:a1c765bbf914ef11
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L88-L88`. Next: `block:3282be6f607d8720`.
+
+```stata
+else {
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {`
+
+### block:3282be6f607d8720
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L89-L89`. Next: `block:6224f1482dd76dbc`.
+
+```stata
+tempvar memtxt mem
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+
+### block:6224f1482dd76dbc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L90-L90`. Next: `block:571a0ad8820caf6d`.
+
+```stata
+qui gen str20  `memtxt' = substr(pid, strlen(hhid) + 1, .)
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+New: `variable:81ec5af00fe5cd15`
+Read candidates: `variable:5aec057b69ee29c7`, `variable:b28cbefc584f571a`, `variable:ca291ccd3d95e96c`
+
+### block:571a0ad8820caf6d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L91-L91`. Next: `block:5ad30fd8bf3b5b2d`.
+
+```stata
+qui gen double `mem'    = real(`memtxt')
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+New: `variable:50464d210abb0fe3`
+Read candidates: `variable:ca291ccd3d95e96c`
+
+### block:5ad30fd8bf3b5b2d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L98-L98`. Next: `block:e976ce66c1eee5a4`.
+
+```stata
+qui count if substr(pid, 1, strlen(hhid)) != hhid
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+Read candidates: `variable:5aec057b69ee29c7`, `variable:b28cbefc584f571a`
+
+### block:e976ce66c1eee5a4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L99-L99`. Next: `block:564730ab2cf04f7f`.
+
+```stata
+local nbadstem = r(N)
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+
+### block:564730ab2cf04f7f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L100-L100`. Next: `block:82f6d958a5effe29`.
+
+```stata
+qui count if missing(`mem')
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+
+### block:82f6d958a5effe29
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L101-L101`. Next: `block:312354fbe3ee0a51`.
+
+```stata
+local nbadmem = r(N)
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+
+### block:312354fbe3ee0a51
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L102-L102`. Next: `block:36d09e5ded3af217`.
+
+```stata
+qui count if strlen(`memtxt') != 2
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+
+### block:36d09e5ded3af217
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L103-L103`. Next: `block:14a6cc64ae25b2ac`.
+
+```stata
+local nwide = r(N)
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+
+### block:14a6cc64ae25b2ac
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L105-L105`. Next: `block:eeedaaee0be4ff6e`.
+
+```stata
+if `nbadstem' > 0 | `nbadmem' > 0 {
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+
+### block:eeedaaee0be4ff6e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L106-L106`. Next: `block:ecbef2a53eb4d852`.
+
+```stata
+noi dis as error "  ISO3 0000: pid is not hhid + a member number -- fix NOT applied."
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {` → `if `nbadstem' > 0 | `nbadmem' > 0 {`
+
+### block:ecbef2a53eb4d852
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L107-L107`. Next: `block:da6a2453fcad8f13`.
+
+```stata
+noi dis as error "            rows where pid does not start with hhid: `nbadstem'"
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {` → `if `nbadstem' > 0 | `nbadmem' > 0 {`
+
+### block:da6a2453fcad8f13
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L108-L108`. Next: `block:b9929b654dfd06d7`.
+
+```stata
+noi dis as error "            rows where the rest of pid is not numeric: `nbadmem'"
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {` → `if `nbadstem' > 0 | `nbadmem' > 0 {`
+
+### block:b9929b654dfd06d7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L109-L109`. Next: `block:10b8b2c6d984c49f`.
+
+```stata
+}
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+
+### block:10b8b2c6d984c49f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L110-L110`. Next: `block:3860e4bc3e226695`.
+
+```stata
+else if `nwide' == 0 {
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+
+### block:3860e4bc3e226695
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L111-L111`. Next: `block:895b282d16b3723b`.
+
+```stata
+noi dis as text "  ISO3 0000: pid already uses a 2-digit member number, nothing to do."
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {` → `else if `nwide' == 0 {`
+
+### block:895b282d16b3723b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L112-L112`. Next: `block:b83e83d86cd56359`.
+
+```stata
+}
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+
+### block:b83e83d86cd56359
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L113-L113`. Next: `block:de36ad2f8f3c2a69`.
+
+```stata
+else {
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+
+### block:de36ad2f8f3c2a69
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L114-L114`. Next: `block:8ee7b6a9a46b729d`.
+
+```stata
+qui su `mem', meanonly
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {` → `else {`
+Read candidates: `variable:6878f188c2e5c732`
+
+### block:8ee7b6a9a46b729d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L115-L115`. Next: `block:190edbf037d30a57`.
+
+```stata
+local mlo = r(min)
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {` → `else {`
+
+### block:190edbf037d30a57
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L116-L116`. Next: `block:f1aab92cbe4b393d`.
+
+```stata
+local mhi = r(max)
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {` → `else {`
+
+### block:f1aab92cbe4b393d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L117-L117`. Next: `block:2db92924ec7ff856`.
+
+```stata
+if `mhi' > 99 {
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {` → `else {`
+
+### block:2db92924ec7ff856
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L118-L118`. Next: `block:8d2fb35b25e28537`.
+
+```stata
+noi dis as error "  ISO3 0000: a household has more than 99 members (max `mhi')."
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {` → `else {` → `if `mhi' > 99 {`
+
+### block:8d2fb35b25e28537
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L119-L119`. Next: `block:a34e4f412d4db7a2`.
+
+```stata
+noi dis as error "            A 2-digit member number cannot hold that -- fix NOT applied."
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {` → `else {` → `if `mhi' > 99 {`
+
+### block:a34e4f412d4db7a2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L120-L120`. Next: `block:429731e18c764ebf`.
+
+```stata
+}
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {` → `else {`
+
+### block:429731e18c764ebf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L121-L121`. Next: `block:bbd65410e448bc36`.
+
+```stata
+else {
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {` → `else {`
+
+### block:bbd65410e448bc36
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L122-L122`. Next: `block:db3f84da8a9bb0f7`.
+
+```stata
+qui replace pid = hhid + string(`mem', "%02.0f")
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {` → `else {` → `else {`
+Modified: `variable:5aec057b69ee29c7`
+Read candidates: `variable:b28cbefc584f571a`, `variable:ca291ccd3d95e96c`
+
+### block:db3f84da8a9bb0f7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L123-L123`. Next: `block:1b3d7d7925f5b966`.
+
+```stata
+noi dis in yellow "  ISO3 0000: pid rebuilt, member number `mlo' to `mhi' written on 2 digits"
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {` → `else {` → `else {`
+
+### block:1b3d7d7925f5b966
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L124-L124`. Next: `block:3ae047c8c1f7a25d`.
+
+```stata
+}
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {` → `else {`
+
+### block:3ae047c8c1f7a25d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L125-L125`. Next: `block:43efee319ab733f4`.
+
+```stata
+}
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+
+### block:43efee319ab733f4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L126-L126`. Next: `block:4af9ed54acaa01ea`.
+
+```stata
+}
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {`
+
+### block:4af9ed54acaa01ea
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L127-L127`. Next: `block:8f16bebc7caa2f29`.
+
+```stata
+}
+```
+
+### block:8f16bebc7caa2f29
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L138-L138`. Next: `block:20fcfeece225478a`.
+
+```stata
+if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {
+```
+
+### block:20fcfeece225478a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L139-L139`. Next: `block:6195fb5fc02ba0a7`.
+
+```stata
+capture confirm string variable pid
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {`
+
+### block:6195fb5fc02ba0a7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L140-L140`. Next: `block:99d26f02fb61e922`.
+
+```stata
+if _rc == 0 {
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {`
+
+### block:99d26f02fb61e922
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L141-L141`. Next: `block:c417e4f09a7d48ae`.
+
+```stata
+qui replace pid = strtrim(pid)
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `if _rc == 0 {`
+Modified: `variable:5aec057b69ee29c7`
+Read candidates: `variable:5aec057b69ee29c7`, `variable:ca291ccd3d95e96c`
+
+### block:c417e4f09a7d48ae
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L142-L142`. Next: `block:ac9a2c79b4942dbb`.
+
+```stata
+}
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {`
+
+### block:ac9a2c79b4942dbb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L143-L143`. Next: `block:0d0a0d20f4c556bf`.
+
+```stata
+else {
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {`
+
+### block:0d0a0d20f4c556bf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L144-L144`. Next: `block:0cdeeb9d23e73ada`.
+
+```stata
+qui tostring pid, replace force
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+Modified: `variable:5aec057b69ee29c7`
+Read candidates: `variable:5aec057b69ee29c7`
+
+### block:0cdeeb9d23e73ada
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L145-L145`. Next: `block:5bffa638dd444fd3`.
+
+```stata
+qui replace pid = strtrim(pid)
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+Modified: `variable:5aec057b69ee29c7`
+Read candidates: `variable:5aec057b69ee29c7`, `variable:ca291ccd3d95e96c`
+
+### block:5bffa638dd444fd3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L146-L146`. Next: `block:4cd5b1fb47b3b93d`.
+
+```stata
+noi dis in yellow "  ISO3 0000: pid converted from numeric to text to match DLW"
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {` → `else {`
+
+### block:4cd5b1fb47b3b93d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L147-L147`. Next: `block:5417bcdd67c3edc1`.
+
+```stata
+}
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {`
+
+### block:5417bcdd67c3edc1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L148-L148`. Next: `block:e9fb2517d229202c`.
+
+```stata
+}
+```
+
+### block:e9fb2517d229202c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L173-L173`. Next: `block:50727dbdce6a7d42`.
+
+```stata
+if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {
+```
+
+### block:50727dbdce6a7d42
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L175-L175`. Next: `block:9d495fde39741819`.
+
+```stata
+capture confirm string variable hhid
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {`
+
+### block:9d495fde39741819
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L176-L176`. Next: `block:ddc0114c361162fc`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {`
+
+### block:ddc0114c361162fc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L177-L177`. Next: `block:ddc7825ba440d316`.
+
+```stata
+noi dis as error "  ISO3 0000: hhid is not a string -- fix NOT applied."
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if _rc {`
+
+### block:ddc7825ba440d316
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L178-L178`. Next: `block:bec8c027b6f20996`.
+
+```stata
+exit
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if _rc {`
+
+### block:bec8c027b6f20996
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L179-L179`. Next: `block:013c2b2272bbfbe9`.
+
+```stata
+}
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {`
+
+### block:013c2b2272bbfbe9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L181-L181`. Next: `block:f87e056acf46ee01`.
+
+```stata
+tempvar dia hhno hhn
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {`
+
+### block:f87e056acf46ee01
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L186-L186`. Next: `block:093276b46ab2f6a2`.
+
+```stata
+if "`side'" == "local" {
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {`
+
+### block:093276b46ab2f6a2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L187-L187`. Next: `block:4161aa7115f78052`.
+
+```stata
+capture assert strlen(hhid) == 11
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {`
+
+### block:4161aa7115f78052
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L188-L188`. Next: `block:75ccf0c1074829be`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {`
+
+### block:75ccf0c1074829be
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L189-L189`. Next: `block:f1e6fb11443a33cc`.
+
+```stata
+noi dis as error "  ISO3 0000 local: hhid is not 11 characters -- fix NOT applied."
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {` → `if _rc {`
+
+### block:f1e6fb11443a33cc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L190-L190`. Next: `block:65d338628a232edb`.
+
+```stata
+exit
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {` → `if _rc {`
+
+### block:65d338628a232edb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L191-L191`. Next: `block:617f9ce61a9ab840`.
+
+```stata
+}
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {`
+
+### block:617f9ce61a9ab840
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L192-L192`. Next: `block:938a0dc9e8ca8047`.
+
+```stata
+qui gen str5   `dia'  = substr(hhid, 1, 5)
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {`
+New: `variable:9269e22b4d1de26c`
+Read candidates: `variable:b28cbefc584f571a`, `variable:ca291ccd3d95e96c`
+
+### block:938a0dc9e8ca8047
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L193-L193`. Next: `block:15035a244da2c941`.
+
+```stata
+qui gen str10  `hhno' = substr(hhid, 6, .)
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {`
+New: `variable:2547126364bb06f9`
+Read candidates: `variable:b28cbefc584f571a`, `variable:ca291ccd3d95e96c`
+
+### block:15035a244da2c941
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L194-L194`. Next: `block:3bab4fb43c94c83a`.
+
+```stata
+qui gen double `hhn'  = real(`hhno')
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {`
+New: `variable:2f67d48a663a6497`
+Read candidates: `variable:ca291ccd3d95e96c`
+
+### block:3bab4fb43c94c83a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L195-L195`. Next: `block:e8ecc70f30498962`.
+
+```stata
+capture assert !missing(`hhn')
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {`
+
+### block:e8ecc70f30498962
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L196-L196`. Next: `block:3c245ca6680f23ab`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {`
+
+### block:3c245ca6680f23ab
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L197-L197`. Next: `block:9b37bbcd8c74e227`.
+
+```stata
+noi dis as error "  ISO3 0000 local: household number is not numeric -- fix NOT applied."
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {` → `if _rc {`
+
+### block:9b37bbcd8c74e227
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L198-L198`. Next: `block:c9ce6bb3244115a9`.
+
+```stata
+exit
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {` → `if _rc {`
+
+### block:c9ce6bb3244115a9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L199-L199`. Next: `block:686dd9243db77184`.
+
+```stata
+}
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {`
+
+### block:686dd9243db77184
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L201-L201`. Next: `block:09cf087f63cba6a5`.
+
+```stata
+qui replace hhid = `dia' + string(`hhn', "%05.0f")
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {`
+Modified: `variable:b28cbefc584f571a`
+Read candidates: `variable:ca291ccd3d95e96c`
+
+### block:09cf087f63cba6a5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L203-L203`. Next: `block:f47d1e6dbf31eccc`.
+
+```stata
+capture confirm numeric variable pid
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {`
+
+### block:f47d1e6dbf31eccc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L204-L204`. Next: `block:6486bc18f7246606`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {`
+
+### block:6486bc18f7246606
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L205-L205`. Next: `block:490a8554f6e68871`.
+
+```stata
+noi dis as error "  ISO3 0000 local: pid is not numeric -- fix NOT applied."
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {` → `if _rc {`
+
+### block:490a8554f6e68871
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L206-L206`. Next: `block:f021e2029f8920c8`.
+
+```stata
+exit
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {` → `if _rc {`
+
+### block:f021e2029f8920c8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L207-L207`. Next: `block:1c3af8779dece5d8`.
+
+```stata
+}
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {`
+
+### block:1c3af8779dece5d8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L208-L208`. Next: `block:970c2de4d3da16f4`.
+
+```stata
+tempvar mem
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {`
+
+### block:970c2de4d3da16f4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L209-L209`. Next: `block:6fe888caf03711fd`.
+
+```stata
+qui gen double `mem' = pid
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {`
+New: `variable:50464d210abb0fe3`
+Read candidates: `variable:5aec057b69ee29c7`, `variable:ca291ccd3d95e96c`
+
+### block:6fe888caf03711fd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L210-L210`. Next: `block:76a0e3fdb8813bc3`.
+
+```stata
+qui drop pid
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {`
+Read candidates: `variable:5aec057b69ee29c7`
+
+### block:76a0e3fdb8813bc3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L211-L211`. Next: `block:a110a07f87070134`.
+
+```stata
+qui gen str20 pid = hhid + string(`mem', "%02.0f")
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {`
+New: `variable:5aec057b69ee29c7`
+Read candidates: `variable:b28cbefc584f571a`, `variable:ca291ccd3d95e96c`
+
+### block:a110a07f87070134
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L213-L213`. Next: `block:c4fd94df5d0295a1`.
+
+```stata
+noi dis in yellow "  ISO3 0000 local: hhid and pid rebuilt on the diaban + household key"
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "local" {`
+
+### block:c4fd94df5d0295a1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L214-L214`. Next: `block:2e4109b368c8a8cc`.
+
+```stata
+}
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {`
+
+### block:2e4109b368c8a8cc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L220-L220`. Next: `block:d9c8680d809f8fb7`.
+
+```stata
+if "`side'" == "dlw" {
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {`
+
+### block:d9c8680d809f8fb7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L221-L221`. Next: `block:73a0efe09bd4eadf`.
+
+```stata
+capture assert strlen(hhid) >= 15
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "dlw" {`
+
+### block:73a0efe09bd4eadf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L222-L222`. Next: `block:f88538361fea89f1`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "dlw" {`
+
+### block:f88538361fea89f1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L223-L223`. Next: `block:251d778e1078f166`.
+
+```stata
+noi dis as error "  ISO3 0000 DLW: hhid is shorter than expected -- fix NOT applied."
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "dlw" {` → `if _rc {`
+
+### block:251d778e1078f166
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L224-L224`. Next: `block:359b0a9c2c1f39be`.
+
+```stata
+exit
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "dlw" {` → `if _rc {`
+
+### block:359b0a9c2c1f39be
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L225-L225`. Next: `block:590540ddd9494326`.
+
+```stata
+}
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "dlw" {`
+
+### block:590540ddd9494326
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L226-L226`. Next: `block:dce5868cc3a62ace`.
+
+```stata
+tempvar mem
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "dlw" {`
+
+### block:dce5868cc3a62ace
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L227-L227`. Next: `block:7120c9e92f436575`.
+
+```stata
+qui gen double `mem' = real(substr(pid, strlen(hhid) + 1, .))
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "dlw" {`
+New: `variable:50464d210abb0fe3`
+Read candidates: `variable:5aec057b69ee29c7`, `variable:b28cbefc584f571a`, `variable:ca291ccd3d95e96c`
+
+### block:7120c9e92f436575
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L228-L228`. Next: `block:f55d67ec44d7a4c6`.
+
+```stata
+capture assert !missing(`mem')
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "dlw" {`
+
+### block:f55d67ec44d7a4c6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L229-L229`. Next: `block:d871e76c1a568a3b`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "dlw" {`
+
+### block:d871e76c1a568a3b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L230-L230`. Next: `block:18ad216cf562940b`.
+
+```stata
+noi dis as error "  ISO3 0000 DLW: pid is not hhid + a member number -- fix NOT applied."
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "dlw" {` → `if _rc {`
+
+### block:18ad216cf562940b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L231-L231`. Next: `block:484ae2336c6fbe43`.
+
+```stata
+exit
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "dlw" {` → `if _rc {`
+
+### block:484ae2336c6fbe43
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L232-L232`. Next: `block:3cc0b40e74bfb680`.
+
+```stata
+}
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "dlw" {`
+
+### block:3cc0b40e74bfb680
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L234-L234`. Next: `block:a924c0c8da121312`.
+
+```stata
+qui replace hhid = substr(hhid, strlen(hhid) - 9, 10)
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "dlw" {`
+Modified: `variable:b28cbefc584f571a`
+Read candidates: `variable:b28cbefc584f571a`, `variable:ca291ccd3d95e96c`
+
+### block:a924c0c8da121312
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L235-L235`. Next: `block:18a28d526a857474`.
+
+```stata
+qui drop pid
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "dlw" {`
+Read candidates: `variable:5aec057b69ee29c7`
+
+### block:18a28d526a857474
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L236-L236`. Next: `block:67058b914bbd0e5f`.
+
+```stata
+qui gen str20 pid = hhid + string(`mem', "%02.0f")
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "dlw" {`
+New: `variable:5aec057b69ee29c7`
+Read candidates: `variable:b28cbefc584f571a`, `variable:ca291ccd3d95e96c`
+
+### block:67058b914bbd0e5f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L238-L238`. Next: `block:470960e6c126b285`.
+
+```stata
+noi dis in yellow "  ISO3 0000 DLW: hhid and pid reduced to the diaban + household key"
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {` → `if "`side'" == "dlw" {`
+
+### block:470960e6c126b285
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L239-L239`. Next: `block:c40eb2a3640a742e`.
+
+```stata
+}
+```
+Enclosing controls: `if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {`
+
+### block:c40eb2a3640a742e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L240-L240`. Next: `block:ac42651fcd6bcc99`.
+
+```stata
+}
+```
+
+### block:ac42651fcd6bcc99
+
+Evidence: `04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do:L251-L251`. Next: `end`.
+
+```stata
+end
+```

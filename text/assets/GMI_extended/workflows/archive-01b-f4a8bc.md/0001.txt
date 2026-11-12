@@ -1,0 +1,1770 @@
+# 01.Programs/archive/01b-GMI extended indicators spells.do
+
+GIC welfare bins and spell decompositions
+
+Status: PARTIAL_STATIC. Every lexically active statement is indexed; complete runtime schema and macro expansion are not established.
+
+Source snapshot: numbered source (deployment lookup: lookup/sources/GMI_extended/source_maps/archive-01b-f4a8bc.md.md)
+
+## Execution-order blocks
+
+### block:c9106713b2148bbe
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L51-L51`. Next: `block:f971081c56d5f3fc`.
+
+```stata
+clear
+```
+
+### block:f971081c56d5f3fc
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L52-L52`. Next: `block:9f2c1deebcf3c125`.
+
+```stata
+set max_memory ., permanently
+```
+
+### block:9f2c1deebcf3c125
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L53-L53`. Next: `block:3a5889ad960b58d7`.
+
+```stata
+tempfile datagic dataall dataall2 prosdecomp
+```
+
+### block:3a5889ad960b58d7
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L54-L54`. Next: `block:da2216f4d6adbbde`.
+
+```stata
+save `datagic', replace emptyok
+```
+Write datasets: `dataset:487c529c5153c918`
+
+### block:da2216f4d6adbbde
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L55-L55`. Next: `block:9a420183335e034b`.
+
+```stata
+save `prosdecomp', replace emptyok
+```
+Write datasets: `dataset:a404fd2d1680b9c0`
+
+### block:9a420183335e034b
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L56-L56`. Next: `block:7a6e0a7c55b69cf2`.
+
+```stata
+save `dataall', replace emptyok
+```
+Write datasets: `dataset:873b66466c7dc505`
+
+### block:7a6e0a7c55b69cf2
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L57-L57`. Next: `block:82e7af9a843bc832`.
+
+```stata
+save `dataall2', replace emptyok
+```
+Write datasets: `dataset:9dd587dd11bfb0e2`
+
+### block:82e7af9a843bc832
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L59-L59`. Next: `block:4bb4f904afdd79f2`.
+
+```stata
+set varabbrev off
+```
+
+### block:4bb4f904afdd79f2
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L61-L61`. Next: `block:917ba745fdac1216`.
+
+```stata
+global rnd SM26
+```
+
+### block:917ba745fdac1216
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L62-L62`. Next: `block:d2d77ebe0f8a8a90`.
+
+```stata
+global path \\wbgfscifs01\GTSD\03.projects_corp\04.GPWG\04.GPWG_${rnd}\04.GPWG_${rnd}_QA
+```
+
+### block:d2d77ebe0f8a8a90
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L63-L63`. Next: `block:7211007b474bfa14`.
+
+```stata
+global reposource "${path}\01.programs\02.dofile\repo\"
+```
+
+### block:7211007b474bfa14
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L64-L64`. Next: `block:1cde2b6fc78993ca`.
+
+```stata
+global out D:\daylan\test\GMI\out
+```
+
+### block:1cde2b6fc78993ca
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L68-L68`. Next: `block:db511b81170f9348`.
+
+```stata
+global qclog "${out}\\03.intermediate\\GIC_QC_flagged_${rnd}.log"
+```
+
+### block:db511b81170f9348
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L69-L69`. Next: `block:1e518cdffd550a5c`.
+
+```stata
+global qccsv "${out}\\03.intermediate\\GIC_QC_flagged_${rnd}.csv"
+```
+
+### block:1e518cdffd550a5c
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L71-L71`. Next: `block:68760d768e059461`.
+
+```stata
+global ppplist 2017 2021
+```
+
+### block:68760d768e059461
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L72-L72`. Next: `block:d4ddfbf5967e735b`.
+
+```stata
+global pppmax 2021
+```
+
+### block:d4ddfbf5967e735b
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L74-L74`. Next: `block:74bc4d81a438d997`.
+
+```stata
+global floor2021 0.28
+```
+
+### block:74bc4d81a438d997
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L75-L75`. Next: `block:71710753af2a113e`.
+
+```stata
+global gap2021 28
+```
+
+### block:71710753af2a113e
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L76-L76`. Next: `block:d80855124418f2d6`.
+
+```stata
+global floor2017 0.25
+```
+
+### block:d80855124418f2d6
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L77-L77`. Next: `block:b07c177b60a9a3da`.
+
+```stata
+global gap2017 25
+```
+
+### block:b07c177b60a9a3da
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L78-L78`. Next: `block:dd53652a698b04e0`.
+
+```stata
+global floor2011 0.22
+```
+
+### block:dd53652a698b04e0
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L79-L79`. Next: `block:29c44fe3efb7990b`.
+
+```stata
+global gap2011 22
+```
+
+### block:29c44fe3efb7990b
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L81-L81`. Next: `block:ad7d82fb1818a675`.
+
+```stata
+global plines2021 300 420 830 450 630 1245 600 840 1660
+```
+
+### block:ad7d82fb1818a675
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L82-L82`. Next: `block:b4cd7ec2993557eb`.
+
+```stata
+global plines2017 215 365 685 322 547 1027 430 730 1370
+```
+
+### block:b4cd7ec2993557eb
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L83-L83`. Next: `block:e80310a43907dc9e`.
+
+```stata
+global plines2011 190 320 550
+```
+
+### block:e80310a43907dc9e
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L84-L84`. Next: `block:5aa67c0e33ca948d`.
+
+```stata
+global cpiversion Support_2005_CPI_V14_M
+```
+
+### block:5aa67c0e33ca948d
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L86-L86`. Next: `block:51e2fc170dd61958`.
+
+```stata
+global pwf "D:\daylan\test\GMI\Survey_price_framework.dta"
+```
+
+### block:51e2fc170dd61958
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L87-L87`. Next: `block:7b130f0419e5c19d`.
+
+```stata
+global repotxt repo(use ${rnd}all) reporoot(${reposource})
+```
+
+### block:7b130f0419e5c19d
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L89-L89`. Next: `block:532bb0bd8f28bf12`.
+
+```stata
+tempfile data1
+```
+
+### block:532bb0bd8f28bf12
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L90-L90`. Next: `block:5d697b52f4c50057`.
+
+```stata
+use \\wbgfscifs01\GTSD\03.projects_corp\04.GPWG\04.GPWG_${rnd}\04.GPWG_${rnd}_QA\01.programs\02.dofile\repo\repo_${rnd}all.dta , clear
+```
+Read datasets: `dataset:96215c3f23c334b3`
+
+### block:5d697b52f4c50057
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L91-L91`. Next: `block:066ce022f9ed3a9f`.
+
+```stata
+gen year = years
+```
+New: `variable:9e7f3d4d6e5fc7a2`
+Read candidates: `variable:ae691ee3349d6bc5`
+
+### block:066ce022f9ed3a9f
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L92-L92`. Next: `block:d5efa87046ad3d72`.
+
+```stata
+destring year, replace
+```
+Modified: `variable:9e7f3d4d6e5fc7a2`
+Read candidates: `variable:9e7f3d4d6e5fc7a2`
+
+### block:d5efa87046ad3d72
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L93-L93`. Next: `block:361a065fd63c2d25`.
+
+```stata
+ren country countrycode
+```
+New: `variable:bb24a6c6ea33d8ab`
+Read candidates: `variable:9edb301986b59c2e`
+
+### block:361a065fd63c2d25
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L94-L94`. Next: `block:8c15ca99f7de1cca`.
+
+```stata
+keep if module=="ALL"
+```
+Read candidates: `variable:36f768cb08f99b6e`
+
+### block:8c15ca99f7de1cca
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L95-L95`. Next: `block:05ab69cbfbb03b11`.
+
+```stata
+save `data1', replace
+```
+Write datasets: `dataset:a91f917022016300`
+
+### block:05ab69cbfbb03b11
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L97-L97`. Next: `block:bbcc8ae30a6de8e3`.
+
+```stata
+use "\\wbgfscifs01\GTSD\03.projects_corp\06.GMI\06.GMI_${rnd}\06.GMI_${rnd}_QA\03.output\01.data\GMI_SPspell_all.dta", clear
+```
+Read datasets: `dataset:4f0ea2547d8ecc02`
+
+### block:bbcc8ae30a6de8e3
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L99-L99`. Next: `block:a5142aac09260e3f`.
+
+```stata
+drop if datamod=="bin"
+```
+Read candidates: `variable:e74d0246308868b0`
+
+### block:a5142aac09260e3f
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L100-L100`. Next: `block:54cd7369185aa200`.
+
+```stata
+drop if countrycode=="ISO3"|countrycode=="ISO3"|countrycode=="ISO3"|countrycode=="ISO3"
+```
+Read candidates: `variable:d4b267301faefeac`
+
+### block:54cd7369185aa200
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L101-L101`. Next: `block:1d5eb7de3f4b26e5`.
+
+```stata
+ren surveyname survname
+```
+New: `variable:585387e1d65856f2`
+Read candidates: `variable:e057bad485e1dd16`
+
+### block:1d5eb7de3f4b26e5
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L102-L102`. Next: `block:b56896e358c813c3`.
+
+```stata
+merge m:m countrycode year survname using `data1', keepus(module)
+```
+Read datasets: `dataset:a91f917022016300`
+
+### block:b56896e358c813c3
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L103-L103`. Next: `block:26dda5bebba891d4`.
+
+```stata
+drop if _merge==2
+```
+Read candidates: `variable:d291e21e66626364`
+
+### block:26dda5bebba891d4
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L105-L105`. Next: `block:dc99724d5b95095b`.
+
+```stata
+bys countrycode period welftype (year): gen seq = _N
+```
+New: `variable:695c338a9a6c3892`
+Read candidates: `variable:d4b267301faefeac`, `variable:8583c46878df3e25`, `variable:d1e06a57f103bd04`
+
+### block:dc99724d5b95095b
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L106-L106`. Next: `block:88ae2d444ca0ca35`.
+
+```stata
+bys countrycode period welftype (year): gen seq1 = _n
+```
+New: `variable:03458ef91e431c14`
+Read candidates: `variable:d4b267301faefeac`, `variable:8583c46878df3e25`, `variable:d1e06a57f103bd04`
+
+### block:88ae2d444ca0ca35
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L107-L107`. Next: `block:21e664e1f732e380`.
+
+```stata
+drop if seq==1
+```
+Read candidates: `variable:695c338a9a6c3892`
+
+### block:21e664e1f732e380
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L108-L108`. Next: `block:629a070fd6b42282`.
+
+```stata
+drop seq _merge ref rep region welvar datamod filename
+```
+Read candidates: `variable:695c338a9a6c3892`, `variable:d291e21e66626364`, `variable:e968e7e0a28edda3`, `variable:79dd33dfe8527929`, `variable:4b7d735998d98c33`, `variable:ad6f445dace54279`, `variable:e74d0246308868b0`, `variable:cf2856955d34a0ec`
+
+### block:629a070fd6b42282
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L109-L109`. Next: `block:8b0109e32a3ccf18`.
+
+```stata
+replace module="MIS" if module==""
+```
+Modified: `variable:6b56bc8e5304e354`
+Read candidates: `variable:6b56bc8e5304e354`
+
+### block:8b0109e32a3ccf18
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L111-L111`. Next: `block:09a90bdf160d2e7c`.
+
+```stata
+reshape wide year survname module, i(countrycode period welftype) j(seq1)
+```
+Read candidates: `variable:ed4d620977ce8e86`, `variable:d1e06a57f103bd04`, `variable:585387e1d65856f2`, `variable:6b56bc8e5304e354`, `variable:d4b267301faefeac`, `variable:8583c46878df3e25`, `variable:6b7ff0e8f48f6e81`, `variable:03458ef91e431c14`
+
+### block:09a90bdf160d2e7c
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L112-L112`. Next: `block:3f98c74196a46e17`.
+
+```stata
+gen type = 0
+```
+New: `variable:7d2f3e58ff0b2946`
+
+### block:3f98c74196a46e17
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L113-L113`. Next: `block:f7b993ba29f775a3`.
+
+```stata
+replace type = 1 if module1=="ALL" & module2=="ALL"
+```
+Modified: `variable:7d2f3e58ff0b2946`
+Read candidates: `variable:a4717b1309488446`, `variable:4d254a49a3d94364`
+
+### block:f7b993ba29f775a3
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L114-L114`. Next: `block:f6a0b487925d943e`.
+
+```stata
+drop if countrycode=="ISO3" & year1==0000
+```
+Read candidates: `variable:d4b267301faefeac`, `variable:af072b9645b2bdca`
+
+### block:f6a0b487925d943e
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L116-L116`. Next: `block:218fb0fede767522`.
+
+```stata
+drop if countrycode=="ISO3" & (year1==0000 & survname1=="EPH") | (year2==0000 & survname2=="EPH")
+```
+Read candidates: `variable:d4b267301faefeac`, `variable:af072b9645b2bdca`, `variable:cc47a9ed001159d6`, `variable:b33cb8248916211d`, `variable:07586007b8f960f9`
+
+### block:218fb0fede767522
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L117-L117`. Next: `block:3cca2d86ec755eb5`.
+
+```stata
+local nobs = _N
+```
+
+### block:3cca2d86ec755eb5
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L119-L119`. Next: `block:b54239e8dc4c8c8e`.
+
+```stata
+replace welftype = "INC" if countrycode=="ISO3" & period=="0000-0000" & welftype=="CONS"
+```
+Modified: `variable:6b7ff0e8f48f6e81`
+Read candidates: `variable:d4b267301faefeac`, `variable:8583c46878df3e25`, `variable:6b7ff0e8f48f6e81`
+
+### block:b54239e8dc4c8c8e
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L159-L159`. Next: `block:f543f74c9eccc939`.
+
+```stata
+save `data1', replace
+```
+Write datasets: `dataset:a91f917022016300`
+
+### block:f543f74c9eccc939
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L161-L161`. Next: `block:376b442cbc9d1d3e`.
+
+```stata
+cap frame create temp_frame
+```
+
+### block:376b442cbc9d1d3e
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L162-L162`. Next: `block:4462927ca70f53c9`.
+
+```stata
+cap frame change temp_frame
+```
+
+### block:4462927ca70f53c9
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L163-L163`. Next: `block:9c3d9576012e61c0`.
+
+```stata
+cap frame drop decomp_results
+```
+
+### block:9c3d9576012e61c0
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L164-L164`. Next: `block:34c8a6ebfc724fe8`.
+
+```stata
+cap frame drop decomp_results2
+```
+
+### block:34c8a6ebfc724fe8
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L165-L165`. Next: `block:604692539d076093`.
+
+```stata
+frame create decomp_results strL(code welftype decomp spell povline) float(value1 value2 value3 value4 ppp)
+```
+
+### block:604692539d076093
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L166-L166`. Next: `block:6b990b74677df7d3`.
+
+```stata
+frame create decomp_results2 strL(code welftype decomp spell povline) float(value1 value2 value3 value4 value5 ppp)
+```
+
+### block:6b990b74677df7d3
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L171-L171`. Next: `block:9406cf844eb48275`.
+
+```stata
+tempfile qccollect
+```
+
+### block:9406cf844eb48275
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L172-L172`. Next: `block:03d46eccfc5613fd`.
+
+```stata
+capture postclose qcdrops
+```
+
+### block:03d46eccfc5613fd
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L173-L175`. Next: `block:6d233b6cd194098d`.
+
+```stata
+postfile qcdrops str3 qc_code str20 qc_spell str4 qc_welf int qc_ppp str12 qc_block long qc_ndropped long qc_ntotal double qc_pctdropped using `qccollect', replace
+```
+Write datasets: `dataset:3f8e83d7cb5e6088`
+
+### block:6d233b6cd194098d
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L201-L201`. Next: `block:45f2cdb0dcd287a8`.
+
+```stata
+local nobs = _N
+```
+
+### block:45f2cdb0dcd287a8
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L202-L202`. Next: `block:eeb1ad78ec14eea2`.
+
+```stata
+save 	`data1', replace
+```
+Write datasets: `dataset:a91f917022016300`
+
+### block:eeb1ad78ec14eea2
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L206-L206`. Next: `block:d7ef46c95df6cc07`.
+
+```stata
+forv i=1(1)`nobs' {
+```
+
+### block:d7ef46c95df6cc07
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L208-L208`. Next: `block:a5e0d29735a6d42c`.
+
+```stata
+tempfile data1a data1b
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+
+### block:a5e0d29735a6d42c
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L209-L209`. Next: `block:5bcb3fcf33dc2879`.
+
+```stata
+use `data1', clear
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+Read datasets: `dataset:a91f917022016300`
+
+### block:5bcb3fcf33dc2879
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L211-L211`. Next: `block:c7af4400674b2dd9`.
+
+```stata
+local welftype = welftype[`i']
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+
+### block:c7af4400674b2dd9
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L212-L212`. Next: `block:c65960e8f224db88`.
+
+```stata
+local code = countrycode[`i']
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+
+### block:c65960e8f224db88
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L213-L213`. Next: `block:a2dda4cc45b09772`.
+
+```stata
+local year1 = year1[`i']
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+
+### block:a2dda4cc45b09772
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L214-L214`. Next: `block:cbe7e6e2faeed5e8`.
+
+```stata
+local survname1 = survname1[`i']
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+
+### block:cbe7e6e2faeed5e8
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L216-L216`. Next: `block:6911cde57eb6dee1`.
+
+```stata
+local year2 = year2[`i']
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+
+### block:6911cde57eb6dee1
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L217-L217`. Next: `block:458ee6759f778c8e`.
+
+```stata
+local survname2 = survname2[`i']
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+
+### block:458ee6759f778c8e
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L219-L219`. Next: `block:7c2182c0e60ad994`.
+
+```stata
+local spellx = period[`i']
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+
+### block:7c2182c0e60ad994
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L220-L220`. Next: `block:ae8d92254b7848e1`.
+
+```stata
+local type = type[`i']
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+
+### block:ae8d92254b7848e1
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L225-L225`. Next: `block:244d79bf25e7eb96`.
+
+```stata
+noi dis "`i'-`code'-`year1'-`survname1'-`year2'-`survname2'-`spellx'"
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+
+### block:244d79bf25e7eb96
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L227-L227`. Next: `block:8916e58b06c54cbd`.
+
+```stata
+local mod GPWG
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+
+### block:8916e58b06c54cbd
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L228-L228`. Next: `block:e236360bb0652ae1`.
+
+```stata
+local wgt weight
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+
+### block:e236360bb0652ae1
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L229-L229`. Next: `block:7f1f8c04a2bf5626`.
+
+```stata
+local x1 = 0
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+
+### block:7f1f8c04a2bf5626
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L230-L230`. Next: `block:c96e22de60db50ea`.
+
+```stata
+local x2 = 0
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+
+### block:c96e22de60db50ea
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L232-L232`. Next: `block:96e46cb9f6391345`.
+
+```stata
+cap dlw, country(`code') year(`year1') type(gmd) surveyid(`survname1') mod(`mod') files $repotxt
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+Read datasets: `dataset:51712dd5b8516c04`
+
+### block:96e46cb9f6391345
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L233-L233`. Next: `block:707e9bb72613f84c`.
+
+```stata
+qui if _rc==0 {
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+
+### block:707e9bb72613f84c
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L234-L234`. Next: `block:c8e10d6f4d70742e`.
+
+```stata
+cap drop survname
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {`
+Read candidates: `variable:2c6c694575d099b0`
+
+### block:c8e10d6f4d70742e
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L235-L235`. Next: `block:0dccff145f935007`.
+
+```stata
+gen survname = "`survname1'"
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {`
+New: `variable:2c6c694575d099b0`
+
+### block:0dccff145f935007
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L236-L236`. Next: `block:10f7d03a74528f04`.
+
+```stata
+egen HHID_new = group(hhid)
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {`
+New: `variable:a5ca684d5b8cbce6`
+Read candidates: `variable:2a4351fbd98f75cd`
+
+### block:10f7d03a74528f04
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L237-L237`. Next: `block:8f501b83aa10afea`.
+
+```stata
+local x1=1
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:8f501b83aa10afea
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L238-L238`. Next: `block:443975057227ec0d`.
+
+```stata
+foreach ppp1 of global ppplist {
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:443975057227ec0d
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L239-L239`. Next: `block:627eb665d76c35e5`.
+
+```stata
+gen double __a`ppp1' = welfare/cpi`ppp1'/icp`ppp1'/365
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {` → `foreach ppp1 of global ppplist {`
+New: `variable:d3b2488ae164082b`
+Read candidates: `variable:fae60b96b14c2ef0`, `variable:c05fbd7f4c9364da`, `variable:3277a8951a491a3e`
+
+### block:627eb665d76c35e5
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L240-L240`. Next: `block:1233d93818e6cc04`.
+
+```stata
+replace __a`ppp1' = ${floor`ppp1'} if __a`ppp1' < ${floor`ppp1'}
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {` → `foreach ppp1 of global ppplist {`
+Modified: `variable:d3b2488ae164082b`
+Read candidates: `variable:bf9cc6e9af343886`, `variable:d3b2488ae164082b`
+
+### block:1233d93818e6cc04
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L241-L241`. Next: `block:62595b9db506868c`.
+
+```stata
+su __a`ppp1' [aw=weight]
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {` → `foreach ppp1 of global ppplist {`
+Read candidates: `variable:d3b2488ae164082b`, `variable:b01bf8037c645555`
+
+### block:62595b9db506868c
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L242-L242`. Next: `block:f0b96f83442ba320`.
+
+```stata
+local m1 = r(mean)
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {` → `foreach ppp1 of global ppplist {`
+
+### block:f0b96f83442ba320
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L243-L243`. Next: `block:17c08a9856f39f77`.
+
+```stata
+gen inq_y_ybar`ppp1' = `m1'/__a`ppp1'
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {` → `foreach ppp1 of global ppplist {`
+New: `variable:a0c54a950ae30ac2`
+Read candidates: `variable:d3b2488ae164082b`
+
+### block:17c08a9856f39f77
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L244-L244`. Next: `block:1775e1934daf5b9e`.
+
+```stata
+gen prosg`ppp1' = ${gap`ppp1'}/__a`ppp1'
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {` → `foreach ppp1 of global ppplist {`
+New: `variable:63f0157cad56e994`
+Read candidates: `variable:0365a06263408c06`, `variable:d3b2488ae164082b`
+
+### block:1775e1934daf5b9e
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L245-L245`. Next: `block:5d76463372ceb18e`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:5d76463372ceb18e
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L246-L246`. Next: `block:c8eb0abb23460979`.
+
+```stata
+cap des urban
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:c8eb0abb23460979
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L247-L247`. Next: `block:ce287265ec7eccd6`.
+
+```stata
+if _rc==0 keep code year HHID_new  __a* weight urban prosg* inq_y_ybar* survname
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {`
+Read candidates: `variable:1f97a455a33dca54`, `variable:c0004e7f5501b5a5`, `variable:a5ca684d5b8cbce6`, `variable:1fc2cee9d1281ff1`, `variable:b01bf8037c645555`, `variable:46e52eccc7b49c86`, `variable:083801cbd09c93f7`, `variable:ac5aff3d02724885`, `variable:2c6c694575d099b0`
+
+### block:ce287265ec7eccd6
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L248-L248`. Next: `block:fa4d63148577b9e4`.
+
+```stata
+else keep code year HHID_new  __a* weight prosg* inq_y_ybar* survname
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {`
+Read candidates: `variable:1f97a455a33dca54`, `variable:c0004e7f5501b5a5`, `variable:a5ca684d5b8cbce6`, `variable:1fc2cee9d1281ff1`, `variable:b01bf8037c645555`, `variable:083801cbd09c93f7`, `variable:ac5aff3d02724885`, `variable:2c6c694575d099b0`
+
+### block:fa4d63148577b9e4
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L249-L249`. Next: `block:0ac204d299d7c768`.
+
+```stata
+save `data1a', replace
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {`
+Write datasets: `dataset:903da197524cd35e`
+
+### block:0ac204d299d7c768
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L250-L250`. Next: `block:e3d28f348c41efad`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+
+### block:e3d28f348c41efad
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L252-L252`. Next: `block:3ca69d56c3ef6e39`.
+
+```stata
+cap dlw, country(`code') year(`year2') type(gmd) surveyid(`survname2') mod(`mod') files $repotxt
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+Read datasets: `dataset:d38a902c7d194a08`
+
+### block:3ca69d56c3ef6e39
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L253-L253`. Next: `block:8611e6393fa44bc4`.
+
+```stata
+qui if _rc==0 {
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+
+### block:8611e6393fa44bc4
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L254-L254`. Next: `block:f23daf2b268e049c`.
+
+```stata
+cap drop survname
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {`
+Read candidates: `variable:9cc96b7fdc7bd140`
+
+### block:f23daf2b268e049c
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L255-L255`. Next: `block:7c967471cc3e73b8`.
+
+```stata
+gen survname = "`survname2'"
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {`
+New: `variable:9cc96b7fdc7bd140`
+
+### block:7c967471cc3e73b8
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L256-L256`. Next: `block:b355d49fedd8b89d`.
+
+```stata
+egen HHID_new = group(hhid)
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {`
+New: `variable:f30a2e898ae727c5`
+Read candidates: `variable:9a96619406bcf620`
+
+### block:b355d49fedd8b89d
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L257-L257`. Next: `block:0d3d5b28ba90805e`.
+
+```stata
+local x2=1
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:0d3d5b28ba90805e
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L258-L258`. Next: `block:cd6b52120e87987c`.
+
+```stata
+foreach ppp1 of global ppplist {
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:cd6b52120e87987c
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L259-L259`. Next: `block:6da06752c371498e`.
+
+```stata
+gen double __a`ppp1' = welfare/cpi`ppp1'/icp`ppp1'/365
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {` → `foreach ppp1 of global ppplist {`
+New: `variable:e768736a0d511a82`
+Read candidates: `variable:ec8c4e82bc86782f`, `variable:0a83400d4aeb2990`, `variable:cae77686e0b57fc5`
+
+### block:6da06752c371498e
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L260-L260`. Next: `block:0a2d2b27ba358663`.
+
+```stata
+replace __a`ppp1' = ${floor`ppp1'} if __a`ppp1' < ${floor`ppp1'}
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {` → `foreach ppp1 of global ppplist {`
+Modified: `variable:e768736a0d511a82`
+Read candidates: `variable:ac488a714a74bd21`, `variable:e768736a0d511a82`
+
+### block:0a2d2b27ba358663
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L261-L261`. Next: `block:b31ce606bd28bf46`.
+
+```stata
+su __a`ppp1' [aw=weight]
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {` → `foreach ppp1 of global ppplist {`
+Read candidates: `variable:e768736a0d511a82`, `variable:0004f3eedd093db9`
+
+### block:b31ce606bd28bf46
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L262-L262`. Next: `block:d833ef872da23a58`.
+
+```stata
+local m1 = r(mean)
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {` → `foreach ppp1 of global ppplist {`
+
+### block:d833ef872da23a58
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L263-L263`. Next: `block:0a84522c5acb6e1c`.
+
+```stata
+gen inq_y_ybar`ppp1' = `m1'/__a`ppp1'
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {` → `foreach ppp1 of global ppplist {`
+New: `variable:4e692db9c2640156`
+Read candidates: `variable:e768736a0d511a82`
+
+### block:0a84522c5acb6e1c
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L264-L264`. Next: `block:fbdc38ebfa36c841`.
+
+```stata
+gen prosg`ppp1' = ${gap`ppp1'}/__a`ppp1'
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {` → `foreach ppp1 of global ppplist {`
+New: `variable:f2721261c2ee6509`
+Read candidates: `variable:437b9c5f461ad17b`, `variable:e768736a0d511a82`
+
+### block:fbdc38ebfa36c841
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L265-L265`. Next: `block:922b199478109d3e`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:922b199478109d3e
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L266-L266`. Next: `block:99cf4f0cfbc623e8`.
+
+```stata
+cap des urban
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {`
+
+### block:99cf4f0cfbc623e8
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L267-L267`. Next: `block:3c66f9e6cb2522f0`.
+
+```stata
+if _rc==0 keep code year HHID_new  __a* weight urban prosg* inq_y_ybar* survname
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {`
+Read candidates: `variable:09623bea7685fad6`, `variable:a25d7b83e1c88da9`, `variable:f30a2e898ae727c5`, `variable:35ac94e6165888fe`, `variable:0004f3eedd093db9`, `variable:9fcc38077d524e7c`, `variable:38a463d609d80694`, `variable:0e64baf15897e3f2`, `variable:9cc96b7fdc7bd140`
+
+### block:3c66f9e6cb2522f0
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L268-L268`. Next: `block:82b645f5bd676e93`.
+
+```stata
+else keep code year HHID_new  __a* weight prosg* inq_y_ybar* survname
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {`
+Read candidates: `variable:09623bea7685fad6`, `variable:a25d7b83e1c88da9`, `variable:f30a2e898ae727c5`, `variable:35ac94e6165888fe`, `variable:0004f3eedd093db9`, `variable:38a463d609d80694`, `variable:0e64baf15897e3f2`, `variable:9cc96b7fdc7bd140`
+
+### block:82b645f5bd676e93
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L269-L269`. Next: `block:0776d95cd0c6b364`.
+
+```stata
+append using `data1a'
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {`
+Read datasets: `dataset:903da197524cd35e`
+
+### block:0776d95cd0c6b364
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L270-L270`. Next: `block:27736d322dabe54c`.
+
+```stata
+save `data1a', replace
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `qui if _rc==0 {`
+Write datasets: `dataset:903da197524cd35e`
+
+### block:27736d322dabe54c
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L271-L271`. Next: `block:3ebba6eeee9412be`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+
+### block:3ebba6eeee9412be
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L273-L273`. Next: `block:8160470c8d1af21d`.
+
+```stata
+if `x1'==1 & `x2'==1 {
+```
+Enclosing controls: `forv i=1(1)`nobs' {`
+
+### block:8160470c8d1af21d
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L274-L274`. Next: `block:41c02ad885a42a9e`.
+
+```stata
+foreach ppp1 of global ppplist {
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {`
+
+### block:41c02ad885a42a9e
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L276-L276`. Next: `block:db5ec32b311a018e`.
+
+```stata
+use `data1a', clear
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+Read datasets: `dataset:903da197524cd35e`
+
+### block:db5ec32b311a018e
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L283-L283`. Next: `block:240ef85719681054`.
+
+```stata
+qui count
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+
+### block:240ef85719681054
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L284-L284`. Next: `block:4126c8bce033e632`.
+
+```stata
+local qc_tot = r(N)
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+
+### block:4126c8bce033e632
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L285-L285`. Next: `block:c080ae739f533101`.
+
+```stata
+qui count if missing(__a`ppp1')
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+Read candidates: `variable:3ac61b0f88e315b6`
+
+### block:c080ae739f533101
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L286-L286`. Next: `block:e4e418e72751511e`.
+
+```stata
+local qc_drop = r(N)
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+
+### block:e4e418e72751511e
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L287-L287`. Next: `block:6d4be6ac72d427bb`.
+
+```stata
+if `qc_drop' > 0 {
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+
+### block:6d4be6ac72d427bb
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L288-L288`. Next: `block:abec7a4965002a21`.
+
+```stata
+local qc_pct = 100*`qc_drop'/`qc_tot'
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if `qc_drop' > 0 {`
+
+### block:abec7a4965002a21
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L289-L289`. Next: `block:4480de3bfd4ea121`.
+
+```stata
+noi dis in yellow "  FLAG GIC-nat: `code' `spellx' ppp`ppp1' - dropped `qc_drop' of `qc_tot' missing welfare"
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if `qc_drop' > 0 {`
+
+### block:4480de3bfd4ea121
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L290-L291`. Next: `block:745de3804c43bc86`.
+
+```stata
+post qcdrops ("`code'") ("`spellx'") ("`welftype'") (`ppp1') ("national") (`qc_drop') (`qc_tot') (`qc_pct')
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if `qc_drop' > 0 {`
+
+### block:745de3804c43bc86
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L292-L292`. Next: `block:9405c9dd90e758ad`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+
+### block:9405c9dd90e758ad
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L293-L293`. Next: `block:63c18ef1d2308e42`.
+
+```stata
+drop if missing(__a`ppp1')
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+Read candidates: `variable:3ac61b0f88e315b6`
+
+### block:63c18ef1d2308e42
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L295-L295`. Next: `block:fb2c835c5c3d49a2`.
+
+```stata
+clonevar q100 = __a`ppp1'
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+New: `variable:e32c288964617bfe`
+Read candidates: `variable:3ac61b0f88e315b6`
+
+### block:fb2c835c5c3d49a2
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L296-L296`. Next: `block:e98dc086756eedd4`.
+
+```stata
+groupfunction [aw=`wgt'], mean(__a`ppp1') xtile(q100) nq(100) by(year )
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+Read candidates: `variable:3ac61b0f88e315b6`, `variable:e32c288964617bfe`, `variable:4b053cb314f0664f`
+
+### block:e98dc086756eedd4
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L297-L297`. Next: `block:613f0042307abc4c`.
+
+```stata
+ren __a`ppp1' mean
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+New: `variable:4a0e3b40b25c2344`
+Read candidates: `variable:3ac61b0f88e315b6`
+
+### block:613f0042307abc4c
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L298-L298`. Next: `block:ef46b7ad1d3c5381`.
+
+```stata
+gen ppp = `ppp1'
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+New: `variable:118b24301278f657`
+
+### block:ef46b7ad1d3c5381
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L299-L299`. Next: `block:7778a7f2c11c0297`.
+
+```stata
+gen data = "All sample"
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+New: `variable:6489d420cb1f2f6f`
+
+### block:7778a7f2c11c0297
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L300-L300`. Next: `block:c368a74132465606`.
+
+```stata
+gen data_group = 1
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+New: `variable:99dfb3393c6265bd`
+
+### block:c368a74132465606
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L301-L301`. Next: `block:df7e8753d96200d8`.
+
+```stata
+gen welftype = "`welftype'"
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+New: `variable:90cf7306c184d176`
+
+### block:df7e8753d96200d8
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L302-L302`. Next: `block:86bc41c827e65022`.
+
+```stata
+gen code = "`code'"
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+New: `variable:6c18f771d4740e52`
+
+### block:86bc41c827e65022
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L303-L303`. Next: `block:06051a1ab58c961d`.
+
+```stata
+append using `datagic'
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+Read datasets: `dataset:487c529c5153c918`
+
+### block:06051a1ab58c961d
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L304-L304`. Next: `block:d7f6121ccaf64906`.
+
+```stata
+save `datagic', replace
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+Write datasets: `dataset:487c529c5153c918`
+
+### block:d7f6121ccaf64906
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L307-L307`. Next: `block:f5f69c6420cb191c`.
+
+```stata
+use `data1a', clear
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+Read datasets: `dataset:903da197524cd35e`
+
+### block:f5f69c6420cb191c
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L308-L308`. Next: `block:79a0f070d1167ae1`.
+
+```stata
+cap des urban
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+
+### block:79a0f070d1167ae1
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L309-L309`. Next: `block:4a9c0986ce67bf7f`.
+
+```stata
+if _rc==0 {
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+
+### block:4a9c0986ce67bf7f
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L314-L314`. Next: `block:32ad6d6f9a721474`.
+
+```stata
+qui count
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if _rc==0 {`
+
+### block:32ad6d6f9a721474
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L315-L315`. Next: `block:d1e942f7a9ca131b`.
+
+```stata
+local qc_tot = r(N)
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if _rc==0 {`
+
+### block:d1e942f7a9ca131b
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L316-L316`. Next: `block:6734fba82ec599fc`.
+
+```stata
+qui count if missing(__a`ppp1')
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if _rc==0 {`
+Read candidates: `variable:cc418b1355f44714`
+
+### block:6734fba82ec599fc
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L317-L317`. Next: `block:2ad693709eebc110`.
+
+```stata
+local qc_drop = r(N)
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if _rc==0 {`
+
+### block:2ad693709eebc110
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L318-L318`. Next: `block:d56e2f8685a4cd83`.
+
+```stata
+if `qc_drop' > 0 {
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if _rc==0 {`
+
+### block:d56e2f8685a4cd83
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L319-L319`. Next: `block:e9818bbf55ab081a`.
+
+```stata
+local qc_pct = 100*`qc_drop'/`qc_tot'
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if _rc==0 {` → `if `qc_drop' > 0 {`
+
+### block:e9818bbf55ab081a
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L320-L320`. Next: `block:d7a0182384147710`.
+
+```stata
+noi dis in yellow "  FLAG GIC-u/r: `code' `spellx' ppp`ppp1' - dropped `qc_drop' of `qc_tot' missing welfare"
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if _rc==0 {` → `if `qc_drop' > 0 {`
+
+### block:d7a0182384147710
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L321-L322`. Next: `block:003666e2bad17288`.
+
+```stata
+post qcdrops ("`code'") ("`spellx'") ("`welftype'") (`ppp1') ("urban_rural") (`qc_drop') (`qc_tot') (`qc_pct')
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if _rc==0 {` → `if `qc_drop' > 0 {`
+
+### block:003666e2bad17288
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L323-L323`. Next: `block:61d97c0b28b6c9a3`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if _rc==0 {`
+
+### block:61d97c0b28b6c9a3
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L324-L324`. Next: `block:7b54c60fe826e73a`.
+
+```stata
+drop if missing(__a`ppp1')
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if _rc==0 {`
+Read candidates: `variable:cc418b1355f44714`
+
+### block:7b54c60fe826e73a
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L326-L326`. Next: `block:356fe45e64ca5d05`.
+
+```stata
+clonevar q100 = __a`ppp1'
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if _rc==0 {`
+New: `variable:2baaf2ef5c560ed4`
+Read candidates: `variable:cc418b1355f44714`
+
+### block:356fe45e64ca5d05
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L327-L327`. Next: `block:486a786df6ee030e`.
+
+```stata
+groupfunction [aw=`wgt'], mean(__a`ppp1') xtile(q100) nq(100) by(year  urban)
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if _rc==0 {`
+Read candidates: `variable:cc418b1355f44714`, `variable:2baaf2ef5c560ed4`, `variable:fba46c85a4a8c3fa`, `variable:678f11bd640b375b`
+
+### block:486a786df6ee030e
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L328-L328`. Next: `block:3e3a68b77a94d96a`.
+
+```stata
+ren __a`ppp1' mean
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if _rc==0 {`
+New: `variable:dfd11a7be00c03e0`
+Read candidates: `variable:cc418b1355f44714`
+
+### block:3e3a68b77a94d96a
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L329-L329`. Next: `block:4b51cb035af6d686`.
+
+```stata
+gen ppp = `ppp1'
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if _rc==0 {`
+New: `variable:f22e2282a158a8f2`
+
+### block:4b51cb035af6d686
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L330-L330`. Next: `block:b96b9e68bd2d4825`.
+
+```stata
+gen data = "Urban or rural"
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if _rc==0 {`
+New: `variable:30665661eec856ee`
+
+### block:b96b9e68bd2d4825
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L331-L331`. Next: `block:3dc264be2cd5fe87`.
+
+```stata
+ren urban data_group
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if _rc==0 {`
+New: `variable:6d3a28b20066bc1e`
+Read candidates: `variable:678f11bd640b375b`
+
+### block:3dc264be2cd5fe87
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L332-L332`. Next: `block:d5befb4f24502bd3`.
+
+```stata
+gen welftype = "`welftype'"
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if _rc==0 {`
+New: `variable:0baf1407eacda42b`
+
+### block:d5befb4f24502bd3
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L333-L333`. Next: `block:4227dc8fe42db4cc`.
+
+```stata
+gen code = "`code'"
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if _rc==0 {`
+New: `variable:683cb6e70f2bc454`
+
+### block:4227dc8fe42db4cc
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L334-L334`. Next: `block:541ec059be7ca552`.
+
+```stata
+append using `datagic'
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if _rc==0 {`
+Read datasets: `dataset:487c529c5153c918`
+
+### block:541ec059be7ca552
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L335-L335`. Next: `block:82d034683f0eac2b`.
+
+```stata
+save `datagic', replace
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `if _rc==0 {`
+Write datasets: `dataset:487c529c5153c918`
+
+### block:82d034683f0eac2b
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L336-L336`. Next: `block:fb7ef447a90b79f1`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+
+### block:fb7ef447a90b79f1
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L341-L341`. Next: `block:2186b2b4f995014c`.
+
+```stata
+use `data1a', clear
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+Read datasets: `dataset:903da197524cd35e`
+
+### block:2186b2b4f995014c
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L342-L342`. Next: `block:de41e7d6d76191f1`.
+
+```stata
+qui {
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+
+### block:de41e7d6d76191f1
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L343-L343`. Next: `block:9336ce6e4be0eaa1`.
+
+```stata
+groupfunction [aw=`wgt'], mean(__a* prosg* inq_y_ybar*) by(year )
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `qui {`
+Read candidates: `variable:4d6509a8e36a92a4`, `variable:8a9f19a3ceb2db80`, `variable:3eeb75d63c4e91a5`, `variable:f32de8e193ce3256`
+
+### block:9336ce6e4be0eaa1
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L344-L344`. Next: `block:71d409075dba1203`.
+
+```stata
+gen spell = "`spellx'"
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `qui {`
+New: `variable:db38c44902eaa215`
+
+### block:71d409075dba1203
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L345-L345`. Next: `block:a9403f5cf32cb78a`.
+
+```stata
+reshape long __a prosg inq_y_ybar, i(spell year) j(ppp)
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `qui {`
+Read candidates: `variable:4d6509a8e36a92a4`, `variable:8a9f19a3ceb2db80`, `variable:3eeb75d63c4e91a5`, `variable:db38c44902eaa215`, `variable:f32de8e193ce3256`, `variable:b75e4fc6d5a09079`
+
+### block:a9403f5cf32cb78a
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L346-L346`. Next: `block:43d9c9ccc06f560e`.
+
+```stata
+ren __a mean
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `qui {`
+New: `variable:d45125d7c2f6fa19`
+Read candidates: `variable:4d6509a8e36a92a4`
+
+### block:43d9c9ccc06f560e
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L347-L347`. Next: `block:cd1285aa19fdbbc7`.
+
+```stata
+foreach var of varlist prosg inq_y_ybar mean {
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `qui {`
+
+### block:cd1285aa19fdbbc7
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L348-L348`. Next: `block:527388bba8c617b3`.
+
+```stata
+gen ln`var' = ln(`var')
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `qui {` → `foreach var of varlist prosg inq_y_ybar mean {`
+New: `variable:91244b39aa0669e0`
+
+### block:527388bba8c617b3
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L350-L350`. Next: `block:1409726d66f96175`.
+
+```stata
+bys ppp spell (year): gen ch_ln`var' = (ln`var'[_n]- ln`var'[_n-1])/(year[_n]-year[_n-1])
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `qui {` → `foreach var of varlist prosg inq_y_ybar mean {`
+New: `variable:85306a7f27ae6b29`
+Read candidates: `variable:91244b39aa0669e0`, `variable:f32de8e193ce3256`, `variable:b75e4fc6d5a09079`
+
+### block:1409726d66f96175
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L351-L351`. Next: `block:35bfcb25fbe4cf7f`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `qui {`
+
+### block:35bfcb25fbe4cf7f
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L352-L352`. Next: `block:a3695d4224854758`.
+
+```stata
+gen code = "`code'"
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `qui {`
+New: `variable:e7c176df6ea46831`
+
+### block:a3695d4224854758
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L353-L353`. Next: `block:1334512accf28ff1`.
+
+```stata
+gen welftype = "`welftype'"
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `qui {`
+New: `variable:3c0482d59a5ca69a`
+
+### block:1334512accf28ff1
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L354-L354`. Next: `block:f7896527ca3bb221`.
+
+```stata
+replace ch_lninq_y_ybar = ch_lninq_y_ybar *100
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `qui {`
+Modified: `variable:f11d70e4eb890f0f`
+Read candidates: `variable:f11d70e4eb890f0f`
+
+### block:f7896527ca3bb221
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L355-L355`. Next: `block:7399c30d69579c8e`.
+
+```stata
+replace ch_lnmean = -1 * ch_lnmean *100
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `qui {`
+Modified: `variable:4e0390f58092651c`
+Read candidates: `variable:4e0390f58092651c`
+
+### block:7399c30d69579c8e
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L356-L356`. Next: `block:09c21a7d7ef6725c`.
+
+```stata
+replace ch_lnprosg = ch_lnprosg *100
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `qui {`
+Modified: `variable:7c60c06cc6878168`
+Read candidates: `variable:7c60c06cc6878168`
+
+### block:09c21a7d7ef6725c
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L357-L357`. Next: `block:946628d6247aba1e`.
+
+```stata
+append using `prosdecomp'
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `qui {`
+Read datasets: `dataset:a404fd2d1680b9c0`
+
+### block:946628d6247aba1e
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L358-L358`. Next: `block:b6d5ee261b8d62da`.
+
+```stata
+save `prosdecomp', replace
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `qui {`
+Write datasets: `dataset:a404fd2d1680b9c0`
+
+### block:b6d5ee261b8d62da
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L359-L359`. Next: `block:6cb55ddbfe3837b1`.
+
+```stata
+}
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+
+### block:6cb55ddbfe3837b1
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L363-L363`. Next: `block:2e43d24e9122376e`.
+
+```stata
+use `data1a', clear
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+Read datasets: `dataset:903da197524cd35e`
+
+### block:2e43d24e9122376e
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L364-L364`. Next: `block:83d22282da5be2aa`.
+
+```stata
+foreach num of numlist ${plines`ppp1'} {
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {`
+
+### block:83d22282da5be2aa
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L365-L365`. Next: `block:ff4bf7449d46e422`.
+
+```stata
+gen _pline`num' = `=`num'/100'
+```
+Enclosing controls: `forv i=1(1)`nobs' {` → `if `x1'==1 & `x2'==1 {` → `foreach ppp1 of global ppplist {` → `foreach num of numlist ${plines`ppp1'} {`
+New: `variable:c8e2ed6525dc165e`
+
+### block:ff4bf7449d46e422
+
+Evidence: `01.Programs/archive/01b-GMI extended indicators spells.do:L369-L369`. Next: `block:a391c2459765a4cc`.
+
+```stata
+qui drdecomp __a`ppp1' [aw=`wgt'] if year==`year1'|year==`year2', by(year) varpl(_pline`num')
+```

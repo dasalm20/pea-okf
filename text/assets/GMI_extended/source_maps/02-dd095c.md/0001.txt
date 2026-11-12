@@ -1,0 +1,1037 @@
+# 04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do
+
+Sanitized source projection; applicability placeholders are not executable values. Original SHA256: 1ac772f3ebde1fc9fde8ce7ea41626332ed6d212aa2351e3e9411056c9c3ceaf
+
+```stata
+0001 | *===============================================================
+0002 | * 99-delivery_qcheck.do
+0003 | *
+0004 | * STEP 2.  Quality check on the variables STEP 1 found.
+0005 | *
+0006 | * WHAT IT DOES
+0007 | *   Opens the delivered files, tabulates every GMI variable that
+0008 | *   arrived under the correct GMD name, and writes one row per
+0009 | *   finding in the team qcheck shape.
+0010 | *
+0011 | * NO DATALIBWEB. Nothing here is merged against or compared to DLW.
+0012 | *   The only yardsticks are the GMD guidelines codebook in section 6
+0013 | *   and the plausibility thresholds in section 5.
+0014 | *
+0015 | * THE FOUR THINGS IT LOOKS FOR
+0016 | *   1  a category share that is unusually LOW or unusually HIGH
+0017 | *   2  a variable where no values are populated
+0018 | *   3  a code OUTSIDE the range the guidelines allow
+0019 | *   4  an allowed category with no observations
+0020 | *
+0021 | * HOW IT PHRASES THEM
+0022 | *   The desc column states what was observed and what the guidelines
+0023 | *   allow, in one short sentence. Neutral and factual, because the
+0024 | *   workbook goes to the region as it is.
+0025 | *
+0026 | * HOW THE RANGE CHECK IS WRITTEN
+0027 | *   Always against the guidelines RANGE, never against the code that
+0028 | *   happened to show up. The iff column reads
+0029 | *       !inlist(electricity,0,1) & !missing(electricity)
+0030 | *   not electricity == 3, so the same condition catches a 5 or a 6 in
+0031 | *   the next country without being rewritten.
+0032 | *
+0033 | * READ ONLY against the region folders. Writes ONE Excel workbook.
+0034 | *===============================================================
+0035 | 
+0036 | clear all
+0037 | set more off
+0038 | set varabbrev off
+0039 | 
+0040 | *===============================================================
+0041 | *  EDIT THIS SECTION
+0042 | *===============================================================
+0043 | 
+0044 | *--- 1. Where the workbook goes
+0045 | local checksdir "$checks"
+0046 | if "`checksdir'" == "" {
+0047 |     local checksdir "C:\Users\wb570371\Documents\PEA\GMI_extended\04.Checks_Add_reharmonization_results"
+0048 |     di as error "  NOTE: $checks was empty -- path set inside this script."
+0049 | }
+0050 | local rnd "$rnd"
+0051 | if "`rnd'" == "" local rnd "SM26"
+0052 | *   ONE WORKBOOK PER REGION, written at the end:
+0053 | *       GMD_qcheck_SSA.xlsx
+0054 | *       GMD_qcheck_EAP.xlsx
+0055 | *   both in the folder above.
+0056 | local outstub "GMD_qcheck"
+0057 | 
+0058 | *--- 2. The regions, same layout rules as step 1.
+0059 | *       layout "flat"    = one .dta per survey, straight in the folder
+0060 | *       layout "modules" = one FOLDER per survey, .dta files inside a
+0061 | *                          subfolder. The union of all of them counts.
+0062 | local regions "SSA EAP"
+0063 | 
+0064 | local SSA_dir    "C:\Users\wb570371\OneDrive - WBG\Shortcuts\Haoyu Wu's files - toshare"
+0065 | local SSA_layout "flat"
+0066 | local SSA_sub    ""
+0067 | 
+0068 | local EAP_dir    "\\wurepliprdfs06\eapfile\eappp\EAP Harmonization"
+0069 | local EAP_layout "modules"
+0070 | local EAP_sub    "Data/Harmonized"
+0071 | 
+0072 | *--- 3. Folder names to skip when scanning a "modules" region
+0073 | local skipfolders "workflow archive old temp backup"
+0074 | 
+0075 | *--- 4. The variables and the order they appear in. Same list as step 1.
+0076 | local vlist ""
+0077 | local vlist "`vlist' age"
+0078 | local vlist "`vlist' male"
+0079 | local vlist "`vlist' educat4"
+0080 | local vlist "`vlist' school"
+0081 | local vlist "`vlist' relationharm"
+0082 | local vlist "`vlist' marital"
+0083 | local vlist "`vlist' lstatus"
+0084 | local vlist "`vlist' industrycat4"
+0085 | local vlist "`vlist' industrycat10"
+0086 | local vlist "`vlist' empstat"
+0087 | local vlist "`vlist' lstatus_year"
+0088 | local vlist "`vlist' industrycat4_year"
+0089 | local vlist "`vlist' industrycat10_year"
+0090 | local vlist "`vlist' empstat_year"
+0091 | local vlist "`vlist' imp_wat_rec"
+0092 | local vlist "`vlist' imp_san_rec"
+0093 | local vlist "`vlist' electricity"
+0094 | local vlist "`vlist' tv"
+0095 | local vlist "`vlist' car"
+0096 | local vlist "`vlist' cellphone"
+0097 | local vlist "`vlist' computer"
+0098 | local vlist "`vlist' fridge"
+0099 | 
+0100 | *===============================================================
+0101 | *  5. THE THRESHOLDS
+0102 | *===============================================================
+0103 | *   LOW and HIGH only run on variables with MORE THAN TWO allowed
+0104 | *   codes. On a 0/1 asset a small share is the normal state of the
+0105 | *   world: 0.4 pct car ownership is a fact about the country. On a
+0106 | *   4-category education variable 0.002 pct in tertiary is worth a
+0107 | *   second look.
+0108 | local thinpct   1.0      /* category share below this pct  -> Check  */
+0109 | local thinurg   0.1      /* category share below this pct  -> Urgent */
+0110 | local domipct  95.0      /* category share above this pct  -> Check  */
+0111 | local domiurg  99.0      /* category share above this pct  -> Urgent */
+0112 | 
+0113 | *   Partial missingness. Not entirely empty, but mostly empty.
+0114 | *   Set missmax to 101 to switch this test off.
+0115 | local missmax  50.0      /* pct missing at or above this   -> Check  */
+0116 | local missurg  90.0      /* pct missing at or above this   -> Urgent */
+0117 | 
+0118 | *   Plausible range for the continuous variables. One line per
+0119 | *   variable: "lo hi".
+0120 | local rng_age   "0 120"
+0121 | 
+0122 | *   THE LABOUR PAIRS.
+0123 | *   Each labour variable comes twice, one per period: lstatus is
+0124 | *   7 day, lstatus_year is 12 month, same for the other three. A
+0125 | *   survey normally collects one of the two, so ONE side being
+0126 | *   unpopulated is expected and reads as a Check on test 2, while an
+0127 | *   empty NON-labour variable reads Urgent.
+0128 | *   BOTH sides unpopulated is test 9 and reads Urgent: the variable
+0129 | *   is then empty for the whole survey, 7 day and 12 month alike,
+0130 | *   so there is nothing to use. That is the case worth raising.
+0131 | *   One line per pair, "<7 day base>", and _year is added to it.
+0132 | local lpairs "lstatus empstat industrycat4 industrycat10"
+0133 | 
+0134 | *   What each pair is, in plain words, for the finding to read in.
+0135 | local lab_lstatus       "labour force status"
+0136 | local lab_empstat       "type of employment"
+0137 | local lab_industrycat4  "industry, 4 groups"
+0138 | local lab_industrycat10 "industry, 10 groups"
+0139 | 
+0140 | local refperiod ""
+0141 | foreach b of local lpairs {
+0142 |     local refperiod "`refperiod' `b' `b'_year"
+0143 | }
+0144 | 
+0145 | *   Build a category table only when the variable has at most this
+0146 | *   many distinct values. Above it the variable is treated as
+0147 | *   continuous and only the missing and range tests run.
+0148 | local maxdist 40
+0149 | 
+0150 | *===============================================================
+0151 | *  6. THE GMD GUIDELINES CODEBOOK
+0152 | *     Taken from GMD3.0_List_fo_variables_-_07192023.xlsx, one tab
+0153 | *     per module: Demography table 4.1, Labor, Utilities, Assets.
+0154 | *
+0155 | *     A variable with NO line here gets no category test, only the
+0156 | *     missing and range tests. That is how age is handled.
+0157 | *
+0158 | *     EVERY allowed code is listed even when a given survey fills
+0159 | *     only some of them. That is the point: a survey filling 2 of 4
+0160 | *     is expected and reads as test 6, a Note. A code OUTSIDE the
+0161 | *     range is test 1.
+0162 | *===============================================================
+0163 | *--- Demography, guidelines tab Demography
+0164 | local cb_male               "0 1"
+0165 | *       1 Male, 0 Female
+0166 | local cb_relationharm       "1 2 3 4 5 6"
+0167 | *       1 Head, 2 Spouse, 3 Children, 4 Parent, 5 Other relative,
+0168 | *       6 Non-relative
+0169 | local cb_marital            "1 2 3 4 5"
+0170 | *       1 Married, 2 Never married, 3 Living together,
+0171 | *       4 Divorced/separated, 5 Widowed
+0172 | local cb_school             "0 1"
+0173 | *       1 Yes, 0 No
+0174 | local cb_educat4            "1 2 3 4"
+0175 | *       The guidelines tab lists the ECA-style 5-code set for
+0176 | *       educat4. The set USED HERE is the GMI one, confirmed:
+0177 | *         1 No education
+0178 | *         2 Primary   (complete or incomplete)
+0179 | *         3 Secondary (complete or incomplete)
+0180 | *         4 Tertiary  (complete or incomplete)
+0181 | 
+0182 | *--- Labor, guidelines tab Labor. The _year block carries the same
+0183 | *    codes as the 7-day block, which is why the pairs match.
+0184 | local cb_lstatus            "1 2 3"
+0185 | local cb_lstatus_year       "1 2 3"
+0186 | *       1 Employed, 2 Unemployed, 3 Not in labour force
+0187 | local cb_empstat            "1 2 3 4 5"
+0188 | local cb_empstat_year       "1 2 3 4 5"
+0189 | *       1 Paid employee, 2 Non-paid employee, 3 Employer,
+0190 | *       4 Self-employed, 5 Other, not classifiable by status
+0191 | local cb_industrycat4       "1 2 3 4"
+0192 | local cb_industrycat4_year  "1 2 3 4"
+0193 | *       1 Agriculture, 2 Industry, 3 Services, 4 Other
+0194 | local cb_industrycat10      "1 2 3 4 5 6 7 8 9 10"
+0195 | local cb_industrycat10_year "1 2 3 4 5 6 7 8 9 10"
+0196 | *       1 Agriculture/hunting/fishing, 2 Mining, 3 Manufacturing,
+0197 | *       4 Public utility services, 5 Construction, 6 Commerce,
+0198 | *       7 Transport and communications, 8 Financial and business
+0199 | *       services, 9 Public administration, 10 Other/unspecified
+0200 | 
+0201 | *--- Utilities and Assets, guidelines tabs Utilities and Assets.
+0202 | *    All of these are 1 Yes, 0 No.
+0203 | local cb_imp_wat_rec        "0 1"
+0204 | local cb_imp_san_rec        "0 1"
+0205 | local cb_electricity        "0 1"
+0206 | local cb_tv                 "0 1"
+0207 | local cb_car                "0 1"
+0208 | local cb_cellphone          "0 1"
+0209 | local cb_computer           "0 1"
+0210 | local cb_fridge             "0 1"
+0211 | 
+0212 | *===============================================================
+0213 | *  END OF EDIT SECTION
+0214 | *===============================================================
+0215 | 
+0216 | di as result _n(2) "{hline 78}"
+0217 | di as result "  DELIVERY QCHECK -- step 2, local files only"
+0218 | di as result "{hline 78}"
+0219 | di as text "  No DataLibWeb. Codes judged against the guidelines in section 6."
+0220 | di as text "  output: one `outstub'_<REGION>.xlsx per region, in"
+0221 | di as text "          `checksdir'"
+0222 | 
+0223 | 
+0224 | *===============================================================
+0225 | * THE CODEBOOK, AS DATA
+0226 | *===============================================================
+0227 | tempfile CBOOK CBTEXT
+0228 | capture postclose cbk
+0229 | postfile cbk str32 variable double value using `CBOOK', replace
+0230 | foreach v of local vlist {
+0231 |     foreach cd of local cb_`v' {
+0232 |         post cbk ("`v'") (`cd')
+0233 |     }
+0234 | }
+0235 | postclose cbk
+0236 | 
+0237 | use `CBOOK', clear
+0238 | qui count
+0239 | if r(N) == 0 {
+0240 |     di as error "  No codebook entries. Check section 6."
+0241 |     exit 498
+0242 | }
+0243 | gen str8 _c = strtrim(string(value, "%6.0f"))
+0244 | bysort variable (value) : gen str244 codes_allowed = ""
+0245 | by variable : replace codes_allowed = ///
+0246 |     cond(_n == 1, _c, codes_allowed[_n-1] + " " + _c)
+0247 | by variable : keep if _n == _N
+0248 | keep variable codes_allowed
+0249 | gen int n_allowed = wordcount(codes_allowed)
+0250 | qui save `CBTEXT'
+0251 | 
+0252 | 
+0253 | *===============================================================
+0254 | * SCAN
+0255 | *   SM   one row per country-year per variable delivered
+0256 | *   CAT  one row per country-year per variable per category
+0257 | *
+0258 | *   CAT is built with contract and appended, not posted, because
+0259 | *   value labels can hold apostrophes and a label in a macro is a
+0260 | *   parsing accident waiting to happen.
+0261 | *===============================================================
+0262 | tempfile SM CAT
+0263 | capture postclose sm
+0264 | postfile sm str8 region str8 ccode int cyear str24 survey str32 variable ///
+0265 |     double ntot double nmiss double pctmiss double ndist double oneval ///
+0266 |     double noor byte iscat using `SM', replace
+0267 | 
+0268 | local firstcat = 1
+0269 | 
+0270 | foreach reg of local regions {
+0271 | 
+0272 |     local dir    "``reg'_dir'"
+0273 |     local layout "``reg'_layout'"
+0274 |     local sub    "``reg'_sub'"
+0275 | 
+0276 |     if "`dir'" == "" {
+0277 |         di as error _n "  [ `reg' ] no folder set, skipped."
+0278 |         continue
+0279 |     }
+0280 | 
+0281 |     di as result _n "{hline 78}"
+0282 |     di as result "  REGION `reg'   (`layout')"
+0283 |     di as text   "  `dir'"
+0284 |     di as result "{hline 78}"
+0285 | 
+0286 |     *--- survey units
+0287 |     local units ""
+0288 |     if "`layout'" == "flat" {
+0289 |         local fl : dir "`dir'" files "*.dta"
+0290 |         foreach f of local fl {
+0291 |             local units `"`units' "`f'""'
+0292 |         }
+0293 |     }
+0294 |     else {
+0295 |         local dl : dir "`dir'" dirs "*"
+0296 |         foreach d of local dl {
+0297 |             local dn `d'
+0298 |             local lowdn = lower("`dn'")
+0299 |             local skip = 0
+0300 |             foreach sk of local skipfolders {
+0301 |                 if "`lowdn'" == lower("`sk'") local skip = 1
+0302 |             }
+0303 |             if `skip' continue
+0304 |             local probe : dir "`dir'/`dn'/`sub'" files "*.dta"
+0305 |             if `"`probe'"' != "" local units `"`units' "`dn'""'
+0306 |         }
+0307 |     }
+0308 | 
+0309 |     foreach u of local units {
+0310 |         local un `u'
+0311 | 
+0312 |         local base  = subinstr("`un'", ".dta", "", .)
+0313 |         local parts = subinstr("`base'", "_", " ", .)
+0314 |         local ccode = upper("`: word 1 of `parts''")
+0315 |         local ytxt  :        word 2 of `parts'
+0316 |         local srv   = upper("`: word 3 of `parts''")
+0317 | 
+0318 |         capture confirm integer number `ytxt'
+0319 |         if _rc {
+0320 |             di as error "    [ NAME ] `un' -- year field reads |`ytxt'|, skipped."
+0321 |             continue
+0322 |         }
+0323 |         local cyear = `ytxt'
+0324 | 
+0325 |         *--- the files in this survey unit
+0326 |         if "`layout'" == "flat" {
+0327 |             local files `"  "`dir'/`un'" "'
+0328 |         }
+0329 |         else {
+0330 |             local dpath "`dir'/`un'/`sub'"
+0331 |             local ml : dir "`dpath'" files "*.dta"
+0332 |             local files ""
+0333 |             foreach m of local ml {
+0334 |                 local mn `m'
+0335 |                 local files `"`files' "`dpath'/`mn'" "'
+0336 |             }
+0337 |         }
+0338 | 
+0339 |         local nfound = 0
+0340 |         foreach v of local vlist {
+0341 | 
+0342 |             *--- pick the file that carries the MOST non-missing values.
+0343 |             *    In a module delivery the same name can sit in more than
+0344 |             *    one file, filled in one and empty in another.
+0345 |             local bestfp ""
+0346 |             local bestnm = -1
+0347 |             foreach fp of local files {
+0348 |                 capture describe using "`fp'", varlist
+0349 |                 if _rc continue
+0350 |                 local here = lower("`r(varlist)'")
+0351 |                 local there : list posof "`v'" in here
+0352 |                 if `there' == 0 continue
+0353 |                 capture use `v' using "`fp'", clear
+0354 |                 if _rc continue
+0355 |                 qui count if !missing(`v')
+0356 |                 if r(N) > `bestnm' {
+0357 |                     local bestnm = r(N)
+0358 |                     local bestfp "`fp'"
+0359 |                 }
+0360 |             }
+0361 |             if "`bestfp'" == "" continue
+0362 | 
+0363 |             local ++nfound
+0364 |             qui use `v' using "`bestfp'", clear
+0365 |             local ntot = _N
+0366 |             qui count if missing(`v')
+0367 |             local nmiss  = r(N)
+0368 |             local nvalid = `ntot' - `nmiss'
+0369 |             local pctmiss = cond(`ntot' > 0, 100*`nmiss'/`ntot', .)
+0370 | 
+0371 |             *--- a string variable cannot be judged against a numeric
+0372 |             *    codebook. Record it and move on.
+0373 |             capture confirm numeric variable `v'
+0374 |             if _rc {
+0375 |                 post sm ("`reg'") ("`ccode'") (`cyear') ("`srv'") ("`v'") ///
+0376 |                     (`ntot') (`nmiss') (`pctmiss') (.) (.) (0) (0)
+0377 |                 continue
+0378 |             }
+0379 | 
+0380 |             *--- distinct non-missing values
+0381 |             local ndist = 0
+0382 |             if `nvalid' > 0 {
+0383 |                 tempvar g
+0384 |                 qui egen `g' = group(`v')
+0385 |                 qui summarize `g', meanonly
+0386 |                 local ndist = r(max)
+0387 |                 drop `g'
+0388 |             }
+0389 | 
+0390 |             *--- when there is only ONE distinct value, record WHICH
+0391 |             *    one it is. The finding is meaningless without it.
+0392 |             local oneval = .
+0393 |             if `ndist' == 1 {
+0394 |                 qui summarize `v', meanonly
+0395 |                 local oneval = r(min)
+0396 |             }
+0397 | 
+0398 |             *--- outside the plausible range
+0399 |             local noor = 0
+0400 |             if "`rng_`v''" != "" & `nvalid' > 0 {
+0401 |                 local lo : word 1 of `rng_`v''
+0402 |                 local hi : word 2 of `rng_`v''
+0403 |                 qui count if !missing(`v') & (`v' < `lo' | `v' > `hi')
+0404 |                 local noor = r(N)
+0405 |             }
+0406 | 
+0407 |             local iscat = (`ndist' > 0 & `ndist' <= `maxdist')
+0408 | 
+0409 |             post sm ("`reg'") ("`ccode'") (`cyear') ("`srv'") ("`v'") ///
+0410 |                 (`ntot') (`nmiss') (`pctmiss') (`ndist') (`oneval') ///
+0411 |                 (`noor') (`iscat')
+0412 | 
+0413 |             *--- the category table
+0414 |             if `iscat' {
+0415 |                 capture decode `v', gen(_declbl)
+0416 |                 if _rc {
+0417 |                     qui gen str1 _declbl = ""
+0418 |                 }
+0419 |                 qui drop if missing(`v')
+0420 |                 qui contract `v' _declbl, freq(n)
+0421 |                 rename `v' value
+0422 |                 rename _declbl lbl
+0423 |                 qui recast double value
+0424 |                 qui gen double nvalid = `nvalid'
+0425 |                 qui gen double pct = 100*n/`nvalid'
+0426 |                 qui gen str8  region   = "`reg'"
+0427 |                 qui gen str8  ccode    = "`ccode'"
+0428 |                 qui gen int   cyear    = `cyear'
+0429 |                 qui gen str24 survey   = "`srv'"
+0430 |                 qui gen str32 variable = "`v'"
+0431 |                 order region ccode cyear survey variable value lbl n pct nvalid
+0432 |                 if `firstcat' {
+0433 |                     qui save `CAT', replace
+0434 |                     local firstcat = 0
+0435 |                 }
+0436 |                 else {
+0437 |                     qui append using `CAT'
+0438 |                     qui save `CAT', replace
+0439 |                 }
+0440 |             }
+0441 |         }
+0442 | 
+0443 |         local nv : word count `vlist'
+0444 |         di as text "    " %-24s "`ccode' `cyear' `srv'" ///
+0445 |             "  variables checked " %3.0f `nfound' " of `nv'"
+0446 |     }
+0447 | }
+0448 | 
+0449 | postclose sm
+0450 | 
+0451 | use `SM', clear
+0452 | qui count
+0453 | if r(N) == 0 {
+0454 |     di as error "  Nothing scanned. Check the folders in section 2."
+0455 |     exit 601
+0456 | }
+0457 | local nsm = r(N)
+0458 | qui save `SM', replace
+0459 | di as text _n "  country-year by variable pairs scanned: `nsm'"
+0460 | 
+0461 | if `firstcat' {
+0462 |     *--- no categorical variable anywhere. Make an empty CAT so the
+0463 |     *    rest of the script does not have to branch.
+0464 |     clear
+0465 |     gen str8 region = ""
+0466 |     gen str8 ccode = ""
+0467 |     gen int cyear = .
+0468 |     gen str24 survey = ""
+0469 |     gen str32 variable = ""
+0470 |     gen double value = .
+0471 |     gen str1 lbl = ""
+0472 |     gen long n = .
+0473 |     gen double pct = .
+0474 |     gen double nvalid = .
+0475 |     qui save `CAT', replace
+0476 | }
+0477 | 
+0478 | 
+0479 | *===============================================================
+0480 | * THE TESTS
+0481 | *
+0482 | *   1  a code outside the GMD guidelines                Urgent
+0483 | *   2  no values populated                   Urgent, Check for labour
+0484 | *   3  a single value throughout                        Check
+0485 | *   4  a category share unusually LOW         Check, Urgent under thinurg
+0486 | *   5  a category share unusually HIGH        Check, Urgent over domiurg
+0487 | *   6  an allowed category with no observations         Note
+0488 | *   7  mostly unpopulated, not entirely     Check, Urgent over missurg
+0489 | *   8  a value outside the expected range              Urgent
+0490 | *===============================================================
+0491 | tempfile QC
+0492 | capture postclose qc
+0493 | postfile qc str8 acronym str24 survey int year str8 region ///
+0494 |     str32 variable str10 warn double freq double percentage double impact ///
+0495 |     str200 desc str244 iff int test byte code using `QC', replace
+0496 | 
+0497 | 
+0498 | *---------------------------------------------------------------
+0499 | * tests 2, 3, 7, 8 -- on the per-variable summary
+0500 | *---------------------------------------------------------------
+0501 | use `SM', clear
+0502 | merge m:1 variable using `CBTEXT', gen(_mt) keep(master match)
+0503 | drop _mt
+0504 | qui replace codes_allowed = "" if missing(codes_allowed)
+0505 | qui replace n_allowed = 0 if missing(n_allowed)
+0506 | 
+0507 | gen byte isref = 0
+0508 | foreach rv of local refperiod {
+0509 |     qui replace isref = 1 if variable == "`rv'"
+0510 | }
+0511 | 
+0512 | local nrow = _N
+0513 | forvalues i = 1/`nrow' {
+0514 |     local rg = region[`i']
+0515 |     local cc = ccode[`i']
+0516 |     local yr = cyear[`i']
+0517 |     local sv = survey[`i']
+0518 |     local v  = variable[`i']
+0519 |     local nt = ntot[`i']
+0520 |     local nm = nmiss[`i']
+0521 |     local pm = pctmiss[`i']
+0522 |     local nd = ndist[`i']
+0523 |     local no = noor[`i']
+0524 |     local rf = isref[`i']
+0525 |     local ov = oneval[`i']
+0526 |     local al = codes_allowed[`i']
+0527 | 
+0528 |     *--- test 2: no values populated
+0529 |     if `nt' > 0 & `nm' == `nt' {
+0530 |         if `rf' {
+0531 |             local d2 "delivered, no values populated. A survey collecting only the other reference period would produce this. Worth confirming."
+0532 |             post qc ("`cc'") ("`sv'") (`yr') ("`rg'") ("`v'") ("Check") ///
+0533 |                 (`nm') (1) (100) ("`d2'") ("missing(`v')") (2) (1)
+0534 |         }
+0535 |         else {
+0536 |             local d2 "delivered under the GMD name, no values populated across `nt' observations."
+0537 |             post qc ("`cc'") ("`sv'") (`yr') ("`rg'") ("`v'") ("Urgent") ///
+0538 |                 (`nm') (1) (100) ("`d2'") ("missing(`v')") (2) (2)
+0539 |         }
+0540 |     }
+0541 | 
+0542 |     *--- test 7: mostly, but not entirely, unpopulated
+0543 |     if `nt' > 0 & `nm' < `nt' & `pm' >= `missmax' {
+0544 |         local wn = cond(`pm' >= `missurg', "Urgent", "Check")
+0545 |         local cd = cond(`pm' >= `missurg', 2, 1)
+0546 |         local pmt = strofreal(`pm', "%4.1f")
+0547 |         local d7 "`pmt' pct missing. Worth confirming the intended universe."
+0548 |         post qc ("`cc'") ("`sv'") (`yr') ("`rg'") ("`v'") ("`wn'") ///
+0549 |             (`nm') (`pm'/100) (`pm') ("`d7'") ("missing(`v')") (7) (`cd')
+0550 |     }
+0551 | 
+0552 |     *--- test 3: one single value throughout
+0553 |     *    desc NAMES the value, and iff narrows to it, because
+0554 |     *    !missing() on its own says nothing about what the value is.
+0555 |     if `nd' == 1 & `nm' < `nt' {
+0556 |         local ovs = strtrim(string(`ov', "%6.0f"))
+0557 |         local nvd = `nt' - `nm'
+0558 |         if "`al'" != "" {
+0559 |             local d3 "all `nvd' non-missing observations hold the same value, `ovs'. Guidelines allow `al'."
+0560 |         }
+0561 |         else {
+0562 |             local d3 "all `nvd' non-missing observations hold the same value, `ovs'."
+0563 |         }
+0564 |         post qc ("`cc'") ("`sv'") (`yr') ("`rg'") ("`v'") ("Check") ///
+0565 |             (`nvd') (1) (100) ("`d3'") ("`v' == `ovs' & !missing(`v')") (3) (1)
+0566 |     }
+0567 | 
+0568 |     *--- test 8: outside the expected range
+0569 |     if `no' > 0 {
+0570 |         local lo : word 1 of `rng_`v''
+0571 |         local hi : word 2 of `rng_`v''
+0572 |         local d8 "`no' observations outside the expected range `lo' to `hi'."
+0573 |         post qc ("`cc'") ("`sv'") (`yr') ("`rg'") ("`v'") ("Urgent") ///
+0574 |             (`no') (`no'/`nt') (100*`no'/`nt') ("`d8'") ///
+0575 |             ("!missing(`v') & !inrange(`v',`lo',`hi')") (8) (2)
+0576 |     }
+0577 | }
+0578 | 
+0579 | 
+0580 | *---------------------------------------------------------------
+0581 | * flag each category as allowed or not. Done once, reused twice.
+0582 | *---------------------------------------------------------------
+0583 | tempfile CATOK
+0584 | use `CAT', clear
+0585 | merge m:1 variable using `CBTEXT', gen(_mt) keep(master match)
+0586 | drop _mt
+0587 | qui replace codes_allowed = "" if missing(codes_allowed)
+0588 | qui replace n_allowed = 0 if missing(n_allowed)
+0589 | 
+0590 | gen byte ok = 1
+0591 | local nrow = _N
+0592 | forvalues i = 1/`nrow' {
+0593 |     local al = codes_allowed[`i']
+0594 |     if "`al'" != "" {
+0595 |         local vs = strtrim(string(value[`i'], "%6.0f"))
+0596 |         local hit : list posof "`vs'" in al
+0597 |         qui replace ok = (`hit' > 0) in `i'
+0598 |     }
+0599 | }
+0600 | qui save `CATOK'
+0601 | 
+0602 | 
+0603 | *---------------------------------------------------------------
+0604 | * tests 1, 4, 5 -- on the per-category table
+0605 | *---------------------------------------------------------------
+0606 | local nrow = _N
+0607 | forvalues i = 1/`nrow' {
+0608 |     local rg  = region[`i']
+0609 |     local cc  = ccode[`i']
+0610 |     local yr  = cyear[`i']
+0611 |     local sv  = survey[`i']
+0612 |     local v   = variable[`i']
+0613 |     local nn  = n[`i']
+0614 |     local pp  = pct[`i']
+0615 |     local okk = ok[`i']
+0616 |     local al  = codes_allowed[`i']
+0617 |     local na  = n_allowed[`i']
+0618 |     local vs  = strtrim(string(value[`i'], "%6.0f"))
+0619 | 
+0620 |     *--- the guidelines range as an inlist condition. This is what
+0621 |     *    goes in iff, NOT the code that happened to show up, so the
+0622 |     *    same line catches a 5 or a 6 in the next country.
+0623 |     local alc = subinstr("`al'", " ", ",", .)
+0624 | 
+0625 |     *--- test 1: a code outside the guidelines range
+0626 |     if `okk' == 0 {
+0627 |         local ppt = strofreal(`pp', "%4.1f")
+0628 |         local d1 "code `vs' is outside the GMD guidelines range. Guidelines allow `al'. `ppt' pct of valid observations."
+0629 |         post qc ("`cc'") ("`sv'") (`yr') ("`rg'") ("`v'") ("Urgent") ///
+0630 |             (`nn') (`pp'/100) (`pp') ("`d1'") ///
+0631 |             ("!inlist(`v',`alc') & !missing(`v')") (1) (2)
+0632 |         continue
+0633 |     }
+0634 | 
+0635 |     *--- tests 4 and 5 need more than two categories. On a 0/1 asset
+0636 |     *    a tiny share is a fact about the country.
+0637 |     if `na' > 2 {
+0638 | 
+0639 |         *--- test 4: unusually thin category
+0640 |         if `pp' < `thinpct' {
+0641 |             local wn = cond(`pp' < `thinurg', "Urgent", "Check")
+0642 |             local cd = cond(`pp' < `thinurg', 2, 1)
+0643 |             local ppt = strofreal(`pp', "%7.4f")
+0644 |             local d4 "category `vs' at `ppt' pct of valid observations (`nn' obs), low for a `na'-category variable. Worth confirming the mapping."
+0645 |             post qc ("`cc'") ("`sv'") (`yr') ("`rg'") ("`v'") ("`wn'") ///
+0646 |                 (`nn') (`pp'/100) (`pp') ("`d4'") ///
+0647 |                 ("inlist(`v',`alc') & !missing(`v')") (4) (`cd')
+0648 |         }
+0649 | 
+0650 |         *--- test 5: unusually dominant category
+0651 |         if `pp' > `domipct' {
+0652 |             local wn = cond(`pp' > `domiurg', "Urgent", "Check")
+0653 |             local cd = cond(`pp' > `domiurg', 2, 1)
+0654 |             local ppt = strofreal(`pp', "%5.1f")
+0655 |             local d5 "category `vs' at `ppt' pct of valid observations, remaining categories near empty. Worth confirming the mapping."
+0656 |             post qc ("`cc'") ("`sv'") (`yr') ("`rg'") ("`v'") ("`wn'") ///
+0657 |                 (`nn') (`pp'/100) (`pp') ("`d5'") ///
+0658 |                 ("inlist(`v',`alc') & !missing(`v')") (5) (`cd')
+0659 |         }
+0660 |     }
+0661 | }
+0662 | 
+0663 | 
+0664 | *---------------------------------------------------------------
+0665 | * test 6 -- an allowed category nobody is in
+0666 | *   Every allowed code is crossed against every delivered variable,
+0667 | *   then the ones that did appear are subtracted.
+0668 | *---------------------------------------------------------------
+0669 | use `SM', clear
+0670 | keep if iscat == 1 & ntot > nmiss
+0671 | keep region ccode cyear survey variable
+0672 | duplicates drop
+0673 | qui count
+0674 | if r(N) > 0 {
+0675 |     joinby variable using `CBOOK', unmatched(none)
+0676 |     merge 1:1 region ccode cyear survey variable value using `CATOK', ///
+0677 |         gen(_m6) keep(master)
+0678 |     keep region ccode cyear survey variable value
+0679 |     merge m:1 variable using `CBTEXT', gen(_mt) keep(master match)
+0680 |     drop _mt
+0681 | 
+0682 |     local nrow = _N
+0683 |     forvalues i = 1/`nrow' {
+0684 |         local rg = region[`i']
+0685 |         local cc = ccode[`i']
+0686 |         local yr = cyear[`i']
+0687 |         local sv = survey[`i']
+0688 |         local v  = variable[`i']
+0689 |         local al = codes_allowed[`i']
+0690 |         local vs = strtrim(string(value[`i'], "%6.0f"))
+0691 |         local d6 "allowed category `vs' has no observations. Expected where the questionnaire did not collect it. Guidelines allow `al'."
+0692 |         post qc ("`cc'") ("`sv'") (`yr') ("`rg'") ("`v'") ("Note") ///
+0693 |             (0) (0) (0) ("`d6'") ("`v' == `vs'") (6) (0)
+0694 |     }
+0695 | }
+0696 | 
+0697 | *---------------------------------------------------------------
+0698 | * test 9 -- a labour variable empty on BOTH 7 day and 12 month
+0699 | *   One side empty is ordinary. Both sides empty means the variable
+0700 | *   is empty for the whole survey, so there is nothing to use.
+0701 | *   A side that was never delivered counts as unpopulated, since
+0702 | *   the pipeline cannot read it either way.
+0703 | *---------------------------------------------------------------
+0704 | use `SM', clear
+0705 | keep region ccode cyear survey variable ntot nmiss
+0706 | gen byte pop = (ntot > nmiss)
+0707 | keep region ccode cyear survey variable pop
+0708 | qui reshape wide pop, i(region ccode cyear survey) j(variable) string
+0709 | 
+0710 | *--- make sure both sides of every pair exist as a column. A side
+0711 | *    nobody delivered has no column at all after the reshape.
+0712 | foreach b of local lpairs {
+0713 |     capture confirm variable pop`b'
+0714 |     if _rc qui gen byte pop`b' = 0
+0715 |     qui replace pop`b' = 0 if missing(pop`b')
+0716 | 
+0717 |     capture confirm variable pop`b'_year
+0718 |     if _rc qui gen byte pop`b'_year = 0
+0719 |     qui replace pop`b'_year = 0 if missing(pop`b'_year)
+0720 | }
+0721 | 
+0722 | local nrow = _N
+0723 | forvalues i = 1/`nrow' {
+0724 |     local rg = region[`i']
+0725 |     local cc = ccode[`i']
+0726 |     local yr = cyear[`i']
+0727 |     local sv = survey[`i']
+0728 |     foreach b of local lpairs {
+0729 |         local p7 = pop`b'[`i']
+0730 |         local p12 = pop`b'_year[`i']
+0731 |         if `p7' == 0 & `p12' == 0 {
+0732 |             local d9 "`lab_`b'' is empty for the whole survey: `b' (last 7 days) and `b'_year (last 12 months) both hold no values."
+0733 |             post qc ("`cc'") ("`sv'") (`yr') ("`rg'") ("`b'") ("Urgent") ///
+0734 |                 (0) (0) (100) ("`d9'") ///
+0735 |                 ("missing(`b') & missing(`b'_year)") (9) (2)
+0736 |         }
+0737 |     }
+0738 | }
+0739 | 
+0740 | postclose qc
+0741 | 
+0742 | 
+0743 | *===============================================================
+0744 | * THE QCHECK SHEET
+0745 | *
+0746 | *   acronym     country code
+0747 | *   survey      survey name
+0748 | *   year        survey year
+0749 | *   region      region that sent the file
+0750 | *   contador    row counter
+0751 | *   variable    the GMD variable
+0752 | *   warn        Urgent / Check / Note
+0753 | *   impact      the size of the problem, as a percent
+0754 | *   freq        observations failing the test
+0755 | *   percentage  freq as a share
+0756 | *   desc        what was observed, and what the guidelines allow
+0757 | *   iff         the Stata condition that reproduces it. Paste and run.
+0758 | *   test        stable test number, so a test keeps its id between runs
+0759 | *   code        urgency level as a number: 2 Urgent, 1 Check, 0 Note
+0760 | *===============================================================
+0761 | use `QC', clear
+0762 | qui count
+0763 | local anyfind = r(N)
+0764 | if `anyfind' == 0 {
+0765 |     di as result _n "  No findings. Nothing failed any test."
+0766 |     qui set obs 1
+0767 |     qui replace acronym  = ""
+0768 |     qui replace warn     = ""
+0769 |     qui replace desc     = "no findings"
+0770 | }
+0771 | 
+0772 | gsort -code -impact region acronym year variable test
+0773 | gen int contador = _n
+0774 | order acronym survey year region contador variable warn impact freq ///
+0775 |       percentage desc iff test code
+0776 | format percentage %9.6f
+0777 | format impact     %7.2f
+0778 | 
+0779 | label var acronym    "acronym"
+0780 | label var survey     "survey"
+0781 | label var year       "year"
+0782 | label var region     "region"
+0783 | label var contador   "contador"
+0784 | label var variable   "variable"
+0785 | label var warn       "warn"
+0786 | label var impact     "impact (pct)"
+0787 | label var freq       "freq"
+0788 | label var percentage "percentage"
+0789 | label var desc       "desc"
+0790 | label var iff        "iff"
+0791 | label var test       "test"
+0792 | label var code       "code"
+0793 | 
+0794 | qui count if warn == "Urgent"
+0795 | local nurg = r(N)
+0796 | qui count if warn == "Check"
+0797 | local nchk = r(N)
+0798 | qui count if warn == "Note"
+0799 | local nnote = r(N)
+0800 | local nqc = `anyfind'
+0801 | tempfile SHQ
+0802 | qui save `SHQ'
+0803 | di as text _n "  findings: `nqc'   Urgent `nurg'   Check `nchk'   Note `nnote'"
+0804 | 
+0805 | 
+0806 | *===============================================================
+0807 | * WRITE ONE WORKBOOK PER REGION
+0808 | *   GMD_qcheck_SSA.xlsx, GMD_qcheck_EAP.xlsx, and so on. Each one
+0809 | *   holds only that region's own surveys, so it can go to that
+0810 | *   region as it is.
+0811 | *===============================================================
+0812 | use `SM', clear
+0813 | levelsof region, local(outregs) clean
+0814 | 
+0815 | foreach rg of local outregs {
+0816 | 
+0817 |     *    forward slash: a backslash sitting directly before a backtick
+0818 |     *    is read as an escaped backtick and eats the separator.
+0819 |     local outfile "`checksdir'/`outstub'_`rg'.xlsx"
+0820 | 
+0821 |     *--- this region's findings, and the counts for the header
+0822 |     use `SHQ', clear
+0823 |     qui keep if region == "`rg'"
+0824 |     if _N == 0 {
+0825 |         qui set obs 1
+0826 |         qui replace region  = "`rg'"
+0827 |         qui replace warn    = ""
+0828 |         qui replace desc    = "no findings"
+0829 |     }
+0830 |     qui replace contador = _n
+0831 |     qui count
+0832 |     local rqc = r(N)
+0833 |     qui count if warn == "Urgent"
+0834 |     local rurg = r(N)
+0835 |     qui count if warn == "Check"
+0836 |     local rchk = r(N)
+0837 |     qui count if warn == "Note"
+0838 |     local rnote = r(N)
+0839 |     tempfile RQ
+0840 |     qui save `RQ'
+0841 | 
+0842 |     *===========================================================
+0843 |     * READ ME
+0844 |     *===========================================================
+0845 |     putexcel set "`outfile'", sheet("READ ME") replace
+0846 | 
+0847 |     putexcel A1 = "GMD QUALITY CHECK -- `rg'", bold
+0848 |     putexcel A2 = "Round `rnd'.  Run `c(current_date)' `c(current_time)'."
+0849 |     putexcel A3 = "Built from the harmonized files as delivered. Nothing here is compared against DataLibWeb."
+0850 | 
+0851 |     putexcel A5 = "WHAT IS BEING LOOKED AT", bold
+0852 |     putexcel A6 = "Every variable the GMI extended pipeline uses that is present under its GMD"
+0853 |     putexcel A7 = "name. Codes are read against the GMD guidelines codebook in section 6 of the"
+0854 |     putexcel A8 = "script, taken from GMD3.0_List_fo_variables. A survey filling only 2 of 4"
+0855 |     putexcel A9 = "allowed categories is expected and reads as a Note. A code outside the range"
+0856 |     putexcel A10 = "is a finding."
+0857 | 
+0858 |     putexcel A12 = "SHEET: QCHECK -- START HERE", bold
+0859 |     putexcel A13 = "One row per finding, sorted by urgency level. Filter on warn, or sort on code."
+0860 |     putexcel A14 = "desc states what was observed and what the guidelines allow, in one sentence."
+0861 |     putexcel A15 = "iff holds a Stata condition you can paste straight into the file to see the rows."
+0862 |     putexcel A16 = "impact is the size of the finding as a percent, and it sets the urgency level."
+0863 | 
+0864 |     putexcel A18 = "warn"
+0865 |     putexcel B18 = "code"
+0866 |     putexcel C18 = "meaning"
+0867 |     putexcel A18:C18, overwritefmt bold
+0868 |     putexcel A19 = "Urgent"
+0869 |     putexcel B19 = 2
+0870 |     putexcel C19 = "outside the guidelines range, or a series with nothing in it. Worth raising."
+0871 |     putexcel A20 = "Check"
+0872 |     putexcel B20 = 1
+0873 |     putexcel C20 = "worth a second look. May well be what the questionnaire supports."
+0874 |     putexcel A21 = "Note"
+0875 |     putexcel B21 = 0
+0876 |     putexcel C21 = "for information. Usually expected."
+0877 | 
+0878 |     putexcel A23 = "THE TESTS", bold
+0879 |     putexcel A24 = "test"
+0880 |     putexcel B24 = "what it looks at"
+0881 |     putexcel C24 = "urgency level"
+0882 |     putexcel A24:C24, overwritefmt bold
+0883 |     putexcel A25 = 1
+0884 |     putexcel B25 = "a code outside the range the guidelines allow"
+0885 |     putexcel C25 = "Urgent"
+0886 |     putexcel A26 = 2
+0887 |     putexcel B26 = "no values populated"
+0888 |     putexcel C26 = "Urgent, Check for a labour variable"
+0889 |     putexcel A27 = 3
+0890 |     putexcel B27 = "a single value across all non-missing observations"
+0891 |     putexcel C27 = "Check"
+0892 |     putexcel A28 = 4
+0893 |     putexcel B28 = "a category share unusually LOW"
+0894 |     putexcel C28 = "Check under `thinpct' pct of valid, Urgent under `thinurg' pct"
+0895 |     putexcel A29 = 5
+0896 |     putexcel B29 = "a category share unusually HIGH"
+0897 |     putexcel C29 = "Check over `domipct' pct of valid, Urgent over `domiurg' pct"
+0898 |     putexcel A30 = 6
+0899 |     putexcel B30 = "an allowed category with no observations"
+0900 |     putexcel C30 = "Note"
+0901 |     putexcel A31 = 7
+0902 |     putexcel B31 = "mostly, but not entirely, unpopulated"
+0903 |     putexcel C31 = "Check over `missmax' pct missing, Urgent over `missurg' pct"
+0904 |     putexcel A32 = 8
+0905 |     putexcel B32 = "a value outside the expected range, age for now"
+0906 |     putexcel C32 = "Urgent"
+0907 |     putexcel A33 = 9
+0908 |     putexcel B33 = "a labour variable empty on BOTH 7 day and 12 month"
+0909 |     putexcel C33 = "Urgent"
+0910 | 
+0911 |     putexcel A35 = "THE LABOUR PAIRS, TESTS 2 ISO3 9", bold
+0912 |     putexcel A36 = "Each labour variable comes twice, one per period: lstatus is the last 7 days"
+0913 |     putexcel A37 = "and lstatus_year the last 12 months, and the same for empstat, industrycat4"
+0914 |     putexcel A38 = "and industrycat10. A survey normally asks only one of the two, so ONE side"
+0915 |     putexcel A39 = "being unpopulated is expected and reads as a Check on test 2."
+0916 |     putexcel A40 = "BOTH sides unpopulated is test 9, and that is the one that matters: the"
+0917 |     putexcel A41 = "variable is then empty for the whole survey and there is nothing to use."
+0918 | 
+0919 |     putexcel A43 = "HOW THE RANGE CHECK IS WRITTEN", bold
+0920 |     putexcel A44 = "Always against the guidelines RANGE, never against the code that happened to"
+0921 |     putexcel A45 = "show up. So iff on test 1 reads"
+0922 |     putexcel A46 = "    !inlist(electricity,0,1) & !missing(electricity)"
+0923 |     putexcel A47 = "and the same line catches a 5 or a 6 in the next country without being"
+0924 |     putexcel A48 = "rewritten. On tests 4 and 5 the condition covers the whole allowed range, so"
+0925 |     putexcel A49 = "you can tab the variable in context. On test 3 it names the single value."
+0926 | 
+0927 |     putexcel A51 = "WHY TESTS 4 ISO3 5 SKIP THE 0/1 VARIABLES", bold
+0928 |     putexcel A52 = "On a 0/1 asset a small share is a fact about the country: 0.4 pct car ownership"
+0929 |     putexcel A53 = "is what the country looks like. So LOW and HIGH only run on variables with more"
+0930 |     putexcel A54 = "than two allowed codes. A 0/1 variable with one value throughout is still"
+0931 |     putexcel A55 = "picked up, by test 3."
+0932 | 
+0933 |     putexcel A57 = "SHEET: CATEGORIES", bold
+0934 |     putexcel A58 = "The full frequency table behind the QCHECK rows. One row per variable per"
+0935 |     putexcel A59 = "category per country-year, with the share, the label the file carries and"
+0936 |     putexcel A60 = "whether the code is inside the guidelines range."
+0937 | 
+0938 |     putexcel A62 = "SHEET: VARIABLES", bold
+0939 |     putexcel A63 = "One row per variable per country-year: rows, missing, distinct values. This is"
+0940 |     putexcel A64 = "where to look for a variable that passed every test but still reads thin."
+0941 | 
+0942 |     *===========================================================
+0943 |     * QCHECK
+0944 |     *===========================================================
+0945 |     use `RQ', clear
+0946 |     export excel using "`outfile'", sheet("QCHECK", modify) firstrow(varlabels)
+0947 | 
+0948 |     *===========================================================
+0949 |     * CATEGORIES
+0950 |     *===========================================================
+0951 |     use `CATOK', clear
+0952 |     qui keep if region == "`rg'"
+0953 |     qui count
+0954 |     if r(N) > 0 {
+0955 |         gen str14 in_guidelines = "not judged"
+0956 |         qui replace in_guidelines = "in range" if codes_allowed != "" & ok == 1
+0957 |         qui replace in_guidelines = "outside range" if codes_allowed != "" & ok == 0
+0958 |         drop ok n_allowed
+0959 |         order region ccode cyear survey variable value lbl n pct nvalid ///
+0960 |               in_guidelines codes_allowed
+0961 |         format pct %7.3f
+0962 |         sort ccode cyear variable value
+0963 |         label var region        "region"
+0964 |         label var ccode         "country"
+0965 |         label var cyear         "year"
+0966 |         label var survey        "survey"
+0967 |         label var variable      "variable"
+0968 |         label var value         "category code"
+0969 |         label var lbl           "category label in the file"
+0970 |         label var n             "observations"
+0971 |         label var pct           "pct of valid"
+0972 |         label var nvalid        "valid observations"
+0973 |         label var in_guidelines "code vs guidelines range"
+0974 |         label var codes_allowed "codes allowed"
+0975 |         export excel using "`outfile'", sheet("CATEGORIES", modify) firstrow(varlabels)
+0976 |     }
+0977 | 
+0978 |     *===========================================================
+0979 |     * VARIABLES
+0980 |     *===========================================================
+0981 |     use `SM', clear
+0982 |     qui keep if region == "`rg'"
+0983 |     merge m:1 variable using `CBTEXT', gen(_mt) keep(master match)
+0984 |     drop _mt
+0985 |     qui replace codes_allowed = "" if missing(codes_allowed)
+0986 |     capture drop n_allowed
+0987 |     order region ccode cyear survey variable ntot nmiss pctmiss ndist oneval ///
+0988 |           noor iscat codes_allowed
+0989 |     format pctmiss %6.2f
+0990 |     sort ccode cyear variable
+0991 |     label var region        "region"
+0992 |     label var ccode         "country"
+0993 |     label var cyear         "year"
+0994 |     label var survey        "survey"
+0995 |     label var variable      "variable"
+0996 |     label var ntot          "rows in the file that carries it"
+0997 |     label var nmiss         "rows missing"
+0998 |     label var pctmiss       "pct missing"
+0999 |     label var ndist         "distinct non-missing values"
+1000 |     label var oneval        "the single value, when there is only one"
+1001 |     label var noor          "values outside the expected range"
+1002 |     label var iscat         "treated as categorical"
+1003 |     label var codes_allowed "codes allowed"
+1004 |     export excel using "`outfile'", sheet("VARIABLES", modify) firstrow(varlabels)
+1005 | 
+1006 |     di as text "  [ `rg' ] `rqc' findings" ///
+1007 |         "   Urgent `rurg'   Check `rchk'   Note `rnote'" ///
+1008 |         "   ->  `outstub'_`rg'.xlsx"
+1009 | }
+1010 | 
+1011 | 
+1012 | di as result _n(2) "{hline 78}"
+1013 | di as result "  DONE"
+1014 | di as result "{hline 78}"
+1015 | di as text "  folder : `checksdir'"
+1016 | di as text "  sheets : READ ME | QCHECK | CATEGORIES | VARIABLES"
+1017 | foreach rg of local outregs {
+1018 |     di as text "  file   : `outstub'_`rg'.xlsx"
+1019 | }
+1020 | di as text _n "  findings across all regions: `nqc'   Urgent `nurg'   Check `nchk'   Note `nnote'"
+1021 | di as result "{hline 78}" _n
+1022 | 
+1023 | *--- screen version, highest urgency level first
+1024 | use `SHQ', clear
+1025 | keep if warn == "Urgent"
+1026 | qui count
+1027 | if r(N) > 0 {
+1028 |     di as result "  URGENT findings"
+1029 |     di as result "{hline 78}"
+1030 |     list acronym year region variable test impact, noobs sep(0) abbrev(16)
+1031 | }
+```

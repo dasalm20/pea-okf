@@ -1,0 +1,1619 @@
+# 04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do
+
+Repository documentation/configuration
+
+Status: PARTIAL_STATIC. Every lexically active statement is indexed; complete runtime schema and macro expansion are not established.
+
+Source snapshot: numbered source (deployment lookup: lookup/sources/GMI_extended/source_maps/99-bfe9b3.md.md)
+
+## Execution-order blocks
+
+### block:51ca655418440d1e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L31-L31`. Next: `block:c608b9c6bf5f6231`.
+
+```stata
+clear all
+```
+
+### block:c608b9c6bf5f6231
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L32-L32`. Next: `block:e63dcf95d3eacfd0`.
+
+```stata
+set more off
+```
+
+### block:e63dcf95d3eacfd0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L33-L33`. Next: `block:71e493b635bb85d9`.
+
+```stata
+set varabbrev off
+```
+
+### block:71e493b635bb85d9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L34-L34`. Next: `block:f87bf36628f80599`.
+
+```stata
+set linesize 200
+```
+
+### block:f87bf36628f80599
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L41-L41`. Next: `block:3f098193bf56bfb0`.
+
+```stata
+local rawdir  "\\WUREPLIPRDFS06\eapfile\eappp\EAP_DATA\datalib_w\ISO3\ISO3_0000_FIES\ISO3_0000_FIES _v01_M\Data\Stata"
+```
+
+### block:3f098193bf56bfb0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L42-L42`. Next: `block:b39452f1dfc63361`.
+
+```stata
+local rawfile "Merged FIES-LFS 0000_Harmonized.dta"
+```
+
+### block:b39452f1dfc63361
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L45-L45`. Next: `block:1905414c5ccca430`.
+
+```stata
+local harmdir  "\\wurepliprdfs06\eapfile\eappp\EAP Harmonization\ISO3_0000_FIES_ECAPOV\Data\Harmonized"
+```
+
+### block:1905414c5ccca430
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L46-L46`. Next: `block:755d94a94caeba86`.
+
+```stata
+local harmfile "ISO3_0000_fies_v01_m_v01_a_ecapov-03_2.dta"
+```
+
+### block:755d94a94caeba86
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L49-L49`. Next: `block:4087db091447aca5`.
+
+```stata
+local vgrade "lc07_grade"
+```
+
+### block:4087db091447aca5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L50-L50`. Next: `block:622b375bbe981621`.
+
+```stata
+local vage   "lc05_age"
+```
+
+### block:622b375bbe981621
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L51-L51`. Next: `block:71ca3a3d103f997d`.
+
+```stata
+local vsch   "lc08_cursch"
+```
+
+### block:71ca3a3d103f997d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L54-L54`. Next: `block:1d6d4ec976859543`.
+
+```stata
+local edage 5
+```
+
+### block:1d6d4ec976859543
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L58-L58`. Next: `block:ddc4b7952c69bc00`.
+
+```stata
+local topn 40
+```
+
+### block:ddc4b7952c69bc00
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L64-L64`. Next: `block:b5539872f10f45dc`.
+
+```stata
+di as text "{hline 78}"
+```
+
+### block:b5539872f10f45dc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L65-L65`. Next: `block:d457598410a3c3e8`.
+
+```stata
+di as text "  ISO3 0000 FIES -- EDUCATION TRACE"
+```
+
+### block:d457598410a3c3e8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L66-L66`. Next: `block:6ad96006eaa93f6a`.
+
+```stata
+di as text "  Run `c(current_date)' `c(current_time)'"
+```
+
+### block:6ad96006eaa93f6a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L67-L67`. Next: `block:a9d0a6c30667f11c`.
+
+```stata
+di as text "{hline 78}"
+```
+
+### block:a9d0a6c30667f11c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L68-L68`. Next: `block:7cd93fc4db11d70d`.
+
+```stata
+di as text "  raw       : `rawdir'/`rawfile'"
+```
+
+### block:7cd93fc4db11d70d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L69-L69`. Next: `block:dd931d6696d488b2`.
+
+```stata
+di as text "  harmonized: `harmdir'/`harmfile'"
+```
+
+### block:dd931d6696d488b2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L70-L70`. Next: `block:c8f4233302fce464`.
+
+```stata
+di as text "  This script writes nothing. Screen output only."
+```
+
+### block:c8f4233302fce464
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L71-L71`. Next: `block:500046312e9848c6`.
+
+```stata
+di as text "{hline 78}"
+```
+
+### block:500046312e9848c6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L77-L77`. Next: `block:628abc1bb8184608`.
+
+```stata
+di as text _n(2) "{hline 78}"
+```
+
+### block:628abc1bb8184608
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L78-L78`. Next: `block:eb258a492381be24`.
+
+```stata
+di as text "  STEP 1.  THE RAW GRADE VARIABLE"
+```
+
+### block:eb258a492381be24
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L79-L79`. Next: `block:0e9adb1ebd28cd30`.
+
+```stata
+di as text "{hline 78}"
+```
+
+### block:0e9adb1ebd28cd30
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L81-L81`. Next: `block:835d9036249aa922`.
+
+```stata
+capture use "`rawdir'/`rawfile'", clear
+```
+Read datasets: `dataset:81e79ccc78e74eef`
+
+### block:835d9036249aa922
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L82-L82`. Next: `block:d19b78c2a39a9db3`.
+
+```stata
+if _rc {
+```
+
+### block:d19b78c2a39a9db3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L83-L83`. Next: `block:7c0fb02e9cf4c1d2`.
+
+```stata
+di as error "  Could not open the raw file. Check section 1."
+```
+Enclosing controls: `if _rc {`
+
+### block:7c0fb02e9cf4c1d2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L84-L84`. Next: `block:4f2682dab6af4627`.
+
+```stata
+di as error "  Everything below needs it, so stopping here."
+```
+Enclosing controls: `if _rc {`
+
+### block:4f2682dab6af4627
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L85-L85`. Next: `block:94fa29b9d27439a2`.
+
+```stata
+exit 601
+```
+Enclosing controls: `if _rc {`
+
+### block:94fa29b9d27439a2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L86-L86`. Next: `block:d1251131ba2fd6e0`.
+
+```stata
+}
+```
+
+### block:d1251131ba2fd6e0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L88-L88`. Next: `block:c21c70d9bf7f514f`.
+
+```stata
+di as text "  rows: " _N
+```
+
+### block:c21c70d9bf7f514f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L89-L89`. Next: `block:b0692d9594c5ea0a`.
+
+```stata
+describe `vgrade' `vage' `vsch'
+```
+
+### block:b0692d9594c5ea0a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L91-L91`. Next: `block:edacd517edda5f06`.
+
+```stata
+di as text _n "  How `vgrade' is stored and labelled:"
+```
+
+### block:edacd517edda5f06
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L92-L92`. Next: `block:1c8a6cac7dde83b5`.
+
+```stata
+capture confirm numeric variable `vgrade'
+```
+
+### block:1c8a6cac7dde83b5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L93-L93`. Next: `block:dbd683fb7d634ab4`.
+
+```stata
+if _rc == 0 {
+```
+
+### block:dbd683fb7d634ab4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L94-L94`. Next: `block:d69ea62b7acb2be9`.
+
+```stata
+qui su `vgrade', meanonly
+```
+Enclosing controls: `if _rc == 0 {`
+Read candidates: `variable:918e1643421489ef`
+
+### block:d69ea62b7acb2be9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L95-L95`. Next: `block:6c9b103a61b2d34f`.
+
+```stata
+di as text "    numeric, range " %12.0f r(min) " to " %12.0f r(max)
+```
+Enclosing controls: `if _rc == 0 {`
+
+### block:6c9b103a61b2d34f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L96-L96`. Next: `block:782ef9ebb394a536`.
+
+```stata
+qui levelsof `vgrade', local(gl)
+```
+Enclosing controls: `if _rc == 0 {`
+
+### block:782ef9ebb394a536
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L97-L97`. Next: `block:8110e6def67bd355`.
+
+```stata
+local ng : word count `gl'
+```
+Enclosing controls: `if _rc == 0 {`
+
+### block:8110e6def67bd355
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L98-L98`. Next: `block:eacf39010d25841b`.
+
+```stata
+di as text "    distinct codes: `ng'"
+```
+Enclosing controls: `if _rc == 0 {`
+
+### block:eacf39010d25841b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L99-L99`. Next: `block:7b0ba69025c1c88d`.
+
+```stata
+local lblname : value label `vgrade'
+```
+Enclosing controls: `if _rc == 0 {`
+
+### block:7b0ba69025c1c88d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L100-L100`. Next: `block:c337f265d7cb3327`.
+
+```stata
+if "`lblname'" == "" di as error "    NO VALUE LABEL ATTACHED -- this is flag F1 in the do-file."
+```
+Enclosing controls: `if _rc == 0 {`
+
+### block:c337f265d7cb3327
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L101-L101`. Next: `block:adb15028ed1f5836`.
+
+```stata
+else                 di as text  "    value label: `lblname'"
+```
+Enclosing controls: `if _rc == 0 {`
+
+### block:adb15028ed1f5836
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L102-L102`. Next: `block:4d5499b10e56c236`.
+
+```stata
+}
+```
+
+### block:4d5499b10e56c236
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L103-L103`. Next: `block:c32d6717b15386e8`.
+
+```stata
+else {
+```
+
+### block:c32d6717b15386e8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L104-L104`. Next: `block:68b6489437f71891`.
+
+```stata
+di as error "    `vgrade' is a STRING. The recode in the do-file assumes it is numeric."
+```
+Enclosing controls: `else {`
+
+### block:68b6489437f71891
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L105-L105`. Next: `block:d249679bb1be4d81`.
+
+```stata
+}
+```
+
+### block:d249679bb1be4d81
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L111-L111`. Next: `block:42b2cdb34b0d3f1e`.
+
+```stata
+di as text _n(2) "{hline 78}"
+```
+
+### block:42b2cdb34b0d3f1e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L112-L112`. Next: `block:4069cb40b8f9ffa5`.
+
+```stata
+di as text "  STEP 2.  REPLAY THE lc07_grade -> edlevel_ea RECODE"
+```
+
+### block:4069cb40b8f9ffa5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L113-L113`. Next: `block:0ba65bd838cd1afe`.
+
+```stata
+di as text "{hline 78}"
+```
+
+### block:0ba65bd838cd1afe
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L114-L114`. Next: `block:1b0252ed4d363686`.
+
+```stata
+di as text "  Lines 266-272 of ISO3_0000_FIES_v01_M_v01_A_ECAPOV-03_2.do."
+```
+
+### block:1b0252ed4d363686
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L115-L115`. Next: `block:7f327f75c1c3f299`.
+
+```stata
+di as text "  Note that ONLY codes 40021 and 50021 are sent to 7 = University,"
+```
+
+### block:7f327f75c1c3f299
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L116-L116`. Next: `block:bd7ead6d64c9f60f`.
+
+```stata
+di as text "  while the whole 60000-80923 block is sent to 6 = Upper secondary."
+```
+
+### block:bd7ead6d64c9f60f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L118-L118`. Next: `block:92cce6499c99df2a`.
+
+```stata
+gen double _orig = `vgrade'
+```
+New: `variable:822bd0cff6149955`
+
+### block:92cce6499c99df2a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L120-L126`. Next: `block:2eeecb09d10170bd`.
+
+```stata
+recode `vgrade'  (1000/0000=1) (10004/10015=2) (10018/24013=3) (24015 34011 34021 34031 35011=4) (34013 34023 34033 35013 40001/40011 40031/40114 40188/50011 50031/50114 50188/59999=5) (60000/80923=6) (40021 50021=7) (40119 50119 81013/81032=9), gen(edlevel_ea)
+```
+Read candidates: `variable:[ESTIMATE]`
+
+### block:2eeecb09d10170bd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L128-L130`. Next: `block:0d1155cd9b2735f7`.
+
+```stata
+label define lbl_ea 1 "1 None" 2 "2 Pre-school" 3 "3 Primary incomplete" 4 "4 Primary complete" 5 "5 Lower-sec complete" 6 "6 Upper-sec complete" 7 "7 University+" 9 "9 Adult/literacy", replace
+```
+
+### block:0d1155cd9b2735f7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L131-L131`. Next: `block:ce1925275b005db5`.
+
+```stata
+label values edlevel_ea lbl_ea
+```
+
+### block:ce1925275b005db5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L133-L133`. Next: `block:fbb5e6775356854e`.
+
+```stata
+di as text _n "  edlevel_ea after the recode:"
+```
+
+### block:fbb5e6775356854e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L134-L134`. Next: `block:37337036d89d4c2c`.
+
+```stata
+tab edlevel_ea, m
+```
+Read candidates: `variable:[ESTIMATE]`, `variable:de7fbea6118abb3a`
+
+### block:37337036d89d4c2c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L137-L137`. Next: `block:7ea2ba909c2bc1c6`.
+
+```stata
+gen byte _caught = (edlevel_ea != _orig)
+```
+New: `variable:2fb75ebaab096512`
+Read candidates: `variable:[ESTIMATE]`, `variable:822bd0cff6149955`
+
+### block:7ea2ba909c2bc1c6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L138-L138`. Next: `block:8590546706dfd8fe`.
+
+```stata
+qui count if _caught == 0 & !missing(_orig)
+```
+Read candidates: `variable:2fb75ebaab096512`, `variable:822bd0cff6149955`
+
+### block:8590546706dfd8fe
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L139-L139`. Next: `block:471b95c4ea07643e`.
+
+```stata
+local nmiss = r(N)
+```
+
+### block:471b95c4ea07643e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L140-L140`. Next: `block:a997c0e0ccdc23c2`.
+
+```stata
+di as text _n "  Rows whose grade code matched NO rule and passed straight through: " %12.0fc `nmiss'
+```
+
+### block:a997c0e0ccdc23c2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L141-L141`. Next: `block:8bc1f6fab4f9e08f`.
+
+```stata
+if `nmiss' > 0 {
+```
+
+### block:8bc1f6fab4f9e08f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L142-L142`. Next: `block:f356d90dbb6df1fd`.
+
+```stata
+di as error "  Those rows keep their raw code in edlevel_ea, which then matches none"
+```
+Enclosing controls: `if `nmiss' > 0 {`
+
+### block:f356d90dbb6df1fd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L143-L143`. Next: `block:b2903a8614f78ee8`.
+
+```stata
+di as error "  of the educat7 conditions, so educat4 ends up MISSING for them."
+```
+Enclosing controls: `if `nmiss' > 0 {`
+
+### block:b2903a8614f78ee8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L144-L144`. Next: `block:124949ca0dfd44b9`.
+
+```stata
+di as text _n "  The uncaught codes:"
+```
+Enclosing controls: `if `nmiss' > 0 {`
+
+### block:124949ca0dfd44b9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L145-L145`. Next: `block:c62f2ab46a9dfe6a`.
+
+```stata
+if `topn' > 0  tab _orig if _caught==0 & !missing(_orig), sort
+```
+Enclosing controls: `if `nmiss' > 0 {`
+
+### block:c62f2ab46a9dfe6a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L146-L146`. Next: `block:f079890beb27836e`.
+
+```stata
+else           tab _orig if _caught==0 & !missing(_orig)
+```
+Enclosing controls: `if `nmiss' > 0 {`
+Read candidates: `variable:822bd0cff6149955`, `variable:2fb75ebaab096512`
+
+### block:f079890beb27836e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L147-L147`. Next: `block:adf7ca1cf9f95630`.
+
+```stata
+}
+```
+
+### block:adf7ca1cf9f95630
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L153-L153`. Next: `block:8282a4df6f327ea8`.
+
+```stata
+di as text _n(2) "{hline 78}"
+```
+
+### block:8282a4df6f327ea8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L154-L154`. Next: `block:5454eb8836af4679`.
+
+```stata
+di as text "  STEP 3.  EVERY RAW CODE AND THE LEVEL IT WAS GIVEN"
+```
+
+### block:5454eb8836af4679
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L155-L155`. Next: `block:3671acc823a7aea9`.
+
+```stata
+di as text "{hline 78}"
+```
+
+### block:3671acc823a7aea9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L156-L156`. Next: `block:15e18cab36906ac9`.
+
+```stata
+di as text "  Read down the rows. Any code you recognise as college or university"
+```
+
+### block:15e18cab36906ac9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L157-L157`. Next: `block:0b35514750e70cbe`.
+
+```stata
+di as text "  that is NOT in the '7 University+' column is a misclassification."
+```
+
+### block:0b35514750e70cbe
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L159-L159`. Next: `block:5ca6d375550d5926`.
+
+```stata
+tab _orig edlevel_ea, m
+```
+Read candidates: `variable:822bd0cff6149955`, `variable:[ESTIMATE]`, `variable:de7fbea6118abb3a`
+
+### block:5ca6d375550d5926
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L165-L165`. Next: `block:dfa9ac56896c937b`.
+
+```stata
+di as text _n(2) "{hline 78}"
+```
+
+### block:dfa9ac56896c937b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L166-L166`. Next: `block:e97d110b8440618c`.
+
+```stata
+di as text "  STEP 4.  THE REST OF THE CHAIN"
+```
+
+### block:e97d110b8440618c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L167-L167`. Next: `block:537ccd960a773952`.
+
+```stata
+di as text "{hline 78}"
+```
+
+### block:537ccd960a773952
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L169-L169`. Next: `block:0d5fec6ba1449326`.
+
+```stata
+gen educat7 = .
+```
+New: `variable:046f3779f33fc6d4`
+
+### block:0d5fec6ba1449326
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L170-L170`. Next: `block:6501e2871ad2855b`.
+
+```stata
+replace educat7 = 1 if inlist(edlevel_ea, 1, 2)
+```
+Modified: `variable:046f3779f33fc6d4`
+Read candidates: `variable:[ESTIMATE]`
+
+### block:6501e2871ad2855b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L171-L171`. Next: `block:d438ad7dff3eee4b`.
+
+```stata
+replace educat7 = 2 if edlevel_ea == 3
+```
+Modified: `variable:046f3779f33fc6d4`
+Read candidates: `variable:[ESTIMATE]`
+
+### block:d438ad7dff3eee4b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L172-L172`. Next: `block:c9d8de86f787118a`.
+
+```stata
+replace educat7 = 3 if edlevel_ea == 4
+```
+Modified: `variable:046f3779f33fc6d4`
+Read candidates: `variable:[ESTIMATE]`
+
+### block:c9d8de86f787118a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L173-L173`. Next: `block:f9aea1708cce57bc`.
+
+```stata
+replace educat7 = 4 if edlevel_ea == 5
+```
+Modified: `variable:046f3779f33fc6d4`
+Read candidates: `variable:[ESTIMATE]`
+
+### block:f9aea1708cce57bc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L174-L174`. Next: `block:9b99c2694ff17a8c`.
+
+```stata
+replace educat7 = 5 if edlevel_ea == 6
+```
+Modified: `variable:046f3779f33fc6d4`
+Read candidates: `variable:[ESTIMATE]`
+
+### block:9b99c2694ff17a8c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L175-L175`. Next: `block:fd14badc7a70f432`.
+
+```stata
+replace educat7 = 7 if edlevel_ea == 7
+```
+Modified: `variable:046f3779f33fc6d4`
+Read candidates: `variable:[ESTIMATE]`
+
+### block:fd14badc7a70f432
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L176-L176`. Next: `block:535a8faa6197a489`.
+
+```stata
+replace educat7 = . if `vage' < `edage'
+```
+Modified: `variable:046f3779f33fc6d4`
+
+### block:535a8faa6197a489
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L177-L179`. Next: `block:ddb79a5b49120f66`.
+
+```stata
+label define lbl_e7 1 "1 No education" 2 "2 Primary incomplete" 3 "3 Primary complete" 4 "4 Secondary incomplete" 5 "5 Secondary complete" 6 "6 Post-sec non-university" 7 "7 University", replace
+```
+
+### block:ddb79a5b49120f66
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L180-L180`. Next: `block:9a86d6fa479ed5e9`.
+
+```stata
+label values educat7 lbl_e7
+```
+
+### block:9a86d6fa479ed5e9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L182-L182`. Next: `block:57546e7345e10723`.
+
+```stata
+recode educat7 (2 3=2) (4 5=3) (6 7=4), gen(educat4)
+```
+Read candidates: `variable:7604cd732e630ec6`
+
+### block:57546e7345e10723
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L183-L183`. Next: `block:b28d002d55155b4c`.
+
+```stata
+label define lbl_e4 1 "1 No education" 2 "2 Primary" 3 "3 Secondary" 4 "4 Tertiary", replace
+```
+
+### block:b28d002d55155b4c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L184-L184`. Next: `block:37918477200c67ea`.
+
+```stata
+label values educat4 lbl_e4
+```
+
+### block:37918477200c67ea
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L186-L186`. Next: `block:277dbbd226ea554c`.
+
+```stata
+di as text _n "  edlevel_ea -> educat7:"
+```
+
+### block:277dbbd226ea554c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L187-L187`. Next: `block:6f45ab16a98e267a`.
+
+```stata
+tab edlevel_ea educat7, m
+```
+Read candidates: `variable:[ESTIMATE]`, `variable:046f3779f33fc6d4`, `variable:de7fbea6118abb3a`
+
+### block:6f45ab16a98e267a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L189-L189`. Next: `block:d4610825caa78983`.
+
+```stata
+di as text _n "  educat7 -> educat4:"
+```
+
+### block:d4610825caa78983
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L190-L190`. Next: `block:4ec0f8334a172c34`.
+
+```stata
+tab educat7 educat4, m
+```
+Read candidates: `variable:046f3779f33fc6d4`, `variable:7604cd732e630ec6`, `variable:de7fbea6118abb3a`
+
+### block:4ec0f8334a172c34
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L192-L192`. Next: `block:2d517878953e5baf`.
+
+```stata
+di as text _n "  educat4 as this script rebuilt it:"
+```
+
+### block:2d517878953e5baf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L193-L193`. Next: `block:ed72d87ebfee635f`.
+
+```stata
+tab educat4, m
+```
+Read candidates: `variable:7604cd732e630ec6`, `variable:de7fbea6118abb3a`
+
+### block:ed72d87ebfee635f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L195-L195`. Next: `block:93a11e68345284b6`.
+
+```stata
+di as text _n "  The age rule: education is blanked below age `edage'."
+```
+
+### block:93a11e68345284b6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L196-L196`. Next: `block:26f0ac54085692c1`.
+
+```stata
+qui count if `vage' < `edage'
+```
+
+### block:26f0ac54085692c1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L197-L197`. Next: `block:83307ec19ace0905`.
+
+```stata
+di as text "  rows below the threshold: " %12.0fc r(N)
+```
+
+### block:83307ec19ace0905
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L198-L198`. Next: `block:e462a1022e595a1f`.
+
+```stata
+di as text "  Age against educat4:"
+```
+
+### block:e462a1022e595a1f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L199-L199`. Next: `block:1122e2e2bb6120ab`.
+
+```stata
+tab educat4 if `vage' < `edage', m
+```
+Read candidates: `variable:7604cd732e630ec6`, `variable:de7fbea6118abb3a`
+
+### block:1122e2e2bb6120ab
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L205-L205`. Next: `block:244746919af3d49e`.
+
+```stata
+di as text _n(2) "{hline 78}"
+```
+
+### block:244746919af3d49e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L206-L206`. Next: `block:3abb58f8cfd2286a`.
+
+```stata
+di as text "  STEP 5.  REBUILD hhid ISO3 pid THE WAY THE DO-FILE DOES"
+```
+
+### block:3abb58f8cfd2286a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L207-L207`. Next: `block:c82b5aefb3770746`.
+
+```stata
+di as text "{hline 78}"
+```
+
+### block:c82b5aefb3770746
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L209-L209`. Next: `block:60be473fbe7de7bb`.
+
+```stata
+capture confirm variable hhid
+```
+
+### block:60be473fbe7de7bb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L210-L210`. Next: `block:bcbd863cce91b43a`.
+
+```stata
+if _rc == 0 rename hhid hhid_raw
+```
+
+### block:bcbd863cce91b43a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L212-L212`. Next: `block:4d540f5ade190b3a`.
+
+```stata
+tostring sequence_no, gen(seq_no_s)
+```
+New: `variable:dae4db864b8fba6b`
+Read candidates: `variable:e457deab15a9fb13`
+
+### block:4d540f5ade190b3a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L213-L213`. Next: `block:32513c017a8f781f`.
+
+```stata
+replace seq_no_s = "00000" + seq_no_s if sequence_no < 10
+```
+Modified: `variable:dae4db864b8fba6b`
+Read candidates: `variable:dae4db864b8fba6b`, `variable:e457deab15a9fb13`
+
+### block:32513c017a8f781f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L214-L214`. Next: `block:adab9bf54b34e3b6`.
+
+```stata
+replace seq_no_s = "0000"  + seq_no_s if sequence_no >= 10     & sequence_no < 100
+```
+Modified: `variable:dae4db864b8fba6b`
+Read candidates: `variable:dae4db864b8fba6b`, `variable:e457deab15a9fb13`
+
+### block:adab9bf54b34e3b6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L215-L215`. Next: `block:772482686cbab8ca`.
+
+```stata
+replace seq_no_s = "000"   + seq_no_s if sequence_no >= 100    & sequence_no < 1000
+```
+Modified: `variable:dae4db864b8fba6b`
+Read candidates: `variable:dae4db864b8fba6b`, `variable:e457deab15a9fb13`
+
+### block:772482686cbab8ca
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L216-L216`. Next: `block:fa3c029ffd99423c`.
+
+```stata
+replace seq_no_s = "00"    + seq_no_s if sequence_no >= 1000   & sequence_no < 10000
+```
+Modified: `variable:dae4db864b8fba6b`
+Read candidates: `variable:dae4db864b8fba6b`, `variable:e457deab15a9fb13`
+
+### block:fa3c029ffd99423c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L217-L217`. Next: `block:04ebc0483b0d5a8c`.
+
+```stata
+replace seq_no_s = "0"     + seq_no_s if sequence_no >= 10000  & sequence_no < 100000
+```
+Modified: `variable:dae4db864b8fba6b`
+Read candidates: `variable:dae4db864b8fba6b`, `variable:e457deab15a9fb13`
+
+### block:04ebc0483b0d5a8c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L218-L218`. Next: `block:43f02a0558bbf840`.
+
+```stata
+gen hhid = "1" + seq_no_s
+```
+New: `variable:d67be1aaab990d87`
+Read candidates: `variable:dae4db864b8fba6b`
+
+### block:43f02a0558bbf840
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L220-L220`. Next: `block:47eaf1efef30781e`.
+
+```stata
+gen pid_n = lno
+```
+New: `variable:f6942c567101a3aa`
+Read candidates: `variable:44250b31d66cfe50`
+
+### block:47eaf1efef30781e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L221-L221`. Next: `block:8d1b2ae0e1084fb8`.
+
+```stata
+tostring pid_n, gen(pid) force
+```
+New: `variable:2873f32b1cd1950c`
+Read candidates: `variable:f6942c567101a3aa`
+
+### block:8d1b2ae0e1084fb8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L222-L222`. Next: `block:609e52d9ae989212`.
+
+```stata
+replace pid = strtrim(pid)
+```
+Modified: `variable:2873f32b1cd1950c`
+Read candidates: `variable:2873f32b1cd1950c`
+
+### block:609e52d9ae989212
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L224-L224`. Next: `block:28b49a7584b95372`.
+
+```stata
+capture isid hhid pid
+```
+Read candidates: `variable:d67be1aaab990d87`, `variable:2873f32b1cd1950c`
+
+### block:28b49a7584b95372
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L225-L225`. Next: `block:53c43c8780ee5b24`.
+
+```stata
+if _rc di as error "  hhid + pid is not unique in the raw file."
+```
+
+### block:53c43c8780ee5b24
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L226-L226`. Next: `block:fe0289398de93679`.
+
+```stata
+else   di as text  "  hhid + pid is unique. Good."
+```
+
+### block:fe0289398de93679
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L228-L228`. Next: `block:34a898467940595e`.
+
+```stata
+keep hhid pid `vgrade' _orig edlevel_ea educat7 educat4 `vage' `vsch'
+```
+Read candidates: `variable:d67be1aaab990d87`, `variable:2873f32b1cd1950c`, `variable:822bd0cff6149955`, `variable:[ESTIMATE]`, `variable:046f3779f33fc6d4`, `variable:7604cd732e630ec6`
+
+### block:34a898467940595e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L229-L229`. Next: `block:ba8b91cc39ca20be`.
+
+```stata
+rename educat4 educat4_rebuilt
+```
+New: `variable:dd3f98ef5bbf90e3`
+Read candidates: `variable:7604cd732e630ec6`
+
+### block:ba8b91cc39ca20be
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L230-L230`. Next: `block:41292d75db15b790`.
+
+```stata
+rename educat7 educat7_rebuilt
+```
+New: `variable:e973c9345cc93b77`
+Read candidates: `variable:046f3779f33fc6d4`
+
+### block:41292d75db15b790
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L231-L231`. Next: `block:9d760d6713e1b43c`.
+
+```stata
+tempfile RAW
+```
+
+### block:9d760d6713e1b43c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L232-L232`. Next: `block:e9fa4f6221e50b69`.
+
+```stata
+qui save `RAW'
+```
+Write datasets: `dataset:2529bacb45712167`
+
+### block:e9fa4f6221e50b69
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L239-L239`. Next: `block:703eee3197c0dfcd`.
+
+```stata
+di as text _n(2) "{hline 78}"
+```
+
+### block:703eee3197c0dfcd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L240-L240`. Next: `block:0663ca2414220d5b`.
+
+```stata
+di as text "  STEP 6.  WHAT THE RAW DATA SAYS ABOUT DLW'S TERTIARY PEOPLE"
+```
+
+### block:0663ca2414220d5b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L241-L241`. Next: `block:c51e8b74ffc5a5e6`.
+
+```stata
+di as text "{hline 78}"
+```
+
+### block:c51e8b74ffc5a5e6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L243-L243`. Next: `block:fea3fada59a1cea1`.
+
+```stata
+capture dlw, country(ISO3) year(0000) type(gmd) surveyid(FIES) mod(ALL) files $repotxt
+```
+Read datasets: `dataset:ed5aeb56e484a8b2`
+
+### block:fea3fada59a1cea1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L244-L244`. Next: `block:54501b9d57ec14de`.
+
+```stata
+if _rc {
+```
+
+### block:54501b9d57ec14de
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L245-L245`. Next: `block:c12598cde5092e40`.
+
+```stata
+di as error "  DLW pull failed (rc=" _rc "). Steps 6 and 7 skipped."
+```
+Enclosing controls: `if _rc {`
+
+### block:c12598cde5092e40
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L246-L246`. Next: `block:b0f14529eaa1aa77`.
+
+```stata
+}
+```
+
+### block:b0f14529eaa1aa77
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L247-L247`. Next: `block:68f320ddf26d4ca4`.
+
+```stata
+else {
+```
+
+### block:68f320ddf26d4ca4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L248-L248`. Next: `block:a81ae30e25db6aa1`.
+
+```stata
+keep hhid pid educat4
+```
+Enclosing controls: `else {`
+Read candidates: `variable:5c1ab919aafabde6`, `variable:b7897f64ccd2a4fa`, `variable:0cb6057439b72513`
+
+### block:a81ae30e25db6aa1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L249-L249`. Next: `block:e996855709b42a7d`.
+
+```stata
+rename educat4 educat4_dlw
+```
+Enclosing controls: `else {`
+New: `variable:e9a0d3e6ae64e290`
+Read candidates: `variable:0cb6057439b72513`
+
+### block:e996855709b42a7d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L250-L250`. Next: `block:53feeeb02cf4d179`.
+
+```stata
+capture confirm string variable pid
+```
+Enclosing controls: `else {`
+
+### block:53feeeb02cf4d179
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L251-L251`. Next: `block:44263ed4c02d116f`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `else {`
+
+### block:44263ed4c02d116f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L252-L252`. Next: `block:e24f537aa1e17c46`.
+
+```stata
+qui tostring pid, replace force
+```
+Enclosing controls: `else {` → `if _rc {`
+Modified: `variable:b7897f64ccd2a4fa`
+Read candidates: `variable:b7897f64ccd2a4fa`
+
+### block:e24f537aa1e17c46
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L253-L253`. Next: `block:d3891dc56e890b8c`.
+
+```stata
+}
+```
+Enclosing controls: `else {`
+
+### block:d3891dc56e890b8c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L254-L254`. Next: `block:e013bcb315002489`.
+
+```stata
+qui replace pid = strtrim(pid)
+```
+Enclosing controls: `else {`
+Modified: `variable:b7897f64ccd2a4fa`
+Read candidates: `variable:b7897f64ccd2a4fa`, `variable:b3023b00f06522eb`
+
+### block:e013bcb315002489
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L256-L256`. Next: `block:daff68fd526094da`.
+
+```stata
+merge 1:1 hhid pid using `RAW', gen(_m)
+```
+Enclosing controls: `else {`
+Read datasets: `dataset:2529bacb45712167`
+
+### block:daff68fd526094da
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L257-L257`. Next: `block:09199752383f24b7`.
+
+```stata
+di as text _n "  join of DLW onto the raw file:"
+```
+Enclosing controls: `else {`
+
+### block:09199752383f24b7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L258-L258`. Next: `block:60bddfd758fe30cb`.
+
+```stata
+tab _m
+```
+Enclosing controls: `else {`
+Read candidates: `variable:b66e4030e55367f0`
+
+### block:60bddfd758fe30cb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L260-L260`. Next: `block:2580dd01e0aaca51`.
+
+```stata
+keep if _m == 3
+```
+Enclosing controls: `else {`
+Read candidates: `variable:b66e4030e55367f0`
+
+### block:2580dd01e0aaca51
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L262-L262`. Next: `block:447e91cbda761141`.
+
+```stata
+di as text _n(2) "  >>> DLW educat4 against the educat4 this script rebuilt:"
+```
+Enclosing controls: `else {`
+
+### block:447e91cbda761141
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L263-L263`. Next: `block:76d788f8250887f2`.
+
+```stata
+tab educat4_dlw educat4_rebuilt, m
+```
+Enclosing controls: `else {`
+Read candidates: `variable:e9a0d3e6ae64e290`, `variable:70a6bb96605610d4`, `variable:ab56397a89c4631a`
+
+### block:76d788f8250887f2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L265-L265`. Next: `block:a347fc9c872195d3`.
+
+```stata
+di as text _n(2) "  >>> THE ANSWER."
+```
+Enclosing controls: `else {`
+
+### block:a347fc9c872195d3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L266-L266`. Next: `block:b61fda3a21b61557`.
+
+```stata
+di as text "  For every person DLW puts in Tertiary, here is the raw grade code"
+```
+Enclosing controls: `else {`
+
+### block:b61fda3a21b61557
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L267-L267`. Next: `block:cc2f21e55458fce1`.
+
+```stata
+di as text "  and the level the harmonization recode gave it:"
+```
+Enclosing controls: `else {`
+
+### block:cc2f21e55458fce1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L268-L268`. Next: `block:ae95d497edc786f6`.
+
+```stata
+tab _orig edlevel_ea if educat4_dlw == 4, m
+```
+Enclosing controls: `else {`
+Read candidates: `variable:a6fb0fb3a59b3eea`, `variable:1f8ca64288f44bf9`, `variable:e9a0d3e6ae64e290`, `variable:ab56397a89c4631a`
+
+### block:ae95d497edc786f6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L270-L270`. Next: `block:02c0de50b9a2c870`.
+
+```stata
+di as text _n "  And the same people, summarised by the level they ended up in:"
+```
+Enclosing controls: `else {`
+
+### block:02c0de50b9a2c870
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L271-L271`. Next: `block:5a333005f5b12f5d`.
+
+```stata
+tab edlevel_ea if educat4_dlw == 4, m
+```
+Enclosing controls: `else {`
+Read candidates: `variable:1f8ca64288f44bf9`, `variable:e9a0d3e6ae64e290`, `variable:ab56397a89c4631a`
+
+### block:5a333005f5b12f5d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L273-L273`. Next: `block:0c436005878353d4`.
+
+```stata
+di as text _n "  Their final educat4 in the local file:"
+```
+Enclosing controls: `else {`
+
+### block:0c436005878353d4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L274-L274`. Next: `block:52af0703c5e4e081`.
+
+```stata
+tab educat4_rebuilt if educat4_dlw == 4, m
+```
+Enclosing controls: `else {`
+Read candidates: `variable:70a6bb96605610d4`, `variable:e9a0d3e6ae64e290`, `variable:ab56397a89c4631a`
+
+### block:52af0703c5e4e081
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L280-L280`. Next: `block:2c13e897ea6a1c9a`.
+
+```stata
+di as text _n(2) "{hline 78}"
+```
+Enclosing controls: `else {`
+
+### block:2c13e897ea6a1c9a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L281-L281`. Next: `block:e6cbfb0ce02d7002`.
+
+```stata
+di as text "  STEP 7.  DOES THE AGE THRESHOLD EXPLAIN ANY OF IT?"
+```
+Enclosing controls: `else {`
+
+### block:e6cbfb0ce02d7002
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L282-L282`. Next: `block:4dd90d62be86bba0`.
+
+```stata
+di as text "{hline 78}"
+```
+Enclosing controls: `else {`
+
+### block:4dd90d62be86bba0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L283-L283`. Next: `block:28ffd282c635c16e`.
+
+```stata
+di as text "  The harmonization blanks education below age `edage'."
+```
+Enclosing controls: `else {`
+
+### block:28ffd282c635c16e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L284-L284`. Next: `block:18e5c948220bb802`.
+
+```stata
+di as text "  If DLW uses a different threshold, the two universes differ."
+```
+Enclosing controls: `else {`
+
+### block:18e5c948220bb802
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L286-L286`. Next: `block:e4f720c8c5c068a2`.
+
+```stata
+di as text _n "  DLW educat4 by whether the person is below age `edage':"
+```
+Enclosing controls: `else {`
+
+### block:e4f720c8c5c068a2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L287-L287`. Next: `block:62ee0960723d2d6e`.
+
+```stata
+gen byte _under = (`vage' < `edage') if !missing(`vage')
+```
+Enclosing controls: `else {`
+New: `variable:70b046cb07e007d2`
+
+### block:62ee0960723d2d6e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L288-L288`. Next: `block:12c092e278379da4`.
+
+```stata
+tab _under educat4_dlw, m
+```
+Enclosing controls: `else {`
+Read candidates: `variable:70b046cb07e007d2`, `variable:e9a0d3e6ae64e290`, `variable:ab56397a89c4631a`
+
+### block:12c092e278379da4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L290-L290`. Next: `block:1ddcb306f33486bc`.
+
+```stata
+di as text _n "  People DLW has a value for but the local file does not:"
+```
+Enclosing controls: `else {`
+
+### block:1ddcb306f33486bc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L291-L291`. Next: `block:44d3cd73b524be74`.
+
+```stata
+qui count if !missing(educat4_dlw) & missing(educat4_rebuilt)
+```
+Enclosing controls: `else {`
+Read candidates: `variable:e9a0d3e6ae64e290`, `variable:70a6bb96605610d4`
+
+### block:44d3cd73b524be74
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L292-L292`. Next: `block:565e07cd54b5dad3`.
+
+```stata
+di as text "    count: " %12.0fc r(N)
+```
+Enclosing controls: `else {`
+
+### block:565e07cd54b5dad3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L293-L293`. Next: `block:32d88cd5f7f05406`.
+
+```stata
+di as text "    their ages:"
+```
+Enclosing controls: `else {`
+
+### block:32d88cd5f7f05406
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L294-L294`. Next: `block:fa71dc3c7e9fd13e`.
+
+```stata
+su `vage' if !missing(educat4_dlw) & missing(educat4_rebuilt), detail
+```
+Enclosing controls: `else {`
+Read candidates: `variable:e9a0d3e6ae64e290`, `variable:70a6bb96605610d4`, `variable:f96fa1ec3494708e`
+
+### block:fa71dc3c7e9fd13e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L295-L295`. Next: `block:653be9a032e010d9`.
+
+```stata
+di as text "    their raw grade codes:"
+```
+Enclosing controls: `else {`
+
+### block:653be9a032e010d9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L296-L296`. Next: `block:f06809dd3d272e17`.
+
+```stata
+tab _orig if !missing(educat4_dlw) & missing(educat4_rebuilt), m
+```
+Enclosing controls: `else {`
+Read candidates: `variable:a6fb0fb3a59b3eea`, `variable:e9a0d3e6ae64e290`, `variable:70a6bb96605610d4`, `variable:ab56397a89c4631a`
+
+### block:f06809dd3d272e17
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L297-L297`. Next: `block:538d5e1fc9e354d8`.
+
+```stata
+}
+```
+
+### block:538d5e1fc9e354d8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L300-L300`. Next: `block:1e93f6d402bbeaac`.
+
+```stata
+di as text _n(2) "{hline 78}"
+```
+
+### block:1e93f6d402bbeaac
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L301-L301`. Next: `block:6350ff039901c33c`.
+
+```stata
+di as text "  HOW TO READ THIS"
+```
+
+### block:6350ff039901c33c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L302-L302`. Next: `block:7cc265183d3613d1`.
+
+```stata
+di as text "{hline 78}"
+```
+
+### block:7cc265183d3613d1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L303-L303`. Next: `block:8a96137367c0e2db`.
+
+```stata
+di as text "  STEP 2  any code listed as uncaught is a hole in the range table."
+```
+
+### block:8a96137367c0e2db
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L304-L304`. Next: `block:bb70848d30e919fb`.
+
+```stata
+di as text "  STEP 3  find the codes you know are college. If they sit under"
+```
+
+### block:bb70848d30e919fb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L305-L305`. Next: `block:027ca0ed0ec1bc22`.
+
+```stata
+di as text "          '6 Upper-sec complete' or '1 None', that is the bug."
+```
+
+### block:027ca0ed0ec1bc22
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L306-L306`. Next: `block:7850408a94becb30`.
+
+```stata
+di as text "  STEP 6  this is the one that settles it. Every person DLW calls"
+```
+
+### block:7850408a94becb30
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L307-L307`. Next: `block:4635eb800ba678ce`.
+
+```stata
+di as text "          Tertiary, with the raw code the recode saw. Whatever"
+```
+
+### block:4635eb800ba678ce
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L308-L308`. Next: `block:8e2313bc2bf86995`.
+
+```stata
+di as text "          column they fall in is where the range table sent them."
+```
+
+### block:8e2313bc2bf86995
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L309-L309`. Next: `block:317e980c91c91bc8`.
+
+```stata
+di as text "  STEP 7  rules out the age threshold as the cause."
+```
+
+### block:317e980c91c91bc8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L310-L310`. Next: `block:bd310baf2299dbf5`.
+
+```stata
+di as text "{hline 78}"
+```
+
+### block:bd310baf2299dbf5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L312-L312`. Next: `block:cb567234ae0abac9`.
+
+```stata
+di as result _n(2) "{hline 78}"
+```
+
+### block:cb567234ae0abac9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L313-L313`. Next: `block:3f81080fdb0316de`.
+
+```stata
+di as result "  DONE -- nothing was written to disk."
+```
+
+### block:3f81080fdb0316de
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do:L314-L314`. Next: `end`.
+
+```stata
+di as result "{hline 78}" _n
+```

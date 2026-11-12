@@ -1,0 +1,1846 @@
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L407-L407`. Next: `block:dd93594eda576b3d`.
+
+```stata
+local iscat = (`ndist' > 0 & `ndist' <= `maxdist')
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:dd93594eda576b3d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L409-L411`. Next: `block:d6c71037dff71199`.
+
+```stata
+post sm ("`reg'") ("`ccode'") (`cyear') ("`srv'") ("`v'") (`ntot') (`nmiss') (`pctmiss') (`ndist') (`oneval') (`noor') (`iscat')
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:d6c71037dff71199
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L414-L414`. Next: `block:9a5d2eb8f568b00e`.
+
+```stata
+if `iscat' {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:9a5d2eb8f568b00e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L415-L415`. Next: `block:8053bcd913c04e32`.
+
+```stata
+capture decode `v', gen(_declbl)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {`
+New: `variable:b6a90730a4c49f13`
+
+### block:8053bcd913c04e32
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L416-L416`. Next: `block:93611b51c8d1a83e`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {`
+
+### block:93611b51c8d1a83e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L417-L417`. Next: `block:d6433e5d5cad17da`.
+
+```stata
+qui gen str1 _declbl = ""
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {` → `if _rc {`
+New: `variable:b6a90730a4c49f13`
+Read candidates: `variable:412c7c360f1ad4e3`
+
+### block:d6433e5d5cad17da
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L418-L418`. Next: `block:35e884bd837738ad`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {`
+
+### block:35e884bd837738ad
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L419-L419`. Next: `block:00692961c0d1f001`.
+
+```stata
+qui drop if missing(`v')
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {`
+
+### block:00692961c0d1f001
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L420-L420`. Next: `block:d14f5ecaa0ca44c5`.
+
+```stata
+qui contract `v' _declbl, freq(n)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {`
+Read candidates: `variable:b6a90730a4c49f13`, `variable:93361d4ee255b029`
+
+### block:d14f5ecaa0ca44c5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L421-L421`. Next: `block:94736e60e64e02ea`.
+
+```stata
+rename `v' value
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {`
+New: `variable:1a36b66f237bb304`
+Read candidates: `variable:9083578034babc31`
+
+### block:94736e60e64e02ea
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L422-L422`. Next: `block:f9c10f32c0a62999`.
+
+```stata
+rename _declbl lbl
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {`
+New: `variable:2d013fde951175d1`
+Read candidates: `variable:b6a90730a4c49f13`
+
+### block:f9c10f32c0a62999
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L423-L423`. Next: `block:c8fe009dba55e611`.
+
+```stata
+qui recast double value
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {`
+
+### block:c8fe009dba55e611
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L424-L424`. Next: `block:84f5c643462273b9`.
+
+```stata
+qui gen double nvalid = `nvalid'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {`
+New: `variable:945e5abff0d5d739`
+Read candidates: `variable:412c7c360f1ad4e3`
+
+### block:84f5c643462273b9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L425-L425`. Next: `block:4c87a7f24d047664`.
+
+```stata
+qui gen double pct = 100*n/`nvalid'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {`
+New: `variable:e9b8282cddcbca6d`
+Read candidates: `variable:93361d4ee255b029`, `variable:412c7c360f1ad4e3`
+
+### block:4c87a7f24d047664
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L426-L426`. Next: `block:1c3b9fed6c433a45`.
+
+```stata
+qui gen str8  region   = "`reg'"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {`
+New: `variable:d7125b5c9c7d0ab5`
+Read candidates: `variable:412c7c360f1ad4e3`
+
+### block:1c3b9fed6c433a45
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L427-L427`. Next: `block:3a7731ef6926f2e4`.
+
+```stata
+qui gen str8  ccode    = "`ccode'"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {`
+New: `variable:a92b8567cc57c1f1`
+Read candidates: `variable:412c7c360f1ad4e3`
+
+### block:3a7731ef6926f2e4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L428-L428`. Next: `block:1ba8efa97b16e988`.
+
+```stata
+qui gen int   cyear    = `cyear'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {`
+New: `variable:fc4fbdc0788a7422`
+Read candidates: `variable:412c7c360f1ad4e3`
+
+### block:1ba8efa97b16e988
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L429-L429`. Next: `block:8e137f504f0723a6`.
+
+```stata
+qui gen str24 survey   = "`srv'"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {`
+New: `variable:cb59b5d33d9aba77`
+Read candidates: `variable:412c7c360f1ad4e3`
+
+### block:8e137f504f0723a6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L430-L430`. Next: `block:7d19a29ab7a9191e`.
+
+```stata
+qui gen str32 variable = "`v'"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {`
+New: `variable:0cab7a7098833a31`
+Read candidates: `variable:412c7c360f1ad4e3`
+
+### block:7d19a29ab7a9191e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L431-L431`. Next: `block:b0a61776bd1e3974`.
+
+```stata
+order region ccode cyear survey variable value lbl n pct nvalid
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {`
+
+### block:b0a61776bd1e3974
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L432-L432`. Next: `block:4c54dfcdf9125abd`.
+
+```stata
+if `firstcat' {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {`
+
+### block:4c54dfcdf9125abd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L433-L433`. Next: `block:8f00035038a6c265`.
+
+```stata
+qui save `CAT', replace
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {` → `if `firstcat' {`
+Write datasets: `dataset:3d8ff54e939ac6bd`
+
+### block:8f00035038a6c265
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L434-L434`. Next: `block:3a39990820e1c53d`.
+
+```stata
+local firstcat = 0
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {` → `if `firstcat' {`
+
+### block:3a39990820e1c53d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L435-L435`. Next: `block:0c3f97a14dc083d6`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {`
+
+### block:0c3f97a14dc083d6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L436-L436`. Next: `block:4b0ed9656055156e`.
+
+```stata
+else {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {`
+
+### block:4b0ed9656055156e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L437-L437`. Next: `block:1e00d3761f99c8fa`.
+
+```stata
+qui append using `CAT'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {` → `else {`
+Read datasets: `dataset:3d8ff54e939ac6bd`
+
+### block:1e00d3761f99c8fa
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L438-L438`. Next: `block:f3d3cc9d8e935e7b`.
+
+```stata
+qui save `CAT', replace
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {` → `else {`
+Write datasets: `dataset:3d8ff54e939ac6bd`
+
+### block:f3d3cc9d8e935e7b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L439-L439`. Next: `block:acfedfdb22820898`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `iscat' {`
+
+### block:acfedfdb22820898
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L440-L440`. Next: `block:5afdd4b4794e01e8`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:5afdd4b4794e01e8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L441-L441`. Next: `block:fd1f139157f7e66d`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {`
+
+### block:fd1f139157f7e66d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L443-L443`. Next: `block:01702df241c295a2`.
+
+```stata
+local nv : word count `vlist'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {`
+
+### block:01702df241c295a2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L444-L445`. Next: `block:442b7acf4358a7a3`.
+
+```stata
+di as text "    " %-24s "`ccode' `cyear' `srv'" "  variables checked " %3.0f `nfound' " of `nv'"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {`
+
+### block:442b7acf4358a7a3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L446-L446`. Next: `block:c97aa110cbb5a859`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:c97aa110cbb5a859
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L447-L447`. Next: `block:aaa514c4fdab9d23`.
+
+```stata
+}
+```
+
+### block:aaa514c4fdab9d23
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L449-L449`. Next: `block:3533912084206433`.
+
+```stata
+postclose sm
+```
+
+### block:3533912084206433
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L451-L451`. Next: `block:93d173f69df0a5db`.
+
+```stata
+use `SM', clear
+```
+Read datasets: `dataset:97bd60f867796290`
+
+### block:93d173f69df0a5db
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L452-L452`. Next: `block:802c1a72dc935d8d`.
+
+```stata
+qui count
+```
+
+### block:802c1a72dc935d8d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L453-L453`. Next: `block:5afbdb4aed846a0f`.
+
+```stata
+if r(N) == 0 {
+```
+
+### block:5afbdb4aed846a0f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L454-L454`. Next: `block:133b37878cd6ebb1`.
+
+```stata
+di as error "  Nothing scanned. Check the folders in section 2."
+```
+Enclosing controls: `if r(N) == 0 {`
+
+### block:133b37878cd6ebb1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L455-L455`. Next: `block:c05557f66eb60225`.
+
+```stata
+exit 601
+```
+Enclosing controls: `if r(N) == 0 {`
+
+### block:c05557f66eb60225
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L456-L456`. Next: `block:dc69be24812d873e`.
+
+```stata
+}
+```
+
+### block:dc69be24812d873e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L457-L457`. Next: `block:6ee16b4973a81eb7`.
+
+```stata
+local nsm = r(N)
+```
+
+### block:6ee16b4973a81eb7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L458-L458`. Next: `block:0f975530181c775a`.
+
+```stata
+qui save `SM', replace
+```
+Write datasets: `dataset:97bd60f867796290`
+
+### block:0f975530181c775a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L459-L459`. Next: `block:7cbe9aa660370130`.
+
+```stata
+di as text _n "  country-year by variable pairs scanned: `nsm'"
+```
+
+### block:7cbe9aa660370130
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L461-L461`. Next: `block:f6101d40ef7112d4`.
+
+```stata
+if `firstcat' {
+```
+
+### block:f6101d40ef7112d4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L464-L464`. Next: `block:da3298a326897726`.
+
+```stata
+clear
+```
+Enclosing controls: `if `firstcat' {`
+
+### block:da3298a326897726
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L465-L465`. Next: `block:29cb2557aed971cf`.
+
+```stata
+gen str8 region = ""
+```
+Enclosing controls: `if `firstcat' {`
+New: `variable:3d1461383b4f965d`
+
+### block:29cb2557aed971cf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L466-L466`. Next: `block:219585437503b838`.
+
+```stata
+gen str8 ccode = ""
+```
+Enclosing controls: `if `firstcat' {`
+New: `variable:32264cd8afbf3926`
+
+### block:219585437503b838
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L467-L467`. Next: `block:2728fdfe5d357e51`.
+
+```stata
+gen int cyear = .
+```
+Enclosing controls: `if `firstcat' {`
+New: `variable:b6c5c5c088519028`
+
+### block:2728fdfe5d357e51
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L468-L468`. Next: `block:a26083c841fc960b`.
+
+```stata
+gen str24 survey = ""
+```
+Enclosing controls: `if `firstcat' {`
+New: `variable:394200c853426177`
+
+### block:a26083c841fc960b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L469-L469`. Next: `block:0335815d7fd5c956`.
+
+```stata
+gen str32 variable = ""
+```
+Enclosing controls: `if `firstcat' {`
+New: `variable:de336645bd2706cf`
+
+### block:0335815d7fd5c956
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L470-L470`. Next: `block:ecc00830eb041e17`.
+
+```stata
+gen double value = .
+```
+Enclosing controls: `if `firstcat' {`
+New: `variable:8b5d163fb4cfd3e5`
+
+### block:ecc00830eb041e17
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L471-L471`. Next: `block:c1d23d503311d27e`.
+
+```stata
+gen str1 lbl = ""
+```
+Enclosing controls: `if `firstcat' {`
+New: `variable:bf438075c4facc70`
+
+### block:c1d23d503311d27e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L472-L472`. Next: `block:1f07977efbf60b96`.
+
+```stata
+gen long n = .
+```
+Enclosing controls: `if `firstcat' {`
+New: `variable:3f68c9b2b226d115`
+
+### block:1f07977efbf60b96
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L473-L473`. Next: `block:828cf1fd31d9077c`.
+
+```stata
+gen double pct = .
+```
+Enclosing controls: `if `firstcat' {`
+New: `variable:cb7271c675d22fd0`
+
+### block:828cf1fd31d9077c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L474-L474`. Next: `block:e3874abc692d367e`.
+
+```stata
+gen double nvalid = .
+```
+Enclosing controls: `if `firstcat' {`
+New: `variable:97a817c2d4d18fa1`
+
+### block:e3874abc692d367e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L475-L475`. Next: `block:1ed1f7c99705527a`.
+
+```stata
+qui save `CAT', replace
+```
+Enclosing controls: `if `firstcat' {`
+Write datasets: `dataset:3d8ff54e939ac6bd`
+
+### block:1ed1f7c99705527a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L476-L476`. Next: `block:93c98b1eac04f649`.
+
+```stata
+}
+```
+
+### block:93c98b1eac04f649
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L491-L491`. Next: `block:988b753bda45891d`.
+
+```stata
+tempfile QC
+```
+
+### block:988b753bda45891d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L492-L492`. Next: `block:0addf49945bed6cf`.
+
+```stata
+capture postclose qc
+```
+
+### block:0addf49945bed6cf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L493-L495`. Next: `block:b4155bcb11b9073d`.
+
+```stata
+postfile qc str8 acronym str24 survey int year str8 region str32 variable str10 warn double freq double percentage double impact str200 desc str244 iff int test byte code using `QC', replace
+```
+Write datasets: `dataset:a8a45534ac98375d`
+
+### block:b4155bcb11b9073d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L501-L501`. Next: `block:f197ce41fedbd607`.
+
+```stata
+use `SM', clear
+```
+Read datasets: `dataset:97bd60f867796290`
+
+### block:f197ce41fedbd607
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L502-L502`. Next: `block:bce3211a44830057`.
+
+```stata
+merge m:1 variable using `CBTEXT', gen(_mt) keep(master match)
+```
+Read datasets: `dataset:c40ef21ab25ec212`
+
+### block:bce3211a44830057
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L503-L503`. Next: `block:07ea43b3f05e875e`.
+
+```stata
+drop _mt
+```
+Read candidates: `variable:003afc9855d76425`
+
+### block:07ea43b3f05e875e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L504-L504`. Next: `block:00e8902453c26cca`.
+
+```stata
+qui replace codes_allowed = "" if missing(codes_allowed)
+```
+Modified: `variable:d780a1a575bfaed3`
+Read candidates: `variable:d780a1a575bfaed3`, `variable:977b8c2e3b4c7d54`
+
+### block:00e8902453c26cca
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L505-L505`. Next: `block:758e16b40042651b`.
+
+```stata
+qui replace n_allowed = 0 if missing(n_allowed)
+```
+Modified: `variable:cdf9c23963d7da69`
+Read candidates: `variable:cdf9c23963d7da69`, `variable:977b8c2e3b4c7d54`
+
+### block:758e16b40042651b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L507-L507`. Next: `block:4e22e209497f7072`.
+
+```stata
+gen byte isref = 0
+```
+New: `variable:790eda69f303e864`
+
+### block:4e22e209497f7072
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L508-L508`. Next: `block:b5abfab07ce943e3`.
+
+```stata
+foreach rv of local refperiod {
+```
+
+### block:b5abfab07ce943e3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L509-L509`. Next: `block:b4f0c81bdec28bf9`.
+
+```stata
+qui replace isref = 1 if variable == "`rv'"
+```
+Enclosing controls: `foreach rv of local refperiod {`
+Modified: `variable:790eda69f303e864`
+Read candidates: `variable:3a2cc05914a265bd`, `variable:977b8c2e3b4c7d54`
+
+### block:b4f0c81bdec28bf9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L510-L510`. Next: `block:7203d18fe0134019`.
+
+```stata
+}
+```
+
+### block:7203d18fe0134019
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L512-L512`. Next: `block:77170dc2cc21d8a0`.
+
+```stata
+local nrow = _N
+```
+
+### block:77170dc2cc21d8a0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L513-L513`. Next: `block:d14486671b5a59e9`.
+
+```stata
+forvalues i = 1/`nrow' {
+```
+
+### block:d14486671b5a59e9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L514-L514`. Next: `block:02c52bb4218a6b18`.
+
+```stata
+local rg = region[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:02c52bb4218a6b18
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L515-L515`. Next: `block:68f3e9d5073ac67d`.
+
+```stata
+local cc = ccode[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:68f3e9d5073ac67d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L516-L516`. Next: `block:4d5ff97d51992d27`.
+
+```stata
+local yr = cyear[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:4d5ff97d51992d27
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L517-L517`. Next: `block:3183ab7971a4ca71`.
+
+```stata
+local sv = survey[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:3183ab7971a4ca71
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L518-L518`. Next: `block:cb3cff6b0eed4e97`.
+
+```stata
+local v  = variable[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:cb3cff6b0eed4e97
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L519-L519`. Next: `block:84072659abe35623`.
+
+```stata
+local nt = ntot[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:84072659abe35623
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L520-L520`. Next: `block:9842bb0ac8e2cde2`.
+
+```stata
+local nm = nmiss[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:9842bb0ac8e2cde2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L521-L521`. Next: `block:902bc09ee02853a6`.
+
+```stata
+local pm = pctmiss[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:902bc09ee02853a6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L522-L522`. Next: `block:b515eb8e1c56f459`.
+
+```stata
+local nd = ndist[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:b515eb8e1c56f459
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L523-L523`. Next: `block:be7449975d0254b2`.
+
+```stata
+local no = noor[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:be7449975d0254b2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L524-L524`. Next: `block:c79176606297dd77`.
+
+```stata
+local rf = isref[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:c79176606297dd77
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L525-L525`. Next: `block:3962b70468d6310f`.
+
+```stata
+local ov = oneval[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:3962b70468d6310f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L526-L526`. Next: `block:7f0869249535d47e`.
+
+```stata
+local al = codes_allowed[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:7f0869249535d47e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L529-L529`. Next: `block:4da85a6a40e7a7c1`.
+
+```stata
+if `nt' > 0 & `nm' == `nt' {
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:4da85a6a40e7a7c1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L530-L530`. Next: `block:3d737fa284a573e6`.
+
+```stata
+if `rf' {
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nt' > 0 & `nm' == `nt' {`
+
+### block:3d737fa284a573e6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L531-L531`. Next: `block:2fd0e10155be30e0`.
+
+```stata
+local d2 "delivered, no values populated. A survey collecting only the other reference period would produce this. Worth confirming."
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nt' > 0 & `nm' == `nt' {` → `if `rf' {`
+
+### block:2fd0e10155be30e0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L532-L533`. Next: `block:f1c738a5e9a859b2`.
+
+```stata
+post qc ("`cc'") ("`sv'") (`yr') ("`rg'") ("`v'") ("Check") (`nm') (1) (100) ("`d2'") ("missing(`v')") (2) (1)
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nt' > 0 & `nm' == `nt' {` → `if `rf' {`
+
+### block:f1c738a5e9a859b2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L534-L534`. Next: `block:baee44f2004b5f2f`.
+
+```stata
+}
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nt' > 0 & `nm' == `nt' {`
+
+### block:baee44f2004b5f2f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L535-L535`. Next: `block:656dd9b7706fdc3b`.
+
+```stata
+else {
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nt' > 0 & `nm' == `nt' {`
+
+### block:656dd9b7706fdc3b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L536-L536`. Next: `block:2b7322d1bec9a69d`.
+
+```stata
+local d2 "delivered under the GMD name, no values populated across `nt' observations."
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nt' > 0 & `nm' == `nt' {` → `else {`
+
+### block:2b7322d1bec9a69d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L537-L538`. Next: `block:3a7dfd6335a46342`.
+
+```stata
+post qc ("`cc'") ("`sv'") (`yr') ("`rg'") ("`v'") ("Urgent") (`nm') (1) (100) ("`d2'") ("missing(`v')") (2) (2)
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nt' > 0 & `nm' == `nt' {` → `else {`
+
+### block:3a7dfd6335a46342
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L539-L539`. Next: `block:4bde709b9d641294`.
+
+```stata
+}
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nt' > 0 & `nm' == `nt' {`
+
+### block:4bde709b9d641294
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L540-L540`. Next: `block:6865285d4b24bea1`.
+
+```stata
+}
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:6865285d4b24bea1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L543-L543`. Next: `block:21bcb3063e0e4577`.
+
+```stata
+if `nt' > 0 & `nm' < `nt' & `pm' >= `missmax' {
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:21bcb3063e0e4577
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L544-L544`. Next: `block:c0128564970ccf09`.
+
+```stata
+local wn = cond(`pm' >= `missurg', "Urgent", "Check")
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nt' > 0 & `nm' < `nt' & `pm' >= `missmax' {`
+
+### block:c0128564970ccf09
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L545-L545`. Next: `block:5119388061722f3e`.
+
+```stata
+local cd = cond(`pm' >= `missurg', 2, 1)
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nt' > 0 & `nm' < `nt' & `pm' >= `missmax' {`
+
+### block:5119388061722f3e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L546-L546`. Next: `block:0fcf175de3fe59eb`.
+
+```stata
+local pmt = strofreal(`pm', "%4.1f")
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nt' > 0 & `nm' < `nt' & `pm' >= `missmax' {`
+
+### block:0fcf175de3fe59eb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L547-L547`. Next: `block:b2422f98f1d03cba`.
+
+```stata
+local d7 "`pmt' pct missing. Worth confirming the intended universe."
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nt' > 0 & `nm' < `nt' & `pm' >= `missmax' {`
+
+### block:b2422f98f1d03cba
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L548-L549`. Next: `block:e795fcaa76cedb21`.
+
+```stata
+post qc ("`cc'") ("`sv'") (`yr') ("`rg'") ("`v'") ("`wn'") (`nm') (`pm'/100) (`pm') ("`d7'") ("missing(`v')") (7) (`cd')
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nt' > 0 & `nm' < `nt' & `pm' >= `missmax' {`
+
+### block:e795fcaa76cedb21
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L550-L550`. Next: `block:5bf24fbe3ea7bc59`.
+
+```stata
+}
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:5bf24fbe3ea7bc59
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L555-L555`. Next: `block:c340134931b4825f`.
+
+```stata
+if `nd' == 1 & `nm' < `nt' {
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:c340134931b4825f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L556-L556`. Next: `block:8a84162802a3d64f`.
+
+```stata
+local ovs = strtrim(string(`ov', "%6.0f"))
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nd' == 1 & `nm' < `nt' {`
+
+### block:8a84162802a3d64f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L557-L557`. Next: `block:77af42792d2a1ca6`.
+
+```stata
+local nvd = `nt' - `nm'
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nd' == 1 & `nm' < `nt' {`
+
+### block:77af42792d2a1ca6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L558-L558`. Next: `block:fce962051f003c74`.
+
+```stata
+if "`al'" != "" {
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nd' == 1 & `nm' < `nt' {`
+
+### block:fce962051f003c74
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L559-L559`. Next: `block:c34309b9d350745e`.
+
+```stata
+local d3 "all `nvd' non-missing observations hold the same value, `ovs'. Guidelines allow `al'."
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nd' == 1 & `nm' < `nt' {` → `if "`al'" != "" {`
+
+### block:c34309b9d350745e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L560-L560`. Next: `block:93168e168da0e67d`.
+
+```stata
+}
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nd' == 1 & `nm' < `nt' {`
+
+### block:93168e168da0e67d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L561-L561`. Next: `block:160455f0f5b95e04`.
+
+```stata
+else {
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nd' == 1 & `nm' < `nt' {`
+
+### block:160455f0f5b95e04
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L562-L562`. Next: `block:d795bff0efe71b19`.
+
+```stata
+local d3 "all `nvd' non-missing observations hold the same value, `ovs'."
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nd' == 1 & `nm' < `nt' {` → `else {`
+
+### block:d795bff0efe71b19
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L563-L563`. Next: `block:080f9b921613a6da`.
+
+```stata
+}
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nd' == 1 & `nm' < `nt' {`
+
+### block:080f9b921613a6da
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L564-L565`. Next: `block:1a5af0a50be20e9f`.
+
+```stata
+post qc ("`cc'") ("`sv'") (`yr') ("`rg'") ("`v'") ("Check") (`nvd') (1) (100) ("`d3'") ("`v' == `ovs' & !missing(`v')") (3) (1)
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `nd' == 1 & `nm' < `nt' {`
+
+### block:1a5af0a50be20e9f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L566-L566`. Next: `block:3781b1b782ebec7c`.
+
+```stata
+}
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:3781b1b782ebec7c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L569-L569`. Next: `block:c178d4b8e4b94aba`.
+
+```stata
+if `no' > 0 {
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:c178d4b8e4b94aba
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L570-L570`. Next: `block:73540eacae75825e`.
+
+```stata
+local lo : word 1 of `rng_`v''
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `no' > 0 {`
+
+### block:73540eacae75825e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L571-L571`. Next: `block:00e7ea495e5943d8`.
+
+```stata
+local hi : word 2 of `rng_`v''
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `no' > 0 {`
+
+### block:00e7ea495e5943d8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L572-L572`. Next: `block:7afe9ac7bc564793`.
+
+```stata
+local d8 "`no' observations outside the expected range `lo' to `hi'."
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `no' > 0 {`
+
+### block:7afe9ac7bc564793
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L573-L575`. Next: `block:ab63892ddac3c5d3`.
+
+```stata
+post qc ("`cc'") ("`sv'") (`yr') ("`rg'") ("`v'") ("Urgent") (`no') (`no'/`nt') (100*`no'/`nt') ("`d8'") ("!missing(`v') & !inrange(`v',`lo',`hi')") (8) (2)
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `no' > 0 {`
+
+### block:ab63892ddac3c5d3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L576-L576`. Next: `block:f0b35e9ce848f912`.
+
+```stata
+}
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:f0b35e9ce848f912
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L577-L577`. Next: `block:d279ab23a405aa43`.
+
+```stata
+}
+```
+
+### block:d279ab23a405aa43
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L583-L583`. Next: `block:4c0acc1af3cb35e5`.
+
+```stata
+tempfile CATOK
+```
+
+### block:4c0acc1af3cb35e5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L584-L584`. Next: `block:b0b9cd26e1d75583`.
+
+```stata
+use `CAT', clear
+```
+Read datasets: `dataset:3d8ff54e939ac6bd`
+
+### block:b0b9cd26e1d75583
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L585-L585`. Next: `block:03cb7ad55009fd19`.
+
+```stata
+merge m:1 variable using `CBTEXT', gen(_mt) keep(master match)
+```
+Read datasets: `dataset:c40ef21ab25ec212`
+
+### block:03cb7ad55009fd19
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L586-L586`. Next: `block:f023d07c267b8123`.
+
+```stata
+drop _mt
+```
+Read candidates: `variable:f4bbc30a52aafd1e`
+
+### block:f023d07c267b8123
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L587-L587`. Next: `block:97b0f51e3858f922`.
+
+```stata
+qui replace codes_allowed = "" if missing(codes_allowed)
+```
+Modified: `variable:43b78dc0b803fd31`
+Read candidates: `variable:43b78dc0b803fd31`, `variable:96847599d1535797`
+
+### block:97b0f51e3858f922
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L588-L588`. Next: `block:30ad3d4d79f4a16c`.
+
+```stata
+qui replace n_allowed = 0 if missing(n_allowed)
+```
+Modified: `variable:3c75fb4eb8c05354`
+Read candidates: `variable:3c75fb4eb8c05354`, `variable:96847599d1535797`
+
+### block:30ad3d4d79f4a16c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L590-L590`. Next: `block:5f9d7ad15676415e`.
+
+```stata
+gen byte ok = 1
+```
+New: `variable:3d17583e71e2fbe3`
+
+### block:5f9d7ad15676415e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L591-L591`. Next: `block:d66ded1cc5233a70`.
+
+```stata
+local nrow = _N
+```
+
+### block:d66ded1cc5233a70
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L592-L592`. Next: `block:c9aedb618e006799`.
+
+```stata
+forvalues i = 1/`nrow' {
+```
+
+### block:c9aedb618e006799
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L593-L593`. Next: `block:50fd41c5534c0d37`.
+
+```stata
+local al = codes_allowed[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:50fd41c5534c0d37
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L594-L594`. Next: `block:cff5ab86ca1b5649`.
+
+```stata
+if "`al'" != "" {
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:cff5ab86ca1b5649
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L595-L595`. Next: `block:144f07cffdad8eaf`.
+
+```stata
+local vs = strtrim(string(value[`i'], "%6.0f"))
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if "`al'" != "" {`
+
+### block:144f07cffdad8eaf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L596-L596`. Next: `block:e8fd13b415cfba08`.
+
+```stata
+local hit : list posof "`vs'" in al
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if "`al'" != "" {`
+
+### block:e8fd13b415cfba08
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L597-L597`. Next: `block:c1fb7b275b86a2b0`.
+
+```stata
+qui replace ok = (`hit' > 0) in `i'
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if "`al'" != "" {`
+Modified: `variable:3d17583e71e2fbe3`
+Read candidates: `variable:96847599d1535797`
+
+### block:c1fb7b275b86a2b0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L598-L598`. Next: `block:7a59a151a564a3f2`.
+
+```stata
+}
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:7a59a151a564a3f2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L599-L599`. Next: `block:28a4741f1f9ed6a6`.
+
+```stata
+}
+```
+
+### block:28a4741f1f9ed6a6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L600-L600`. Next: `block:1e5651a4c2279c55`.
+
+```stata
+qui save `CATOK'
+```
+Write datasets: `dataset:332709279a34f5a8`
+
+### block:1e5651a4c2279c55
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L606-L606`. Next: `block:75a59930cfdb664a`.
+
+```stata
+local nrow = _N
+```
+
+### block:75a59930cfdb664a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L607-L607`. Next: `block:9292d2e6a208e3ec`.
+
+```stata
+forvalues i = 1/`nrow' {
+```
+
+### block:9292d2e6a208e3ec
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L608-L608`. Next: `block:8f1d084ff5c26f93`.
+
+```stata
+local rg  = region[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:8f1d084ff5c26f93
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L609-L609`. Next: `block:90036a0e314ae719`.
+
+```stata
+local cc  = ccode[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:90036a0e314ae719
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L610-L610`. Next: `block:41ca5fae42b36d3c`.
+
+```stata
+local yr  = cyear[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:41ca5fae42b36d3c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L611-L611`. Next: `block:af2865cbfabe53ef`.
+
+```stata
+local sv  = survey[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:af2865cbfabe53ef
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L612-L612`. Next: `block:3291cc2737b8e11e`.
+
+```stata
+local v   = variable[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:3291cc2737b8e11e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L613-L613`. Next: `block:e6e9aa2087502d9d`.
+
+```stata
+local nn  = n[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:e6e9aa2087502d9d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L614-L614`. Next: `block:ffed299f7c3f39f6`.
+
+```stata
+local pp  = pct[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:ffed299f7c3f39f6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L615-L615`. Next: `block:b00aad976a2ab85e`.
+
+```stata
+local okk = ok[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:b00aad976a2ab85e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L616-L616`. Next: `block:4d19a2c013d7bccf`.
+
+```stata
+local al  = codes_allowed[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:4d19a2c013d7bccf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L617-L617`. Next: `block:499dabf8e1c00f30`.
+
+```stata
+local na  = n_allowed[`i']
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:499dabf8e1c00f30
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L618-L618`. Next: `block:0a87a8688bd617c7`.
+
+```stata
+local vs  = strtrim(string(value[`i'], "%6.0f"))
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:0a87a8688bd617c7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L623-L623`. Next: `block:56cf9b60f2982a38`.
+
+```stata
+local alc = subinstr("`al'", " ", ",", .)
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:56cf9b60f2982a38
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L626-L626`. Next: `block:03871d312e3d0e4d`.
+
+```stata
+if `okk' == 0 {
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:03871d312e3d0e4d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L627-L627`. Next: `block:9c999b9a804fc9b9`.
+
+```stata
+local ppt = strofreal(`pp', "%4.1f")
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `okk' == 0 {`
+
+### block:9c999b9a804fc9b9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L628-L628`. Next: `block:5bd211eada00c7cc`.
+
+```stata
+local d1 "code `vs' is outside the GMD guidelines range. Guidelines allow `al'. `ppt' pct of valid observations."
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `okk' == 0 {`
+
+### block:5bd211eada00c7cc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L629-L631`. Next: `block:24f39a871ac59a30`.
+
+```stata
+post qc ("`cc'") ("`sv'") (`yr') ("`rg'") ("`v'") ("Urgent") (`nn') (`pp'/100) (`pp') ("`d1'") ("!inlist(`v',`alc') & !missing(`v')") (1) (2)
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `okk' == 0 {`
+
+### block:24f39a871ac59a30
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L632-L632`. Next: `block:bc5b9e5ba4099f6c`.
+
+```stata
+continue
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `okk' == 0 {`
+
+### block:bc5b9e5ba4099f6c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L633-L633`. Next: `block:b0a64062f253253a`.
+
+```stata
+}
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:b0a64062f253253a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L637-L637`. Next: `block:4ce855b3ebfba1a3`.
+
+```stata
+if `na' > 2 {
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:4ce855b3ebfba1a3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L640-L640`. Next: `block:8ea08ae88e2ba6d3`.
+
+```stata
+if `pp' < `thinpct' {
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `na' > 2 {`
+
+### block:8ea08ae88e2ba6d3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L641-L641`. Next: `block:b48d701d132e501b`.
+
+```stata
+local wn = cond(`pp' < `thinurg', "Urgent", "Check")
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `na' > 2 {` → `if `pp' < `thinpct' {`
+
+### block:b48d701d132e501b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L642-L642`. Next: `block:e35496b67afb55bc`.
+
+```stata
+local cd = cond(`pp' < `thinurg', 2, 1)
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `na' > 2 {` → `if `pp' < `thinpct' {`
+
+### block:e35496b67afb55bc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L643-L643`. Next: `block:df2cbc57c1d824f0`.
+
+```stata
+local ppt = strofreal(`pp', "%7.4f")
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `na' > 2 {` → `if `pp' < `thinpct' {`
+
+### block:df2cbc57c1d824f0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L644-L644`. Next: `block:f2a752e28b039625`.
+
+```stata
+local d4 "category `vs' at `ppt' pct of valid observations (`nn' obs), low for a `na'-category variable. Worth confirming the mapping."
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `na' > 2 {` → `if `pp' < `thinpct' {`
+
+### block:f2a752e28b039625
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L645-L647`. Next: `block:ea9f39bc88e1ca52`.
+
+```stata
+post qc ("`cc'") ("`sv'") (`yr') ("`rg'") ("`v'") ("`wn'") (`nn') (`pp'/100) (`pp') ("`d4'") ("inlist(`v',`alc') & !missing(`v')") (4) (`cd')
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `na' > 2 {` → `if `pp' < `thinpct' {`
+
+### block:ea9f39bc88e1ca52
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L648-L648`. Next: `block:85ffd4f0b1e0bb5e`.
+
+```stata
+}
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `na' > 2 {`
+
+### block:85ffd4f0b1e0bb5e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L651-L651`. Next: `block:6c43a17a3500b8c1`.
+
+```stata
+if `pp' > `domipct' {
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `na' > 2 {`
+
+### block:6c43a17a3500b8c1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L652-L652`. Next: `block:fab990ceee1b0a02`.
+
+```stata
+local wn = cond(`pp' > `domiurg', "Urgent", "Check")
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `na' > 2 {` → `if `pp' > `domipct' {`
+
+### block:fab990ceee1b0a02
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L653-L653`. Next: `block:ce6eec81efb53522`.
+
+```stata
+local cd = cond(`pp' > `domiurg', 2, 1)
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `na' > 2 {` → `if `pp' > `domipct' {`
+
+### block:ce6eec81efb53522
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L654-L654`. Next: `block:33ffaa7fbfdb4016`.
+
+```stata
+local ppt = strofreal(`pp', "%5.1f")
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `na' > 2 {` → `if `pp' > `domipct' {`
+
+### block:33ffaa7fbfdb4016
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L655-L655`. Next: `block:d4bb16d89f60b377`.
+
+```stata
+local d5 "category `vs' at `ppt' pct of valid observations, remaining categories near empty. Worth confirming the mapping."
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `na' > 2 {` → `if `pp' > `domipct' {`
+
+### block:d4bb16d89f60b377
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L656-L658`. Next: `block:de1102f6581844c6`.
+
+```stata
+post qc ("`cc'") ("`sv'") (`yr') ("`rg'") ("`v'") ("`wn'") (`nn') (`pp'/100) (`pp') ("`d5'") ("inlist(`v',`alc') & !missing(`v')") (5) (`cd')
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `na' > 2 {` → `if `pp' > `domipct' {`
+
+### block:de1102f6581844c6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L659-L659`. Next: `block:ef1d87672905cf4b`.
+
+```stata
+}
+```
+Enclosing controls: `forvalues i = 1/`nrow' {` → `if `na' > 2 {`
+
+### block:ef1d87672905cf4b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L660-L660`. Next: `block:9697f32b19260c41`.
+
+```stata
+}
+```
+Enclosing controls: `forvalues i = 1/`nrow' {`
+
+### block:9697f32b19260c41
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L661-L661`. Next: `block:0813ac66204b464c`.
+
+```stata
+}
+```
+
+### block:0813ac66204b464c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L669-L669`. Next: `block:f3c178bad39d6b89`.
+
+```stata
+use `SM', clear
+```
+Read datasets: `dataset:97bd60f867796290`
+
+### block:f3c178bad39d6b89
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L670-L670`. Next: `block:0b3e053f07eb5de8`.
+
+```stata
+keep if iscat == 1 & ntot > nmiss
+```
+Read candidates: `variable:f238ca21987298ee`, `variable:e0490c16253add19`, `variable:ba6d1da0ff3dd0b2`
+
+### block:0b3e053f07eb5de8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L671-L671`. Next: `block:2b23d68edc2b95e2`.
+
+```stata
+keep region ccode cyear survey variable
+```
+Read candidates: `variable:efa5b758bc095fac`, `variable:a8652dec4e54983f`, `variable:22389d2ba134c1a3`, `variable:3aa6b4546de2906c`, `variable:b6eb6305a99e0e49`
+
+### block:2b23d68edc2b95e2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L672-L672`. Next: `block:5d77529bcc2c3b89`.
+
+```stata
+duplicates drop
+```
+
+### block:5d77529bcc2c3b89
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L673-L673`. Next: `block:40fc961eed378277`.
+
+```stata
+qui count
+```
+
+### block:40fc961eed378277
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L674-L674`. Next: `block:28a81a9587af77b9`.
+
+```stata
+if r(N) > 0 {
+```
+
+### block:28a81a9587af77b9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L675-L675`. Next: `block:238bbe815dfd7609`.
+
+```stata
+joinby variable using `CBOOK', unmatched(none)
+```
+Enclosing controls: `if r(N) > 0 {`
+Read datasets: `dataset:32b01d7d167771c6`
+
+### block:238bbe815dfd7609
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L676-L677`. Next: `block:feb75c556a5c8fb9`.
+
+```stata
+merge 1:1 region ccode cyear survey variable value using `CATOK', gen(_m6) keep(master)
+```
+Enclosing controls: `if r(N) > 0 {`
+Read datasets: `dataset:332709279a34f5a8`
+
+### block:feb75c556a5c8fb9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L678-L678`. Next: `block:f13b33ee692e917b`.
+
+```stata
+keep region ccode cyear survey variable value
+```
+Enclosing controls: `if r(N) > 0 {`
+Read candidates: `variable:efa5b758bc095fac`, `variable:a8652dec4e54983f`, `variable:22389d2ba134c1a3`, `variable:3aa6b4546de2906c`, `variable:b6eb6305a99e0e49`, `variable:8c455ae228e07fa0`
+
+### block:f13b33ee692e917b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L679-L679`. Next: `block:8e614b74043c8a65`.
+
+```stata
+merge m:1 variable using `CBTEXT', gen(_mt) keep(master match)
+```
+Enclosing controls: `if r(N) > 0 {`
+Read datasets: `dataset:c40ef21ab25ec212`
+
+### block:8e614b74043c8a65
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L680-L680`. Next: `block:0b17be8e994513b8`.
+
+```stata
+drop _mt
+```
+Enclosing controls: `if r(N) > 0 {`
+Read candidates: `variable:fbc54b09926d0bf2`
+
+### block:0b17be8e994513b8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L682-L682`. Next: `block:23c1afa96e8ffdec`.
+
+```stata
+local nrow = _N
+```
+Enclosing controls: `if r(N) > 0 {`
+
+### block:23c1afa96e8ffdec
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L683-L683`. Next: `block:09b060a05c72f32a`.
+
+```stata
+forvalues i = 1/`nrow' {
+```
+Enclosing controls: `if r(N) > 0 {`
+
+### block:09b060a05c72f32a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L684-L684`. Next: `block:4259a3fb83b3a194`.
+
+```stata
+local rg = region[`i']
+```
+Enclosing controls: `if r(N) > 0 {` → `forvalues i = 1/`nrow' {`
+
+### block:4259a3fb83b3a194
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L685-L685`. Next: `block:8eaba60a5a68fe6a`.
+
+```stata
+local cc = ccode[`i']
+```
+Enclosing controls: `if r(N) > 0 {` → `forvalues i = 1/`nrow' {`
+
+### block:8eaba60a5a68fe6a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L686-L686`. Next: `block:59866d39a57e451d`.
+
+```stata
+local yr = cyear[`i']
+```
+Enclosing controls: `if r(N) > 0 {` → `forvalues i = 1/`nrow' {`
+
+### block:59866d39a57e451d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L687-L687`. Next: `block:9b6e210041f69219`.
+
+```stata
+local sv = survey[`i']
+```
+Enclosing controls: `if r(N) > 0 {` → `forvalues i = 1/`nrow' {`
+
+### block:9b6e210041f69219
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L688-L688`. Next: `block:e07ce74af9eb5eed`.
+
+```stata
+local v  = variable[`i']
+```
+Enclosing controls: `if r(N) > 0 {` → `forvalues i = 1/`nrow' {`
+
+### block:e07ce74af9eb5eed
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L689-L689`. Next: `block:385b56916487c2e1`.
+
+```stata
+local al = codes_allowed[`i']
+```
+Enclosing controls: `if r(N) > 0 {` → `forvalues i = 1/`nrow' {`
+
+### block:385b56916487c2e1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L690-L690`. Next: `block:97c7f9acbea3a489`.
+
+```stata
+local vs = strtrim(string(value[`i'], "%6.0f"))
+```
+Enclosing controls: `if r(N) > 0 {` → `forvalues i = 1/`nrow' {`
+
+### block:97c7f9acbea3a489
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L691-L691`. Next: `block:2b7d1b1a4ac86d13`.
+
+```stata
+local d6 "allowed category `vs' has no observations. Expected where the questionnaire did not collect it. Guidelines allow `al'."
+```
+Enclosing controls: `if r(N) > 0 {` → `forvalues i = 1/`nrow' {`
+
+### block:2b7d1b1a4ac86d13
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L692-L693`. Next: `block:1d5144893c5cc225`.
+
+```stata
+post qc ("`cc'") ("`sv'") (`yr') ("`rg'") ("`v'") ("Note") (0) (0) (0) ("`d6'") ("`v' == `vs'") (6) (0)
+```
+Enclosing controls: `if r(N) > 0 {` → `forvalues i = 1/`nrow' {`
+
+### block:1d5144893c5cc225
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L694-L694`. Next: `block:7dafb4058c16282b`.
+
+```stata
+}
+```
+Enclosing controls: `if r(N) > 0 {`
+
+### block:7dafb4058c16282b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L695-L695`. Next: `block:48d1709eedef812b`.
+
+```stata
+}
+```
+
+### block:48d1709eedef812b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L704-L704`. Next: `block:f6a6a80e81897d21`.
+
+```stata
+use `SM', clear
+```
+Read datasets: `dataset:97bd60f867796290`
+
+### block:f6a6a80e81897d21
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L705-L705`. Next: `block:84b94df3b18e22e4`.
+
+```stata
+keep region ccode cyear survey variable ntot nmiss
+```
+Read candidates: `variable:d82d70ffbafcae05`, `variable:c0d51010513ee2a2`, `variable:e824ec9ad4ad2cdf`, `variable:ae8daafda9766383`, `variable:1e30eed23ba785ee`, `variable:9c6fb11a45611135`, `variable:4d80ea7a78a2558e`
+
+### block:84b94df3b18e22e4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L706-L706`. Next: `block:b098601a51be765d`.
+
+```stata
+gen byte pop = (ntot > nmiss)
+```
+New: `variable:04eee9527dbf0bf8`
+Read candidates: `variable:9c6fb11a45611135`, `variable:4d80ea7a78a2558e`
+
+### block:b098601a51be765d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L707-L707`. Next: `block:eb95e6e923e358f6`.
+
+```stata
+keep region ccode cyear survey variable pop
+```
+Read candidates: `variable:d82d70ffbafcae05`, `variable:c0d51010513ee2a2`, `variable:e824ec9ad4ad2cdf`, `variable:ae8daafda9766383`, `variable:1e30eed23ba785ee`, `variable:04eee9527dbf0bf8`
+
+### block:eb95e6e923e358f6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L708-L708`. Next: `block:42cc880e6d62f35d`.
+
+```stata
+qui reshape wide pop, i(region ccode cyear survey) j(variable) string
+```

@@ -1,0 +1,1916 @@
+# 04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do
+
+Repository documentation/configuration
+
+Status: PARTIAL_STATIC. Every lexically active statement is indexed; complete runtime schema and macro expansion are not established.
+
+Source snapshot: numbered source (deployment lookup: lookup/sources/GMI_extended/source_maps/02-dd095c.md.md)
+
+## Execution-order blocks
+
+### block:ae20992544802005
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L36-L36`. Next: `block:2e8ccb75ac698a26`.
+
+```stata
+clear all
+```
+
+### block:2e8ccb75ac698a26
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L37-L37`. Next: `block:34f5351c1c629ace`.
+
+```stata
+set more off
+```
+
+### block:34f5351c1c629ace
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L38-L38`. Next: `block:15b8006f8e7d2117`.
+
+```stata
+set varabbrev off
+```
+
+### block:15b8006f8e7d2117
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L45-L45`. Next: `block:47e96adf81a1184e`.
+
+```stata
+local checksdir "$checks"
+```
+
+### block:47e96adf81a1184e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L46-L46`. Next: `block:3da37b16e3e4cca7`.
+
+```stata
+if "`checksdir'" == "" {
+```
+
+### block:3da37b16e3e4cca7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L47-L47`. Next: `block:ef1709caf8c91274`.
+
+```stata
+local checksdir "C:\Users\wb570371\Documents\PEA\GMI_extended\04.Checks_Add_reharmonization_results"
+```
+Enclosing controls: `if "`checksdir'" == "" {`
+
+### block:ef1709caf8c91274
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L48-L48`. Next: `block:f8de45781be93e6d`.
+
+```stata
+di as error "  NOTE: $checks was empty -- path set inside this script."
+```
+Enclosing controls: `if "`checksdir'" == "" {`
+
+### block:f8de45781be93e6d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L49-L49`. Next: `block:d3cc2ec1a5863b47`.
+
+```stata
+}
+```
+
+### block:d3cc2ec1a5863b47
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L50-L50`. Next: `block:4d4fcc9952510db2`.
+
+```stata
+local rnd "$rnd"
+```
+
+### block:4d4fcc9952510db2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L51-L51`. Next: `block:5dc4ece1024acbf8`.
+
+```stata
+if "`rnd'" == "" local rnd "SM26"
+```
+
+### block:5dc4ece1024acbf8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L56-L56`. Next: `block:a065edf58ef97bbe`.
+
+```stata
+local outstub "GMD_qcheck"
+```
+
+### block:a065edf58ef97bbe
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L62-L62`. Next: `block:26d3b8bc9530b1d9`.
+
+```stata
+local regions "SSA EAP"
+```
+
+### block:26d3b8bc9530b1d9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L64-L64`. Next: `block:02532693cbb4ee30`.
+
+```stata
+local SSA_dir    "C:\Users\wb570371\OneDrive - WBG\Shortcuts\Haoyu Wu's files - toshare"
+```
+
+### block:02532693cbb4ee30
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L65-L65`. Next: `block:e617101f6ee0edaf`.
+
+```stata
+local SSA_layout "flat"
+```
+
+### block:e617101f6ee0edaf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L66-L66`. Next: `block:e71450ac834be01c`.
+
+```stata
+local SSA_sub    ""
+```
+
+### block:e71450ac834be01c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L68-L68`. Next: `block:dff7e496f0016884`.
+
+```stata
+local EAP_dir    "\\wurepliprdfs06\eapfile\eappp\EAP Harmonization"
+```
+
+### block:dff7e496f0016884
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L69-L69`. Next: `block:0b4ec9f12dccfbf1`.
+
+```stata
+local EAP_layout "modules"
+```
+
+### block:0b4ec9f12dccfbf1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L70-L70`. Next: `block:cafc0045dfbc45b5`.
+
+```stata
+local EAP_sub    "Data/Harmonized"
+```
+
+### block:cafc0045dfbc45b5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L73-L73`. Next: `block:baf5b0b37a20c1e3`.
+
+```stata
+local skipfolders "workflow archive old temp backup"
+```
+
+### block:baf5b0b37a20c1e3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L76-L76`. Next: `block:f152d2a5c4a40345`.
+
+```stata
+local vlist ""
+```
+
+### block:f152d2a5c4a40345
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L77-L77`. Next: `block:b9b4b11273e05d4e`.
+
+```stata
+local vlist "`vlist' age"
+```
+
+### block:b9b4b11273e05d4e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L78-L78`. Next: `block:2d101ee43bc9e58f`.
+
+```stata
+local vlist "`vlist' male"
+```
+
+### block:2d101ee43bc9e58f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L79-L79`. Next: `block:69b386520241488b`.
+
+```stata
+local vlist "`vlist' educat4"
+```
+
+### block:69b386520241488b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L80-L80`. Next: `block:df387d2f3113634b`.
+
+```stata
+local vlist "`vlist' school"
+```
+
+### block:df387d2f3113634b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L81-L81`. Next: `block:0cb4741ba1c6de91`.
+
+```stata
+local vlist "`vlist' relationharm"
+```
+
+### block:0cb4741ba1c6de91
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L82-L82`. Next: `block:6ca880bf98a07a2c`.
+
+```stata
+local vlist "`vlist' marital"
+```
+
+### block:6ca880bf98a07a2c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L83-L83`. Next: `block:5bd2feea61046f7d`.
+
+```stata
+local vlist "`vlist' lstatus"
+```
+
+### block:5bd2feea61046f7d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L84-L84`. Next: `block:e5a7d3a84db4e093`.
+
+```stata
+local vlist "`vlist' industrycat4"
+```
+
+### block:e5a7d3a84db4e093
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L85-L85`. Next: `block:d075f64e42f7f183`.
+
+```stata
+local vlist "`vlist' industrycat10"
+```
+
+### block:d075f64e42f7f183
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L86-L86`. Next: `block:76c8ad56eb4981cf`.
+
+```stata
+local vlist "`vlist' empstat"
+```
+
+### block:76c8ad56eb4981cf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L87-L87`. Next: `block:bd03af30c3b16b65`.
+
+```stata
+local vlist "`vlist' lstatus_year"
+```
+
+### block:bd03af30c3b16b65
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L88-L88`. Next: `block:92026469b3ae166f`.
+
+```stata
+local vlist "`vlist' industrycat4_year"
+```
+
+### block:92026469b3ae166f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L89-L89`. Next: `block:28ca1ce51d262399`.
+
+```stata
+local vlist "`vlist' industrycat10_year"
+```
+
+### block:28ca1ce51d262399
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L90-L90`. Next: `block:3deaf3448d0300ee`.
+
+```stata
+local vlist "`vlist' empstat_year"
+```
+
+### block:3deaf3448d0300ee
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L91-L91`. Next: `block:07ff76608e549c7f`.
+
+```stata
+local vlist "`vlist' imp_wat_rec"
+```
+
+### block:07ff76608e549c7f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L92-L92`. Next: `block:5a8e699ec0bcc89c`.
+
+```stata
+local vlist "`vlist' imp_san_rec"
+```
+
+### block:5a8e699ec0bcc89c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L93-L93`. Next: `block:cf66eb20bfa948f5`.
+
+```stata
+local vlist "`vlist' electricity"
+```
+
+### block:cf66eb20bfa948f5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L94-L94`. Next: `block:14d81416ad8bd442`.
+
+```stata
+local vlist "`vlist' tv"
+```
+
+### block:14d81416ad8bd442
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L95-L95`. Next: `block:46b7af41b0836aa7`.
+
+```stata
+local vlist "`vlist' car"
+```
+
+### block:46b7af41b0836aa7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L96-L96`. Next: `block:fed58ee222954385`.
+
+```stata
+local vlist "`vlist' cellphone"
+```
+
+### block:fed58ee222954385
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L97-L97`. Next: `block:51c72d34697a3465`.
+
+```stata
+local vlist "`vlist' computer"
+```
+
+### block:51c72d34697a3465
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L98-L98`. Next: `block:9932f6ae88139d8b`.
+
+```stata
+local vlist "`vlist' fridge"
+```
+
+### block:9932f6ae88139d8b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L108-L108`. Next: `block:b52be4a472f8ecc1`.
+
+```stata
+local thinpct   1.0
+```
+
+### block:b52be4a472f8ecc1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L109-L109`. Next: `block:058cfa73bd12dc3a`.
+
+```stata
+local thinurg   0.1
+```
+
+### block:058cfa73bd12dc3a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L110-L110`. Next: `block:bd019629fb9bb1c3`.
+
+```stata
+local domipct  95.0
+```
+
+### block:bd019629fb9bb1c3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L111-L111`. Next: `block:08a77df020687a47`.
+
+```stata
+local domiurg  99.0
+```
+
+### block:08a77df020687a47
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L115-L115`. Next: `block:49622c1f48b584af`.
+
+```stata
+local missmax  50.0
+```
+
+### block:49622c1f48b584af
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L116-L116`. Next: `block:b9b4fe5b4f7f0126`.
+
+```stata
+local missurg  90.0
+```
+
+### block:b9b4fe5b4f7f0126
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L120-L120`. Next: `block:d5c54e7cdd5b2443`.
+
+```stata
+local rng_age   "0 120"
+```
+
+### block:d5c54e7cdd5b2443
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L132-L132`. Next: `block:2d34f4e38d5b13ac`.
+
+```stata
+local lpairs "lstatus empstat industrycat4 industrycat10"
+```
+
+### block:2d34f4e38d5b13ac
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L135-L135`. Next: `block:61cde0b06d1d2992`.
+
+```stata
+local lab_lstatus       "labour force status"
+```
+
+### block:61cde0b06d1d2992
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L136-L136`. Next: `block:310aa55f069153ec`.
+
+```stata
+local lab_empstat       "type of employment"
+```
+
+### block:310aa55f069153ec
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L137-L137`. Next: `block:4764fe68720e6efd`.
+
+```stata
+local lab_industrycat4  "industry, 4 groups"
+```
+
+### block:4764fe68720e6efd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L138-L138`. Next: `block:984276a421ebec10`.
+
+```stata
+local lab_industrycat10 "industry, 10 groups"
+```
+
+### block:984276a421ebec10
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L140-L140`. Next: `block:4d586450cd7c2832`.
+
+```stata
+local refperiod ""
+```
+
+### block:4d586450cd7c2832
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L141-L141`. Next: `block:2d085d5290f53d22`.
+
+```stata
+foreach b of local lpairs {
+```
+
+### block:2d085d5290f53d22
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L142-L142`. Next: `block:1ea2fbc2973a0663`.
+
+```stata
+local refperiod "`refperiod' `b' `b'_year"
+```
+Enclosing controls: `foreach b of local lpairs {`
+
+### block:1ea2fbc2973a0663
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L143-L143`. Next: `block:6fac993740ca1ffb`.
+
+```stata
+}
+```
+
+### block:6fac993740ca1ffb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L148-L148`. Next: `block:4c8d3d94290821c3`.
+
+```stata
+local maxdist 40
+```
+
+### block:4c8d3d94290821c3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L164-L164`. Next: `block:abed84a3817d4d90`.
+
+```stata
+local cb_male               "0 1"
+```
+
+### block:abed84a3817d4d90
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L166-L166`. Next: `block:e4dbe097cfa0a3ea`.
+
+```stata
+local cb_relationharm       "1 2 3 4 5 6"
+```
+
+### block:e4dbe097cfa0a3ea
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L169-L169`. Next: `block:550795a9d26508c4`.
+
+```stata
+local cb_marital            "1 2 3 4 5"
+```
+
+### block:550795a9d26508c4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L172-L172`. Next: `block:99e70f0f84f809c3`.
+
+```stata
+local cb_school             "0 1"
+```
+
+### block:99e70f0f84f809c3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L174-L174`. Next: `block:ee092d9c352a0791`.
+
+```stata
+local cb_educat4            "1 2 3 4"
+```
+
+### block:ee092d9c352a0791
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L184-L184`. Next: `block:e7b38b4260658f9c`.
+
+```stata
+local cb_lstatus            "1 2 3"
+```
+
+### block:e7b38b4260658f9c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L185-L185`. Next: `block:07df4fe3e0266492`.
+
+```stata
+local cb_lstatus_year       "1 2 3"
+```
+
+### block:07df4fe3e0266492
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L187-L187`. Next: `block:844fc672ad970fa6`.
+
+```stata
+local cb_empstat            "1 2 3 4 5"
+```
+
+### block:844fc672ad970fa6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L188-L188`. Next: `block:2c5d8b7b6bf0b7d9`.
+
+```stata
+local cb_empstat_year       "1 2 3 4 5"
+```
+
+### block:2c5d8b7b6bf0b7d9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L191-L191`. Next: `block:d1b4982540ea222b`.
+
+```stata
+local cb_industrycat4       "1 2 3 4"
+```
+
+### block:d1b4982540ea222b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L192-L192`. Next: `block:a39e8ba44745cd94`.
+
+```stata
+local cb_industrycat4_year  "1 2 3 4"
+```
+
+### block:a39e8ba44745cd94
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L194-L194`. Next: `block:6aaeb038cd8cfdba`.
+
+```stata
+local cb_industrycat10      "1 2 3 4 5 6 7 8 9 10"
+```
+
+### block:6aaeb038cd8cfdba
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L195-L195`. Next: `block:a387706887bbb45a`.
+
+```stata
+local cb_industrycat10_year "1 2 3 4 5 6 7 8 9 10"
+```
+
+### block:a387706887bbb45a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L203-L203`. Next: `block:b9a368ac96385c13`.
+
+```stata
+local cb_imp_wat_rec        "0 1"
+```
+
+### block:b9a368ac96385c13
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L204-L204`. Next: `block:154cb016959db0d1`.
+
+```stata
+local cb_imp_san_rec        "0 1"
+```
+
+### block:154cb016959db0d1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L205-L205`. Next: `block:ee81bf403ef765ec`.
+
+```stata
+local cb_electricity        "0 1"
+```
+
+### block:ee81bf403ef765ec
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L206-L206`. Next: `block:df9ad9fd0820c2a8`.
+
+```stata
+local cb_tv                 "0 1"
+```
+
+### block:df9ad9fd0820c2a8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L207-L207`. Next: `block:6480c4f91c6316c2`.
+
+```stata
+local cb_car                "0 1"
+```
+
+### block:6480c4f91c6316c2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L208-L208`. Next: `block:dd1cf5b8488df42e`.
+
+```stata
+local cb_cellphone          "0 1"
+```
+
+### block:dd1cf5b8488df42e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L209-L209`. Next: `block:406a825b9d722160`.
+
+```stata
+local cb_computer           "0 1"
+```
+
+### block:406a825b9d722160
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L210-L210`. Next: `block:1d5ea4ebb4e0658d`.
+
+```stata
+local cb_fridge             "0 1"
+```
+
+### block:1d5ea4ebb4e0658d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L216-L216`. Next: `block:3a878368ff2bfd67`.
+
+```stata
+di as result _n(2) "{hline 78}"
+```
+
+### block:3a878368ff2bfd67
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L217-L217`. Next: `block:06a045fcfca59443`.
+
+```stata
+di as result "  DELIVERY QCHECK -- step 2, local files only"
+```
+
+### block:06a045fcfca59443
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L218-L218`. Next: `block:9de4a0106bdc605e`.
+
+```stata
+di as result "{hline 78}"
+```
+
+### block:9de4a0106bdc605e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L219-L219`. Next: `block:3de1a5b5834258af`.
+
+```stata
+di as text "  No DataLibWeb. Codes judged against the guidelines in section 6."
+```
+
+### block:3de1a5b5834258af
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L220-L220`. Next: `block:ec17a58087ab3330`.
+
+```stata
+di as text "  output: one `outstub'_<REGION>.xlsx per region, in"
+```
+
+### block:ec17a58087ab3330
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L221-L221`. Next: `block:515ce3b6f2e9612d`.
+
+```stata
+di as text "          `checksdir'"
+```
+
+### block:515ce3b6f2e9612d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L227-L227`. Next: `block:daa6483e047f2ec6`.
+
+```stata
+tempfile CBOOK CBTEXT
+```
+
+### block:daa6483e047f2ec6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L228-L228`. Next: `block:ad1c2b92dc656ff6`.
+
+```stata
+capture postclose cbk
+```
+
+### block:ad1c2b92dc656ff6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L229-L229`. Next: `block:fb995907317bbe33`.
+
+```stata
+postfile cbk str32 variable double value using `CBOOK', replace
+```
+Write datasets: `dataset:32b01d7d167771c6`
+
+### block:fb995907317bbe33
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L230-L230`. Next: `block:2b64f0f5ed08be20`.
+
+```stata
+foreach v of local vlist {
+```
+
+### block:2b64f0f5ed08be20
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L231-L231`. Next: `block:d14a9df47362531c`.
+
+```stata
+foreach cd of local cb_`v' {
+```
+Enclosing controls: `foreach v of local vlist {`
+
+### block:d14a9df47362531c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L232-L232`. Next: `block:3659555d3b363f2b`.
+
+```stata
+post cbk ("`v'") (`cd')
+```
+Enclosing controls: `foreach v of local vlist {` → `foreach cd of local cb_`v' {`
+
+### block:3659555d3b363f2b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L233-L233`. Next: `block:208d687a9b442437`.
+
+```stata
+}
+```
+Enclosing controls: `foreach v of local vlist {`
+
+### block:208d687a9b442437
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L234-L234`. Next: `block:f133e6887d541b20`.
+
+```stata
+}
+```
+
+### block:f133e6887d541b20
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L235-L235`. Next: `block:f4d351305fc94756`.
+
+```stata
+postclose cbk
+```
+
+### block:f4d351305fc94756
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L237-L237`. Next: `block:ae6937552a7a249b`.
+
+```stata
+use `CBOOK', clear
+```
+Read datasets: `dataset:32b01d7d167771c6`
+
+### block:ae6937552a7a249b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L238-L238`. Next: `block:c3af02caeb69650d`.
+
+```stata
+qui count
+```
+
+### block:c3af02caeb69650d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L239-L239`. Next: `block:c1863285aa4f13ee`.
+
+```stata
+if r(N) == 0 {
+```
+
+### block:c1863285aa4f13ee
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L240-L240`. Next: `block:956e6ccd504f5b85`.
+
+```stata
+di as error "  No codebook entries. Check section 6."
+```
+Enclosing controls: `if r(N) == 0 {`
+
+### block:956e6ccd504f5b85
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L241-L241`. Next: `block:ce48772b4ec8212c`.
+
+```stata
+exit 498
+```
+Enclosing controls: `if r(N) == 0 {`
+
+### block:ce48772b4ec8212c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L242-L242`. Next: `block:4c24d5fe623bff23`.
+
+```stata
+}
+```
+
+### block:4c24d5fe623bff23
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L243-L243`. Next: `block:aa66ce5521fe1d9a`.
+
+```stata
+gen str8 _c = strtrim(string(value, "%6.0f"))
+```
+New: `variable:7c74e4b1d46df824`
+Read candidates: `variable:1ce860e7c2df36fe`
+
+### block:aa66ce5521fe1d9a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L244-L244`. Next: `block:847e3596eb8856cc`.
+
+```stata
+bysort variable (value) : gen str244 codes_allowed = ""
+```
+New: `variable:c31e0d0729564156`
+Read candidates: `variable:1ce860e7c2df36fe`
+
+### block:847e3596eb8856cc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L245-L246`. Next: `block:8d9fe487c619ad63`.
+
+```stata
+by variable : replace codes_allowed = cond(_n == 1, _c, codes_allowed[_n-1] + " " + _c)
+```
+Modified: `variable:c31e0d0729564156`
+Read candidates: `variable:7c74e4b1d46df824`, `variable:c31e0d0729564156`, `variable:932b9491e3d73d8f`
+
+### block:8d9fe487c619ad63
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L247-L247`. Next: `block:b1c5274af728db1b`.
+
+```stata
+by variable : keep if _n == _N
+```
+
+### block:b1c5274af728db1b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L248-L248`. Next: `block:8c8975b33b6ac672`.
+
+```stata
+keep variable codes_allowed
+```
+Read candidates: `variable:932b9491e3d73d8f`, `variable:c31e0d0729564156`
+
+### block:8c8975b33b6ac672
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L249-L249`. Next: `block:78975aba65bd6806`.
+
+```stata
+gen int n_allowed = wordcount(codes_allowed)
+```
+New: `variable:ff11404ee004b457`
+Read candidates: `variable:c31e0d0729564156`
+
+### block:78975aba65bd6806
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L250-L250`. Next: `block:5bc9784887f03add`.
+
+```stata
+qui save `CBTEXT'
+```
+Write datasets: `dataset:c40ef21ab25ec212`
+
+### block:5bc9784887f03add
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L262-L262`. Next: `block:a6bd2fcf3cf996e7`.
+
+```stata
+tempfile SM CAT
+```
+
+### block:a6bd2fcf3cf996e7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L263-L263`. Next: `block:711e64ef7b706e70`.
+
+```stata
+capture postclose sm
+```
+
+### block:711e64ef7b706e70
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L264-L266`. Next: `block:7d7e5c7711acf3ac`.
+
+```stata
+postfile sm str8 region str8 ccode int cyear str24 survey str32 variable double ntot double nmiss double pctmiss double ndist double oneval double noor byte iscat using `SM', replace
+```
+Write datasets: `dataset:97bd60f867796290`
+
+### block:7d7e5c7711acf3ac
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L268-L268`. Next: `block:76ac0f89cff3dcf7`.
+
+```stata
+local firstcat = 1
+```
+
+### block:76ac0f89cff3dcf7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L270-L270`. Next: `block:2e6affe08cb3a831`.
+
+```stata
+foreach reg of local regions {
+```
+
+### block:2e6affe08cb3a831
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L272-L272`. Next: `block:cf1614aab9977355`.
+
+```stata
+local dir    "``reg'_dir'"
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:cf1614aab9977355
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L273-L273`. Next: `block:a88f1bbe62d8e1c9`.
+
+```stata
+local layout "``reg'_layout'"
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:a88f1bbe62d8e1c9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L274-L274`. Next: `block:40d246ed994ed8c7`.
+
+```stata
+local sub    "``reg'_sub'"
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:40d246ed994ed8c7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L276-L276`. Next: `block:bb37a4bef33a64c3`.
+
+```stata
+if "`dir'" == "" {
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:bb37a4bef33a64c3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L277-L277`. Next: `block:fb1d14d839e67eca`.
+
+```stata
+di as error _n "  [ `reg' ] no folder set, skipped."
+```
+Enclosing controls: `foreach reg of local regions {` → `if "`dir'" == "" {`
+
+### block:fb1d14d839e67eca
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L278-L278`. Next: `block:e6e943268c093230`.
+
+```stata
+continue
+```
+Enclosing controls: `foreach reg of local regions {` → `if "`dir'" == "" {`
+
+### block:e6e943268c093230
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L279-L279`. Next: `block:a269baacd74290e7`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:a269baacd74290e7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L281-L281`. Next: `block:c3c24d7507dd9a2e`.
+
+```stata
+di as result _n "{hline 78}"
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:c3c24d7507dd9a2e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L282-L282`. Next: `block:8306ffbb031b1537`.
+
+```stata
+di as result "  REGION `reg'   (`layout')"
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:8306ffbb031b1537
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L283-L283`. Next: `block:c984cd925d6392a2`.
+
+```stata
+di as text   "  `dir'"
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:c984cd925d6392a2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L284-L284`. Next: `block:9be99d4e73de4070`.
+
+```stata
+di as result "{hline 78}"
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:9be99d4e73de4070
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L287-L287`. Next: `block:5a82340700772412`.
+
+```stata
+local units ""
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:5a82340700772412
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L288-L288`. Next: `block:05fd0bc63566d3cc`.
+
+```stata
+if "`layout'" == "flat" {
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:05fd0bc63566d3cc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L289-L289`. Next: `block:4d2145586668e370`.
+
+```stata
+local fl : dir "`dir'" files "*.dta"
+```
+Enclosing controls: `foreach reg of local regions {` → `if "`layout'" == "flat" {`
+
+### block:4d2145586668e370
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L290-L290`. Next: `block:b84b1de5e0dc0cad`.
+
+```stata
+foreach f of local fl {
+```
+Enclosing controls: `foreach reg of local regions {` → `if "`layout'" == "flat" {`
+
+### block:b84b1de5e0dc0cad
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L291-L291`. Next: `block:2d8d510262766bbf`.
+
+```stata
+local units `"`units' "`f'""'
+```
+Enclosing controls: `foreach reg of local regions {` → `if "`layout'" == "flat" {` → `foreach f of local fl {`
+
+### block:2d8d510262766bbf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L292-L292`. Next: `block:39b179147a5cbe61`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `if "`layout'" == "flat" {`
+
+### block:39b179147a5cbe61
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L293-L293`. Next: `block:486639fb7b8e7f66`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:486639fb7b8e7f66
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L294-L294`. Next: `block:87fb88c8352c62d8`.
+
+```stata
+else {
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:87fb88c8352c62d8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L295-L295`. Next: `block:11a5dd78f016c3fa`.
+
+```stata
+local dl : dir "`dir'" dirs "*"
+```
+Enclosing controls: `foreach reg of local regions {` → `else {`
+
+### block:11a5dd78f016c3fa
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L296-L296`. Next: `block:7afdab437362883b`.
+
+```stata
+foreach d of local dl {
+```
+Enclosing controls: `foreach reg of local regions {` → `else {`
+
+### block:7afdab437362883b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L297-L297`. Next: `block:29aa890585595de7`.
+
+```stata
+local dn `d'
+```
+Enclosing controls: `foreach reg of local regions {` → `else {` → `foreach d of local dl {`
+
+### block:29aa890585595de7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L298-L298`. Next: `block:90f4a735ddf2fabb`.
+
+```stata
+local lowdn = lower("`dn'")
+```
+Enclosing controls: `foreach reg of local regions {` → `else {` → `foreach d of local dl {`
+
+### block:90f4a735ddf2fabb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L299-L299`. Next: `block:f96bb1a923d90abc`.
+
+```stata
+local skip = 0
+```
+Enclosing controls: `foreach reg of local regions {` → `else {` → `foreach d of local dl {`
+
+### block:f96bb1a923d90abc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L300-L300`. Next: `block:94cf75a063df768d`.
+
+```stata
+foreach sk of local skipfolders {
+```
+Enclosing controls: `foreach reg of local regions {` → `else {` → `foreach d of local dl {`
+
+### block:94cf75a063df768d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L301-L301`. Next: `block:4158137f0f43f371`.
+
+```stata
+if "`lowdn'" == lower("`sk'") local skip = 1
+```
+Enclosing controls: `foreach reg of local regions {` → `else {` → `foreach d of local dl {` → `foreach sk of local skipfolders {`
+
+### block:4158137f0f43f371
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L302-L302`. Next: `block:a2fcfeecda635e98`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `else {` → `foreach d of local dl {`
+
+### block:a2fcfeecda635e98
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L303-L303`. Next: `block:9030e234693e3d4d`.
+
+```stata
+if `skip' continue
+```
+Enclosing controls: `foreach reg of local regions {` → `else {` → `foreach d of local dl {`
+
+### block:9030e234693e3d4d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L304-L304`. Next: `block:b6d0a12f5b2d9b23`.
+
+```stata
+local probe : dir "`dir'/`dn'/`sub'" files "*.dta"
+```
+Enclosing controls: `foreach reg of local regions {` → `else {` → `foreach d of local dl {`
+
+### block:b6d0a12f5b2d9b23
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L305-L305`. Next: `block:70adac1b2ede681b`.
+
+```stata
+if `"`probe'"' != "" local units `"`units' "`dn'""'
+```
+Enclosing controls: `foreach reg of local regions {` → `else {` → `foreach d of local dl {`
+
+### block:70adac1b2ede681b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L306-L306`. Next: `block:666691ceb2a34374`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `else {`
+
+### block:666691ceb2a34374
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L307-L307`. Next: `block:19111d9bdd9204bb`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:19111d9bdd9204bb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L309-L309`. Next: `block:95e758ffeafc403e`.
+
+```stata
+foreach u of local units {
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:95e758ffeafc403e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L310-L310`. Next: `block:bdab3426dc555207`.
+
+```stata
+local un `u'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {`
+
+### block:bdab3426dc555207
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L312-L312`. Next: `block:2cc377f2bdf50b16`.
+
+```stata
+local base  = subinstr("`un'", ".dta", "", .)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {`
+
+### block:2cc377f2bdf50b16
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L313-L313`. Next: `block:1f8215a9a2a423d1`.
+
+```stata
+local parts = subinstr("`base'", "_", " ", .)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {`
+
+### block:1f8215a9a2a423d1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L314-L314`. Next: `block:70b2fbd49157e76c`.
+
+```stata
+local ccode = upper("`: word 1 of `parts''")
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {`
+
+### block:70b2fbd49157e76c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L315-L315`. Next: `block:f36c8e129f0ab480`.
+
+```stata
+local ytxt  :        word 2 of `parts'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {`
+
+### block:f36c8e129f0ab480
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L316-L316`. Next: `block:3a607de43846c7d7`.
+
+```stata
+local srv   = upper("`: word 3 of `parts''")
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {`
+
+### block:3a607de43846c7d7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L318-L318`. Next: `block:4f065a240c48c7af`.
+
+```stata
+capture confirm integer number `ytxt'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {`
+
+### block:4f065a240c48c7af
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L319-L319`. Next: `block:7a12d5934e6cf276`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {`
+
+### block:7a12d5934e6cf276
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L320-L320`. Next: `block:16cdbf6d19ee5214`.
+
+```stata
+di as error "    [ NAME ] `un' -- year field reads |`ytxt'|, skipped."
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `if _rc {`
+
+### block:16cdbf6d19ee5214
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L321-L321`. Next: `block:bb372cfd38c974cd`.
+
+```stata
+continue
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `if _rc {`
+
+### block:bb372cfd38c974cd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L322-L322`. Next: `block:c70f0c1afcd6b571`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {`
+
+### block:c70f0c1afcd6b571
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L323-L323`. Next: `block:8c5f36ee1fb31a85`.
+
+```stata
+local cyear = `ytxt'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {`
+
+### block:8c5f36ee1fb31a85
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L326-L326`. Next: `block:22e0edfaadfae7d8`.
+
+```stata
+if "`layout'" == "flat" {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {`
+
+### block:22e0edfaadfae7d8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L327-L327`. Next: `block:97fafdd405dff7d2`.
+
+```stata
+local files `"  "`dir'/`un'" "'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `if "`layout'" == "flat" {`
+
+### block:97fafdd405dff7d2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L328-L328`. Next: `block:cd0d6e0015374ed4`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {`
+
+### block:cd0d6e0015374ed4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L329-L329`. Next: `block:17705a82aecf1eec`.
+
+```stata
+else {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {`
+
+### block:17705a82aecf1eec
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L330-L330`. Next: `block:1f69bb18dd90dc66`.
+
+```stata
+local dpath "`dir'/`un'/`sub'"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `else {`
+
+### block:1f69bb18dd90dc66
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L331-L331`. Next: `block:f5c28c6377f46180`.
+
+```stata
+local ml : dir "`dpath'" files "*.dta"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `else {`
+
+### block:f5c28c6377f46180
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L332-L332`. Next: `block:eee8e391f3a3786b`.
+
+```stata
+local files ""
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `else {`
+
+### block:eee8e391f3a3786b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L333-L333`. Next: `block:c716603459b156fe`.
+
+```stata
+foreach m of local ml {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `else {`
+
+### block:c716603459b156fe
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L334-L334`. Next: `block:af532fb2c7fd058f`.
+
+```stata
+local mn `m'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `else {` → `foreach m of local ml {`
+
+### block:af532fb2c7fd058f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L335-L335`. Next: `block:d65cd443e8acd464`.
+
+```stata
+local files `"`files' "`dpath'/`mn'" "'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `else {` → `foreach m of local ml {`
+
+### block:d65cd443e8acd464
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L336-L336`. Next: `block:b0531585850e728d`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `else {`
+
+### block:b0531585850e728d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L337-L337`. Next: `block:412e6135c7abef6a`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {`
+
+### block:412e6135c7abef6a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L339-L339`. Next: `block:0db5f8f1af6efaf8`.
+
+```stata
+local nfound = 0
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {`
+
+### block:0db5f8f1af6efaf8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L340-L340`. Next: `block:6dca36bd040b6e31`.
+
+```stata
+foreach v of local vlist {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {`
+
+### block:6dca36bd040b6e31
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L345-L345`. Next: `block:4a19d3b5a07e13c8`.
+
+```stata
+local bestfp ""
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:4a19d3b5a07e13c8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L346-L346`. Next: `block:c587d102a3b002e1`.
+
+```stata
+local bestnm = -1
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:c587d102a3b002e1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L347-L347`. Next: `block:f04db77cac03fa36`.
+
+```stata
+foreach fp of local files {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:f04db77cac03fa36
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L348-L348`. Next: `block:e00a1aa65b8741ea`.
+
+```stata
+capture describe using "`fp'", varlist
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `foreach fp of local files {`
+Read datasets: `dataset:bfec36f470149a98`
+
+### block:e00a1aa65b8741ea
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L349-L349`. Next: `block:970b71d2e9157017`.
+
+```stata
+if _rc continue
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `foreach fp of local files {`
+
+### block:970b71d2e9157017
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L350-L350`. Next: `block:a0614e0401433131`.
+
+```stata
+local here = lower("`r(varlist)'")
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `foreach fp of local files {`
+
+### block:a0614e0401433131
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L351-L351`. Next: `block:00ffe8b5f821c71e`.
+
+```stata
+local there : list posof "`v'" in here
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `foreach fp of local files {`
+
+### block:00ffe8b5f821c71e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L352-L352`. Next: `block:8965728f70f745f8`.
+
+```stata
+if `there' == 0 continue
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `foreach fp of local files {`
+
+### block:8965728f70f745f8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L353-L353`. Next: `block:1ae759f731137b1b`.
+
+```stata
+capture use `v' using "`fp'", clear
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `foreach fp of local files {`
+Read datasets: `dataset:bfec36f470149a98`
+
+### block:1ae759f731137b1b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L354-L354`. Next: `block:a26f68bb00416162`.
+
+```stata
+if _rc continue
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `foreach fp of local files {`
+
+### block:a26f68bb00416162
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L355-L355`. Next: `block:ecfa040287be16d6`.
+
+```stata
+qui count if !missing(`v')
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `foreach fp of local files {`
+
+### block:ecfa040287be16d6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L356-L356`. Next: `block:f345e362ccf4ac39`.
+
+```stata
+if r(N) > `bestnm' {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `foreach fp of local files {`
+
+### block:f345e362ccf4ac39
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L357-L357`. Next: `block:8c9c6e444bf82b5c`.
+
+```stata
+local bestnm = r(N)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `foreach fp of local files {` → `if r(N) > `bestnm' {`
+
+### block:8c9c6e444bf82b5c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L358-L358`. Next: `block:d70a5b11a7d2d3ff`.
+
+```stata
+local bestfp "`fp'"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `foreach fp of local files {` → `if r(N) > `bestnm' {`
+
+### block:d70a5b11a7d2d3ff
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L359-L359`. Next: `block:0a5260022ab6a784`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `foreach fp of local files {`
+
+### block:0a5260022ab6a784
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L360-L360`. Next: `block:e73003f38e70fb2d`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:e73003f38e70fb2d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L361-L361`. Next: `block:637f18592ecaebb0`.
+
+```stata
+if "`bestfp'" == "" continue
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:637f18592ecaebb0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L363-L363`. Next: `block:af0a6f7549030392`.
+
+```stata
+local ++nfound
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:af0a6f7549030392
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L364-L364`. Next: `block:9b3d43b71b17d8c5`.
+
+```stata
+qui use `v' using "`bestfp'", clear
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+Read datasets: `dataset:bfec36f470149a98`
+
+### block:9b3d43b71b17d8c5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L365-L365`. Next: `block:385c108f1791ffe4`.
+
+```stata
+local ntot = _N
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:385c108f1791ffe4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L366-L366`. Next: `block:d2b41e66fd67611e`.
+
+```stata
+qui count if missing(`v')
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:d2b41e66fd67611e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L367-L367`. Next: `block:70436e1e4831e53b`.
+
+```stata
+local nmiss  = r(N)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:70436e1e4831e53b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L368-L368`. Next: `block:b9c49f207298710a`.
+
+```stata
+local nvalid = `ntot' - `nmiss'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:b9c49f207298710a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L369-L369`. Next: `block:2562059cd2521f09`.
+
+```stata
+local pctmiss = cond(`ntot' > 0, 100*`nmiss'/`ntot', .)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:2562059cd2521f09
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L373-L373`. Next: `block:094b3932425dd816`.
+
+```stata
+capture confirm numeric variable `v'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:094b3932425dd816
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L374-L374`. Next: `block:13557d22a9af6da4`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:13557d22a9af6da4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L375-L376`. Next: `block:453cfdb3d7187761`.
+
+```stata
+post sm ("`reg'") ("`ccode'") (`cyear') ("`srv'") ("`v'") (`ntot') (`nmiss') (`pctmiss') (.) (.) (0) (0)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if _rc {`
+
+### block:453cfdb3d7187761
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L377-L377`. Next: `block:40bee1f4cc0d847e`.
+
+```stata
+continue
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if _rc {`
+
+### block:40bee1f4cc0d847e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L378-L378`. Next: `block:ed57d2c22024b911`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:ed57d2c22024b911
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L381-L381`. Next: `block:8e8dabb800056721`.
+
+```stata
+local ndist = 0
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:8e8dabb800056721
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L382-L382`. Next: `block:131ac0208a4de099`.
+
+```stata
+if `nvalid' > 0 {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:131ac0208a4de099
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L383-L383`. Next: `block:b62a71171db28c97`.
+
+```stata
+tempvar g
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `nvalid' > 0 {`
+
+### block:b62a71171db28c97
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L384-L384`. Next: `block:b49c711a43d56861`.
+
+```stata
+qui egen `g' = group(`v')
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `nvalid' > 0 {`
+New: `variable:eebd1475c3758698`
+Read candidates: `variable:412c7c360f1ad4e3`
+
+### block:b49c711a43d56861
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L385-L385`. Next: `block:510c4146e0a31ee5`.
+
+```stata
+qui summarize `g', meanonly
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `nvalid' > 0 {`
+Read candidates: `variable:9febf0723802be59`
+
+### block:510c4146e0a31ee5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L386-L386`. Next: `block:09abd89d20a94005`.
+
+```stata
+local ndist = r(max)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `nvalid' > 0 {`
+
+### block:09abd89d20a94005
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L387-L387`. Next: `block:e7f649193274f6e8`.
+
+```stata
+drop `g'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `nvalid' > 0 {`
+
+### block:e7f649193274f6e8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L388-L388`. Next: `block:368c5aeb363ce3f8`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:368c5aeb363ce3f8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L392-L392`. Next: `block:5178506c7c7f68b6`.
+
+```stata
+local oneval = .
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:5178506c7c7f68b6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L393-L393`. Next: `block:2d91da6f1a0274b4`.
+
+```stata
+if `ndist' == 1 {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:2d91da6f1a0274b4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L394-L394`. Next: `block:f38539f0e4b48eba`.
+
+```stata
+qui summarize `v', meanonly
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `ndist' == 1 {`
+Read candidates: `variable:9febf0723802be59`
+
+### block:f38539f0e4b48eba
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L395-L395`. Next: `block:12591c7f6b1543f1`.
+
+```stata
+local oneval = r(min)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if `ndist' == 1 {`
+
+### block:12591c7f6b1543f1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L396-L396`. Next: `block:80d67a16189d9c86`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:80d67a16189d9c86
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L399-L399`. Next: `block:f5bf8521c3908a8f`.
+
+```stata
+local noor = 0
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:f5bf8521c3908a8f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L400-L400`. Next: `block:5d7e6f6d514f131d`.
+
+```stata
+if "`rng_`v''" != "" & `nvalid' > 0 {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:5d7e6f6d514f131d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L401-L401`. Next: `block:db82c63233333ed7`.
+
+```stata
+local lo : word 1 of `rng_`v''
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if "`rng_`v''" != "" & `nvalid' > 0 {`
+
+### block:db82c63233333ed7
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L402-L402`. Next: `block:58c9f4fc2d8fa7bd`.
+
+```stata
+local hi : word 2 of `rng_`v''
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if "`rng_`v''" != "" & `nvalid' > 0 {`
+
+### block:58c9f4fc2d8fa7bd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L403-L403`. Next: `block:fae28ba0dfb48d4b`.
+
+```stata
+qui count if !missing(`v') & (`v' < `lo' | `v' > `hi')
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if "`rng_`v''" != "" & `nvalid' > 0 {`
+
+### block:fae28ba0dfb48d4b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L404-L404`. Next: `block:78c7a6767e4aff29`.
+
+```stata
+local noor = r(N)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {` → `if "`rng_`v''" != "" & `nvalid' > 0 {`
+
+### block:78c7a6767e4aff29
+
+Evidence: `04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do:L405-L405`. Next: `block:d2e3c14bfad90b27`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach u of local units {` → `foreach v of local vlist {`
+
+### block:d2e3c14bfad90b27
+

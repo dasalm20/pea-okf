@@ -1,0 +1,612 @@
+# 01.Programs/00c-fetch server data.do
+
+Copy six network input files with retries and cache checks
+
+Status: PARTIAL_STATIC. Every lexically active statement is indexed; complete runtime schema and macro expansion are not established.
+
+Source snapshot: numbered source (deployment lookup: lookup/sources/GMI_extended/source_maps/00c-76305d.md.md)
+
+## Execution-order blocks
+
+### block:6a389c2411d2db9e
+
+Evidence: `01.Programs/00c-fetch server data.do:L11-L11`. Next: `block:92f95f913f92b39f`.
+
+```stata
+global forcefetch 0
+```
+
+### block:92f95f913f92b39f
+
+Evidence: `01.Programs/00c-fetch server data.do:L14-L14`. Next: `block:b4666ac98067b734`.
+
+```stata
+cap program drop _fetchcopy
+```
+
+### block:b4666ac98067b734
+
+Evidence: `01.Programs/00c-fetch server data.do:L15-L15`. Next: `block:6ad35b5a6d17e9ae`.
+
+```stata
+program define _fetchcopy
+```
+
+### block:6ad35b5a6d17e9ae
+
+Evidence: `01.Programs/00c-fetch server data.do:L16-L16`. Next: `block:989e2d7166c0c689`.
+
+```stata
+args label src dst
+```
+
+### block:989e2d7166c0c689
+
+Evidence: `01.Programs/00c-fetch server data.do:L17-L17`. Next: `block:ed3dff82c7e12b18`.
+
+```stata
+local try 1
+```
+
+### block:ed3dff82c7e12b18
+
+Evidence: `01.Programs/00c-fetch server data.do:L18-L18`. Next: `block:2f1e39b2a725f3d0`.
+
+```stata
+local ok  0
+```
+
+### block:2f1e39b2a725f3d0
+
+Evidence: `01.Programs/00c-fetch server data.do:L19-L19`. Next: `block:42542b6d478b4de3`.
+
+```stata
+while `try' <= 4 & `ok' == 0 {
+```
+
+### block:42542b6d478b4de3
+
+Evidence: `01.Programs/00c-fetch server data.do:L20-L20`. Next: `block:f6a9ea72465d7f28`.
+
+```stata
+cap copy "`src'" "`dst'", replace
+```
+Enclosing controls: `while `try' <= 4 & `ok' == 0 {`
+Read datasets: `dataset:5826fda4c7ba28c1`
+Write datasets: `dataset:2aeff9e603d96595`
+
+### block:f6a9ea72465d7f28
+
+Evidence: `01.Programs/00c-fetch server data.do:L21-L21`. Next: `block:8b43733eb6babdbf`.
+
+```stata
+if _rc == 0 local ok 1
+```
+Enclosing controls: `while `try' <= 4 & `ok' == 0 {`
+
+### block:8b43733eb6babdbf
+
+Evidence: `01.Programs/00c-fetch server data.do:L22-L22`. Next: `block:cc3faec3feaa1b18`.
+
+```stata
+else {
+```
+Enclosing controls: `while `try' <= 4 & `ok' == 0 {`
+
+### block:cc3faec3feaa1b18
+
+Evidence: `01.Programs/00c-fetch server data.do:L23-L23`. Next: `block:0053e114036db03f`.
+
+```stata
+local rc = _rc
+```
+Enclosing controls: `while `try' <= 4 & `ok' == 0 {` → `else {`
+
+### block:0053e114036db03f
+
+Evidence: `01.Programs/00c-fetch server data.do:L24-L24`. Next: `block:29a2dc96eea2fb9c`.
+
+```stata
+if `try' < 4 sleep `=3000*`try''
+```
+Enclosing controls: `while `try' <= 4 & `ok' == 0 {` → `else {`
+
+### block:29a2dc96eea2fb9c
+
+Evidence: `01.Programs/00c-fetch server data.do:L25-L25`. Next: `block:86b8f8f675cb7a09`.
+
+```stata
+local try = `try' + 1
+```
+Enclosing controls: `while `try' <= 4 & `ok' == 0 {` → `else {`
+
+### block:86b8f8f675cb7a09
+
+Evidence: `01.Programs/00c-fetch server data.do:L26-L26`. Next: `block:8a99bdb37ffa40f4`.
+
+```stata
+}
+```
+Enclosing controls: `while `try' <= 4 & `ok' == 0 {`
+
+### block:8a99bdb37ffa40f4
+
+Evidence: `01.Programs/00c-fetch server data.do:L27-L27`. Next: `block:f206798632f83e85`.
+
+```stata
+}
+```
+
+### block:f206798632f83e85
+
+Evidence: `01.Programs/00c-fetch server data.do:L28-L28`. Next: `block:6fc3882c36c2a60b`.
+
+```stata
+if `ok' == 0 {
+```
+
+### block:6fc3882c36c2a60b
+
+Evidence: `01.Programs/00c-fetch server data.do:L29-L29`. Next: `block:9a7018048ee68534`.
+
+```stata
+dis as error "FAILED: `label' (rc=`rc') after 4 tries. Check the server path/permissions."
+```
+Enclosing controls: `if `ok' == 0 {`
+
+### block:9a7018048ee68534
+
+Evidence: `01.Programs/00c-fetch server data.do:L30-L30`. Next: `block:1501fc604ab86f71`.
+
+```stata
+exit `rc'
+```
+Enclosing controls: `if `ok' == 0 {`
+
+### block:1501fc604ab86f71
+
+Evidence: `01.Programs/00c-fetch server data.do:L31-L31`. Next: `block:5844c26c87b738d3`.
+
+```stata
+}
+```
+
+### block:5844c26c87b738d3
+
+Evidence: `01.Programs/00c-fetch server data.do:L32-L32`. Next: `block:403de93f1fbacec1`.
+
+```stata
+end
+```
+
+### block:403de93f1fbacec1
+
+Evidence: `01.Programs/00c-fetch server data.do:L35-L35`. Next: `block:87de7f441d075a78`.
+
+```stata
+cap program drop _fetchone
+```
+
+### block:87de7f441d075a78
+
+Evidence: `01.Programs/00c-fetch server data.do:L36-L36`. Next: `block:51d1c8903d330d6d`.
+
+```stata
+program define _fetchone
+```
+
+### block:51d1c8903d330d6d
+
+Evidence: `01.Programs/00c-fetch server data.do:L37-L37`. Next: `block:7cb3368c759c2c79`.
+
+```stata
+args tag label src dst
+```
+
+### block:7cb3368c759c2c79
+
+Evidence: `01.Programs/00c-fetch server data.do:L38-L38`. Next: `block:255cf5103c99a762`.
+
+```stata
+local needfetch 1
+```
+
+### block:255cf5103c99a762
+
+Evidence: `01.Programs/00c-fetch server data.do:L39-L39`. Next: `block:de7bd7ed4a7f5da2`.
+
+```stata
+if $forcefetch == 0 {
+```
+
+### block:de7bd7ed4a7f5da2
+
+Evidence: `01.Programs/00c-fetch server data.do:L40-L40`. Next: `block:0ffe4608c1c6b3f9`.
+
+```stata
+cap confirm file "`dst'"
+```
+Enclosing controls: `if $forcefetch == 0 {`
+
+### block:0ffe4608c1c6b3f9
+
+Evidence: `01.Programs/00c-fetch server data.do:L41-L41`. Next: `block:ff1c90b4dc3ed76d`.
+
+```stata
+if _rc == 0 local needfetch 0
+```
+Enclosing controls: `if $forcefetch == 0 {`
+
+### block:ff1c90b4dc3ed76d
+
+Evidence: `01.Programs/00c-fetch server data.do:L42-L42`. Next: `block:fc78445f7f096631`.
+
+```stata
+}
+```
+
+### block:fc78445f7f096631
+
+Evidence: `01.Programs/00c-fetch server data.do:L43-L43`. Next: `block:4700e655fb682f54`.
+
+```stata
+if `needfetch' == 0 {
+```
+
+### block:4700e655fb682f54
+
+Evidence: `01.Programs/00c-fetch server data.do:L44-L44`. Next: `block:0433fea8d9cac52f`.
+
+```stata
+dis as text "[`tag'] `label' already in FromServers -- skipping."
+```
+Enclosing controls: `if `needfetch' == 0 {`
+
+### block:0433fea8d9cac52f
+
+Evidence: `01.Programs/00c-fetch server data.do:L45-L45`. Next: `block:a07ee45f131a0286`.
+
+```stata
+c_local status`tag' "CACHED"
+```
+Enclosing controls: `if `needfetch' == 0 {`
+
+### block:a07ee45f131a0286
+
+Evidence: `01.Programs/00c-fetch server data.do:L46-L46`. Next: `block:d480f78d7feacac7`.
+
+```stata
+}
+```
+
+### block:d480f78d7feacac7
+
+Evidence: `01.Programs/00c-fetch server data.do:L47-L47`. Next: `block:949fe81a09a6c6c6`.
+
+```stata
+else {
+```
+
+### block:949fe81a09a6c6c6
+
+Evidence: `01.Programs/00c-fetch server data.do:L48-L48`. Next: `block:54ea689ae2e83ab4`.
+
+```stata
+dis as result "[`tag'] Copying `label' ..."
+```
+Enclosing controls: `else {`
+
+### block:54ea689ae2e83ab4
+
+Evidence: `01.Programs/00c-fetch server data.do:L49-L49`. Next: `block:d78e99271bde8f85`.
+
+```stata
+_fetchcopy "`tag': `label'" "`src'" "`dst'"
+```
+Enclosing controls: `else {`
+
+### block:d78e99271bde8f85
+
+Evidence: `01.Programs/00c-fetch server data.do:L50-L50`. Next: `block:86585e95e41a838b`.
+
+```stata
+dis as result "[`tag'] `label' copied."
+```
+Enclosing controls: `else {`
+
+### block:86585e95e41a838b
+
+Evidence: `01.Programs/00c-fetch server data.do:L51-L51`. Next: `block:96747610be6b98e5`.
+
+```stata
+c_local status`tag' "COPIED"
+```
+Enclosing controls: `else {`
+
+### block:96747610be6b98e5
+
+Evidence: `01.Programs/00c-fetch server data.do:L52-L52`. Next: `block:a69dd71f7a042db0`.
+
+```stata
+}
+```
+
+### block:a69dd71f7a042db0
+
+Evidence: `01.Programs/00c-fetch server data.do:L53-L53`. Next: `block:7ea91992edb27da7`.
+
+```stata
+end
+```
+
+### block:7ea91992edb27da7
+
+Evidence: `01.Programs/00c-fetch server data.do:L64-L65`. Next: `block:764ea6797b3e4aac`.
+
+```stata
+_fetchone A "repo_${rnd}all.dta" "$reposource\repo_${rnd}all.dta" "$fromservers\repo_${rnd}all.dta"
+```
+
+### block:764ea6797b3e4aac
+
+Evidence: `01.Programs/00c-fetch server data.do:L67-L68`. Next: `block:75f92569f5150eec`.
+
+```stata
+_fetchone B "GMI_SPspell_all.dta" "$gmispell" "$fromservers\GMI_SPspell_all.dta"
+```
+
+### block:75f92569f5150eec
+
+Evidence: `01.Programs/00c-fetch server data.do:L70-L71`. Next: `block:70fe631c1d151b94`.
+
+```stata
+_fetchone C "global_ex.dta ($rnd)" "$mpopath_cur\03.output\MPO\01.data\To MFM\global_ex.dta" "$fromservers\global_ex_${rnd}.dta"
+```
+
+### block:70fe631c1d151b94
+
+Evidence: `01.Programs/00c-fetch server data.do:L73-L74`. Next: `block:4485a2edebbdf908`.
+
+```stata
+_fetchone D "Observed poverty 2021PPP.dta ($rnd)" "$mpopath_cur\03.output\Observed poverty 2021PPP.dta" "$fromservers\ObservedPoverty2021PPP_${rnd}.dta"
+```
+
+### block:4485a2edebbdf908
+
+Evidence: `01.Programs/00c-fetch server data.do:L76-L77`. Next: `block:5837c700804fc7aa`.
+
+```stata
+_fetchone E "global_ex.dta ($rndprev)" "$mpopath_prev\03.output\MPO\01.data\To MFM\global_ex.dta" "$fromservers\global_ex_${rndprev}.dta"
+```
+
+### block:5837c700804fc7aa
+
+Evidence: `01.Programs/00c-fetch server data.do:L79-L80`. Next: `block:31cb2eb94286ac78`.
+
+```stata
+_fetchone F "Observed poverty 2021PPP.dta ($rndprev)" "$mpopath_prev\03.output\Observed poverty 2021PPP.dta" "$fromservers\ObservedPoverty2021PPP_${rndprev}.dta"
+```
+
+### block:31cb2eb94286ac78
+
+Evidence: `01.Programs/00c-fetch server data.do:L86-L86`. Next: `block:1726eddd693d2c28`.
+
+```stata
+local w 66
+```
+
+### block:1726eddd693d2c28
+
+Evidence: `01.Programs/00c-fetch server data.do:L87-L87`. Next: `block:05d8c3b161362268`.
+
+```stata
+dis as text _dup(`w') "-"
+```
+
+### block:05d8c3b161362268
+
+Evidence: `01.Programs/00c-fetch server data.do:L88-L88`. Next: `block:a7d13e87f3b929aa`.
+
+```stata
+dis as text "  GMI EXTENDED PIPELINE -- SERVER FETCH SUMMARY"
+```
+
+### block:a7d13e87f3b929aa
+
+Evidence: `01.Programs/00c-fetch server data.do:L89-L89`. Next: `block:789618e6f5ba53d4`.
+
+```stata
+dis as text "  Round: $rnd (prev: $rndprev)" _col(40) "Run: `c(current_date)' `c(current_time)'"
+```
+
+### block:789618e6f5ba53d4
+
+Evidence: `01.Programs/00c-fetch server data.do:L90-L90`. Next: `block:95c9035ddb497017`.
+
+```stata
+dis as text _dup(`w') "-"
+```
+
+### block:95c9035ddb497017
+
+Evidence: `01.Programs/00c-fetch server data.do:L92-L92`. Next: `block:04e8892cb29b01d5`.
+
+```stata
+local labA "Section A  repo_${rnd}all.dta"
+```
+
+### block:04e8892cb29b01d5
+
+Evidence: `01.Programs/00c-fetch server data.do:L93-L93`. Next: `block:abfebf8aa5e114ae`.
+
+```stata
+local labB "Section B  GMI_SPspell_all.dta"
+```
+
+### block:abfebf8aa5e114ae
+
+Evidence: `01.Programs/00c-fetch server data.do:L94-L94`. Next: `block:e707ea08b97fc892`.
+
+```stata
+local labC "Section C  global_ex.dta ($rnd)"
+```
+
+### block:e707ea08b97fc892
+
+Evidence: `01.Programs/00c-fetch server data.do:L95-L95`. Next: `block:cff07f28d46acca7`.
+
+```stata
+local labD "Section D  Observed poverty 2021PPP.dta ($rnd)"
+```
+
+### block:cff07f28d46acca7
+
+Evidence: `01.Programs/00c-fetch server data.do:L96-L96`. Next: `block:59ac960619b5d172`.
+
+```stata
+local labE "Section E  global_ex.dta ($rndprev)"
+```
+
+### block:59ac960619b5d172
+
+Evidence: `01.Programs/00c-fetch server data.do:L97-L97`. Next: `block:8a1dda8862312889`.
+
+```stata
+local labF "Section F  Observed poverty 2021PPP.dta ($rndprev)"
+```
+
+### block:8a1dda8862312889
+
+Evidence: `01.Programs/00c-fetch server data.do:L99-L99`. Next: `block:d9dcf942b3aeeb9a`.
+
+```stata
+foreach s in A B C D E F {
+```
+
+### block:d9dcf942b3aeeb9a
+
+Evidence: `01.Programs/00c-fetch server data.do:L100-L100`. Next: `block:dbf54f433878221c`.
+
+```stata
+local lab  "`lab`s''"
+```
+Enclosing controls: `foreach s in A B C D E F {`
+
+### block:dbf54f433878221c
+
+Evidence: `01.Programs/00c-fetch server data.do:L101-L101`. Next: `block:085230d24831fbd9`.
+
+```stata
+local stat "`status`s''"
+```
+Enclosing controls: `foreach s in A B C D E F {`
+
+### block:085230d24831fbd9
+
+Evidence: `01.Programs/00c-fetch server data.do:L102-L102`. Next: `block:7f1b45da4431c81e`.
+
+```stata
+if "`stat'"      == "FAILED" dis as error "  [ FAIL   ]  `lab'"
+```
+Enclosing controls: `foreach s in A B C D E F {`
+
+### block:7f1b45da4431c81e
+
+Evidence: `01.Programs/00c-fetch server data.do:L103-L103`. Next: `block:4e6cfd89df705f15`.
+
+```stata
+else if "`stat'" == "COPIED" dis as result "  [ COPIED ]  `lab'"
+```
+Enclosing controls: `foreach s in A B C D E F {`
+
+### block:4e6cfd89df705f15
+
+Evidence: `01.Programs/00c-fetch server data.do:L104-L104`. Next: `block:3dcb3bca6615cc37`.
+
+```stata
+else if "`stat'" == "CACHED" dis as text   "  [ CACHED ]  `lab'"
+```
+Enclosing controls: `foreach s in A B C D E F {`
+
+### block:3dcb3bca6615cc37
+
+Evidence: `01.Programs/00c-fetch server data.do:L105-L105`. Next: `block:43528ab5d80242f1`.
+
+```stata
+else                         dis as text   "  [ ????   ]  `lab'"
+```
+Enclosing controls: `foreach s in A B C D E F {`
+
+### block:43528ab5d80242f1
+
+Evidence: `01.Programs/00c-fetch server data.do:L106-L106`. Next: `block:c14d2d82c8d7e8c8`.
+
+```stata
+}
+```
+
+### block:c14d2d82c8d7e8c8
+
+Evidence: `01.Programs/00c-fetch server data.do:L108-L108`. Next: `block:57c0ff92f5f7c35d`.
+
+```stata
+dis as text _dup(`w') "-"
+```
+
+### block:57c0ff92f5f7c35d
+
+Evidence: `01.Programs/00c-fetch server data.do:L109-L109`. Next: `block:688cfee198fe3bd7`.
+
+```stata
+if "`statusA'"=="FAILED" | "`statusB'"=="FAILED" | "`statusC'"=="FAILED" | "`statusD'"=="FAILED" | "`statusE'"=="FAILED" | "`statusF'"=="FAILED" {
+```
+
+### block:688cfee198fe3bd7
+
+Evidence: `01.Programs/00c-fetch server data.do:L110-L110`. Next: `block:b5b1a9ad898cfac0`.
+
+```stata
+dis as error "  RESULT: one or more copies FAILED -- see [FAIL] messages above."
+```
+Enclosing controls: `if "`statusA'"=="FAILED" | "`statusB'"=="FAILED" | "`statusC'"=="FAILED" | "`statusD'"=="FAILED" | "`statusE'"=="FAILED" | "`statusF'"=="FAILED" {`
+
+### block:b5b1a9ad898cfac0
+
+Evidence: `01.Programs/00c-fetch server data.do:L111-L111`. Next: `block:fbcb3a676e57eda1`.
+
+```stata
+}
+```
+
+### block:fbcb3a676e57eda1
+
+Evidence: `01.Programs/00c-fetch server data.do:L112-L112`. Next: `block:603a82afde93d3a3`.
+
+```stata
+else {
+```
+
+### block:603a82afde93d3a3
+
+Evidence: `01.Programs/00c-fetch server data.do:L113-L113`. Next: `block:664b4cc1a6236954`.
+
+```stata
+dis as result "  RESULT: all server files ready in 02.Input\FromServers."
+```
+Enclosing controls: `else {`
+
+### block:664b4cc1a6236954
+
+Evidence: `01.Programs/00c-fetch server data.do:L114-L114`. Next: `block:5353410028c49a03`.
+
+```stata
+}
+```
+
+### block:5353410028c49a03
+
+Evidence: `01.Programs/00c-fetch server data.do:L115-L115`. Next: `end`.
+
+```stata
+dis as text _dup(`w') "-"
+```

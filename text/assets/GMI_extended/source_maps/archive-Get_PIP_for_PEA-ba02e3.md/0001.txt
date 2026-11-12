@@ -1,0 +1,63 @@
+# 01.Programs/archive/Get PIP for PEA.do
+
+Sanitized source projection; applicability placeholders are not executable values. Original SHA256: c21e29d4d4c45ad37ea4bb5d501af1f04424c12cba2dcae733412dcb214e9780
+
+```stata
+0001 | //save the output 
+0002 | //pip2021.dta
+0003 | //pip2017.dta
+0004 | clear 
+0005 | global rnd SM26
+0006 | global rnd1 SM2026
+0007 | global path \\wbgfscifs01\GTSD\03.projects_corp\04.GPWG\04.GPWG_${rnd}\04.GPWG_${rnd}_QA
+0008 | global reposource "${path}\01.programs\02.dofile\repo\"
+0009 | *global out \\wbgfscifs01\GPWG-GMD\Datalib\Minh\GMI\\${rnd}\
+0010 | global out  D:\daylan\test\GMI\out\
+0011 | global pwf "D:\daylan\test\GMI\Survey_price_framework.dta"
+0012 | 
+0013 | clear
+0014 | tempfile dataall
+0015 | save `dataall', replace emptyok
+0016 | 
+0017 | global plines2021  420 830 450 630 1245 600 840 1660
+0018 | global plines2017  365 685 322 547 1027 430 730 1370
+0019 | global line2021 300
+0020 | global line2017 215
+0021 | global ppplist 2017 2021
+0022 | global piptxt server(prod) version(20260324_2021_01_02_PROD)
+0023 | 
+0024 | foreach ppp1 of global ppplist {
+0025 | 	local num1 = `=${line`ppp1'}/100'
+0026 | 
+0027 | 	pip, country(all) ppp_year(`ppp1') povline(`num1') ${piptxt} clear 
+0028 | 	
+0029 | 	drop if country_code=="ISO3" & (reporting_level=="urban"|reporting_level=="rural")
+0030 | 	drop if country_code=="ISO3" & (reporting_level=="urban"|reporting_level=="rural")
+0031 | 	drop if country_code=="ISO3" & (reporting_level=="urban"|reporting_level=="rural")
+0032 | 	ren ppp icp
+0033 | 	ren headcount fgt0_${line`ppp1'}
+0034 | 	ren poverty_gap fgt1_${line`ppp1'}
+0035 | 	ren poverty_severity fgt2_${line`ppp1'}
+0036 | 	gen ppp = `ppp1'
+0037 | 	drop poverty_line
+0038 | 	save "c:/temp/pip`ppp1'", replace
+0039 | 	save "${out}\\03.intermediate\pip`ppp1'", replace
+0040 | 	
+0041 | 	foreach num of numlist ${plines`ppp1'} {
+0042 | 		pip, country(all) ppp_year(`ppp1') povline(`=`num'/100') ${piptxt} clear 
+0043 | 		drop if country_code=="ISO3" & (reporting_level=="urban"|reporting_level=="rural")
+0044 | 		drop if country_code=="ISO3" & (reporting_level=="urban"|reporting_level=="rural")
+0045 | 		drop if country_code=="ISO3" & (reporting_level=="urban"|reporting_level=="rural")
+0046 | 		ren ppp icp
+0047 | 		ren headcount fgt0_`num'
+0048 | 		ren poverty_gap fgt1_`num'
+0049 | 		ren poverty_severity fgt2_`num'
+0050 | 		gen ppp = `ppp1'
+0051 | 		merge 1:1 country_code year survey_acronym welfare_type using "c:/temp/pip`ppp1'", keepus(fgt*)
+0052 | 		drop _merge
+0053 | 		order country_code year survey_acronym welfare_type
+0054 | 		save "c:/temp/pip`ppp1'", replace		
+0055 | 		save "${out}\\03.intermediate\pip`ppp1'", replace
+0056 | 	}
+0057 | }
+```

@@ -1,0 +1,16 @@
+{
+  "$schema": "EVIDENCE_REF_206ae48f6cae3f8701b1",
+  "title": "findings",
+  "allOf": [
+    {
+      "$ref": "record.schema.json"
+    },
+    {
+      "properties": {
+        "record_type": {
+          "const": "finding"
+        }
+      }
+    }
+  ]
+}

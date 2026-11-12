@@ -1,0 +1,214 @@
+{
+  "record_type": "manifest",
+  "id": "manifest:gmi-extended",
+  "name": "GMI Extended source snapshot",
+  "source_refs": [
+    {
+      "file": "01.Programs/00-Master.do",
+      "start_line": 1,
+      "end_line": 362
+    }
+  ],
+  "evidence_status": "VERIFIED_STATIC",
+  "related_entity_ids": [
+    "file:e2eb93a61ffd7877",
+    "file:bc37d034bad56458",
+    "file:06e0a5f29a8fae9c",
+    "file:98be35f872b2091d",
+    "file:cc12bf8a86984a16",
+    "file:76305de4daa10f0e",
+    "file:4147bae642bb6dfa",
+    "file:cf70b2568fdbc636",
+    "file:693ca49303705cc5",
+    "file:cf769a0c2afa05ae",
+    "file:ed9a59dcc506e53e",
+    "file:41c1576ea77152d1",
+    "file:a16ea0d66abc43f7",
+    "file:6cc95ccb6336ad96",
+    "file:f4a8bcc412c35bb6",
+    "file:e927035de26cc489",
+    "file:0b4abb6f37a1aae3",
+    "file:4a53fde318bf0089",
+    "file:ba02e35104a7e1ee",
+    "file:ef6ab402032c5fd3",
+    "file:a74011951d9fa6b6",
+    "file:a77151611c30e8fe",
+    "file:dd095c4aa234e5d1",
+    "file:e7997a55e10871dd",
+    "file:30607f798de2d826",
+    "file:bfe9b3f95739f102",
+    "file:eaf3b523707c534a",
+    "file:ff0cb1097fa67998",
+    "file:b335630551682c19"
+  ],
+  "explanation": "Static documentation only; no production code/data executed.",
+  "schema_version": "1.0",
+  "git_commit": "6f5231790ca118f2bf8c7967f12f1c0f3656ea47",
+  "analysis_date": "2026-10-14",
+  "sources": [
+    {
+      "path": ".DS_Store",
+      "sha256": "372f0ff5982110cd8b614320e606efe07b0c4978c0aac9dfef63b33b3e69db1c",
+      "line_count": 0
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "a5a0b521047f98215c0a6ef5b7b32cb9641f90ceb99642fcef2bdb8f8bfed107",
+      "line_count": 48
+    },
+    {
+      "path": "01.Programs/.DS_Store",
+      "sha256": "7574091f76670238dabf7a847865d7dab3f2796e302633ee7de08107a75f1ff8",
+      "line_count": 0
+    },
+    {
+      "path": "01.Programs/00-Master.do",
+      "sha256": "71bb7c71ef39ec2ce2e8baa628e396450d16cbd43545297877651a77bcf6b0ba",
+      "line_count": 362
+    },
+    {
+      "path": "01.Programs/00b-Pull_API_data.do",
+      "sha256": "36bbce64224177bcfdd70254b4f01dc34c007a3e820b875071eca58ffad57f2c",
+      "line_count": 308
+    },
+    {
+      "path": "01.Programs/00c-fetch server data.do",
+      "sha256": "11d35af90bb0cefd223f224f363a3af9a6178422f7a6d847e9dbb78db12bcced",
+      "line_count": 115
+    },
+    {
+      "path": "01.Programs/01aa-GMI extended indicators.do",
+      "sha256": "3928332eb7665cac0dd7e0ea6f241fec9e11e6ffcd96cf3ec9fed6e169c373ad",
+      "line_count": 649
+    },
+    {
+      "path": "01.Programs/01ab-GMI extended indicators labor ind.do",
+      "sha256": "f3ad94e7dc1b956df8df6280fe4334de0cd751baeba049e73a5d2b7575aa6dbd",
+      "line_count": 610
+    },
+    {
+      "path": "01.Programs/01b-GMI extended indicators spells.do",
+      "sha256": "afd5d2a67e1b4f4f4654938af476da737d73a93ba6e2d99db3d5db220889a9f9",
+      "line_count": 766
+    },
+    {
+      "path": "01.Programs/01c-GMI extended spells pov elasticity.do",
+      "sha256": "7ec2927c7fa8fba7160594431de01687a7e73cc9383392a8269fbbdb56e60810",
+      "line_count": 238
+    },
+    {
+      "path": "01.Programs/02-GMI format.do",
+      "sha256": "1fcbef5b74ae88a54de6d3948ad3c564f499c1675c2b166027ff72d4258ecaec",
+      "line_count": 651
+    },
+    {
+      "path": "01.Programs/03-MPO to PEA.do",
+      "sha256": "75f698a9cd6b17277011aeebfd66aeedf639382dd65abeeee3d8283fe8410c9d",
+      "line_count": 195
+    },
+    {
+      "path": "01.Programs/archive/01aa-GMI extended indicators.do",
+      "sha256": "81216d9fb283d9efe6a3a30a39c61b4d613c1ff598957d2f64e53504436dafce",
+      "line_count": 569
+    },
+    {
+      "path": "01.Programs/archive/01ab-GMI extended indicators labor ind.do",
+      "sha256": "89d1cd1f7532246d5aa226e376cd924c94ec146047a0a4b904ceeef3d720d845",
+      "line_count": 496
+    },
+    {
+      "path": "01.Programs/archive/01b-GMI extended indicators spells.do",
+      "sha256": "610d2ad2a2dcb9e98b899b108640dd2c275840ef16b7c61931b249e7d8a62b5c",
+      "line_count": 658
+    },
+    {
+      "path": "01.Programs/archive/01c-GMI extended spells pov elasticity.do",
+      "sha256": "55a3615f610be9d0890ccc635094a34481df54c913dbe909fff4ede679db34f3",
+      "line_count": 179
+    },
+    {
+      "path": "01.Programs/archive/02-GMI format.do",
+      "sha256": "2dec353985ee30c07900f02e5d2568285575c7b99b0ded987fd5766c3bb0e7eb",
+      "line_count": 583
+    },
+    {
+      "path": "01.Programs/archive/03-MPO to PEA.do",
+      "sha256": "d4db17b73532c81c45bf11ca32ba202aed1d906921380b3e4134d575267a9e01",
+      "line_count": 144
+    },
+    {
+      "path": "01.Programs/archive/Get PIP for PEA.do",
+      "sha256": "c21e29d4d4c45ad37ea4bb5d501af1f04424c12cba2dcae733412dcb214e9780",
+      "line_count": 57
+    },
+    {
+      "path": "01.Programs/archive/PIP to GIC and Decomposition data.do",
+      "sha256": "496b985763c318bc6ca46296a561f6118f51f19970c04831b21eb7ad05e22ca8",
+      "line_count": 118
+    },
+    {
+      "path": "01.Programs/archive/Update CLASS.do",
+      "sha256": "e1963c1766b4536d5314f4226b8ea3eae7a0fa560ee60931b1a488bb1bf85651",
+      "line_count": 29
+    },
+    {
+      "path": "04.Checks_Add_reharmonization_results/code/01-Delivery_matrix.do",
+      "sha256": "251b05c7b4fca9ba88e3877250bcca124cc75498cea86f29c54125e816898ea3",
+      "line_count": 517
+    },
+    {
+      "path": "04.Checks_Add_reharmonization_results/code/02-delivery_qcheck.do",
+      "sha256": "1ac772f3ebde1fc9fde8ce7ea41626332ed6d212aa2351e3e9411056c9c3ceaf",
+      "line_count": 1031
+    },
+    {
+      "path": "04.Checks_Add_reharmonization_results/code/99-build_eap_local.do",
+      "sha256": "a7355bce0b555e569e7ba69602bd0d30ec289ac0eb73a70c0259538e955c4ca1",
+      "line_count": 594
+    },
+    {
+      "path": "04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do",
+      "sha256": "91948b3606bd7f9375af902e7d572194ecab1600888d2f1fd8ec98cd59b1c84b",
+      "line_count": 958
+    },
+    {
+      "path": "04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do",
+      "sha256": "1becb6227a98f0d7ae412b942c8ed5de22b372dd45c5b7b0d4d49ff048215dae",
+      "line_count": 314
+    },
+    {
+      "path": "04.Checks_Add_reharmonization_results/code/99-qa_summary.do",
+      "sha256": "93227b9a8aed562ed672fc38fdd5e0932527e29194d67196d6e8e831ca6f4d2c",
+      "line_count": 942
+    },
+    {
+      "path": "04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do",
+      "sha256": "940e8897c9398b2de9d293d45ef9d94d8403465f414e79f898255768be769bd7",
+      "line_count": 251
+    },
+    {
+      "path": "README.md",
+      "sha256": "7963bf3b4f8a8113a8e5af4a55ba1b8a7aa737d8af87765914aa331999db55da",
+      "line_count": 166
+    }
+  ],
+  "exclusions": [
+    {
+      "path": ".git/**",
+      "reason": "Version-control internals; hook sample executables excluded, not pipeline sources"
+    },
+    {
+      "path": "**/.DS_Store",
+      "reason": "Finder metadata; inventoried as binary"
+    },
+    {
+      "path": "AI_KNOWLEDGE/**",
+      "reason": "Generated documentation/tools, not input production source"
+    }
+  ],
+  "source_mutation_policy": "Agent wrote only AI_KNOWLEDGE. Concurrent external commit occurred; compare initial source_snapshot.json and this manifest.",
+  "runtime_verification": false,
+  "external_fetches": false,
+  "dependencies_installed": false,
+  "unresolved_boundary": "Missing input datasets, external command implementations, dynamic macros and full QA semantics; coverage remains partial."
+}

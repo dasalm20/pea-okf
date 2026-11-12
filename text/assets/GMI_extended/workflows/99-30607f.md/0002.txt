@@ -1,0 +1,1616 @@
+if `nf' == `nexp' dis as result "  file count as expected (`nexp')."
+```
+Enclosing controls: `foreach reg of local regions {` → `if `nexp' != . {`
+
+### block:2b02a79bfa8a762d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L446-L446`. Next: `block:5c29a803b86929b1`.
+
+```stata
+else              dis as error  "  [ COUNT ] expected `nexp' file(s), found `nf' -- check with the region."
+```
+Enclosing controls: `foreach reg of local regions {` → `if `nexp' != . {`
+
+### block:5c29a803b86929b1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L447-L447`. Next: `block:c3de900d4fbf825c`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:c3de900d4fbf825c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L450-L450`. Next: `block:97e9b38bdb3f4fc6`.
+
+```stata
+tempfile survres varres coderes
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:97e9b38bdb3f4fc6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L451-L451`. Next: `block:27a98f3d1848b55e`.
+
+```stata
+capture postclose dcode
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:27a98f3d1848b55e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L452-L454`. Next: `block:ade433f0e98b1368`.
+
+```stata
+postfile dcode str3 country int year str24 variable double d_value double p_value long nrows str80 d_label using `coderes', replace
+```
+Enclosing controls: `foreach reg of local regions {`
+Write datasets: `dataset:d5a6e52e204ccdba`
+
+### block:ade433f0e98b1368
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L455-L459`. Next: `block:47e92517d8f93909`.
+
+```stata
+postfile dsurv str3 country int year str20 survey str72 filename byte dlw_ok byte id_ok long dlw_obs long local_obs long matched long dlw_only long local_only double match_rate byte id_fixed int vars_carried int vars_missing_from_local using `survres', replace
+```
+Enclosing controls: `foreach reg of local regions {`
+Write datasets: `dataset:a601cfa6bcc2cdcf`
+
+### block:47e92517d8f93909
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L461-L464`. Next: `block:808d7dda10e61824`.
+
+```stata
+postfile dvar str3 country int year str24 variable byte carried long dlw_filled long new_filled long lost long gained long changed double lost_pct using `varres', replace
+```
+Enclosing controls: `foreach reg of local regions {`
+Write datasets: `dataset:136b67fe35aeb9b0`
+
+### block:808d7dda10e61824
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L466-L466`. Next: `block:74cec3f45e250ab8`.
+
+```stata
+foreach f of local pf {
+```
+Enclosing controls: `foreach reg of local regions {`
+
+### block:74cec3f45e250ab8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L469-L469`. Next: `block:1f9d2543b169e3a5`.
+
+```stata
+local base  = subinstr("`f'", ".dta", "", .)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:1f9d2543b169e3a5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L470-L470`. Next: `block:1fcf6f16090a616a`.
+
+```stata
+local parts = subinstr("`base'", "_", " ", .)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:1fcf6f16090a616a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L471-L471`. Next: `block:3d18fcfc61d17682`.
+
+```stata
+local code     = upper("`: word 1 of `parts''")
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:3d18fcfc61d17682
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L472-L472`. Next: `block:6f9beff8d18a359d`.
+
+```stata
+local yeartxt :        word 2 of `parts'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:6f9beff8d18a359d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L473-L473`. Next: `block:dd97f29cee993a4a`.
+
+```stata
+local survname = upper("`: word 3 of `parts''")
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:dd97f29cee993a4a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L475-L475`. Next: `block:f25267a1d49f45aa`.
+
+```stata
+cap confirm integer number `yeartxt'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:f25267a1d49f45aa
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L476-L476`. Next: `block:351e6fe44d0e0390`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:351e6fe44d0e0390
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L477-L477`. Next: `block:868d634b219d6b7e`.
+
+```stata
+dis as error "  [ NAME ] `f' -- year field reads |`yeartxt'|, skipped."
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if _rc {`
+
+### block:868d634b219d6b7e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L478-L478`. Next: `block:f166279668c6fbeb`.
+
+```stata
+continue
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if _rc {`
+
+### block:f166279668c6fbeb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L479-L479`. Next: `block:aa7776c6f46e9b0b`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:aa7776c6f46e9b0b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L480-L480`. Next: `block:ab59ff31758c1077`.
+
+```stata
+local year = `yeartxt'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:ab59ff31758c1077
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L482-L482`. Next: `block:3d2b0abecb1b5a4d`.
+
+```stata
+if "`onlycodes'" != "" {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:3d2b0abecb1b5a4d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L483-L483`. Next: `block:179b4b198f55ecbe`.
+
+```stata
+local keepit : list posof "`code'" in onlycodes
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if "`onlycodes'" != "" {`
+
+### block:179b4b198f55ecbe
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L484-L484`. Next: `block:7e1d6e877de5b838`.
+
+```stata
+if `keepit'==0 continue
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if "`onlycodes'" != "" {`
+
+### block:7e1d6e877de5b838
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L485-L485`. Next: `block:c37f1ab5831399ff`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:c37f1ab5831399ff
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L489-L489`. Next: `block:3b43715531a4ecac`.
+
+```stata
+local ispending : list posof "`code'" in pendingcodes
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:3b43715531a4ecac
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L490-L490`. Next: `block:901672d83fab77d5`.
+
+```stata
+if `ispending' {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:901672d83fab77d5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L491-L491`. Next: `block:fda7415101d7a950`.
+
+```stata
+dis as text _n "--------------------------------------------------------------"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `ispending' {`
+
+### block:fda7415101d7a950
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L492-L492`. Next: `block:d7c3a798ab8ad10f`.
+
+```stata
+dis as result "  `reg'  `code' `year' `survname'"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `ispending' {`
+
+### block:d7c3a798ab8ad10f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L493-L493`. Next: `block:0cda34cb11d6ce28`.
+
+```stata
+dis as text "  PENDING -- `code' is not in DataLibWeb for $rnd yet, nothing to compare."
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `ispending' {`
+
+### block:0cda34cb11d6ce28
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L494-L494`. Next: `block:c6a04fcf0aa17fd6`.
+
+```stata
+dis as text "  The local file is built and waiting. Remove `code' from pendingcodes"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `ispending' {`
+
+### block:c6a04fcf0aa17fd6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L495-L495`. Next: `block:442c2bada9dcbd9d`.
+
+```stata
+dis as text "  in section 7b once the survey lands in the repo."
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `ispending' {`
+
+### block:442c2bada9dcbd9d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L496-L497`. Next: `block:481be11de5544d0c`.
+
+```stata
+post dsurv ("`code'") (`year') ("`survname'") ("`f'") (9) (1) (.) (.) (.) (.) (.) (.) (0) (.) (.)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `ispending' {`
+
+### block:481be11de5544d0c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L498-L498`. Next: `block:41ec9e911d708cd2`.
+
+```stata
+continue
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `ispending' {`
+
+### block:41ec9e911d708cd2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L499-L499`. Next: `block:3fde4f49b16402a8`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:3fde4f49b16402a8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L501-L501`. Next: `block:c696ec4c569f7f74`.
+
+```stata
+dis as text _n "--------------------------------------------------------------"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:c696ec4c569f7f74
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L502-L502`. Next: `block:98246615543f8176`.
+
+```stata
+dis as result "  `reg'  `code' `year' `survname'"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:98246615543f8176
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L505-L505`. Next: `block:fa44fcf90ed1f155`.
+
+```stata
+use "`dir'/`f'", clear
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+Read datasets: `dataset:221727da1644714f`
+
+### block:fa44fcf90ed1f155
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L514-L514`. Next: `block:990702bfe4cf5b69`.
+
+```stata
+_idfinger
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:990702bfe4cf5b69
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L515-L515`. Next: `block:c3fb608d8d47c425`.
+
+```stata
+local idbefore = r(fp)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:c3fb608d8d47c425
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L517-L517`. Next: `block:81073550691856fa`.
+
+```stata
+_gmdpatch_fixid "`reg'" "`code'" "`year'" "`survname'" "local"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:81073550691856fa
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L519-L519`. Next: `block:3366eca11315c759`.
+
+```stata
+_idfinger
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:3366eca11315c759
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L520-L520`. Next: `block:3bd5282837864246`.
+
+```stata
+local idfixed = (r(fp) != `idbefore')
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:3bd5282837864246
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L522-L522`. Next: `block:fa7cf578e3408275`.
+
+```stata
+local pn = _N
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:fa7cf578e3408275
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L523-L523`. Next: `block:16410e9b7c5706a1`.
+
+```stata
+local have
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:16410e9b7c5706a1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L524-L524`. Next: `block:80c2f86e1fb58bfe`.
+
+```stata
+foreach v of global gmd_opt {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:80c2f86e1fb58bfe
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L525-L525`. Next: `block:547eb9de07b46e34`.
+
+```stata
+cap confirm variable `v'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+
+### block:547eb9de07b46e34
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L526-L526`. Next: `block:9afc472f236f06ce`.
+
+```stata
+if _rc==0 local have "`have' `v'"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+
+### block:9afc472f236f06ce
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L527-L527`. Next: `block:3f1c2762718f5ad3`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:3f1c2762718f5ad3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L528-L528`. Next: `block:6a65e17c13353ce0`.
+
+```stata
+local nvars : word count `have'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:6a65e17c13353ce0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L529-L529`. Next: `block:7d76c6a7a2832680`.
+
+```stata
+dis as text "  local obs: `pn'   variables carried: `nvars' of `ngmdopt'"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:7d76c6a7a2832680
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L532-L532`. Next: `block:4473b8ffc7356792`.
+
+```stata
+local idok = 1
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:4473b8ffc7356792
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L533-L533`. Next: `block:24ff3978367c89df`.
+
+```stata
+foreach idv in hhid pid {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:24ff3978367c89df
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L534-L534`. Next: `block:397330ccd4e1777a`.
+
+```stata
+cap confirm variable `idv'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach idv in hhid pid {`
+
+### block:397330ccd4e1777a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L535-L535`. Next: `block:e931e9596db0c10d`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach idv in hhid pid {`
+
+### block:e931e9596db0c10d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L536-L536`. Next: `block:61ab0da13c6aaefe`.
+
+```stata
+dis as error "  [ ID ] local file has no `idv'"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach idv in hhid pid {` → `if _rc {`
+
+### block:61ab0da13c6aaefe
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L537-L537`. Next: `block:af0bdde73ae7e346`.
+
+```stata
+local idok = 0
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach idv in hhid pid {` → `if _rc {`
+
+### block:af0bdde73ae7e346
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L538-L538`. Next: `block:2d23d7b11e2842c6`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach idv in hhid pid {`
+
+### block:2d23d7b11e2842c6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L539-L539`. Next: `block:d1232a441bdf8c16`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:d1232a441bdf8c16
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L540-L540`. Next: `block:02b051e9561cb1f3`.
+
+```stata
+if `idok'==1 {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:02b051e9561cb1f3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L541-L541`. Next: `block:e16d667c100b332e`.
+
+```stata
+cap isid hhid pid
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `idok'==1 {`
+Read candidates: `variable:3594951cbbb02360`, `variable:c0533d6897397f81`
+
+### block:e16d667c100b332e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L542-L542`. Next: `block:5b62c8af68f9e43f`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `idok'==1 {`
+
+### block:5b62c8af68f9e43f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L543-L543`. Next: `block:bd5de249721caab3`.
+
+```stata
+dis as error "  [ ID ] hhid pid do not uniquely identify rows in the local file"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `idok'==1 {` → `if _rc {`
+
+### block:bd5de249721caab3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L544-L544`. Next: `block:76da1caa27ad917e`.
+
+```stata
+local idok = 0
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `idok'==1 {` → `if _rc {`
+
+### block:76da1caa27ad917e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L545-L545`. Next: `block:4a5c66965444b87e`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `idok'==1 {`
+
+### block:4a5c66965444b87e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L546-L546`. Next: `block:216129bb550134b5`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:216129bb550134b5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L547-L547`. Next: `block:8d65497e31571429`.
+
+```stata
+if `idok'==0 {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:8d65497e31571429
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L548-L549`. Next: `block:45e20826627aa32a`.
+
+```stata
+post dsurv ("`code'") (`year') ("`survname'") ("`f'") (0) (0) (.) (`pn') (.) (.) (.) (.) (`idfixed') (`nvars') (.)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `idok'==0 {`
+
+### block:45e20826627aa32a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L550-L550`. Next: `block:6fd5f7b305682485`.
+
+```stata
+continue
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `idok'==0 {`
+
+### block:6fd5f7b305682485
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L551-L551`. Next: `block:1b81f0623f8eb853`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:1b81f0623f8eb853
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L553-L553`. Next: `block:bd9fa45e6ca66a06`.
+
+```stata
+keep hhid pid `have'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+Read candidates: `variable:3594951cbbb02360`, `variable:c0533d6897397f81`
+
+### block:bd9fa45e6ca66a06
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L554-L554`. Next: `block:f9b143f777cf6dc3`.
+
+```stata
+foreach v of local have {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:f9b143f777cf6dc3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L555-L555`. Next: `block:c4fa7e429a9e4360`.
+
+```stata
+rename `v' _p_`v'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of local have {`
+New: `variable:d226e26e6286d075`
+Read candidates: `variable:5acbae8140e91109`
+
+### block:c4fa7e429a9e4360
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L556-L556`. Next: `block:04151f01a8ae627c`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:04151f01a8ae627c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L557-L557`. Next: `block:b34b6bb4fa7af489`.
+
+```stata
+tempfile pdata
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:b34b6bb4fa7af489
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L558-L558`. Next: `block:e93fbc12a002ad9c`.
+
+```stata
+save `pdata', replace
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+Write datasets: `dataset:63d820ee7dd766ed`
+
+### block:e93fbc12a002ad9c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L561-L561`. Next: `block:f16ccccbb499969c`.
+
+```stata
+cap dlw, country(`code') year(`year') type(gmd) surveyid(`survname') mod(ALL) files $repotxt
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+Read datasets: `dataset:b86f8b09d40b0c6f`
+
+### block:f16ccccbb499969c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L562-L562`. Next: `block:1b9c7a6e2f1b7f15`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:1b9c7a6e2f1b7f15
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L563-L563`. Next: `block:ebe9cc1813b303f1`.
+
+```stata
+local rc = _rc
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if _rc {`
+
+### block:ebe9cc1813b303f1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L564-L564`. Next: `block:70a6338579e67297`.
+
+```stata
+dis as error "  [ DLW ] pull failed (rc=`rc') -- not in the $rnd repo?"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if _rc {`
+
+### block:70a6338579e67297
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L565-L566`. Next: `block:cab4e8d32794641e`.
+
+```stata
+post dsurv ("`code'") (`year') ("`survname'") ("`f'") (0) (1) (.) (`pn') (.) (.) (.) (.) (`idfixed') (`nvars') (.)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if _rc {`
+
+### block:cab4e8d32794641e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L567-L567`. Next: `block:2d75bc51992089df`.
+
+```stata
+continue
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if _rc {`
+
+### block:2d75bc51992089df
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L568-L568`. Next: `block:d90b2d3b5f6fedaf`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:d90b2d3b5f6fedaf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L569-L569`. Next: `block:c097dec2924d5450`.
+
+```stata
+local dn = _N
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:c097dec2924d5450
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L570-L570`. Next: `block:b4448572911b6c02`.
+
+```stata
+dis as text "  DLW obs:   `dn'"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:b4448572911b6c02
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L576-L576`. Next: `block:fab4ae8e04cde852`.
+
+```stata
+_gmdpatch_fixid "`reg'" "`code'" "`year'" "`survname'" "dlw"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:fab4ae8e04cde852
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L578-L578`. Next: `block:43a190bf4b824f5e`.
+
+```stata
+local dlwidok = 1
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:43a190bf4b824f5e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L579-L579`. Next: `block:ca2705c73e93e6a0`.
+
+```stata
+foreach idv in hhid pid {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:ca2705c73e93e6a0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L580-L580`. Next: `block:ccc7bd8cc1afd1d0`.
+
+```stata
+cap confirm variable `idv'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach idv in hhid pid {`
+
+### block:ccc7bd8cc1afd1d0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L581-L581`. Next: `block:125f2f1851101a94`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach idv in hhid pid {`
+
+### block:125f2f1851101a94
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L582-L582`. Next: `block:ac69336977206a48`.
+
+```stata
+dis as error "  [ ID ] DLW file has no `idv'"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach idv in hhid pid {` → `if _rc {`
+
+### block:ac69336977206a48
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L583-L583`. Next: `block:fd4859ebc5518306`.
+
+```stata
+local dlwidok = 0
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach idv in hhid pid {` → `if _rc {`
+
+### block:fd4859ebc5518306
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L584-L584`. Next: `block:fa61ce7be1dcab82`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach idv in hhid pid {`
+
+### block:fa61ce7be1dcab82
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L585-L585`. Next: `block:2880b475fa43e235`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:2880b475fa43e235
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L586-L586`. Next: `block:4c8976b130d278ff`.
+
+```stata
+if `dlwidok'==0 {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:4c8976b130d278ff
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L587-L588`. Next: `block:bf3ed8af990bbedf`.
+
+```stata
+post dsurv ("`code'") (`year') ("`survname'") ("`f'") (1) (0) (`dn') (`pn') (.) (.) (.) (.) (`idfixed') (`nvars') (.)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `dlwidok'==0 {`
+
+### block:bf3ed8af990bbedf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L589-L589`. Next: `block:68d69e596c8126e3`.
+
+```stata
+continue
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `dlwidok'==0 {`
+
+### block:68d69e596c8126e3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L590-L590`. Next: `block:d237f32a6efd2c72`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:d237f32a6efd2c72
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L594-L594`. Next: `block:84bb7827d4da3ba0`.
+
+```stata
+local stale
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:84bb7827d4da3ba0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L595-L595`. Next: `block:919c2130d9d10c0a`.
+
+```stata
+foreach v of global gmd_opt {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:919c2130d9d10c0a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L596-L596`. Next: `block:24ca8fefc2de30e2`.
+
+```stata
+local inp : list posof "`v'" in have
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+
+### block:24ca8fefc2de30e2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L597-L597`. Next: `block:8415595b2d4fdfcc`.
+
+```stata
+if `inp'==0 {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+
+### block:8415595b2d4fdfcc
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L598-L598`. Next: `block:f24feaaca8d6156e`.
+
+```stata
+cap confirm variable `v'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {` → `if `inp'==0 {`
+
+### block:f24feaaca8d6156e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L599-L599`. Next: `block:07616661973b931c`.
+
+```stata
+if _rc==0 local stale "`stale' `v'"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {` → `if `inp'==0 {`
+
+### block:07616661973b931c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L600-L600`. Next: `block:bb20f01094f6458e`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+
+### block:bb20f01094f6458e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L601-L601`. Next: `block:87da8b03b9cb38da`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:87da8b03b9cb38da
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L602-L602`. Next: `block:76f205404a24e5aa`.
+
+```stata
+local nstale : word count `stale'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:76f205404a24e5aa
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L603-L603`. Next: `block:338eba95365a34bf`.
+
+```stata
+if `nstale'>0 {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:338eba95365a34bf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L604-L604`. Next: `block:788df294cf3cf7cb`.
+
+```stata
+dis as error "  [ STALE ] in DLW but not in the local file: `stale'"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `nstale'>0 {`
+
+### block:788df294cf3cf7cb
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L605-L605`. Next: `block:64117fb8ceb94007`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:64117fb8ceb94007
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L608-L608`. Next: `block:6acc1021ac1b84ba`.
+
+```stata
+cap drop _m
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+Read candidates: `variable:71cc4be2d9e7ab62`
+
+### block:6acc1021ac1b84ba
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L609-L609`. Next: `block:bc6bfc9d9dee0f1c`.
+
+```stata
+merge 1:1 hhid pid using `pdata', gen(_m)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+Read datasets: `dataset:63d820ee7dd766ed`
+
+### block:bc6bfc9d9dee0f1c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L610-L610`. Next: `block:41610e0b38acf88c`.
+
+```stata
+qui count if _m==3
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+Read candidates: `variable:71cc4be2d9e7ab62`
+
+### block:41610e0b38acf88c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L611-L611`. Next: `block:40f3a4a92b2adae3`.
+
+```stata
+local matched = r(N)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:40f3a4a92b2adae3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L612-L612`. Next: `block:123c11a742690672`.
+
+```stata
+qui count if _m==1
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+Read candidates: `variable:71cc4be2d9e7ab62`
+
+### block:123c11a742690672
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L613-L613`. Next: `block:363880141e17e3d0`.
+
+```stata
+local dlwonly = r(N)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:363880141e17e3d0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L614-L614`. Next: `block:bd992a0a48481742`.
+
+```stata
+qui count if _m==2
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+Read candidates: `variable:71cc4be2d9e7ab62`
+
+### block:bd992a0a48481742
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L615-L615`. Next: `block:75aabee8cb6687f0`.
+
+```stata
+local loconly = r(N)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:75aabee8cb6687f0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L616-L616`. Next: `block:821a41a28669d82b`.
+
+```stata
+local rate = `matched'/(`matched'+`dlwonly')
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:821a41a28669d82b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L618-L618`. Next: `block:55171d035bdcb4c3`.
+
+```stata
+dis as text "  matched: `matched'   DLW-only: `dlwonly'   local-only: `loconly'   rate: " %5.3f `rate'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:55171d035bdcb4c3
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L619-L620`. Next: `block:ce8d2e9fc6cacc4f`.
+
+```stata
+if `rate' < `minmatch' dis as error "  [ MATCH ] only `=string(100*`rate',"%4.1f")'% of DLW rows matched."
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:ce8d2e9fc6cacc4f
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L625-L625`. Next: `block:3f0771febd62c5ff`.
+
+```stata
+if `show_detail' {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:3f0771febd62c5ff
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L626-L626`. Next: `block:e70a1151be4074cd`.
+
+```stata
+dis as text _n "    variable               DLW n/m    new n/m        lost      gained     changed"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `show_detail' {`
+
+### block:e70a1151be4074cd
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L627-L627`. Next: `block:d5f8931f7cc7a043`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:d5f8931f7cc7a043
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L628-L628`. Next: `block:32c490509cfb887e`.
+
+```stata
+foreach v of global gmd_opt {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:32c490509cfb887e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L630-L630`. Next: `block:05ad4a21a07ac3ba`.
+
+```stata
+local iscarried : list posof "`v'" in have
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+
+### block:05ad4a21a07ac3ba
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L631-L631`. Next: `block:d04d971987f4fd37`.
+
+```stata
+if `iscarried'==0 {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+
+### block:d04d971987f4fd37
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L632-L632`. Next: `block:9505e4f290081c19`.
+
+```stata
+post dvar ("`code'") (`year') ("`v'") (0) (.) (.) (.) (.) (.) (.)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {` → `if `iscarried'==0 {`
+
+### block:9505e4f290081c19
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L633-L633`. Next: `block:903ac4b26fe65eb5`.
+
+```stata
+continue
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {` → `if `iscarried'==0 {`
+
+### block:903ac4b26fe65eb5
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L634-L634`. Next: `block:7d6913d767fc6b51`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+
+### block:7d6913d767fc6b51
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L636-L636`. Next: `block:3e7111523e2d1f8b`.
+
+```stata
+cap confirm variable `v'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+
+### block:3e7111523e2d1f8b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L637-L637`. Next: `block:e700d40a8326d64d`.
+
+```stata
+if _rc {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+
+### block:e700d40a8326d64d
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L639-L639`. Next: `block:dd246c103caedd62`.
+
+```stata
+qui count if _m==3 & !missing(_p_`v')
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {` → `if _rc {`
+Read candidates: `variable:71cc4be2d9e7ab62`, `variable:48b825e00aea8f03`
+
+### block:dd246c103caedd62
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L640-L640`. Next: `block:ed7745a75a4d2cca`.
+
+```stata
+local gn = r(N)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {` → `if _rc {`
+
+### block:ed7745a75a4d2cca
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L641-L642`. Next: `block:14bf841fa7af851e`.
+
+```stata
+if `show_detail' dis as text "    " %-20s "`v'" "   NEW -- not in DLW at all"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {` → `if _rc {`
+
+### block:14bf841fa7af851e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L643-L643`. Next: `block:eab5e2b903c9a2cf`.
+
+```stata
+post dvar ("`code'") (`year') ("`v'") (1) (0) (`gn') (0) (`gn') (0) (0)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {` → `if _rc {`
+
+### block:eab5e2b903c9a2cf
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L644-L644`. Next: `block:ce7a916fe810f000`.
+
+```stata
+continue
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {` → `if _rc {`
+
+### block:ce7a916fe810f000
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L645-L645`. Next: `block:640a4cfdffb4ee2a`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+
+### block:640a4cfdffb4ee2a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L647-L647`. Next: `block:f64ed3c6e6bf4ed1`.
+
+```stata
+qui count if _m==3 & !missing(`v')
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+Read candidates: `variable:71cc4be2d9e7ab62`
+
+### block:f64ed3c6e6bf4ed1
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L648-L648`. Next: `block:43b2e03eca59d768`.
+
+```stata
+local dnm = r(N)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+
+### block:43b2e03eca59d768
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L649-L649`. Next: `block:91077b546926e271`.
+
+```stata
+qui count if _m==3 & !missing(_p_`v')
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+Read candidates: `variable:71cc4be2d9e7ab62`, `variable:48b825e00aea8f03`
+
+### block:91077b546926e271
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L650-L650`. Next: `block:017fe5cc30164e53`.
+
+```stata
+local pnm = r(N)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+
+### block:017fe5cc30164e53
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L651-L651`. Next: `block:5427b7967e625c41`.
+
+```stata
+qui count if _m==3 & !missing(`v') & missing(_p_`v')
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+Read candidates: `variable:71cc4be2d9e7ab62`, `variable:48b825e00aea8f03`
+
+### block:5427b7967e625c41
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L652-L652`. Next: `block:c0f059eb2169dae4`.
+
+```stata
+local lost = r(N)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+
+### block:c0f059eb2169dae4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L653-L653`. Next: `block:3868ea7198e68259`.
+
+```stata
+qui count if _m==3 & missing(`v') & !missing(_p_`v')
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+Read candidates: `variable:71cc4be2d9e7ab62`, `variable:48b825e00aea8f03`
+
+### block:3868ea7198e68259
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L654-L654`. Next: `block:a0665074b81fd216`.
+
+```stata
+local gain = r(N)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+
+### block:a0665074b81fd216
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L655-L655`. Next: `block:fd2637eb53896e27`.
+
+```stata
+qui count if _m==3 & !missing(`v') & !missing(_p_`v') & `v'!=_p_`v'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+Read candidates: `variable:71cc4be2d9e7ab62`, `variable:48b825e00aea8f03`
+
+### block:fd2637eb53896e27
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L656-L656`. Next: `block:e1f2fa8b1b3e1ab0`.
+
+```stata
+local chg = r(N)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+
+### block:e1f2fa8b1b3e1ab0
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L657-L657`. Next: `block:3f90e4d308e4e3f2`.
+
+```stata
+local lostpct = cond(`dnm'>0, 100*`lost'/`dnm', 0)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+
+### block:3f90e4d308e4e3f2
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L659-L660`. Next: `block:9872d875d257076e`.
+
+```stata
+if `show_detail' dis as text "    " %-20s "`v'" %10.0f `dnm' %10.0f `pnm' %12.0f `lost' %12.0f `gain' %12.0f `chg'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+
+### block:9872d875d257076e
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L662-L663`. Next: `block:0e877de56a6a3de4`.
+
+```stata
+post dvar ("`code'") (`year') ("`v'") (1) (`dnm') (`pnm') (`lost') (`gain') (`chg') (`lostpct')
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `foreach v of global gmd_opt {`
+
+### block:0e877de56a6a3de4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L664-L664`. Next: `block:de67ccc4eb3ea905`.
+
+```stata
+}
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:de67ccc4eb3ea905
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L672-L672`. Next: `block:0da6a5e2d9eb7516`.
+
+```stata
+if `docodes' {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {`
+
+### block:0da6a5e2d9eb7516
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L673-L673`. Next: `block:ef4120296fa34255`.
+
+```stata
+foreach v of global gmd_opt {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {`
+
+### block:ef4120296fa34255
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L675-L675`. Next: `block:d694e0e01f4a7a09`.
+
+```stata
+local iscarried : list posof "`v'" in have
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {`
+
+### block:d694e0e01f4a7a09
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L676-L676`. Next: `block:f6442875d483380b`.
+
+```stata
+if `iscarried'==0 continue
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {`
+
+### block:f6442875d483380b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L677-L677`. Next: `block:3dc2792c44fa8750`.
+
+```stata
+cap confirm numeric variable `v'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {`
+
+### block:3dc2792c44fa8750
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L678-L678`. Next: `block:708b32abb9eccc83`.
+
+```stata
+if _rc continue
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {`
+
+### block:708b32abb9eccc83
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L679-L679`. Next: `block:7517f0cf77a1bd31`.
+
+```stata
+cap confirm numeric variable _p_`v'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {`
+
+### block:7517f0cf77a1bd31
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L680-L680`. Next: `block:0bd34137b858dc31`.
+
+```stata
+if _rc continue
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {`
+
+### block:0bd34137b858dc31
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L682-L682`. Next: `block:96d1887b9da0aa42`.
+
+```stata
+qui levelsof `v'     if _m==3, local(lv) missing
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {`
+
+### block:96d1887b9da0aa42
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L683-L683`. Next: `block:0529d0a79a5e3167`.
+
+```stata
+qui levelsof _p_`v'  if _m==3, local(lp) missing
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {`
+
+### block:0529d0a79a5e3167
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L684-L684`. Next: `block:7ca414d4961d37ab`.
+
+```stata
+local nl : word count `lv'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {`
+
+### block:7ca414d4961d37ab
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L685-L685`. Next: `block:84672e722a60d60a`.
+
+```stata
+local np : word count `lp'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {`
+
+### block:84672e722a60d60a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L686-L686`. Next: `block:75d2f482f5b8e2f4`.
+
+```stata
+if `nl' > `catmax' | `np' > `catmax' continue
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {`
+
+### block:75d2f482f5b8e2f4
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L690-L690`. Next: `block:d57592471df1ae9a`.
+
+```stata
+local vlname : value label `v'
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {`
+
+### block:d57592471df1ae9a
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L692-L692`. Next: `block:c7c6b808dfd7e49c`.
+
+```stata
+preserve
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {`
+
+### block:c7c6b808dfd7e49c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L693-L693`. Next: `block:fbf30240cbe2e215`.
+
+```stata
+qui keep if _m==3
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {`
+Read candidates: `variable:71cc4be2d9e7ab62`
+
+### block:fbf30240cbe2e215
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L694-L694`. Next: `block:5f55e3189d8a5a84`.
+
+```stata
+qui gen double _dv = cond(missing(`v'),     -99, `v')
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {`
+New: `variable:e6bce3a74ddff521`
+Read candidates: `variable:19040cf9b1e544e3`
+
+### block:5f55e3189d8a5a84
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L695-L695`. Next: `block:a72a614aca39b8d6`.
+
+```stata
+qui gen double _pv = cond(missing(_p_`v'),  -99, _p_`v')
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {`
+New: `variable:55c745a92955ce11`
+Read candidates: `variable:48b825e00aea8f03`, `variable:19040cf9b1e544e3`
+
+### block:a72a614aca39b8d6
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L696-L696`. Next: `block:4a96f7260bd0f318`.
+
+```stata
+keep _dv _pv
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {`
+Read candidates: `variable:e6bce3a74ddff521`, `variable:55c745a92955ce11`
+
+### block:4a96f7260bd0f318
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L697-L697`. Next: `block:7d3724a11f5f294b`.
+
+```stata
+qui gen long nrows = 1
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {`
+New: `variable:388f9874fb86940c`
+Read candidates: `variable:19040cf9b1e544e3`
+
+### block:7d3724a11f5f294b
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L698-L698`. Next: `block:00b2a0b624d905b8`.
+
+```stata
+qui collapse (sum) nrows, by(_dv _pv)
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {`
+Read candidates: `variable:388f9874fb86940c`, `variable:e6bce3a74ddff521`, `variable:55c745a92955ce11`
+
+### block:00b2a0b624d905b8
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L699-L699`. Next: `block:e59357c773c0e64c`.
+
+```stata
+forvalues i = 1/`=_N' {
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {`
+
+### block:e59357c773c0e64c
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L700-L700`. Next: `block:8016de1c64d4f3f9`.
+
+```stata
+local dv = _dv[`i']
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {` → `forvalues i = 1/`=_N' {`
+
+### block:8016de1c64d4f3f9
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L701-L701`. Next: `block:d01d4b18b9ba49aa`.
+
+```stata
+local dlab ""
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {` → `forvalues i = 1/`=_N' {`
+
+### block:d01d4b18b9ba49aa
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L702-L702`. Next: `block:90793f817e6d9512`.
+
+```stata
+if `dv' == -99 local dlab "missing"
+```
+Enclosing controls: `foreach reg of local regions {` → `foreach f of local pf {` → `if `docodes' {` → `foreach v of global gmd_opt {` → `forvalues i = 1/`=_N' {`
+
+### block:90793f817e6d9512
+
+Evidence: `04.Checks_Add_reharmonization_results/code/99-gmdpatch_diagnostics.do:L703-L703`. Next: `block:408d944ef958ad9c`.
+
+```stata
+else if "`vlname'" != "" {
+```

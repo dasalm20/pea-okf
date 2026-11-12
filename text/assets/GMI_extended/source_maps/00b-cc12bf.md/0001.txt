@@ -1,0 +1,314 @@
+# 01.Programs/00b-Pull_API_data.do
+
+Sanitized source projection; applicability placeholders are not executable values. Original SHA256: 36bbce64224177bcfdd70254b4f01dc34c007a3e820b875071eca58ffad57f2c
+
+```stata
+0001 | *===============================================================
+0002 | * 00b-Pull_API_data.do
+0003 | * Caches API pulls (PIP + one-shot DLW price framework) to $inputapi.
+0004 | * Per-survey DLW microdata loops (01aa/01ab/01b/01c) are untouched.
+0005 | * Run 00-Master.do first.
+0006 | *===============================================================
+0007 | global forcepull 0   // 1 = ignore cache, re-pull everything
+0008 | 
+0009 | *--- helper: retry an API call up to 4x with backoff, error out on failure
+0010 | cap program drop _apipull
+0011 | program define _apipull
+0012 |     args label cmdstr
+0013 |     local try 1
+0014 |     local ok  0
+0015 |     while `try' <= 4 & `ok' == 0 {
+0016 |         cap `cmdstr'
+0017 |         if _rc == 0 local ok 1
+0018 |         else {
+0019 |             local rc = _rc
+0020 |             if `try' < 4 sleep `=3000*`try''
+0021 |             local try = `try' + 1
+0022 |         }
+0023 |     }
+0024 |     if `ok' == 0 {
+0025 |         dis as error "FAILED: `label' (rc=`rc') after 4 tries."
+0026 |         exit `rc'
+0027 |     }
+0028 | end
+0029 | 
+0030 | *--- helper: standard PIP row cleanup + var rename for one poverty line
+0031 | cap program drop _pip_clean
+0032 | program define _pip_clean
+0033 |     args ppp1 line
+0034 |     drop if country_code=="ISO3" & (reporting_level=="urban"|reporting_level=="rural")
+0035 |     drop if country_code=="ISO3" & (reporting_level=="urban"|reporting_level=="rural")
+0036 |     drop if country_code=="ISO3" & (reporting_level=="urban"|reporting_level=="rural")
+0037 |     ren ppp icp
+0038 |     ren headcount fgt0_`line'
+0039 |     ren poverty_gap fgt1_`line'
+0040 |     ren poverty_severity fgt2_`line'
+0041 |     gen ppp = `ppp1'
+0042 | end
+0043 | 
+0044 | local statusA "PULLED"
+0045 | local statusB "PENDING"
+0046 | local statusC "PENDING"
+0047 | local statusD "PENDING"
+0048 | local statusE "PENDING"
+0049 | local statusF "PENDING"
+0050 | 
+0051 | 
+0052 | *================================================================
+0053 | * SECTION A -- pip2017.dta / pip2021.dta (Get_PIP_for_PEA.do)
+0054 | *   headline line + 8 extra lines, merged wide, fgt0/1/2 per line
+0055 | *   used by: 01c-GMI_extended_spells_pov_elasticity.do
+0056 | *================================================================
+0057 | foreach ppp1 of global ppplist {
+0058 | 
+0059 |     local cachefile "$inputapi\pip`ppp1'.dta"
+0060 |     local needpull 1
+0061 |     if $forcepull == 0 {
+0062 |         cap confirm file "`cachefile'"
+0063 |         if _rc == 0 local needpull 0
+0064 |     }
+0065 | 
+0066 |     if `needpull' == 0 {
+0067 |         dis as text "[A] pip`ppp1'.dta cached -- skipping pull."
+0068 |         use "`cachefile'", clear
+0069 |         save "$input\pip`ppp1'.dta", replace
+0070 |         if "`statusA'" == "PULLED" local statusA "CACHED"
+0071 |     }
+0072 |     else {
+0073 |         dis as result "[A] Pulling pip`ppp1'.dta ..."
+0074 |         local num1 = `=${line`ppp1'}/100'
+0075 | 
+0076 |         _apipull "A: headline ppp`ppp1'" ///
+0077 |             `"pip, country(all) ppp_year(`ppp1') povline(`num1') ${piptxt} clear"'
+0078 |         _pip_clean `ppp1' ${line`ppp1'}
+0079 |         drop poverty_line
+0080 |         tempfile pipbase
+0081 |         save `pipbase', replace
+0082 |         dis as result "[A] ppp`ppp1' headline line done."
+0083 | 
+0084 |         local nlines : word count ${pipextra`ppp1'}
+0085 |         local i 0
+0086 |         foreach num of numlist ${pipextra`ppp1'} {
+0087 |             local ++i
+0088 |             _apipull "A: ppp`ppp1' line `num'" ///
+0089 |                 `"pip, country(all) ppp_year(`ppp1') povline(`=`num'/100') ${piptxt} clear"'
+0090 |             _pip_clean `ppp1' `num'
+0091 |             merge 1:1 country_code year survey_acronym welfare_type using `pipbase', keepus(fgt*)
+0092 |             drop _merge
+0093 |             order country_code year survey_acronym welfare_type
+0094 |             save `pipbase', replace
+0095 |             dis as result "[A] ppp`ppp1' line `num' done (`i'/`nlines')."
+0096 |         }
+0097 | 
+0098 |         use `pipbase', clear
+0099 |         char _dta[version] $S_DATE
+0100 |         save "`cachefile'", replace
+0101 |         save "$input\pip`ppp1'.dta", replace
+0102 |         dis as result "[A] pip`ppp1'.dta saved."
+0103 |     }
+0104 | }
+0105 | 
+0106 | 
+0107 | *================================================================
+0108 | * SECTION B -- pip_framework.dta (PIP_to_GIC_and_Decomposition_data.do)
+0109 | *   survey-level metadata: survey_acronym, welfare_type, display_cp, comparability
+0110 | *================================================================
+0111 | local cachefile "$inputapi\pip_framework.dta"
+0112 | local needpull 1
+0113 | if $forcepull == 0 {
+0114 |     cap confirm file "`cachefile'"
+0115 |     if _rc == 0 local needpull 0
+0116 | }
+0117 | 
+0118 | if `needpull' == 0 {
+0119 |     local statusB "CACHED"
+0120 |     dis as text "[B] pip_framework.dta cached -- skipping pull."
+0121 |     use "`cachefile'", clear
+0122 |     save "$input\pip_framework.dta", replace
+0123 | }
+0124 | else {
+0125 |     dis as result "[B] Pulling pip_framework.dta ..."
+0126 |     _apipull "B: pip tables framework" "pip tables, table(framework) clear"
+0127 |     char _dta[version] $S_DATE
+0128 |     save "`cachefile'", replace
+0129 |     save "$input\pip_framework.dta", replace
+0130 |     local statusB "PULLED"
+0131 |     dis as result "[B] pip_framework.dta saved."
+0132 | }
+0133 | 
+0134 | 
+0135 | *================================================================
+0136 | * SECTION C -- pip_pop.dta (PIP_to_GIC_and_Decomposition_data.do)
+0137 | *   population by reporting level, used for ISO3/ISO3 weighting
+0138 | *================================================================
+0139 | local cachefile "$inputapi\pip_pop.dta"
+0140 | local needpull 1
+0141 | if $forcepull == 0 {
+0142 |     cap confirm file "`cachefile'"
+0143 |     if _rc == 0 local needpull 0
+0144 | }
+0145 | 
+0146 | if `needpull' == 0 {
+0147 |     local statusC "CACHED"
+0148 |     dis as text "[C] pip_pop.dta cached -- skipping pull."
+0149 |     use "`cachefile'", clear
+0150 |     save "$input\pip_pop.dta", replace
+0151 | }
+0152 | else {
+0153 |     dis as result "[C] Pulling pip_pop.dta ..."
+0154 |     _apipull "C: pip tables pop" "pip tables, table(pop) clear"
+0155 |     char _dta[version] $S_DATE
+0156 |     save "`cachefile'", replace
+0157 |     save "$input\pip_pop.dta", replace
+0158 |     local statusC "PULLED"
+0159 |     dis as result "[C] pip_pop.dta saved."
+0160 | }
+0161 | 
+0162 | 
+0163 | *================================================================
+0164 | * SECTION D -- Survey_price_framework.dta (DLW, one-shot lookup)
+0165 | *   used as $pfw across 01aa/01ab/01c/02
+0166 | *================================================================
+0167 | local cachefile "$inputapi\Survey_price_framework.dta"
+0168 | local needpull 1
+0169 | if $forcepull == 0 {
+0170 |     cap confirm file "`cachefile'"
+0171 |     if _rc == 0 local needpull 0
+0172 | }
+0173 | 
+0174 | if `needpull' == 0 {
+0175 |     local statusD "CACHED"
+0176 |     dis as text "[D] Survey_price_framework.dta cached -- skipping pull."
+0177 |     use "`cachefile'", clear
+0178 |     save "$pfw", replace
+0179 | }
+0180 | else {
+0181 |     dis as result "[D] Pulling Survey_price_framework.dta ($cpiversion) ..."
+0182 |     _apipull "D: dlw price framework" ///
+0183 |         `"dlw, country(Support) year(2005) type(GMDRAW) surveyid($cpiversion) filename(Survey_price_framework.dta) files"'
+0184 |     char _dta[version] $S_DATE
+0185 |     save "`cachefile'", replace
+0186 |     save "$pfw", replace
+0187 |     local statusD "PULLED"
+0188 |     dis as result "[D] Survey_price_framework.dta saved."
+0189 | }
+0190 | 
+0191 | 
+0192 | *================================================================
+0193 | * SECTION E -- PIP_all_GDP.dta (pip tables, table(gdp))
+0194 | *   national GDP per capita, merged into 01c for the GDP-poverty
+0195 | *   elasticity calculation
+0196 | *================================================================
+0197 | local cachefile "$inputapi\PIP_all_GDP.dta"
+0198 | local needpull 1
+0199 | if $forcepull == 0 {
+0200 |     cap confirm file "`cachefile'"
+0201 |     if _rc == 0 local needpull 0
+0202 | }
+0203 | 
+0204 | if `needpull' == 0 {
+0205 |     local statusE "CACHED"
+0206 |     dis as text "[E] PIP_all_GDP.dta cached -- skipping pull."
+0207 |     use "`cachefile'", clear
+0208 |     save "$input\PIP_all_GDP.dta", replace
+0209 | }
+0210 | else {
+0211 |     dis as result "[E] Pulling PIP_all_GDP.dta ..."
+0212 |     _apipull "E: pip tables gdp" "pip tables, table(gdp) clear"
+0213 |     ren country_code code
+0214 |     keep if data_level=="national"
+0215 |     ren value gdppc
+0216 |     char _dta[version] $S_DATE
+0217 |     save "`cachefile'", replace
+0218 |     save "$input\PIP_all_GDP.dta", replace
+0219 |     local statusE "PULLED"
+0220 |     dis as result "[E] PIP_all_GDP.dta saved."
+0221 | }
+0222 | 
+0223 | 
+0224 | *================================================================
+0225 | * SECTION F -- CLASS_incg_region.dta
+0226 | *   Downloaded from GPID-WB/Class (GitHub), then processed into
+0227 | *   income group / region lookup, used by 01c.
+0228 | *   Source file: github.com/GPID-WB/Class/OutputData/CLASS.dta
+0229 | *================================================================
+0230 | local cachefile "$inputapi\CLASS_incg_region.dta"
+0231 | local needpull 1
+0232 | if $forcepull == 0 {
+0233 |     cap confirm file "`cachefile'"
+0234 |     if _rc == 0 local needpull 0
+0235 | }
+0236 | 
+0237 | if `needpull' == 0 {
+0238 |     local statusF "CACHED"
+0239 |     dis as text "[F] CLASS_incg_region.dta cached -- skipping download."
+0240 |     use "`cachefile'", clear
+0241 |     save "$input\CLASS_incg_region.dta", replace
+0242 | }
+0243 | else {
+0244 |     dis as result "[F] Downloading CLASS.dta from GitHub (GPID-WB/Class) ..."
+0245 |     _apipull "F: download CLASS.dta" ///
+0246 |         `"copy "EVIDENCE_REF_8fe8022da9777986ad32" "$inputapi\CLASS_raw.dta", replace"'
+0247 | 
+0248 |     use "$inputapi\CLASS_raw.dta", clear
+0249 |     rename (year_data economy) (year country_name)
+0250 |     rename regionssa_code region_SSA
+0251 |     rename region_code region_pip
+0252 |     rename incgroup incgroup_historical
+0253 |     keep code year incgroup_historical region_pip region region_SSA country_name
+0254 |     bysort code (year): gen incgroup_current = incgroup_historical[_N]
+0255 |     foreach v in incgroup_current incgroup_historical {
+0256 |         replace `v' = subinstr(`v', " ", "-", .)
+0257 |         replace `v' = subinstr(`v', "income", "income countries", .)
+0258 |     }
+0259 |     tempfile incgroup
+0260 |     save `incgroup', replace
+0261 | 
+0262 |     * extend the latest classified year forward by one year (matches
+0263 |     * pea_dataupdate.ado's intent, generalized instead of hardcoded)
+0264 |     qui su year, meanonly
+0265 |     local ymax = r(max)
+0266 |     keep if year == `ymax'
+0267 |     replace year = `ymax' + 1
+0268 |     append using `incgroup'
+0269 | 
+0270 |     char _dta[version] $S_DATE
+0271 |     save "`cachefile'", replace
+0272 |     save "$input\CLASS_incg_region.dta", replace
+0273 |     local statusF "PULLED"
+0274 |     dis as result "[F] CLASS_incg_region.dta saved (year `ymax' extended to `=`ymax'+1')."
+0275 | }
+0276 | 
+0277 | 
+0278 | *================================================================
+0279 | * SUMMARY
+0280 | *================================================================
+0281 | local w 66
+0282 | dis as text _dup(`w') "-"
+0283 | dis as text "  GMI EXTENDED PIPELINE -- API PULL SUMMARY"
+0284 | dis as text "  Round: $rnd" _col(30) "Run: `c(current_date)' `c(current_time)'"
+0285 | dis as text _dup(`w') "-"
+0286 | 
+0287 | local labA "Section A  PIP headcount/gap/severity (pip2017/pip2021)"
+0288 | local labB "Section B  PIP framework table (pip_framework)"
+0289 | local labC "Section C  PIP population table (pip_pop)"
+0290 | local labD "Section D  DLW price framework (Survey_price_framework)"
+0291 | 
+0292 | foreach s in A B C D {
+0293 |     local lab  "`lab`s''"
+0294 |     local stat "`status`s''"
+0295 |     if "`stat'"      == "FAILED" dis as error "  [ FAIL   ]  `lab'"
+0296 |     else if "`stat'" == "PULLED" dis as result "  [ PULLED ]  `lab'"
+0297 |     else if "`stat'" == "CACHED" dis as text   "  [ CACHED ]  `lab'"
+0298 |     else                         dis as text   "  [ ????   ]  `lab'"
+0299 | }
+0300 | 
+0301 | dis as text _dup(`w') "-"
+0302 | if "`statusA'"=="FAILED" | "`statusB'"=="FAILED" | "`statusC'"=="FAILED" | "`statusD'"=="FAILED" {
+0303 |     dis as error "  RESULT: one or more pulls FAILED -- see [FAIL] messages above."
+0304 | }
+0305 | else {
+0306 |     dis as result "  RESULT: all inputs ready. Safe to proceed to 01aa / 01ab / 01b / 01c / 02 / 03."
+0307 | }
+0308 | dis as text _dup(`w') "-"
+```

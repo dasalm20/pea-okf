@@ -1,0 +1,257 @@
+# 04.Checks_Add_reharmonization_results/code/gmdpatch_fixid.do
+
+Sanitized source projection; applicability placeholders are not executable values. Original SHA256: 940e8897c9398b2de9d293d45ef9d94d8403465f414e79f898255768be769bd7
+
+```stata
+0001 | *===============================================================
+0002 | * gmdpatch_fixid.do
+0003 | *
+0004 | * ONE program: _gmdpatch_fixid
+0005 | *   Rewrites hhid and pid so a local re-harmonized file and the
+0006 | *   DLW pull of the same survey use the same id construction.
+0007 | *
+0008 | * HOW IT IS DIFFERENT FROM THE OLD ONE
+0009 | *   The old version only ever touched the LOCAL file, because the
+0010 | *   only known problem (ISO3 0000) was on that side.  ISO3 0000 is
+0011 | *   not like that: its local hhid is missing the province and
+0012 | *   district prefix that DLW carries, and that prefix cannot be
+0013 | *   rebuilt from the local file.  The only way to join is to strip
+0014 | *   it from the DLW side too.
+0015 | *
+0016 | *   So the program now takes a fifth argument, side, and is called
+0017 | *   TWICE per survey: once on the local file and once on the DLW
+0018 | *   pull.  For every survey except ISO3 the DLW call does nothing.
+0019 | *
+0020 | * CALL
+0021 | *   _gmdpatch_fixid "<region>" "<CODE>" "<year>" "<SURVNAME>" "<side>"
+0022 | *   side is either  local  or  dlw
+0023 | *
+0024 | * EVERY FIX IS GUARDED
+0025 | *   Each one checks the ids are in the broken shape before touching
+0026 | *   them, so a file that has already been corrected at source is
+0027 | *   left alone and nothing is ever recoded twice.
+0028 | *
+0029 | * PASTE THIS INTO 00-Master.do, or run it from there with:
+0030 | *   run "$prog/gmdpatch_fixid.do"
+0031 | *===============================================================
+0032 | 
+0033 | *--- version stamp.  The diagnostics checks this, because an older
+0034 | *    four-argument copy left in memory would silently ignore side.
+0035 | global gmdpatch_fixid_version "2"
+0036 | 
+0037 | capture program drop _gmdpatch_fixid
+0038 | program define _gmdpatch_fixid
+0039 |     args reg code year survname side
+0040 | 
+0041 |     if "`side'" == "" local side "local"
+0042 |     local side = lower("`side'")
+0043 | 
+0044 | 
+0045 |     *===========================================================
+0046 |     * SSA / ISO3 0000   -- local side only
+0047 |     *   Exported with   hhid = hh*1000 + region
+0048 |     *   GMD builds it   hhid = region*10000 + hh
+0049 |     *   The same two parts in reverse order.
+0050 |     *   Verified: [ESTIMATE] of [ESTIMATE] matched before, [ESTIMATE] after.
+0051 |     *   REMOVE once SSA re-exports with the standard id.
+0052 |     *===========================================================
+0053 |     if "`reg'"=="SSA" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {
+0054 |         capture confirm numeric variable hhid
+0055 |         if _rc {
+0056 |             noi dis as error "  ISO3 0000: hhid is not numeric -- fix NOT applied."
+0057 |         }
+0058 |         else {
+0059 |             tempvar rg hh
+0060 |             qui gen long `rg' = mod(hhid, 1000)
+0061 |             qui gen long `hh' = floor(hhid/1000)
+0062 |             capture assert inrange(`rg',1,12) & inrange(`hh',1,1256)
+0063 |             if _rc {
+0064 |                 noi dis as error "  ISO3 0000: hhid is not in the expected shape -- fix NOT applied."
+0065 |             }
+0066 |             else {
+0067 |                 qui replace hhid = `rg'*10000 + `hh'
+0068 |                 noi dis in yellow "  ISO3 0000: hhid rebuilt (hh*1000+region -> region*10000+hh)"
+0069 |             }
+0070 |         }
+0071 |     }
+0072 | 
+0073 | 
+0074 |     *===========================================================
+0075 |     * EAP / ISO3 0000 SUSENAS   -- local side only
+0076 |     *   hhid matches DLW exactly.  Only pid differs:
+0077 |     *     local  pid = hhid + member on THREE digits   [ESTIMATE]
+0078 |     *     DLW    pid = hhid + member on TWO digits     100000101
+0079 |     *   ISO3 0000 already uses the two-digit form, so 0000 is the
+0080 |     *   odd one out.
+0081 |     *   Verified: [ESTIMATE] of [ESTIMATE] matched before, all after.
+0082 |     *===========================================================
+0083 |     if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {
+0084 |         capture confirm string variable pid
+0085 |         if _rc {
+0086 |             noi dis as error "  ISO3 0000: pid is not a string -- fix NOT applied."
+0087 |         }
+0088 |         else {
+0089 |             tempvar memtxt mem
+0090 |             qui gen str20  `memtxt' = substr(pid, strlen(hhid) + 1, .)
+0091 |             qui gen double `mem'    = real(`memtxt')
+0092 | 
+0093 |             *--- the only thing that actually has to hold is that pid is
+0094 |             *    hhid followed by a number.  The earlier version also
+0095 |             *    insisted the member was exactly 3 digits wide, which was
+0096 |             *    too strict and silently skipped the whole survey, so the
+0097 |             *    width is now reported rather than required.
+0098 |             qui count if substr(pid, 1, strlen(hhid)) != hhid
+0099 |             local nbadstem = r(N)
+0100 |             qui count if missing(`mem')
+0101 |             local nbadmem = r(N)
+0102 |             qui count if strlen(`memtxt') != 2
+0103 |             local nwide = r(N)
+0104 | 
+0105 |             if `nbadstem' > 0 | `nbadmem' > 0 {
+0106 |                 noi dis as error "  ISO3 0000: pid is not hhid + a member number -- fix NOT applied."
+0107 |                 noi dis as error "            rows where pid does not start with hhid: `nbadstem'"
+0108 |                 noi dis as error "            rows where the rest of pid is not numeric: `nbadmem'"
+0109 |             }
+0110 |             else if `nwide' == 0 {
+0111 |                 noi dis as text "  ISO3 0000: pid already uses a 2-digit member number, nothing to do."
+0112 |             }
+0113 |             else {
+0114 |                 qui su `mem', meanonly
+0115 |                 local mlo = r(min)
+0116 |                 local mhi = r(max)
+0117 |                 if `mhi' > 99 {
+0118 |                     noi dis as error "  ISO3 0000: a household has more than 99 members (max `mhi')."
+0119 |                     noi dis as error "            A 2-digit member number cannot hold that -- fix NOT applied."
+0120 |                 }
+0121 |                 else {
+0122 |                     qui replace pid = hhid + string(`mem', "%02.0f")
+0123 |                     noi dis in yellow "  ISO3 0000: pid rebuilt, member number `mlo' to `mhi' written on 2 digits"
+0124 |                 }
+0125 |             }
+0126 |         }
+0127 |     }
+0128 | 
+0129 | 
+0130 |     *===========================================================
+0131 |     * EAP / ISO3 0000 FIES   -- local side only
+0132 |     *   The pid VALUES are identical, 1 2 3 ... up to 25.
+0133 |     *   DLW stores pid as str2, the local file as byte, and Stata
+0134 |     *   refuses to merge on keys of different generic types, r(106).
+0135 |     *   Nothing is recoded here, only the storage type.
+0136 |     *   Verified: [ESTIMATE] of [ESTIMATE] after.
+0137 |     *===========================================================
+0138 |     if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 & "`side'"=="local" {
+0139 |         capture confirm string variable pid
+0140 |         if _rc == 0 {
+0141 |             qui replace pid = strtrim(pid)
+0142 |         }
+0143 |         else {
+0144 |             qui tostring pid, replace force
+0145 |             qui replace pid = strtrim(pid)
+0146 |             noi dis in yellow "  ISO3 0000: pid converted from numeric to text to match DLW"
+0147 |         }
+0148 |     }
+0149 | 
+0150 | 
+0151 |     *===========================================================
+0152 |     * EAP / ISO3 0000 VHLSS   -- BOTH sides
+0153 |     *   local hhid  [ESTIMATE]      = diaban(5) + hh number padded to 6
+0154 |     *   DLW   hhid  [ESTIMATE]  = tinh(2) + huyen(3) + diaban(5) + hh number(5)
+0155 |     *   local pid   1 .. 13          = the member number, nothing else
+0156 |     *   DLW   pid   hhid + member
+0157 |     *
+0158 |     *   The province and district are simply absent from the local
+0159 |     *   file, so they cannot be rebuilt. Both sides are reduced to
+0160 |     *   the common part instead:
+0161 |     *       hhid := diaban(5) + hh number on 5 digits
+0162 |     *       pid  := that hhid + member on 2 digits
+0163 |     *
+0164 |     *   This DROPS tinh and huyen from the key, so it relies on
+0165 |     *   diaban + household number being unique nationally. That held
+0166 |     *   here: [ESTIMATE] of [ESTIMATE] rows joined, [ESTIMATE], with no duplicate
+0167 |     *   keys on either side. The [ESTIMATE] that did not join are reported
+0168 |     *   by the diagnostics as DLW-only and keep their DLW values.
+0169 |     *
+0170 |     *   This is a workaround. The real fix is for EAP to re-export
+0171 |     *   ISO3 carrying the full GMD hhid.
+0172 |     *===========================================================
+0173 |     if "`reg'"=="EAP" & "`code'"=="ISO3" & `year'==0000 {
+0174 | 
+0175 |         capture confirm string variable hhid
+0176 |         if _rc {
+0177 |             noi dis as error "  ISO3 0000: hhid is not a string -- fix NOT applied."
+0178 |             exit
+0179 |         }
+0180 | 
+0181 |         tempvar dia hhno hhn
+0182 | 
+0183 |         *--------------------------------------------------------
+0184 |         * LOCAL: hhid is 11 characters, diaban(5) + number(6)
+0185 |         *--------------------------------------------------------
+0186 |         if "`side'" == "local" {
+0187 |             capture assert strlen(hhid) == 11
+0188 |             if _rc {
+0189 |                 noi dis as error "  ISO3 0000 local: hhid is not 11 characters -- fix NOT applied."
+0190 |                 exit
+0191 |             }
+0192 |             qui gen str5   `dia'  = substr(hhid, 1, 5)
+0193 |             qui gen str10  `hhno' = substr(hhid, 6, .)
+0194 |             qui gen double `hhn'  = real(`hhno')
+0195 |             capture assert !missing(`hhn')
+0196 |             if _rc {
+0197 |                 noi dis as error "  ISO3 0000 local: household number is not numeric -- fix NOT applied."
+0198 |                 exit
+0199 |             }
+0200 | 
+0201 |             qui replace hhid = `dia' + string(`hhn', "%05.0f")
+0202 | 
+0203 |             capture confirm numeric variable pid
+0204 |             if _rc {
+0205 |                 noi dis as error "  ISO3 0000 local: pid is not numeric -- fix NOT applied."
+0206 |                 exit
+0207 |             }
+0208 |             tempvar mem
+0209 |             qui gen double `mem' = pid
+0210 |             qui drop pid
+0211 |             qui gen str20 pid = hhid + string(`mem', "%02.0f")
+0212 | 
+0213 |             noi dis in yellow "  ISO3 0000 local: hhid and pid rebuilt on the diaban + household key"
+0214 |         }
+0215 | 
+0216 |         *--------------------------------------------------------
+0217 |         * DLW: hhid is 15 or 16 characters, the last 10 are the
+0218 |         *      diaban + household number we keep.
+0219 |         *--------------------------------------------------------
+0220 |         if "`side'" == "dlw" {
+0221 |             capture assert strlen(hhid) >= 15
+0222 |             if _rc {
+0223 |                 noi dis as error "  ISO3 0000 DLW: hhid is shorter than expected -- fix NOT applied."
+0224 |                 exit
+0225 |             }
+0226 |             tempvar mem
+0227 |             qui gen double `mem' = real(substr(pid, strlen(hhid) + 1, .))
+0228 |             capture assert !missing(`mem')
+0229 |             if _rc {
+0230 |                 noi dis as error "  ISO3 0000 DLW: pid is not hhid + a member number -- fix NOT applied."
+0231 |                 exit
+0232 |             }
+0233 | 
+0234 |             qui replace hhid = substr(hhid, strlen(hhid) - 9, 10)
+0235 |             qui drop pid
+0236 |             qui gen str20 pid = hhid + string(`mem', "%02.0f")
+0237 | 
+0238 |             noi dis in yellow "  ISO3 0000 DLW: hhid and pid reduced to the diaban + household key"
+0239 |         }
+0240 |     }
+0241 | 
+0242 | 
+0243 |     *===========================================================
+0244 |     * Add further confirmed fixes above this line.
+0245 |     *
+0246 |     * NOT FIXED, ON PURPOSE:
+0247 |     *   ISO3 0000 and 0000 CSES are not in DataLibWeb yet, so there
+0248 |     *   is nothing to join them against. Their ids look well formed.
+0249 |     *   They are listed in pendingcodes in the diagnostics.
+0250 |     *===========================================================
+0251 | end
+```

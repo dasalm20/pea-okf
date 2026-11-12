@@ -1,0 +1,320 @@
+# 04.Checks_Add_reharmonization_results/code/99-ISO3_education_trace.do
+
+Sanitized source projection; applicability placeholders are not executable values. Original SHA256: 1becb6227a98f0d7ae412b942c8ed5de22b372dd45c5b7b0d4d49ff048215dae
+
+```stata
+0001 | *===============================================================
+0002 | * 99-ISO3_education_trace.do
+0003 | *
+0004 | * WHAT IT ANSWERS
+0005 | *   ISO3 0000 educat4 has [ESTIMATE] people in Tertiary.  DLW has [ESTIMATE].
+0006 | *   The [ESTIMATE] who vanished did NOT slide down into Secondary:
+0007 | *
+0008 | *      educat4        DLW        local     difference
+0009 | *      1 No educ      [ESTIMATE]     [ESTIMATE]     +[ESTIMATE]
+0010 | *      2 Primary     [ESTIMATE]     [ESTIMATE]      +[ESTIMATE]
+0011 | *      3 Secondary   [ESTIMATE]     [ESTIMATE]       -[ESTIMATE]
+0012 | *      4 Tertiary    [ESTIMATE]          [ESTIMATE]     -[ESTIMATE]
+0013 | *      missing        [ESTIMATE]      [ESTIMATE]      +[ESTIMATE]
+0014 | *
+0015 | *   Most of them landed in NO EDUCATION.  That points at the
+0016 | *   lc07_grade range recode in the harmonization do-file, lines
+0017 | *   266-272, which only sends two codes (40021, 50021) to
+0018 | *   University and sweeps 60000/80923 into upper secondary.
+0019 | *
+0020 | *   This script walks the chain from the RAW grade variable to the
+0021 | *   final educat4, and then asks the decisive question: for the
+0022 | *   people DLW calls Tertiary, what does the raw grade variable
+0023 | *   actually say?
+0024 | *
+0025 | * READ ONLY.  SCREEN OUTPUT ONLY.  It writes NOTHING to disk, not
+0026 | * even a log. To keep a copy, start your own log first, or use
+0027 | * File > Log > Begin in Stata.
+0028 | * RUN 00-Master.do FIRST, or at least set $repotxt, for the DLW pull.
+0029 | *===============================================================
+0030 | 
+0031 | clear all
+0032 | set more off
+0033 | set varabbrev off
+0034 | set linesize 200
+0035 | 
+0036 | *===============================================================
+0037 | *  EDIT THIS SECTION
+0038 | *===============================================================
+0039 | 
+0040 | *--- 1. The RAW file the harmonization reads
+0041 | local rawdir  "\\WUREPLIPRDFS06\eapfile\eappp\EAP_DATA\datalib_w\ISO3\ISO3_0000_FIES\ISO3_0000_FIES _v01_M\Data\Stata"
+0042 | local rawfile "Merged FIES-LFS 0000_Harmonized.dta"
+0043 | 
+0044 | *--- 2. The HARMONIZED module 2 file
+0045 | local harmdir  "\\wurepliprdfs06\eapfile\eappp\EAP Harmonization\ISO3_0000_FIES_ECAPOV\Data\Harmonized"
+0046 | local harmfile "ISO3_0000_fies_v01_m_v01_a_ecapov-03_2.dta"
+0047 | 
+0048 | *--- 4. The raw variables the harmonization uses
+0049 | local vgrade "lc07_grade"
+0050 | local vage   "lc05_age"
+0051 | local vsch   "lc08_cursch"
+0052 | 
+0053 | *--- 5. The age threshold the harmonization applies to education
+0054 | local edage 5
+0055 | 
+0056 | *--- 6. How many raw grade codes to print in the big tables.
+0057 | *       Set to 0 to print all of them.
+0058 | local topn 40
+0059 | 
+0060 | *===============================================================
+0061 | *  END OF EDIT SECTION
+0062 | *===============================================================
+0063 | 
+0064 | di as text "{hline 78}"
+0065 | di as text "  ISO3 0000 FIES -- EDUCATION TRACE"
+0066 | di as text "  Run `c(current_date)' `c(current_time)'"
+0067 | di as text "{hline 78}"
+0068 | di as text "  raw       : `rawdir'/`rawfile'"
+0069 | di as text "  harmonized: `harmdir'/`harmfile'"
+0070 | di as text "  This script writes nothing. Screen output only."
+0071 | di as text "{hline 78}"
+0072 | 
+0073 | 
+0074 | *===============================================================
+0075 | * STEP 1 -- the raw grade variable as it comes
+0076 | *===============================================================
+0077 | di as text _n(2) "{hline 78}"
+0078 | di as text "  STEP 1.  THE RAW GRADE VARIABLE"
+0079 | di as text "{hline 78}"
+0080 | 
+0081 | capture use "`rawdir'/`rawfile'", clear
+0082 | if _rc {
+0083 |     di as error "  Could not open the raw file. Check section 1."
+0084 |     di as error "  Everything below needs it, so stopping here."
+0085 |     exit 601
+0086 | }
+0087 | 
+0088 | di as text "  rows: " _N
+0089 | describe `vgrade' `vage' `vsch'
+0090 | 
+0091 | di as text _n "  How `vgrade' is stored and labelled:"
+0092 | capture confirm numeric variable `vgrade'
+0093 | if _rc == 0 {
+0094 |     qui su `vgrade', meanonly
+0095 |     di as text "    numeric, range " %12.0f r(min) " to " %12.0f r(max)
+0096 |     qui levelsof `vgrade', local(gl)
+0097 |     local ng : word count `gl'
+0098 |     di as text "    distinct codes: `ng'"
+0099 |     local lblname : value label `vgrade'
+0100 |     if "`lblname'" == "" di as error "    NO VALUE LABEL ATTACHED -- this is flag F1 in the do-file."
+0101 |     else                 di as text  "    value label: `lblname'"
+0102 | }
+0103 | else {
+0104 |     di as error "    `vgrade' is a STRING. The recode in the do-file assumes it is numeric."
+0105 | }
+0106 | 
+0107 | 
+0108 | *===============================================================
+0109 | * STEP 2 -- replay the recode exactly as the do-file wrote it
+0110 | *===============================================================
+0111 | di as text _n(2) "{hline 78}"
+0112 | di as text "  STEP 2.  REPLAY THE lc07_grade -> edlevel_ea RECODE"
+0113 | di as text "{hline 78}"
+0114 | di as text "  Lines 266-272 of ISO3_0000_FIES_v01_M_v01_A_ECAPOV-03_2.do."
+0115 | di as text "  Note that ONLY codes 40021 and 50021 are sent to 7 = University,"
+0116 | di as text "  while the whole 60000-80923 block is sent to 6 = Upper secondary."
+0117 | 
+0118 | gen double _orig = `vgrade'
+0119 | 
+0120 | recode `vgrade'  (1000/0000=1) (10004/10015=2)                               ///
+0121 |                  (10018/24013=3)                                             ///
+0122 |                  (24015 34011 34021 34031 35011=4)                           ///
+0123 |                  (34013 34023 34033 35013 40001/40011 40031/40114            ///
+0124 |                   40188/50011 50031/50114 50188/59999=5)                     ///
+0125 |                  (60000/80923=6) (40021 50021=7)                             ///
+0126 |                  (40119 50119 81013/81032=9), gen(edlevel_ea)
+0127 | 
+0128 | label define lbl_ea 1 "1 None" 2 "2 Pre-school" 3 "3 Primary incomplete"     ///
+0129 |     4 "4 Primary complete" 5 "5 Lower-sec complete" 6 "6 Upper-sec complete" ///
+0130 |     7 "7 University+" 9 "9 Adult/literacy", replace
+0131 | label values edlevel_ea lbl_ea
+0132 | 
+0133 | di as text _n "  edlevel_ea after the recode:"
+0134 | tab edlevel_ea, m
+0135 | 
+0136 | *--- which raw codes did NO rule catch?
+0137 | gen byte _caught = (edlevel_ea != _orig)
+0138 | qui count if _caught == 0 & !missing(_orig)
+0139 | local nmiss = r(N)
+0140 | di as text _n "  Rows whose grade code matched NO rule and passed straight through: " %12.0fc `nmiss'
+0141 | if `nmiss' > 0 {
+0142 |     di as error "  Those rows keep their raw code in edlevel_ea, which then matches none"
+0143 |     di as error "  of the educat7 conditions, so educat4 ends up MISSING for them."
+0144 |     di as text _n "  The uncaught codes:"
+0145 |     if `topn' > 0  tab _orig if _caught==0 & !missing(_orig), sort
+0146 |     else           tab _orig if _caught==0 & !missing(_orig)
+0147 | }
+0148 | 
+0149 | 
+0150 | *===============================================================
+0151 | * STEP 3 -- raw code against the level it was assigned
+0152 | *===============================================================
+0153 | di as text _n(2) "{hline 78}"
+0154 | di as text "  STEP 3.  EVERY RAW CODE AND THE LEVEL IT WAS GIVEN"
+0155 | di as text "{hline 78}"
+0156 | di as text "  Read down the rows. Any code you recognise as college or university"
+0157 | di as text "  that is NOT in the '7 University+' column is a misclassification."
+0158 | 
+0159 | tab _orig edlevel_ea, m
+0160 | 
+0161 | 
+0162 | *===============================================================
+0163 | * STEP 4 -- edlevel_ea -> educat7 -> educat4
+0164 | *===============================================================
+0165 | di as text _n(2) "{hline 78}"
+0166 | di as text "  STEP 4.  THE REST OF THE CHAIN"
+0167 | di as text "{hline 78}"
+0168 | 
+0169 | gen educat7 = .
+0170 | replace educat7 = 1 if inlist(edlevel_ea, 1, 2)
+0171 | replace educat7 = 2 if edlevel_ea == 3
+0172 | replace educat7 = 3 if edlevel_ea == 4
+0173 | replace educat7 = 4 if edlevel_ea == 5
+0174 | replace educat7 = 5 if edlevel_ea == 6
+0175 | replace educat7 = 7 if edlevel_ea == 7
+0176 | replace educat7 = . if `vage' < `edage'
+0177 | label define lbl_e7 1 "1 No education" 2 "2 Primary incomplete"              ///
+0178 |     3 "3 Primary complete" 4 "4 Secondary incomplete" 5 "5 Secondary complete" ///
+0179 |     6 "6 Post-sec non-university" 7 "7 University", replace
+0180 | label values educat7 lbl_e7
+0181 | 
+0182 | recode educat7 (2 3=2) (4 5=3) (6 7=4), gen(educat4)
+0183 | label define lbl_e4 1 "1 No education" 2 "2 Primary" 3 "3 Secondary" 4 "4 Tertiary", replace
+0184 | label values educat4 lbl_e4
+0185 | 
+0186 | di as text _n "  edlevel_ea -> educat7:"
+0187 | tab edlevel_ea educat7, m
+0188 | 
+0189 | di as text _n "  educat7 -> educat4:"
+0190 | tab educat7 educat4, m
+0191 | 
+0192 | di as text _n "  educat4 as this script rebuilt it:"
+0193 | tab educat4, m
+0194 | 
+0195 | di as text _n "  The age rule: education is blanked below age `edage'."
+0196 | qui count if `vage' < `edage'
+0197 | di as text "  rows below the threshold: " %12.0fc r(N)
+0198 | di as text "  Age against educat4:"
+0199 | tab educat4 if `vage' < `edage', m
+0200 | 
+0201 | 
+0202 | *===============================================================
+0203 | * STEP 5 -- rebuild the ids so we can line up with DLW
+0204 | *===============================================================
+0205 | di as text _n(2) "{hline 78}"
+0206 | di as text "  STEP 5.  REBUILD hhid ISO3 pid THE WAY THE DO-FILE DOES"
+0207 | di as text "{hline 78}"
+0208 | 
+0209 | capture confirm variable hhid
+0210 | if _rc == 0 rename hhid hhid_raw
+0211 | 
+0212 | tostring sequence_no, gen(seq_no_s)
+0213 | replace seq_no_s = "00000" + seq_no_s if sequence_no < 10
+0214 | replace seq_no_s = "0000"  + seq_no_s if sequence_no >= 10     & sequence_no < 100
+0215 | replace seq_no_s = "000"   + seq_no_s if sequence_no >= 100    & sequence_no < 1000
+0216 | replace seq_no_s = "00"    + seq_no_s if sequence_no >= 1000   & sequence_no < 10000
+0217 | replace seq_no_s = "0"     + seq_no_s if sequence_no >= 10000  & sequence_no < 100000
+0218 | gen hhid = "1" + seq_no_s
+0219 | 
+0220 | gen pid_n = lno
+0221 | tostring pid_n, gen(pid) force
+0222 | replace pid = strtrim(pid)
+0223 | 
+0224 | capture isid hhid pid
+0225 | if _rc di as error "  hhid + pid is not unique in the raw file."
+0226 | else   di as text  "  hhid + pid is unique. Good."
+0227 | 
+0228 | keep hhid pid `vgrade' _orig edlevel_ea educat7 educat4 `vage' `vsch'
+0229 | rename educat4 educat4_rebuilt
+0230 | rename educat7 educat7_rebuilt
+0231 | tempfile RAW
+0232 | qui save `RAW'
+0233 | 
+0234 | 
+0235 | *===============================================================
+0236 | * STEP 6 -- THE DECISIVE TABLE
+0237 | *   For the people DLW calls Tertiary, what is the raw grade code?
+0238 | *===============================================================
+0239 | di as text _n(2) "{hline 78}"
+0240 | di as text "  STEP 6.  WHAT THE RAW DATA SAYS ABOUT DLW'S TERTIARY PEOPLE"
+0241 | di as text "{hline 78}"
+0242 | 
+0243 | capture dlw, country(ISO3) year(0000) type(gmd) surveyid(FIES) mod(ALL) files $repotxt
+0244 | if _rc {
+0245 |     di as error "  DLW pull failed (rc=" _rc "). Steps 6 and 7 skipped."
+0246 | }
+0247 | else {
+0248 |     keep hhid pid educat4
+0249 |     rename educat4 educat4_dlw
+0250 |     capture confirm string variable pid
+0251 |     if _rc {
+0252 |         qui tostring pid, replace force
+0253 |     }
+0254 |     qui replace pid = strtrim(pid)
+0255 | 
+0256 |     merge 1:1 hhid pid using `RAW', gen(_m)
+0257 |     di as text _n "  join of DLW onto the raw file:"
+0258 |     tab _m
+0259 | 
+0260 |     keep if _m == 3
+0261 | 
+0262 |     di as text _n(2) "  >>> DLW educat4 against the educat4 this script rebuilt:"
+0263 |     tab educat4_dlw educat4_rebuilt, m
+0264 | 
+0265 |     di as text _n(2) "  >>> THE ANSWER."
+0266 |     di as text "  For every person DLW puts in Tertiary, here is the raw grade code"
+0267 |     di as text "  and the level the harmonization recode gave it:"
+0268 |     tab _orig edlevel_ea if educat4_dlw == 4, m
+0269 | 
+0270 |     di as text _n "  And the same people, summarised by the level they ended up in:"
+0271 |     tab edlevel_ea if educat4_dlw == 4, m
+0272 | 
+0273 |     di as text _n "  Their final educat4 in the local file:"
+0274 |     tab educat4_rebuilt if educat4_dlw == 4, m
+0275 | 
+0276 | 
+0277 |     *===========================================================
+0278 |     * STEP 7 -- the age threshold
+0279 |     *===========================================================
+0280 |     di as text _n(2) "{hline 78}"
+0281 |     di as text "  STEP 7.  DOES THE AGE THRESHOLD EXPLAIN ANY OF IT?"
+0282 |     di as text "{hline 78}"
+0283 |     di as text "  The harmonization blanks education below age `edage'."
+0284 |     di as text "  If DLW uses a different threshold, the two universes differ."
+0285 | 
+0286 |     di as text _n "  DLW educat4 by whether the person is below age `edage':"
+0287 |     gen byte _under = (`vage' < `edage') if !missing(`vage')
+0288 |     tab _under educat4_dlw, m
+0289 | 
+0290 |     di as text _n "  People DLW has a value for but the local file does not:"
+0291 |     qui count if !missing(educat4_dlw) & missing(educat4_rebuilt)
+0292 |     di as text "    count: " %12.0fc r(N)
+0293 |     di as text "    their ages:"
+0294 |     su `vage' if !missing(educat4_dlw) & missing(educat4_rebuilt), detail
+0295 |     di as text "    their raw grade codes:"
+0296 |     tab _orig if !missing(educat4_dlw) & missing(educat4_rebuilt), m
+0297 | }
+0298 | 
+0299 | 
+0300 | di as text _n(2) "{hline 78}"
+0301 | di as text "  HOW TO READ THIS"
+0302 | di as text "{hline 78}"
+0303 | di as text "  STEP 2  any code listed as uncaught is a hole in the range table."
+0304 | di as text "  STEP 3  find the codes you know are college. If they sit under"
+0305 | di as text "          '6 Upper-sec complete' or '1 None', that is the bug."
+0306 | di as text "  STEP 6  this is the one that settles it. Every person DLW calls"
+0307 | di as text "          Tertiary, with the raw code the recode saw. Whatever"
+0308 | di as text "          column they fall in is where the range table sent them."
+0309 | di as text "  STEP 7  rules out the age threshold as the cause."
+0310 | di as text "{hline 78}"
+0311 | 
+0312 | di as result _n(2) "{hline 78}"
+0313 | di as result "  DONE -- nothing was written to disk."
+0314 | di as result "{hline 78}" _n
+```
